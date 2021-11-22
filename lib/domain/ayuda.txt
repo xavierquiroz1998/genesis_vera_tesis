@@ -1,0 +1,6 @@
+
+
+---domain
+
+
+aqui se va a manejar la logica de negocio 

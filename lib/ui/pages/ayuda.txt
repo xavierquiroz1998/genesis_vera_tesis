@@ -1,0 +1,13 @@
+
+Pages
+
+-se crea una carpeta por cada pantalla y dentro de la carpeta se crea el archivo dart
+
+cada carpeta tenga 1 archivo dart y tendra una carpeta widgets para declarar los widgets especificos 
+para esa pantalla
+
+
+ejemplo carpeta login
+
+
+
