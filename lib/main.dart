@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
+  setPathUrlStrategy();
   runApp(MyApp());
 }
 
@@ -10,10 +12,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home:
+          // Navigator(
+          //   pages: [
+
+          //   ],
+          //   //transitionDelegate: ,
+          //   onPopPage: (route, result) {
+          //     return route.didPop(result);
+          //   },
+          // )
+          MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -39,8 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => ProductosTable()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProductosTable(),
+                  ),
+                );
               },
               child: Text("Producto"),
             ),

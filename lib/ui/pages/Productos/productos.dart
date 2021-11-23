@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:genesis_vera_tesis/ui/pages/Producto/producto.dart';
 
 class ProductosTable extends StatefulWidget {
   const ProductosTable({Key? key}) : super(key: key);
@@ -27,9 +28,22 @@ class _ProductosState extends State<ProductosTable> {
       body: Container(
         child: ListView(
           children: [
-            TextButton(
-              onPressed: () {},
-              child: Text("Nuevo"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  //style: ButtonStyle(),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProductoCrud(),
+                      ),
+                    );
+                  },
+                  child: Text("Nuevo"),
+                ),
+              ],
             ),
             DataTable(
               columns: <DataColumn>[
