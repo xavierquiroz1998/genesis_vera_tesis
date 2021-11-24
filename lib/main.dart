@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
+import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/ui/pages/Egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
+import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() {
@@ -10,23 +14,29 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:
-          // Navigator(
-          //   pages: [
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductosProvider()),
+        ChangeNotifierProvider(create: (_) => EProductoProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home:
+            // Navigator(
+            //   pages: [
 
-          //   ],
-          //   //transitionDelegate: ,
-          //   onPopPage: (route, result) {
-          //     return route.didPop(result);
-          //   },
-          // )
-          MyHomePage(title: 'Flutter Demo Home Page'),
+            //   ],
+            //   //transitionDelegate: ,
+            //   onPopPage: (route, result) {
+            //     return route.didPop(result);
+            //   },
+            // )
+            MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
@@ -59,7 +69,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
-              child: Text("Producto"),
+              child: Text("Ingreso Productos"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => EgresoProducto(),
+                  ),
+                );
+              },
+              child: Text("Egreso Productos"),
             ),
             TextButton(
               onPressed: () {},
@@ -68,6 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               onPressed: () {},
               child: Text("Login"),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text("Reportes"),
             ),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/ui/pages/Producto/producto.dart';
+import 'package:genesis_vera_tesis/ui/pages/Producto/productoCrud.dart';
 
 class ProductosTable extends StatefulWidget {
   const ProductosTable({Key? key}) : super(key: key);
@@ -10,12 +11,17 @@ class ProductosTable extends StatefulWidget {
 }
 
 class _ProductosState extends State<ProductosTable> {
-  List<Productos> productos = [];
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < 10; i++) {
-      productos.add(
+    if (Estaticas.listProductos.length == 0) {
+      cargarLista();
+    }
+  }
+
+  void cargarLista() {
+    for (int i = 0; i < 3; i++) {
+      Estaticas.listProductos.add(
         new Productos(id: i, descripcion: "Prod$i", stock: i + 50, precio: 1),
       );
     }
@@ -48,16 +54,28 @@ class _ProductosState extends State<ProductosTable> {
             DataTable(
               columns: <DataColumn>[
                 const DataColumn(
-                  label: Text("Id"),
+                  label: Center(child: Text("Id")),
                 ),
                 const DataColumn(
-                  label: Text("Descripcion"),
+                  label: Center(child: Text("Codigo")),
                 ),
                 const DataColumn(
-                  label: Text("Stock"),
+                  label: Center(child: Text("Descripcion")),
+                ),
+                const DataColumn(
+                  label: Center(child: Text("Stock")),
+                ),
+                const DataColumn(
+                  label: Center(child: Text("Precio")),
+                ),
+                const DataColumn(
+                  label: Center(child: Text("Editar")),
+                ),
+                const DataColumn(
+                  label: Center(child: Text("Anular")),
                 ),
               ],
-              rows: productos.map<DataRow>((e) {
+              rows: Estaticas.listProductos.map<DataRow>((e) {
                 return DataRow(
                   //key: LocalKey(),
                   cells: <DataCell>[
@@ -65,10 +83,24 @@ class _ProductosState extends State<ProductosTable> {
                       Text(e.id.toString()),
                     ),
                     DataCell(
+                      Text(e.codigo.toString()),
+                    ),
+                    DataCell(
                       Text(e.descripcion!),
                     ),
                     DataCell(
                       Text(e.stock.toString()),
+                    ),
+                    DataCell(
+                      Text(e.precio.toString()),
+                    ),
+                    DataCell(
+                      Icon(Icons.edit),
+                      onTap: () {},
+                    ),
+                    DataCell(
+                      Icon(Icons.delete),
+                      onTap: () {},
                     ),
                   ],
                 );
