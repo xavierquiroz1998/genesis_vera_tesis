@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,48 @@ class EgresoProducto extends StatelessWidget {
               },
               child: Text("Agregar"),
             ),
+            // SfDataGrid(
+            //     source: egreso.employeeDataSource,
+            //     allowEditing: true,
+            //     columnWidthMode: ColumnWidthMode.none,
+            //     columns: <GridColumn>[
+            //       GridColumn(
+            //           columnName: 'id',
+            //           label: Container(
+            //               padding: EdgeInsets.all(16.0),
+            //               alignment: Alignment.center,
+            //               child: Text(
+            //                 'ID',
+            //               ))),
+            //       GridColumn(
+            //           columnName: 'name',
+            //           label: Container(
+            //               padding: EdgeInsets.all(8.0),
+            //               alignment: Alignment.center,
+            //               child: Text('Name'))),
+            //       GridColumn(
+            //           columnName: 'designation',
+            //           label: Container(
+            //               padding: EdgeInsets.all(8.0),
+            //               alignment: Alignment.center,
+            //               child: Text(
+            //                 'Designation',
+            //                 overflow: TextOverflow.ellipsis,
+            //               ))),
+            //       GridColumn(
+            //           columnName: 'salary',
+            //           label: Container(
+            //               padding: EdgeInsets.all(8.0),
+            //               alignment: Alignment.center,
+            //               child: Text('Salary'))),
+            //       GridColumn(
+            //           columnName: 'edit',
+            //           label: Container(
+            //               padding: EdgeInsets.all(8.0),
+            //               alignment: Alignment.center,
+            //               child: Text(''))),
+            //     ]),
+
             DataTable(
               columns: <DataColumn>[
                 const DataColumn(
@@ -50,7 +94,19 @@ class EgresoProducto extends StatelessWidget {
                   //key: LocalKey(),
                   cells: <DataCell>[
                     DataCell(
-                      Text(e.idProducto.toString()),
+                      DropdownButton<Productos>(
+                        items: Estaticas.listProductos
+                            .map(
+                              (e) => DropdownMenuItem<Productos>(
+                                child: Text(e.descripcion!),
+                                value: new Productos(precio: 0),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (prod) {},
+                        //value: new Productos(precio: 0),
+                        hint: Text("funciona?"),
+                      ),
                     ),
                     DataCell(
                       Text(e.detalle.toString()),
@@ -80,6 +136,20 @@ class EgresoProducto extends StatelessWidget {
                 );
               }).toList(),
             ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Text("Guardar"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text("Cancelar"),
+                ),
+              ],
+            )
           ],
         ),
       ),
