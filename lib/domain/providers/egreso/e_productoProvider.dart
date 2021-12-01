@@ -9,6 +9,14 @@ class EProductoProvider extends ChangeNotifier {
   List<EgresoDetalle> _listPRoduct = [];
   late EmployeeDataSource employeeDataSource =
       EmployeeDataSource(employeeData: listaProducto);
+  Productos _prd = new Productos(precio: 0);
+
+  Productos get prd => _prd;
+
+  set prd(Productos prd) {
+    _prd = prd;
+    notifyListeners();
+  }
 
   List<EgresoDetalle> get listaProducto => _listPRoduct;
 
@@ -26,6 +34,23 @@ class EProductoProvider extends ChangeNotifier {
   void remover(EgresoDetalle e) {
     listaProducto.remove(e);
     notifyListeners();
+  }
+
+  void guardarEgreso() {
+    try {
+      for (var item in listaProducto) {
+        var result =
+            Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
+        if (result.id! > 0) {
+          int totalStock = result.stock! - item.cantidad!;
+          Estaticas.listProductos.remove(result);
+          result.stock = totalStock;
+          Estaticas.listProductos.add(result);
+        }
+      }
+    } catch (e) {
+      print("Error en guardar ${e.toString()}");
+    }
   }
 }
 

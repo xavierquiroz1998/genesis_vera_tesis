@@ -94,18 +94,14 @@ class EgresoProducto extends StatelessWidget {
                   //key: LocalKey(),
                   cells: <DataCell>[
                     DataCell(
-                      DropdownButton<Productos>(
-                        items: Estaticas.listProductos
-                            .map(
-                              (e) => DropdownMenuItem<Productos>(
-                                child: Text(e.descripcion!),
-                                value: new Productos(precio: 0),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (prod) {},
-                        //value: new Productos(precio: 0),
-                        hint: Text("funciona?"),
+                      // combo(
+                      //   provider: egreso,
+                      //   idprd: e.idProducto ?? 0,
+                      // ),
+                      TextFormField(
+                        onChanged: (value) {
+                          e.idProducto = int.parse(value);
+                        },
                       ),
                     ),
                     DataCell(
@@ -141,7 +137,9 @@ class EgresoProducto extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    egreso.guardarEgreso();
+                  },
                   child: Text("Guardar"),
                 ),
                 TextButton(
@@ -153,6 +151,44 @@ class EgresoProducto extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class combo extends StatefulWidget {
+  combo({
+    Key? key,
+    required this.provider,
+    required this.idprd,
+  }) : super(key: key);
+
+  EProductoProvider provider;
+  int idprd;
+
+  @override
+  _comboState createState() => _comboState();
+}
+
+class _comboState extends State<combo> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<Productos>(
+      items: Estaticas.listProductos
+          .map(
+            (eDrop) => DropdownMenuItem<Productos>(
+              child: Text(eDrop.descripcion!),
+              value: new Productos(precio: 0),
+            ),
+          )
+          .toList(),
+      onChanged: (prod) {
+        widget.provider.prd = prod!;
+        widget.idprd = prod.id!;
+      },
+      //value: new Productos(precio: 0),
+      hint: widget.provider.prd.id == null
+          ? Text("Selecciones")
+          : Text("${widget.provider.prd.descripcion}"),
     );
   }
 }

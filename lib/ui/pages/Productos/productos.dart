@@ -14,17 +14,6 @@ class _ProductosState extends State<ProductosTable> {
   @override
   void initState() {
     super.initState();
-    if (Estaticas.listProductos.length == 0) {
-      cargarLista();
-    }
-  }
-
-  void cargarLista() {
-    for (int i = 0; i < 3; i++) {
-      Estaticas.listProductos.add(
-        new Productos(id: i, descripcion: "Prod$i", stock: i + 50, precio: 1),
-      );
-    }
   }
 
   @override

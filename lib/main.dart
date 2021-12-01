@@ -12,6 +12,11 @@ import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'domain/providers/Login/loginProvider.dart';
+import 'domain/providers/Usuarios/UsuariosProvider.dart';
+import 'ui/pages/Login/login.dart';
+import 'ui/pages/Usuarios/registroUsuarios.dart';
+
 void main() {
   setPathUrlStrategy();
   runApp(MyApp());
@@ -24,6 +29,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductosProvider()),
         ChangeNotifierProvider(create: (_) => EProductoProvider()),
+        ChangeNotifierProvider(create: (_) => UsuariosProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -57,11 +64,30 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+  void initState() {
+    super.initState();
+    Estaticas.cargaInicial();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      body: Login(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +119,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text("Home"),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Login(),
+                  ),
+                );
+              },
               child: Text("Login"),
             ),
             TextButton(
@@ -105,6 +138,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 openFile();
               },
               child: Text("Cargar Excel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => RegistroUsuario(),
+                  ),
+                );
+              },
+              child: Text("Registro Usuario"),
             ),
           ],
         ),
@@ -137,6 +181,7 @@ Future<void> openFile() async {
           var precio = row[3]!.value;
           // valida encabezado
           if (codigo.toString() != "codigo") {
+            // falta agregar validacion de los demas campos
             Productos p = new Productos(
                 codigo: codigo.toString(),
                 descripcion: descripcion.toString(),
