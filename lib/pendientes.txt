@@ -1,0 +1,6 @@
+
+
+creacion de permisos de usuario (pendiente)
+
+metodo fifo (pendiente)
+https://programacionfifo.blogspot.com/2015/09/v-behaviorurldefaultvmlo.html

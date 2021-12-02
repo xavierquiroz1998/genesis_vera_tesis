@@ -85,8 +85,8 @@ class EmployeeDataSource extends DataGridSource {
               ),
             )
             .toList(),
-        //onChanged: (prod) {},
-        value: new Productos(precio: 0),
+        onChanged: (prod) {},
+        //value: new Productos(precio: 0),
         hint: Text("funciona?"),
       ),
       TextField(),

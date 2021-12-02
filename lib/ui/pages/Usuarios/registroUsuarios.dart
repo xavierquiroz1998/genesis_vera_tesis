@@ -13,31 +13,59 @@ class RegistroUsuario extends StatelessWidget {
         child: ListView(
           children: [
             TextField(
-              decoration: InputDecoration(labelText: ""),
+              onChanged: (value) {
+                usuarios.usuarioModel.cedula = value;
+              },
+              decoration: InputDecoration(labelText: "Cedula"),
             ),
             TextField(
-              decoration: InputDecoration(labelText: ""),
+              onChanged: (value) {
+                usuarios.usuarioModel.nombres = value;
+              },
+              decoration: InputDecoration(labelText: "Nombres"),
             ),
             TextField(
-              decoration: InputDecoration(labelText: ""),
+              onChanged: (value) {
+                usuarios.usuarioModel.direccion = value;
+              },
+              decoration: InputDecoration(labelText: "Direccion"),
             ),
             TextField(
-              decoration: InputDecoration(labelText: ""),
+              onChanged: (value) {
+                usuarios.usuarioModel.correo = value;
+              },
+              decoration: InputDecoration(labelText: "Correo"),
             ),
             TextField(
-              decoration: InputDecoration(labelText: ""),
+              onChanged: (value) {
+                usuarios.usuarioModel.celular = value;
+              },
+              decoration: InputDecoration(labelText: "Celular"),
             ),
             TextField(
-              decoration: InputDecoration(labelText: "contraseñia"),
+              onChanged: (value) {
+                usuarios.usuarioModel.contrasenia = value;
+              },
+              decoration: InputDecoration(labelText: "Contraseña"),
             ),
             TextField(
-              decoration: InputDecoration(labelText: "Repita contraseñia"),
+              onChanged: (value) {
+                usuarios.repiteContrasenia = value;
+              },
+              decoration: InputDecoration(labelText: "Repita Contraseña"),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (usuarios.usuarioModel.contrasenia != "" &&
+                        usuarios.repiteContrasenia != "") {
+                      usuarios.guardar();
+                    } else {
+                      print("Ingrese una contraseña");
+                    }
+                  },
                   child: Text("Guardar"),
                 ),
                 TextButton(
