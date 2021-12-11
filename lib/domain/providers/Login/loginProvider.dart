@@ -5,8 +5,8 @@ import 'package:genesis_vera_tesis/main.dart';
 
 class LoginProvider extends ChangeNotifier {
   String _cedula = "";
-
   String get cedula => _cedula;
+  final _keyLogin = GlobalKey<FormState>();
 
   set cedula(String cedula) {
     _cedula = cedula;
@@ -14,6 +14,8 @@ class LoginProvider extends ChangeNotifier {
   }
 
   String _contrasenia = "";
+
+  GlobalKey<FormState> get keyLogin => _keyLogin;
 
   String get contrasenia => _contrasenia;
 
@@ -24,15 +26,17 @@ class LoginProvider extends ChangeNotifier {
 
   void logeo(BuildContext context) {
     try {
-      var result = Estaticas.listUsuarios.firstWhere(
-          (e) => e.cedula == cedula && e.contrasenia == contrasenia);
-      if (result.cedula != "") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => HomePage(),
-          ),
-        );
+      if (keyLogin.currentState!.validate()) {
+        var result = Estaticas.listUsuarios.firstWhere(
+            (e) => e.cedula == cedula && e.contrasenia == contrasenia);
+        if (result.cedula != "") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => HomePage(),
+            ),
+          );
+        }
       }
     } catch (e) {}
   }
