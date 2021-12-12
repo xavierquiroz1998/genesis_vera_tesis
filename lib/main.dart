@@ -15,6 +15,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'ui/pages/Login/login.dart';
+import 'ui/pages/SideBar/SideBar.dart';
 import 'ui/pages/Usuarios/registroUsuarios.dart';
 
 void main() {
@@ -88,70 +89,88 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ProductosTable(),
-                  ),
-                );
-              },
-              child: Text("Ingreso Productos"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => EgresoProducto(),
-                  ),
-                );
-              },
-              child: Text("Egreso Productos"),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text("Home"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => Login(),
-                  ),
-                );
-              },
-              child: Text("Login"),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text("Reportes"),
-            ),
-            TextButton(
-              onPressed: () {
-                openFile();
-              },
-              child: Text("Cargar Excel"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => RegistroUsuario(),
-                  ),
-                );
-              },
-              child: Text("Registro Usuario"),
-            ),
-          ],
-        ),
+      body: Row(
+        children: [
+          SideBar(),
+          Expanded(
+            child: Text("---"),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ItemsPage extends StatelessWidget {
+  const ItemsPage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProductosTable(),
+                ),
+              );
+            },
+            child: Text("Ingreso Productos"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => EgresoProducto(),
+                ),
+              );
+            },
+            child: Text("Egreso Productos"),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text("Home"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => Login(),
+                ),
+              );
+            },
+            child: Text("Login"),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text("Reportes"),
+          ),
+          TextButton(
+            onPressed: () {
+              openFile();
+            },
+            child: Text("Cargar Excel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => RegistroUsuario(),
+                ),
+              );
+            },
+            child: Text("Registro Usuario"),
+          ),
+        ],
       ),
     );
   }
