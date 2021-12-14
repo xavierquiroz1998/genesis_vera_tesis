@@ -17,6 +17,32 @@ class SideBar extends StatelessWidget {
           SizedBox(
             height: 50,
           ),
+          Text("Home"),
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.home),
+            label: Text("Home"),
+          ),
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.photo_size_select_actual_rounded),
+            label: Text("Ingreso Producto"),
+          ),
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.photo_size_select_actual_rounded),
+            label: Text("Salida de Productos"),
+          ),
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.person_add_alt_outlined),
+            label: Text("Registro de Usuario"),
+          ),
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.paste_rounded),
+            label: Text("Reporte Pendientes"),
+          ),
         ],
       ),
     );

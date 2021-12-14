@@ -15,6 +15,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'ui/pages/Login/login.dart';
+import 'ui/pages/NavBar/NavBar.dart';
 import 'ui/pages/SideBar/SideBar.dart';
 import 'ui/pages/Usuarios/registroUsuarios.dart';
 
@@ -93,7 +94,14 @@ class HomePage extends StatelessWidget {
         children: [
           SideBar(),
           Expanded(
-            child: Text("---"),
+            child: Column(
+              children: [
+                NavBar(),
+                Expanded(
+                  child: Text("-----------"),
+                ),
+              ],
+            ),
           )
         ],
       ),
