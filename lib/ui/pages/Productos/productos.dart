@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/ui/pages/Producto/productoCrud.dart';
 
 class ProductosTable extends StatefulWidget {

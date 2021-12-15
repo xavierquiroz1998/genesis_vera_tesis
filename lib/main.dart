@@ -89,20 +89,30 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Row(
+      body: Stack(
         children: [
-          SideBar(),
-          Expanded(
-            child: Column(
-              children: [
-                NavBar(),
-                Expanded(
-                  child: Text("-----------"),
+          Row(
+            children: [
+              //
+              if (size.width >= 700) SideBar(),
+              //
+              Expanded(
+                child: Column(
+                  children: [
+                    //
+                    NavBar(),
+                    //
+                    Expanded(
+                      child: Text("-----------"),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
+              )
+            ],
+          ),
+          if (size.width < 700) SideBar(),
         ],
       ),
     );

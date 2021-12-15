@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/ui/pages/NavBarAvatar/NavBarAvatar.dart';
 import 'package:genesis_vera_tesis/ui/pages/Search_Text/SearchText.dart';
 
 class NavBar extends StatelessWidget {
@@ -6,6 +7,7 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
       height: 50,
@@ -13,10 +15,22 @@ class NavBar extends StatelessWidget {
       decoration: buildBoxDecoration(),
       child: Row(
         children: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.menu_outlined)),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 250),
-            child: SearchText(),
+          if (size.width <= 700) ...[
+            IconButton(onPressed: () {}, icon: Icon(Icons.menu_outlined)),
+          ],
+
+          // icono de menu
+
+          // buscar
+          if (size.width > 400)
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 250),
+              child: SearchText(),
+            ),
+          Spacer(),
+          NavBarAvatar(),
+          SizedBox(
+            width: 10,
           )
         ],
       ),
