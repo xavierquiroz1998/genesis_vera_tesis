@@ -5,10 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/ui/pages/Egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
+import 'package:genesis_vera_tesis/ui/pages/Proveedores/Proveedores.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EProductoProvider()),
         ChangeNotifierProvider(create: (_) => UsuariosProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => ProveedoresProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

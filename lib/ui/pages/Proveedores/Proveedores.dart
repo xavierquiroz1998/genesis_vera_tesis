@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/ui/pages/Proveedor/Proveedor.dart';
 
 class Proveedores extends StatelessWidget {
   const Proveedores({Key? key}) : super(key: key);
@@ -9,7 +10,16 @@ class Proveedores extends StatelessWidget {
     return Container(
       child: ListView(
         children: [
-          TextButton(onPressed: () {}, child: Text("Nuevo Proveedor")),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Proveedor(),
+                  ),
+                );
+              },
+              child: Text("Nuevo Proveedor")),
           DataTable(
               columns: [
                 DataColumn(label: Text("Identificacion")),
