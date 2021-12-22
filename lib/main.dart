@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
@@ -16,6 +17,7 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
+import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/Login/login.dart';
 import 'ui/pages/NavBar/NavBar.dart';
 import 'ui/pages/SideBar/SideBar.dart';
@@ -23,6 +25,7 @@ import 'ui/pages/Usuarios/registroUsuarios.dart';
 
 void main() {
   setPathUrlStrategy();
+  Flurorouter.configureRoutes();
   runApp(MyApp());
 }
 
@@ -40,28 +43,25 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
+        initialRoute: "/",
+        onGenerateRoute: Flurorouter.router.generator,
+        navigatorKey: NavigationService.navigatorKey,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:
-            // Navigator(
-            //   pages: [
-
-            //   ],
-            //   //transitionDelegate: ,
-            //   onPopPage: (route, result) {
-            //     return route.didPop(result);
-            //   },
-            // )
-            MyHomePage(title: 'Flutter Demo Home Page'),
+        builder: (_, child) {
+          return MyHomePage(widget: child!);
+        },
+        // home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  MyHomePage({Key? key, required this.widget}) : super(key: key);
+
+  final Widget widget;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -80,16 +80,17 @@ class _MyHomePageState extends State<MyHomePage> {
       // appBar: AppBar(
       //   title: Text(widget.title),
       // ),
-      body: HomePage(), //Login(),
+      body: HomePage(
+        widget: widget.widget,
+      ), //Login(),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+  const HomePage({Key? key, required this.widget}) : super(key: key);
 
+  final Widget widget;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -108,7 +109,7 @@ class HomePage extends StatelessWidget {
                     NavBar(),
                     //
                     Expanded(
-                      child: Text("-----------"),
+                      child: widget,
                     ),
                   ],
                 ),

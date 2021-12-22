@@ -30,12 +30,12 @@ class LoginProvider extends ChangeNotifier {
         var result = Estaticas.listUsuarios.firstWhere(
             (e) => e.cedula == cedula && e.contrasenia == contrasenia);
         if (result.cedula != "") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => HomePage(),
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => HomePage(),
+          //   ),
+          // );
         }
       }
     } catch (e) {}

@@ -17,85 +17,82 @@ class _ProductosState extends State<ProductosTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        child: ListView(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  //style: ButtonStyle(),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductoCrud(),
-                      ),
-                    );
-                  },
-                  child: Text("Nuevo"),
-                ),
-              ],
-            ),
-            DataTable(
-              columns: <DataColumn>[
-                const DataColumn(
-                  label: Center(child: Text("Id")),
-                ),
-                const DataColumn(
-                  label: Center(child: Text("Codigo")),
-                ),
-                const DataColumn(
-                  label: Center(child: Text("Descripcion")),
-                ),
-                const DataColumn(
-                  label: Center(child: Text("Stock")),
-                ),
-                const DataColumn(
-                  label: Center(child: Text("Precio")),
-                ),
-                const DataColumn(
-                  label: Center(child: Text("Editar")),
-                ),
-                const DataColumn(
-                  label: Center(child: Text("Anular")),
-                ),
-              ],
-              rows: Estaticas.listProductos.map<DataRow>((e) {
-                return DataRow(
-                  //key: LocalKey(),
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(e.id.toString()),
+    return Container(
+      child: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                //style: ButtonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ProductoCrud(),
                     ),
-                    DataCell(
-                      Text(e.codigo.toString()),
-                    ),
-                    DataCell(
-                      Text(e.descripcion!),
-                    ),
-                    DataCell(
-                      Text(e.stock.toString()),
-                    ),
-                    DataCell(
-                      Text(e.precio.toString()),
-                    ),
-                    DataCell(
-                      Icon(Icons.edit),
-                      onTap: () {},
-                    ),
-                    DataCell(
-                      Icon(Icons.delete),
-                      onTap: () {},
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+                  );
+                },
+                child: Text("Nuevo"),
+              ),
+            ],
+          ),
+          DataTable(
+            columns: <DataColumn>[
+              const DataColumn(
+                label: Center(child: Text("Id")),
+              ),
+              const DataColumn(
+                label: Center(child: Text("Codigo")),
+              ),
+              const DataColumn(
+                label: Center(child: Text("Descripcion")),
+              ),
+              const DataColumn(
+                label: Center(child: Text("Stock")),
+              ),
+              const DataColumn(
+                label: Center(child: Text("Precio")),
+              ),
+              const DataColumn(
+                label: Center(child: Text("Editar")),
+              ),
+              const DataColumn(
+                label: Center(child: Text("Anular")),
+              ),
+            ],
+            rows: Estaticas.listProductos.map<DataRow>((e) {
+              return DataRow(
+                //key: LocalKey(),
+                cells: <DataCell>[
+                  DataCell(
+                    Text(e.id.toString()),
+                  ),
+                  DataCell(
+                    Text(e.codigo.toString()),
+                  ),
+                  DataCell(
+                    Text(e.descripcion!),
+                  ),
+                  DataCell(
+                    Text(e.stock.toString()),
+                  ),
+                  DataCell(
+                    Text(e.precio.toString()),
+                  ),
+                  DataCell(
+                    Icon(Icons.edit),
+                    onTap: () {},
+                  ),
+                  DataCell(
+                    Icon(Icons.delete),
+                    onTap: () {},
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
