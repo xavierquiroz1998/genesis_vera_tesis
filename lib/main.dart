@@ -15,6 +15,7 @@ import 'package:genesis_vera_tesis/ui/pages/Proveedores/Proveedores.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'ui/Router/FluroRouter.dart';
@@ -24,7 +25,7 @@ import 'ui/pages/SideBar/SideBar.dart';
 import 'ui/pages/Usuarios/registroUsuarios.dart';
 
 void main() {
-  setPathUrlStrategy();
+  //setPathUrlStrategy();
   Flurorouter.configureRoutes();
   runApp(MyApp());
 }
@@ -38,59 +39,46 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EProductoProvider()),
         ChangeNotifierProvider(create: (_) => UsuariosProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(create: (_) => ProveedoresProvider()),
+        ChangeNotifierProvider(
+            lazy: false, create: (_) => ProveedoresProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        initialRoute: "/",
+        initialRoute: "/inicio",
         onGenerateRoute: Flurorouter.router.generator,
         navigatorKey: NavigationService.navigatorKey,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         builder: (_, child) {
-          return MyHomePage(widget: child!);
+          return HomePage(child: child!);
         },
-        // home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.widget}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key, required this.child}) : super(key: key);
 
-  final Widget widget;
+  final Widget child;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    Estaticas.cargaInicial();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
-      body: HomePage(
-        widget: widget.widget,
-      ), //Login(),
+    SideMenuProvider.menuController = new AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
     );
   }
-}
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.widget}) : super(key: key);
-
-  final Widget widget;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -109,14 +97,22 @@ class HomePage extends StatelessWidget {
                     NavBar(),
                     //
                     Expanded(
-                      child: widget,
+                      child: widget.child,
                     ),
                   ],
                 ),
               )
             ],
           ),
-          if (size.width < 700) SideBar(),
+          if (size.width < 700)
+            AnimatedBuilder(
+              animation: SideMenuProvider.menuController,
+              builder: (context, _) => Stack(
+                children: [
+                  SideBar(),
+                ],
+              ),
+            ),
         ],
       ),
     );
