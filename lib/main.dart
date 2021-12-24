@@ -61,7 +61,6 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.child}) : super(key: key);
-
   final Widget child;
 
   @override
@@ -73,6 +72,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    Estaticas.cargaInicial();
     SideMenuProvider.menuController = new AnimationController(
       vsync: this,
       duration: Duration(seconds: 3),
@@ -87,9 +87,7 @@ class _HomePageState extends State<HomePage>
         children: [
           Row(
             children: [
-              //
               if (size.width >= 700) SideBar(),
-              //
               Expanded(
                 child: Column(
                   children: [

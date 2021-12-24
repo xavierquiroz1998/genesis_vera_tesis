@@ -8,6 +8,7 @@ class Proveedores {
   String? correo;
   DateTime? fechaNacimiento;
   String? celular;
+  String? estado;
 
   Proveedores({
     this.idProveedor,
@@ -17,6 +18,7 @@ class Proveedores {
     this.correo,
     this.fechaNacimiento,
     this.celular,
+    this.estado,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,7 @@ class Proveedores {
       'correo': correo,
       'fechaNacimiento': fechaNacimiento?.millisecondsSinceEpoch,
       'celular': celular,
+      'estado': estado,
     };
   }
 
@@ -42,6 +45,7 @@ class Proveedores {
           ? DateTime.fromMillisecondsSinceEpoch(map['fechaNacimiento'])
           : null,
       celular: map['celular'],
+      estado: map['estado'],
     );
   }
 
@@ -49,4 +53,31 @@ class Proveedores {
 
   factory Proveedores.fromJson(String source) =>
       Proveedores.fromMap(json.decode(source));
+
+  Proveedores copyWith({
+    int? idProveedor,
+    String? identificacion,
+    String? nombres,
+    String? direccion,
+    String? correo,
+    DateTime? fechaNacimiento,
+    String? celular,
+    String? estado,
+  }) {
+    return Proveedores(
+      idProveedor: idProveedor ?? this.idProveedor,
+      identificacion: identificacion ?? this.identificacion,
+      nombres: nombres ?? this.nombres,
+      direccion: direccion ?? this.direccion,
+      correo: correo ?? this.correo,
+      fechaNacimiento: fechaNacimiento ?? this.fechaNacimiento,
+      celular: celular ?? this.celular,
+      estado: estado ?? this.estado,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Proveedores(idProveedor: $idProveedor, identificacion: $identificacion, nombres: $nombres, direccion: $direccion, correo: $correo, fechaNacimiento: $fechaNacimiento, celular: $celular, estado: $estado)';
+  }
 }

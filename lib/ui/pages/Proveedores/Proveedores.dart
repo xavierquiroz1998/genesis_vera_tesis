@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/ui/pages/Proveedor/Proveedor.dart';
+import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 
 class Proveedores extends StatelessWidget {
   const Proveedores({Key? key}) : super(key: key);
@@ -12,12 +13,7 @@ class Proveedores extends StatelessWidget {
         children: [
           TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => Proveedor(),
-                  ),
-                );
+                NavigationService.navigateTo(Flurorouter.proveedor);
               },
               child: Text("Nuevo Proveedor")),
           DataTable(

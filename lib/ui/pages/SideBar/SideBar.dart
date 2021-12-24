@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
+import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/pages/Logo/Logo.dart';
 
 class SideBar extends StatelessWidget {
@@ -19,24 +21,39 @@ class SideBar extends StatelessWidget {
           ),
           Text("Home"),
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.incio);
+            },
             icon: Icon(Icons.home),
             label: Text("Home"),
           ),
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.ingreso);
+            },
             icon: Icon(Icons.photo_size_select_actual_rounded),
             label: Text("Ingreso Producto"),
           ),
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.egreso);
+            },
             icon: Icon(Icons.photo_size_select_actual_rounded),
             label: Text("Salida de Productos"),
           ),
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.usuario);
+            },
             icon: Icon(Icons.person_add_alt_outlined),
             label: Text("Registro de Usuario"),
+          ),
+          TextButton.icon(
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.proveedores);
+            },
+            icon: Icon(Icons.person_add_alt_outlined),
+            label: Text("Registro de Proveedores"),
           ),
           TextButton.icon(
             onPressed: () {},

@@ -8,6 +8,9 @@ class Flurorouter {
   static String incio = "/inicio";
   static String ingreso = "/ingreso";
   static String egreso = "/egreso";
+  static String proveedores = "/proveedores";
+  static String proveedor = "/proveedor";
+  static String usuario = "/usuario";
 
   static void configureRoutes() {
     router.define(rootRouter,
@@ -18,6 +21,12 @@ class Flurorouter {
         handler: Handlers.egreso, transitionType: TransitionType.fadeIn);
     router.define(ingreso,
         handler: Handlers.ingreso, transitionType: TransitionType.fadeIn);
+    router.define(proveedores,
+        handler: Handlers.proveedores, transitionType: TransitionType.fadeIn);
+    router.define(proveedor,
+        handler: Handlers.proveedor, transitionType: TransitionType.fadeIn);
+    router.define(usuario,
+        handler: Handlers.usuarios, transitionType: TransitionType.fadeIn);
 
     //router.notFoundHandler = ;
   }
