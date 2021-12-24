@@ -6,12 +6,19 @@ import 'package:genesis_vera_tesis/ui/pages/Proveedor/Proveedor.dart';
 import 'package:genesis_vera_tesis/ui/pages/Proveedores/Proveedores.dart';
 import 'package:genesis_vera_tesis/ui/pages/Usuarios/registroUsuarios.dart';
 import 'package:genesis_vera_tesis/ui/pages/incio/inicio.dart';
+import 'package:genesis_vera_tesis/ui/pages/unidad_medidas/unidadMedidaView.dart';
 
 class Handlers {
   static Handler login = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     if (true) {
       return Login();
+    }
+  });
+  static Handler unidad = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    if (true) {
+      return UnidadMedidaView();
     }
   });
 

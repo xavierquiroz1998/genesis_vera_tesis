@@ -56,6 +56,13 @@ class SideBar extends StatelessWidget {
             label: Text("Registro de Proveedores"),
           ),
           TextButton.icon(
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.unidad);
+            },
+            icon: Icon(Icons.person_add_alt_outlined),
+            label: Text("Unidad Medida"),
+          ),
+          TextButton.icon(
             onPressed: () {},
             icon: Icon(Icons.paste_rounded),
             label: Text("Reporte Pendientes"),

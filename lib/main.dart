@@ -18,6 +18,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
+import 'domain/providers/unidadMedida/unidadProvider.dart';
 import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/Login/login.dart';
 import 'ui/pages/NavBar/NavBar.dart';
@@ -39,8 +40,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EProductoProvider()),
         ChangeNotifierProvider(create: (_) => UsuariosProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(
-            lazy: false, create: (_) => ProveedoresProvider()),
+        ChangeNotifierProvider(create: (_) => ProveedoresProvider()),
+        ChangeNotifierProvider(create: (_) => UnidadMedidaProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
