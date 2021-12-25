@@ -17,58 +17,50 @@ class Proveedor extends StatelessWidget {
                 children: [
                   Center(child: Text("Proveedor")),
                   TextFormField(
-                    onChanged: (value) {
-                      provee.proveedor.identificacion = value;
-                    },
                     validator: (value) {
                       if (value == null) {
                         return "Ingrese Numero de Identificacion";
                       }
                     },
+                    enabled:
+                        provee.proveedor.idProveedor != null ? false : true,
+                    controller: provee.controllIdentificacion,
                     decoration: InputDecoration(labelText: "Identificacion"),
                   ),
                   TextFormField(
-                    onChanged: (value) {
-                      provee.proveedor.nombres = value;
-                    },
                     validator: (value) {
                       if (value == null) {
                         return "Ingrese Nombres de Proveedor";
                       }
                     },
+                    controller: provee.controllNombres,
                     decoration: InputDecoration(labelText: "Nombres"),
                   ),
                   TextFormField(
-                    onChanged: (value) {
-                      provee.proveedor.direccion = value;
-                    },
                     validator: (value) {
                       if (value == null) {
                         return "Ingrese Direccion";
                       }
                     },
+                    controller: provee.controllDireccion,
                     decoration: InputDecoration(labelText: "Direccion"),
                   ),
                   TextFormField(
-                    onChanged: (value) {
-                      provee.proveedor.correo = value;
-                    },
                     validator: (value) {
                       if (value == null) {
                         return "Ingrese Correo";
                       }
                     },
+                    controller: provee.controllCorreo,
                     decoration: InputDecoration(labelText: "Correo"),
                   ),
                   TextFormField(
-                    onChanged: (value) {
-                      provee.proveedor.celular = value;
-                    },
                     validator: (value) {
                       if (value == null) {
                         return "Ingrese Celular";
                       }
                     },
+                    controller: provee.controllCelular,
                     decoration: InputDecoration(labelText: "Celular"),
                   ),
                 ],

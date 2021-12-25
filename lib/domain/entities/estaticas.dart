@@ -1,13 +1,12 @@
-import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-
 import 'Proveedores/Proveedores.dart';
 import 'unidad_medida/unidadMedida.dart';
 import 'usuarios/registroUsuarios.dart';
+import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
 class Estaticas {
   static List<Productos> listProductos = [];
   static List<RegistUser> listUsuarios = [];
-  static List<Proveedores> listProveedores = [];
+  static List<ProveedoresEntity> listProveedores = [];
   static List<UnidadMedida> unidades = [];
 
   static cargaInicial() {
@@ -17,12 +16,13 @@ class Estaticas {
       );
 
 // proveedores
-      listProveedores.add(new Proveedores(
+      listProveedores.add(new ProveedoresEntity(
           idProveedor: i,
           identificacion: "0988888879",
           nombres: "Proveedorer$i",
           direccion: "direccion",
           correo: "noexiste@gmail.com",
+          estado: "A",
           celular: "123456789"));
     }
 

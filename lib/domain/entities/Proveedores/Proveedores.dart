@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Proveedores {
+class ProveedoresEntity {
   int? idProveedor;
   String? identificacion;
   String? nombres;
@@ -10,7 +10,7 @@ class Proveedores {
   String? celular;
   String? estado;
 
-  Proveedores({
+  ProveedoresEntity({
     this.idProveedor,
     this.identificacion,
     this.nombres,
@@ -34,8 +34,8 @@ class Proveedores {
     };
   }
 
-  factory Proveedores.fromMap(Map<String, dynamic> map) {
-    return Proveedores(
+  factory ProveedoresEntity.fromMap(Map<String, dynamic> map) {
+    return ProveedoresEntity(
       idProveedor: map['idProveedor']?.toInt(),
       identificacion: map['identificacion'],
       nombres: map['nombres'],
@@ -51,10 +51,10 @@ class Proveedores {
 
   String toJson() => json.encode(toMap());
 
-  factory Proveedores.fromJson(String source) =>
-      Proveedores.fromMap(json.decode(source));
+  factory ProveedoresEntity.fromJson(String source) =>
+      ProveedoresEntity.fromMap(json.decode(source));
 
-  Proveedores copyWith({
+  ProveedoresEntity copyWith({
     int? idProveedor,
     String? identificacion,
     String? nombres,
@@ -64,7 +64,7 @@ class Proveedores {
     String? celular,
     String? estado,
   }) {
-    return Proveedores(
+    return ProveedoresEntity(
       idProveedor: idProveedor ?? this.idProveedor,
       identificacion: identificacion ?? this.identificacion,
       nombres: nombres ?? this.nombres,
@@ -78,6 +78,6 @@ class Proveedores {
 
   @override
   String toString() {
-    return 'Proveedores(idProveedor: $idProveedor, identificacion: $identificacion, nombres: $nombres, direccion: $direccion, correo: $correo, fechaNacimiento: $fechaNacimiento, celular: $celular, estado: $estado)';
+    return 'ProveedoresEntity(idProveedor: $idProveedor, identificacion: $identificacion, nombres: $nombres, direccion: $direccion, correo: $correo, fechaNacimiento: $fechaNacimiento, celular: $celular, estado: $estado)';
   }
 }
