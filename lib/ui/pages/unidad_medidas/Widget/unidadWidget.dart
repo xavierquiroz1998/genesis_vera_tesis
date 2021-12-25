@@ -15,17 +15,14 @@ class UnidadWidget {
           height: 130,
           child: ListView(
             children: [
-              TextField(
-                onChanged: (value) {
-                  unidadP.unidad.codigo = value;
-                },
+              TextFormField(
+                controller: unidadP.controllCodigo,
+                enabled: unidadP.unidad.id != null ? false : true,
                 inputFormatters: [UpperCaseTextFormatter()],
                 decoration: InputDecoration(labelText: "Codigo"),
               ),
-              TextField(
-                onChanged: (value) {
-                  unidadP.unidad.descripcion = value;
-                },
+              TextFormField(
+                controller: unidadP.controlldescripcion,
                 inputFormatters: [UpperCaseTextFormatter()],
                 decoration: InputDecoration(labelText: "Descripcion"),
               ),

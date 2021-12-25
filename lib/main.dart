@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage>
     Estaticas.cargaInicial();
     SideMenuProvider.menuController = new AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: Duration(milliseconds: 300),
     );
   }
 
@@ -92,9 +92,7 @@ class _HomePageState extends State<HomePage>
               Expanded(
                 child: Column(
                   children: [
-                    //
                     NavBar(),
-                    //
                     Expanded(
                       child: widget.child,
                     ),
@@ -108,7 +106,24 @@ class _HomePageState extends State<HomePage>
               animation: SideMenuProvider.menuController,
               builder: (context, _) => Stack(
                 children: [
-                  SideBar(),
+                  if (SideMenuProvider.menuOpen)
+                    Opacity(
+                      opacity: SideMenuProvider.opacity.value,
+                      child: GestureDetector(
+                        onTap: () {
+                          SideMenuProvider.closeMenu();
+                        },
+                        child: Container(
+                          width: size.width,
+                          height: size.height,
+                          color: Colors.black26,
+                        ),
+                      ),
+                    ),
+                  Transform.translate(
+                    offset: Offset(SideMenuProvider.movimiento.value, 0),
+                    child: SideBar(),
+                  ),
                 ],
               ),
             ),
@@ -172,12 +187,6 @@ class ItemsPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              openFile();
-            },
-            child: Text("Cargar Excel"),
-          ),
-          TextButton(
-            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -190,51 +199,5 @@ class ItemsPage extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-Future<void> openFile() async {
-  try {
-    File file;
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
-
-    // String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
-    if (result != null) {
-      //file = File(result.files.first.path!);
-      var bytesData = result.files.first.bytes;
-      var excel = Excel.decodeBytes(bytesData!);
-
-      for (var item in excel.tables.keys) {
-        print(item);
-        print(excel.tables[item]!.maxCols);
-        print(excel.tables[item]!.maxRows);
-        for (var row in excel.tables[item]!.rows) {
-          var codigo = row[0]!.value;
-          var descripcion = row[1]!.value;
-          var stock = row[2]!.value;
-          var precio = row[3]!.value;
-          // valida encabezado
-          if (codigo.toString() != "codigo") {
-            // falta agregar validacion de los demas campos
-            Productos p = new Productos(
-                codigo: codigo.toString(),
-                descripcion: descripcion.toString(),
-                stock: int.parse(stock.toString()),
-                precio: double.parse(precio.toString()));
-            p.id = Estaticas.listProductos.length + 1;
-            Estaticas.listProductos.add(p);
-          }
-        }
-      }
-    } else {
-      // User canceled the picker
-    }
-    //final _result = await OpenFile.open(filePath);
-    //print(_result.message);
-
-  } catch (e) {
-    print("erro en open file ${e.toString()}");
   }
 }

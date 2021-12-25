@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
+import 'package:genesis_vera_tesis/domain/providers/Home/sideMenuProvider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/pages/Logo/Logo.dart';
 
@@ -22,6 +23,7 @@ class SideBar extends StatelessWidget {
           Text("Home"),
           TextButton.icon(
             onPressed: () {
+              SideMenuProvider.closeMenu();
               NavigationService.navigateTo(Flurorouter.incio);
             },
             icon: Icon(Icons.home),
@@ -29,6 +31,7 @@ class SideBar extends StatelessWidget {
           ),
           TextButton.icon(
             onPressed: () {
+              SideMenuProvider.closeMenu();
               NavigationService.navigateTo(Flurorouter.ingreso);
             },
             icon: Icon(Icons.photo_size_select_actual_rounded),

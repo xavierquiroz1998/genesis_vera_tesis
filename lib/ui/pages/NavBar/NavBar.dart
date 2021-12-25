@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/providers/Home/sideMenuProvider.dart';
 import 'package:genesis_vera_tesis/ui/pages/NavBarAvatar/NavBarAvatar.dart';
 import 'package:genesis_vera_tesis/ui/pages/Search_Text/SearchText.dart';
 
@@ -16,7 +17,11 @@ class NavBar extends StatelessWidget {
       child: Row(
         children: [
           if (size.width <= 700) ...[
-            IconButton(onPressed: () {}, icon: Icon(Icons.menu_outlined)),
+            IconButton(
+                onPressed: () {
+                  SideMenuProvider.openMenu();
+                },
+                icon: Icon(Icons.menu_outlined)),
           ],
 
           // icono de menu

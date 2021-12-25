@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:genesis_vera_tesis/domain/repositories/Handlers.dart';
+import 'package:genesis_vera_tesis/ui/pages/404/noFound.dart';
 
 class Flurorouter {
   static final FluroRouter router = new FluroRouter();
@@ -31,6 +32,6 @@ class Flurorouter {
     router.define(unidad,
         handler: Handlers.unidad, transitionType: TransitionType.fadeIn);
 
-    //router.notFoundHandler = ;
+    router.notFoundHandler = Handlers.noFound;
   }
 }

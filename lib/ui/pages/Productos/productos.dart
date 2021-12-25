@@ -1,5 +1,8 @@
+import 'package:excel/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/ui/pages/Producto/productoCrud.dart';
 
 class ProductosTable extends StatefulWidget {
@@ -35,6 +38,8 @@ class _ProductosState extends State<ProductosTable> {
                 },
                 child: Text("Nuevo"),
               ),
+              TextButton(
+                  onPressed: () => openFile(), child: Text("Cargar Excel"))
             ],
           ),
           DataTable(
@@ -95,5 +100,50 @@ class _ProductosState extends State<ProductosTable> {
         ],
       ),
     );
+  }
+}
+
+Future<void> openFile() async {
+  try {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
+
+    // String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+    if (result != null) {
+      //file = File(result.files.first.path!);
+      var bytesData = result.files.first.bytes;
+      var excel = Excel.decodeBytes(bytesData!);
+
+      for (var item in excel.tables.keys) {
+        print(item);
+        print(excel.tables[item]!.maxCols);
+        print(excel.tables[item]!.maxRows);
+        for (var row in excel.tables[item]!.rows) {
+          var codigo = row[0]!.value;
+          var descripcion = row[1]!.value;
+          var stock = row[2]!.value;
+          var precio = row[3]!.value;
+          // valida encabezado
+          if (codigo.toString() != "codigo") {
+            // falta agregar validacion de los demas campos
+            Productos p = new Productos(
+                codigo: codigo.toString(),
+                descripcion: descripcion.toString(),
+                stock: int.parse(stock.toString()),
+                precio: double.parse(precio.toString()));
+            p.id = Estaticas.listProductos.length + 1;
+            Estaticas.listProductos.add(p);
+          }
+        }
+      }
+    } else {
+      // User canceled the picker
+    }
+    //final _result = await OpenFile.open(filePath);
+    //print(_result.message);
+
+  } catch (e) {
+    print("erro en open file ${e.toString()}");
   }
 }
