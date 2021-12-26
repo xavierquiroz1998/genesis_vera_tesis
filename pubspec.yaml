@@ -18,6 +18,8 @@ dependencies:
   fluro: ^2.0.3
   flutter:
     sdk: flutter
+  fluttertoast: ^8.0.8
+  google_fonts: ^2.1.1
   http: ^0.13.0
   open_file: ^3.2.1
   provider: ^6.0.1

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/domain/providers/unidadMedida/unidadProvider.dart';
+import 'package:genesis_vera_tesis/ui/widgets/toast_notification.dart';
 import 'package:provider/provider.dart';
 
 class UnidadWidget {
@@ -34,6 +35,7 @@ class UnidadWidget {
             onPressed: () async {
               if (await unidadP.guardar()) {
                 Navigator.pop(context);
+                ToastNotificationView.messageAccess('Exito :) ');
               }
             },
             child: Text("Aceptar"),
