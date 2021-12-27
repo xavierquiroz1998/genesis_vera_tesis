@@ -5,7 +5,8 @@ import 'package:genesis_vera_tesis/ui/pages/Login/login.dart';
 import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
 import 'package:genesis_vera_tesis/ui/pages/Proveedor/Proveedor.dart';
 import 'package:genesis_vera_tesis/ui/pages/Proveedores/Proveedores.dart';
-import 'package:genesis_vera_tesis/ui/pages/Usuarios/registroUsuarios.dart';
+import 'package:genesis_vera_tesis/ui/pages/Usuario/registroUsuarios.dart';
+import 'package:genesis_vera_tesis/ui/pages/Usuarios/usuario_View.dart';
 import 'package:genesis_vera_tesis/ui/pages/incio/inicio.dart';
 import 'package:genesis_vera_tesis/ui/pages/unidad_medidas/unidadMedidaView.dart';
 
@@ -44,10 +45,17 @@ class Handlers {
     }
   });
 
-  static Handler usuarios = Handler(handlerFunc: (context, param) {
+  static Handler usuario = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     if (true) {
       return RegistroUsuario();
+    }
+  });
+
+  static Handler usuarios = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    if (true) {
+      return UsuarioView();
     }
   });
 

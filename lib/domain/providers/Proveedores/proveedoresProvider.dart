@@ -3,6 +3,8 @@ import 'package:genesis_vera_tesis/domain/entities/Proveedores/Proveedores.dart'
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
 class ProveedoresProvider extends ChangeNotifier {
+  String _titulo = "";
+
   ProveedoresEntity _proveedores = new ProveedoresEntity();
   TextEditingController _controllIdentificacion = new TextEditingController();
 
@@ -17,6 +19,12 @@ class ProveedoresProvider extends ChangeNotifier {
   TextEditingController _controllCelular = new TextEditingController();
 
   TextEditingController get controllCelular => _controllCelular;
+
+  String get titulo => _titulo;
+
+  set titulo(String titulo) {
+    _titulo = titulo;
+  }
 
   set controllCelular(TextEditingController controllCelular) {
     _controllCelular = controllCelular;

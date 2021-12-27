@@ -1,29 +1,17 @@
-import 'dart:io';
-
-import 'package:excel/excel.dart';
-import 'package:file_picker/file_picker.dart';
+import 'ui/Router/FluroRouter.dart';
+import 'ui/pages/NavBar/NavBar.dart';
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
-import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
-import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
-import 'package:genesis_vera_tesis/ui/pages/Egreso/egresoProducto.dart';
-import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
-import 'package:genesis_vera_tesis/ui/pages/Proveedores/Proveedores.dart';
+import 'ui/pages/SideBar/SideBar.dart';
 import 'package:provider/provider.dart';
-import 'package:url_strategy/url_strategy.dart';
-
-import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
+import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/unidadMedida/unidadProvider.dart';
-import 'ui/Router/FluroRouter.dart';
-import 'ui/pages/Login/login.dart';
-import 'ui/pages/NavBar/NavBar.dart';
-import 'ui/pages/SideBar/SideBar.dart';
-import 'ui/pages/Usuarios/registroUsuarios.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
+import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 
 void main() {
   //setPathUrlStrategy();

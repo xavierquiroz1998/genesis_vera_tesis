@@ -12,6 +12,7 @@ class Flurorouter {
   static String proveedores = "/proveedores";
   static String proveedor = "/proveedor";
   static String usuario = "/usuario";
+  static String usuarios = "/usuarios";
   static String unidad = "/unidadMedida";
 
   static void configureRoutes() {
@@ -28,6 +29,8 @@ class Flurorouter {
     router.define(proveedor,
         handler: Handlers.proveedor, transitionType: TransitionType.fadeIn);
     router.define(usuario,
+        handler: Handlers.usuario, transitionType: TransitionType.fadeIn);
+    router.define(usuarios,
         handler: Handlers.usuarios, transitionType: TransitionType.fadeIn);
     router.define(unidad,
         handler: Handlers.unidad, transitionType: TransitionType.fadeIn);

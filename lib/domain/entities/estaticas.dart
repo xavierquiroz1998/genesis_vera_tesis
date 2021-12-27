@@ -39,7 +39,14 @@ class Estaticas {
         id: 5, codigo: "G", descripcion: "GRAMO", estado: "A"));
 
     listUsuarios.add(
-      new RegistUser(cedula: "admin", contrasenia: "123"),
+      new RegistUser(
+          idUsuario: 1,
+          nombres: "Administrador",
+          correo: "admin@gmail.com",
+          celular: "099999999",
+          cedula: "admin",
+          contrasenia: "123",
+          estado: "A"),
     );
   }
 }

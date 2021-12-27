@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/ui/pages/Producto/productoCrud.dart';
+import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 
 class ProductosTable extends StatefulWidget {
   const ProductosTable({Key? key}) : super(key: key);
@@ -23,79 +24,90 @@ class _ProductosState extends State<ProductosTable> {
     return Container(
       child: ListView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                //style: ButtonStyle(),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProductoCrud(),
+          WhiteCard(
+            title: "Productos",
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      //style: ButtonStyle(),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ProductoCrud(),
+                          ),
+                        );
+                      },
+                      child: Text("Nuevo"),
                     ),
-                  );
-                },
-                child: Text("Nuevo"),
-              ),
-              TextButton(
-                  onPressed: () => openFile(), child: Text("Cargar Excel"))
-            ],
-          ),
-          DataTable(
-            columns: <DataColumn>[
-              const DataColumn(
-                label: Center(child: Text("Id")),
-              ),
-              const DataColumn(
-                label: Center(child: Text("Codigo")),
-              ),
-              const DataColumn(
-                label: Center(child: Text("Descripcion")),
-              ),
-              const DataColumn(
-                label: Center(child: Text("Stock")),
-              ),
-              const DataColumn(
-                label: Center(child: Text("Precio")),
-              ),
-              const DataColumn(
-                label: Center(child: Text("Editar")),
-              ),
-              const DataColumn(
-                label: Center(child: Text("Anular")),
-              ),
-            ],
-            rows: Estaticas.listProductos.map<DataRow>((e) {
-              return DataRow(
-                //key: LocalKey(),
-                cells: <DataCell>[
-                  DataCell(
-                    Text(e.id.toString()),
+                    TextButton(
+                        onPressed: () => openFile(),
+                        child: Text("Cargar Excel"))
+                  ],
+                ),
+                Container(
+                  width: double.infinity,
+                  child: DataTable(
+                    columns: <DataColumn>[
+                      const DataColumn(
+                        label: Center(child: Text("Id")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Codigo")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Descripcion")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Stock")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Precio")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Editar")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Anular")),
+                      ),
+                    ],
+                    rows: Estaticas.listProductos.map<DataRow>((e) {
+                      return DataRow(
+                        //key: LocalKey(),
+                        cells: <DataCell>[
+                          DataCell(
+                            Text(e.id.toString()),
+                          ),
+                          DataCell(
+                            Text(e.codigo.toString()),
+                          ),
+                          DataCell(
+                            Text(e.descripcion!),
+                          ),
+                          DataCell(
+                            Text(e.stock.toString()),
+                          ),
+                          DataCell(
+                            Text(e.precio.toString()),
+                          ),
+                          DataCell(
+                            Icon(Icons.edit),
+                            onTap: () {},
+                          ),
+                          DataCell(
+                            Icon(Icons.delete),
+                            onTap: () {},
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
-                  DataCell(
-                    Text(e.codigo.toString()),
-                  ),
-                  DataCell(
-                    Text(e.descripcion!),
-                  ),
-                  DataCell(
-                    Text(e.stock.toString()),
-                  ),
-                  DataCell(
-                    Text(e.precio.toString()),
-                  ),
-                  DataCell(
-                    Icon(Icons.edit),
-                    onTap: () {},
-                  ),
-                  DataCell(
-                    Icon(Icons.delete),
-                    onTap: () {},
-                  ),
-                ],
-              );
-            }).toList(),
+                ),
+              ],
+            ),
           ),
         ],
       ),

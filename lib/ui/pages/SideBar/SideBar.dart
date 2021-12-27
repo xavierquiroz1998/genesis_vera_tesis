@@ -39,6 +39,12 @@ class SideBar extends StatelessWidget {
             isActive: NavigationService.currentPage == Flurorouter.egreso,
           ),
           MenuItem(
+            text: 'Usuarios',
+            icon: Icons.person_add_alt_outlined,
+            onPressed: () => NavigationService.navigateTo(Flurorouter.usuarios),
+            isActive: NavigationService.currentPage == Flurorouter.usuarios,
+          ),
+          MenuItem(
             text: 'Registro de Usuario',
             icon: Icons.person_add_alt_outlined,
             onPressed: () => NavigationService.navigateTo(Flurorouter.usuario),
@@ -47,7 +53,8 @@ class SideBar extends StatelessWidget {
           MenuItem(
             text: 'Registro de Proveedores',
             icon: Icons.home,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.proveedores),
+            onPressed: () =>
+                NavigationService.navigateTo(Flurorouter.proveedores),
             isActive: NavigationService.currentPage == Flurorouter.proveedores,
           ),
           MenuItem(
@@ -59,13 +66,9 @@ class SideBar extends StatelessWidget {
           MenuItem(
             text: 'Reporte Pendientes',
             icon: Icons.home,
-            onPressed: () {
-
-            },
-           // isActive: NavigationService.currentPage == Flurorouter.unidad,
+            onPressed: () {},
+            // isActive: NavigationService.currentPage == Flurorouter.unidad,
           ),
-
-
         ],
       ),
     );
