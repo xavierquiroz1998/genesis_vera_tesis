@@ -200,7 +200,10 @@ class RegistroUsuario extends StatelessWidget {
                     child: Text("Ingresar"),
                   ),
                   TextButton(
-                    onPressed: () => usuarios.clearText(),
+                    onPressed: () {
+                      usuarios.clearText();
+                      Navigator.pop(context);
+                    },
                     child: Text("Cancelar"),
                   ),
                 ],

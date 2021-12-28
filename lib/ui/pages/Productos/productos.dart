@@ -25,7 +25,7 @@ class _ProductosState extends State<ProductosTable> {
       child: ListView(
         children: [
           WhiteCard(
-            title: "Productos",
+            title: "Ingreso Productos",
             child: Column(
               children: [
                 Row(

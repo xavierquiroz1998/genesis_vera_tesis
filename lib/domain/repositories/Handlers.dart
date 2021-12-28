@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:genesis_vera_tesis/ui/pages/404/noFound.dart';
 import 'package:genesis_vera_tesis/ui/pages/Egreso/egresoProducto.dart';
+import 'package:genesis_vera_tesis/ui/pages/Egresos/egresoProductos.dart';
 import 'package:genesis_vera_tesis/ui/pages/Login/login.dart';
 import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
 import 'package:genesis_vera_tesis/ui/pages/Proveedor/Proveedor.dart';
@@ -21,6 +22,12 @@ class Handlers {
     // validacion de sesion
     if (true) {
       return UnidadMedidaView();
+    }
+  });
+  static Handler egresos = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    if (true) {
+      return EgresoProductosView();
     }
   });
 

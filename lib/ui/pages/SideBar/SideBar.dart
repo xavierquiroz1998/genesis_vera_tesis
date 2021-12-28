@@ -39,6 +39,12 @@ class SideBar extends StatelessWidget {
             isActive: NavigationService.currentPage == Flurorouter.egreso,
           ),
           MenuItem(
+            text: 'Egreso de Productos',
+            icon: Icons.photo_size_select_actual_rounded,
+            onPressed: () => NavigationService.navigateTo(Flurorouter.egresos),
+            isActive: NavigationService.currentPage == Flurorouter.egresos,
+          ),
+          MenuItem(
             text: 'Usuarios',
             icon: Icons.person_add_alt_outlined,
             onPressed: () => NavigationService.navigateTo(Flurorouter.usuarios),

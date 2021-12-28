@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
@@ -13,9 +14,9 @@ class EgresoProducto extends StatelessWidget {
     return Container(
       child: ListView(
         children: [
-          TextFormField(
-            decoration: InputDecoration(labelText: "Cliente"),
-          ),
+          // TextFormField(
+          //   decoration: InputDecoration(labelText: "Cliente"),
+          // ),
           TextFormField(
             decoration: InputDecoration(labelText: "Observacion"),
           ),
@@ -51,18 +52,22 @@ class EgresoProducto extends StatelessWidget {
                 //key: LocalKey(),
                 cells: <DataCell>[
                   DataCell(
-                    // combo(
-                    //   provider: egreso,
-                    //   idprd: e.idProducto ?? 0,
-                    // ),
-                    TextFormField(
-                      onChanged: (value) {
-                        e.idProducto = int.parse(value);
-                      },
+                    Combo(
+                      provider: egreso,
+                      egresoProd: e,
                     ),
+                    // TextFormField(
+                    //   onChanged: (value) {
+                    //     e.idProducto = int.parse(value);
+                    //   },
+                    // ),
                   ),
                   DataCell(
-                    Text(e.detalle.toString()),
+                    TextFormField(
+                      onChanged: (value) {
+                        e.detalle = value;
+                      },
+                    ),
                   ),
                   DataCell(
                     TextFormField(
@@ -95,6 +100,7 @@ class EgresoProducto extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   egreso.guardarEgreso();
+                  Navigator.pop(context);
                 },
                 child: Text("Guardar"),
               ),
@@ -110,21 +116,22 @@ class EgresoProducto extends StatelessWidget {
   }
 }
 
-class combo extends StatefulWidget {
-  combo({
+class Combo extends StatefulWidget {
+  Combo({
     Key? key,
     required this.provider,
-    required this.idprd,
+    required this.egresoProd,
   }) : super(key: key);
 
   EProductoProvider provider;
-  int idprd;
+  EgresoDetalle egresoProd;
+  Productos prdSelect = new Productos(precio: 0);
 
   @override
   _comboState createState() => _comboState();
 }
 
-class _comboState extends State<combo> {
+class _comboState extends State<Combo> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<Productos>(
@@ -132,18 +139,21 @@ class _comboState extends State<combo> {
           .map(
             (eDrop) => DropdownMenuItem<Productos>(
               child: Text(eDrop.descripcion!),
-              value: new Productos(precio: 0),
+              value: eDrop,
             ),
           )
           .toList(),
-      onChanged: (prod) {
-        widget.provider.prd = prod!;
-        widget.idprd = prod.id!;
+      onChanged: (value) {
+        //widget.provider.prd = prod!;
+        //widget.idprd = prod.id!;
+        widget.egresoProd.idProducto = value?.id;
+        widget.prdSelect = value!;
+        setState(() {});
       },
       //value: new Productos(precio: 0),
-      hint: widget.provider.prd.id == null
-          ? Text("Selecciones")
-          : Text("${widget.provider.prd.descripcion}"),
+      hint: widget.prdSelect.id == null
+          ? Text("Seleccione Producto")
+          : Text("${widget.prdSelect.descripcion}"),
     );
   }
 }

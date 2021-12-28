@@ -1,10 +1,12 @@
 import 'Proveedores/Proveedores.dart';
+import 'egreso/egresoProducto.dart';
 import 'unidad_medida/unidadMedida.dart';
 import 'usuarios/registroUsuarios.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
 class Estaticas {
   static List<Productos> listProductos = [];
+  static List<EgresoDetalle> listProductosEgreso = [];
   static List<RegistUser> listUsuarios = [];
   static List<ProveedoresEntity> listProveedores = [];
   static List<UnidadMedida> unidades = [];

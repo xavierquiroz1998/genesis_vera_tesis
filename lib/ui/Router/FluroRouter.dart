@@ -9,6 +9,7 @@ class Flurorouter {
   static String incio = "/inicio";
   static String ingreso = "/ingreso";
   static String egreso = "/egreso";
+  static String egresos = "/egresos";
   static String proveedores = "/proveedores";
   static String proveedor = "/proveedor";
   static String usuario = "/usuario";
@@ -22,6 +23,8 @@ class Flurorouter {
         handler: Handlers.incio, transitionType: TransitionType.none);
     router.define(egreso,
         handler: Handlers.egreso, transitionType: TransitionType.fadeIn);
+    router.define(egresos,
+        handler: Handlers.egresos, transitionType: TransitionType.fadeIn);
     router.define(ingreso,
         handler: Handlers.ingreso, transitionType: TransitionType.fadeIn);
     router.define(proveedores,

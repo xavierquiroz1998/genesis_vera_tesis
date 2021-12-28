@@ -20,11 +20,6 @@ class EProductoProvider extends ChangeNotifier {
 
   List<EgresoDetalle> get listaProducto => _listPRoduct;
 
-  set _listaProductoSet(List<EgresoDetalle> lista) {
-    _listPRoduct = lista;
-    notifyListeners();
-  }
-
   void agregar() {
     listaProducto.add(new EgresoDetalle());
     employeeDataSource = EmployeeDataSource(employeeData: listaProducto);
@@ -46,6 +41,8 @@ class EProductoProvider extends ChangeNotifier {
           Estaticas.listProductos.remove(result);
           result.stock = totalStock;
           Estaticas.listProductos.add(result);
+          item.idEgresa = Estaticas.listProductosEgreso.length + 1;
+          Estaticas.listProductosEgreso.add(item);
         }
       }
     } catch (e) {
