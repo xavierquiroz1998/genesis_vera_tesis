@@ -9,6 +9,7 @@ import 'package:genesis_vera_tesis/ui/pages/Proveedores/Proveedores.dart';
 import 'package:genesis_vera_tesis/ui/pages/Usuario/registroUsuarios.dart';
 import 'package:genesis_vera_tesis/ui/pages/Usuarios/usuario_View.dart';
 import 'package:genesis_vera_tesis/ui/pages/incio/inicio.dart';
+import 'package:genesis_vera_tesis/ui/pages/tipo_producto/tipo_producto.dart';
 import 'package:genesis_vera_tesis/ui/pages/unidad_medidas/unidadMedidaView.dart';
 
 class Handlers {
@@ -88,8 +89,12 @@ class Handlers {
     // validacion de sesion
     if (true) {
       return ProductosTable();
-    } else {
-      return Login();
+    }
+  });
+  static Handler tipoProducto = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    if (true) {
+      return TipoProducto();
     }
   });
 }

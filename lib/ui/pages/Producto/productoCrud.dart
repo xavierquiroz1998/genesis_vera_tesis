@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
+import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
 class ProductoCrud extends StatefulWidget {
@@ -19,34 +23,102 @@ class _ProductoCrudState extends State<ProductoCrud> {
           padding: const EdgeInsets.all(8.0),
           child: ListView(
             children: [
-              TextField(
-                onChanged: (value) {
-                  producto.product.codigo = value;
-                },
-                decoration: InputDecoration(labelText: "Codigo"),
-              ),
-              TextField(
-                onChanged: (value) {
-                  producto.product.descripcion = value;
-                },
-                decoration: InputDecoration(labelText: "Descripcion"),
-              ),
-              TextField(
-                onChanged: (value) {
-                  try {
-                    producto.product.stock = int.parse(value);
-                  } catch (e) {}
-                },
-                decoration: InputDecoration(labelText: "Stock"),
-              ),
-              TextField(
-                onChanged: (value) {
-                  try {
-                    producto.product.precio = double.parse(value);
-                  } catch (e) {}
-                },
-                decoration: InputDecoration(labelText: "Precio"),
-              ),
+              WhiteCard(
+                  child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Wrap(
+                    children: [
+                      Container(
+                        constraints:
+                            BoxConstraints(maxWidth: 300, minWidth: 100),
+                        child: TextField(
+                          onChanged: (value) {
+                            producto.product.codigo = value;
+                          },
+                          decoration: CustomInputs.formInputDecoration(
+                              hint: 'Codigo',
+                              label: 'Codigo',
+                              icon: Icons.delete_outline),
+                        ),
+                      ),
+                      Container(
+                        constraints:
+                            BoxConstraints(maxWidth: 300, minWidth: 100),
+                        child: TextField(
+                          onChanged: (value) {
+                            try {
+                              producto.product.stock = int.parse(value);
+                            } catch (e) {}
+                          },
+                          decoration: CustomInputs.formInputDecoration(
+                              hint: 'Stock',
+                              label: 'Stock',
+                              icon: Icons.delete_outline),
+                        ),
+                      ),
+                      Container(
+                        constraints:
+                            BoxConstraints(maxWidth: 300, minWidth: 100),
+                        child: TextField(
+                          onChanged: (value) {
+                            try {
+                              producto.product.precio = double.parse(value);
+                            } catch (e) {}
+                          },
+                          decoration: CustomInputs.formInputDecoration(
+                              hint: 'Precio',
+                              label: 'Precio',
+                              icon: Icons.delete_outline),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Wrap(
+                    children: [
+                      Container(
+                        constraints:
+                            BoxConstraints(maxWidth: 300, minWidth: 100),
+                        child: TextField(
+                          onChanged: (value) {
+                            producto.product.descripcion = value;
+                          },
+                          decoration: CustomInputs.formInputDecoration(
+                              hint: 'Descripcion',
+                              label: 'Descripcion',
+                              icon: Icons.delete_outline),
+                        ),
+                      ),
+                      Container(
+                        constraints:
+                            BoxConstraints(maxWidth: 300, minWidth: 100),
+                        child: DropdownButtonFormField<TipoProducto>(
+                          onChanged: (value) {
+                            producto.product.tipoProdcuto = value!.codRef;
+                          },
+                          items: Estaticas.listTipoProduct.map((item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.nomPro,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400),
+                                  )),
+                            );
+                          }).toList(),
+                          decoration: CustomInputs.formInputDecoration(
+                              hint: '',
+                              label: 'Seleccion uno',
+                              icon: Icons.delete_outline),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

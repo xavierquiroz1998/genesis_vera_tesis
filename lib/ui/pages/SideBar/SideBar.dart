@@ -70,6 +70,13 @@ class SideBar extends StatelessWidget {
             isActive: NavigationService.currentPage == Flurorouter.unidad,
           ),
           MenuItem(
+            text: 'Tipos de Productos',
+            icon: Icons.home,
+            onPressed: () =>
+                NavigationService.navigateTo(Flurorouter.tipoProducto),
+            isActive: NavigationService.currentPage == Flurorouter.tipoProducto,
+          ),
+          MenuItem(
             text: 'Reporte Pendientes',
             icon: Icons.home,
             onPressed: () {},

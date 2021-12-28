@@ -1,3 +1,5 @@
+import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';
+
 import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/NavBar/NavBar.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => ProveedoresProvider()),
         ChangeNotifierProvider(create: (_) => UnidadMedidaProvider()),
+        ChangeNotifierProvider(create: (_) => ProductoProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

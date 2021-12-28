@@ -1,3 +1,4 @@
+import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
 import 'Proveedores/Proveedores.dart';
 import 'egreso/egresoProducto.dart';
 import 'unidad_medida/unidadMedida.dart';
@@ -10,6 +11,7 @@ class Estaticas {
   static List<RegistUser> listUsuarios = [];
   static List<ProveedoresEntity> listProveedores = [];
   static List<UnidadMedida> unidades = [];
+  static List<TipoProducto> listTipoProduct = [];
 
   static cargaInicial() {
     for (int i = 0; i < 3; i++) {
@@ -50,5 +52,14 @@ class Estaticas {
           contrasenia: "123",
           estado: "A"),
     );
+
+    //Tipo
+
+    listTipoProduct.add(TipoProducto(
+        codPro: "${listTipoProduct.length}",
+        codRef: '1372',
+        nomPro: 'Herramientas de casa',
+        desPro: 'Artefactos para el uso de viviendas',
+        stsPro: 'A'));
   }
 }
