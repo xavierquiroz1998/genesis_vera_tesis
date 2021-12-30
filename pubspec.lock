@@ -112,7 +112,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.5"
+    version: "4.3.0"
   fluro:
     dependency: "direct main"
     description:
@@ -260,7 +260,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "4.2.0"
   platform:
     dependency: transitive
     description:
@@ -288,7 +288,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.1"
+    version: "6.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -328,14 +328,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.3.55"
+    version: "19.4.40"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datagrid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.3.55"
+    version: "19.4.40"
   term_glyph:
     dependency: transitive
     description:

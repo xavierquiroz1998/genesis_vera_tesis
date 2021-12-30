@@ -5,6 +5,7 @@ class Productos {
   String? descripcion;
   String? codigo;
   String? tipoProdcuto;
+  int? unidadMedida;
   int? stock;
   var precio;
 
@@ -12,8 +13,9 @@ class Productos {
     this.id,
     this.descripcion,
     this.codigo,
-    this.stock,
     this.tipoProdcuto,
+    this.unidadMedida,
+    this.stock,
     required this.precio,
   });
 
@@ -24,6 +26,7 @@ class Productos {
       'codigo': codigo,
       'stock': stock,
       'tipo': tipoProdcuto,
+      'unidad': unidadMedida,
       'precio': precio.toMap(),
     };
   }

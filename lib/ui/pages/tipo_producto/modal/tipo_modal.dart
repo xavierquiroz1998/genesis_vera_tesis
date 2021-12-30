@@ -33,8 +33,7 @@ class _TipoModalState extends State<TipoModal> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider =
-        Provider.of<ProductoProvider>(context, listen: false);
+    final productProvider = Provider.of<ProductoProvider>(context);
     return Container(
         padding: EdgeInsets.all(20),
         height: 500,
@@ -132,6 +131,6 @@ class _TipoModalState extends State<TipoModal> {
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
       ),
-      color: Color(0xff0F2041),
-      boxShadow: [BoxShadow(color: Colors.black26)]);
+      color: Color(0xff0F2041));
+  //  boxShadow: [BoxShadow(color: Colors.black26)]);
 }

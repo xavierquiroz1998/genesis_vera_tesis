@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
+import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
@@ -86,6 +87,32 @@ class _ProductoCrudState extends State<ProductoCrud> {
                           decoration: CustomInputs.formInputDecoration(
                               hint: 'Descripcion',
                               label: 'Descripcion',
+                              icon: Icons.delete_outline),
+                        ),
+                      ),
+                      Container(
+                        constraints:
+                            BoxConstraints(maxWidth: 300, minWidth: 100),
+                        child: DropdownButtonFormField<UnidadMedida>(
+                          onChanged: (value) {
+                            producto.product.unidadMedida = value!.id;
+                          },
+                          items: Estaticas.unidades.map((item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.descripcion!,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400),
+                                  )),
+                            );
+                          }).toList(),
+                          decoration: CustomInputs.formInputDecoration(
+                              hint: '',
+                              label: 'Seleccion unidad Medida',
                               icon: Icons.delete_outline),
                         ),
                       ),
