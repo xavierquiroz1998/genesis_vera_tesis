@@ -1,13 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 
-import 'widgets/egresoProductosWidget.dart';
-
-class EgresoProductosView extends StatelessWidget {
-  const EgresoProductosView({Key? key}) : super(key: key);
+class DevolucionesView extends StatelessWidget {
+  const DevolucionesView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,26 +14,15 @@ class EgresoProductosView extends StatelessWidget {
       child: ListView(
         children: [
           WhiteCard(
-            title: "Salida de Productos",
+            title: "Devoluciones",
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      //style: ButtonStyle(),
-                      onPressed: () {
-                        NavigationService.navigateTo(Flurorouter.egreso);
-                      },
-                      child: Text("Nuevo"),
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          EgresoProductosWidgets.openFileEgreso();
-                        },
-                        child: Text("Cargar Excel"))
-                  ],
-                ),
+                TextButton(
+                    onPressed: () {
+                      NavigationService.navigateTo(Flurorouter.devolucion);
+                    },
+                    child: Text("Nueva Devolucion")),
                 Container(
                   width: double.infinity,
                   child: DataTable(
@@ -58,12 +46,12 @@ class EgresoProductosView extends StatelessWidget {
                         label: Center(child: Text("Anular")),
                       ),
                     ],
-                    rows: Estaticas.listProductosEgreso.map<DataRow>((e) {
+                    rows: Estaticas.listDevoluciones.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            Text(e.idEgreso.toString()),
+                            Text(e.idDevolucion.toString()),
                           ),
                           DataCell(
                             Text(e.idProducto.toString()),
@@ -89,7 +77,7 @@ class EgresoProductosView extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

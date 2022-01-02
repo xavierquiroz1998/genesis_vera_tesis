@@ -1,21 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
+import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devoluciones_entity.dart';
+import 'package:provider/provider.dart';
+import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
-import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
-import 'package:provider/provider.dart';
+import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
 
-class EgresoProducto extends StatelessWidget {
-  const EgresoProducto({Key? key}) : super(key: key);
+class DevolucionView extends StatefulWidget {
+  DevolucionView({Key? key}) : super(key: key);
+
+  Productos prdSelect = new Productos(precio: 0);
 
   @override
+  State<DevolucionView> createState() => _DevolucionViewState();
+}
+
+class _DevolucionViewState extends State<DevolucionView> {
+  @override
   Widget build(BuildContext context) {
-    final egreso = Provider.of<EProductoProvider>(context);
+    final devolucio = Provider.of<DevolucionProvider>(context);
     return Container(
       child: ListView(
         children: [
           WhiteCard(
+            title: devolucio.devolucion.idDevolucion == null
+                ? "Nueva Devolucion"
+                : "Modificar Devolucion",
             child: Column(
               children: [
                 TextFormField(
@@ -23,7 +34,7 @@ class EgresoProducto extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    egreso.agregar();
+                    devolucio.agregarDevolucion();
                   },
                   child: Text("Agregar"),
                 ),
@@ -50,15 +61,33 @@ class EgresoProducto extends StatelessWidget {
                         label: Center(child: Text("")),
                       ),
                     ],
-                    rows: egreso.listaProducto.map<DataRow>((e) {
+                    rows: devolucio.listaDevolucion.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            Combo(
-                              provider: egreso,
-                              egresoProd: e,
+                            DropdownButton<Productos>(
+                              items: Estaticas.listProductos
+                                  .map(
+                                    (eDrop) => DropdownMenuItem<Productos>(
+                                      child: Text(eDrop.descripcion!),
+                                      value: eDrop,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                e.idProducto = value?.id;
+                                widget.prdSelect = value!;
+                                setState(() {});
+                              },
+                              hint: e.idProducto == null
+                                  ? Text("Seleccione Producto")
+                                  : Text("${widget.prdSelect.descripcion}"),
                             ),
+                            // Combo(
+                            //   provider: devolucio,
+                            //   devolucionProd: e,
+                            // ),
                           ),
                           DataCell(
                             TextFormField(
@@ -69,16 +98,19 @@ class EgresoProducto extends StatelessWidget {
                           ),
                           DataCell(
                             TextFormField(
+                              keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                e.cantidad = int.parse(value);
+                                e.cantidad = int.tryParse(value!);
+                                devolucio.calcularTotal();
                               },
                             ),
                           ),
                           DataCell(
                             TextFormField(
+                              keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                e.precio = double.parse(value);
-                                e.total = e.cantidad! * e.precio!;
+                                e.precio = double.tryParse(value!);
+                                devolucio.calcularTotal();
                               },
                             ),
                           ),
@@ -86,7 +118,7 @@ class EgresoProducto extends StatelessWidget {
                             Text(e.total.toString()),
                           ),
                           DataCell(Icon(Icons.delete), onTap: () {
-                            egreso.remover(e);
+                            devolucio.removerDevolucion(e);
                           }),
                         ],
                       );
@@ -98,8 +130,12 @@ class EgresoProducto extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        egreso.guardarEgreso();
-                        Navigator.pop(context);
+                        devolucio.guardarDevolucion();
+                        if (devolucio.msgError == "") {
+                          Navigator.pop(context);
+                        } else {
+                          // mensaje alerta
+                        }
                       },
                       child: Text("Guardar"),
                     ),
@@ -123,16 +159,15 @@ class EgresoProducto extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
 class Combo extends StatefulWidget {
   Combo({
     Key? key,
     required this.provider,
-    required this.egresoProd,
+    required this.devolucionProd,
   }) : super(key: key);
 
-  EProductoProvider provider;
-  EgresoDetalle egresoProd;
+  DevolucionProvider provider;
+  DevolucionesEntity devolucionProd;
   Productos prdSelect = new Productos(precio: 0);
 
   @override
@@ -152,7 +187,7 @@ class _ComboState extends State<Combo> {
           )
           .toList(),
       onChanged: (value) {
-        widget.egresoProd.idProducto = value?.id;
+        widget.devolucionProd.idProducto = value?.id;
         widget.prdSelect = value!;
         setState(() {});
       },

@@ -31,17 +31,17 @@ class EProductoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void guardarEgreso() {
+  Future<void> guardarEgreso() async {
     try {
       for (var item in listaProducto) {
         var result =
             Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
         if (result.id! > 0) {
-          int totalStock = result.stock! - item.cantidad!;
+          double totalStock = result.stock! - item.cantidad!;
           Estaticas.listProductos.remove(result);
           result.stock = totalStock;
           Estaticas.listProductos.add(result);
-          item.idEgresa = Estaticas.listProductosEgreso.length + 1;
+          item.idEgreso = Estaticas.listProductosEgreso.length + 1;
           Estaticas.listProductosEgreso.add(item);
         }
       }

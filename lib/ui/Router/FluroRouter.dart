@@ -5,8 +5,9 @@ import 'package:genesis_vera_tesis/ui/pages/404/noFound.dart';
 class Flurorouter {
   static final FluroRouter router = new FluroRouter();
 
-  static String rootRouter = "/";
-  static String incio = "/inicio";
+  static String rootRouter = "/login";
+  static String inicio = "/inicio";
+  static String ingresos = "/ingresos";
   static String ingreso = "/ingreso";
   static String egreso = "/egreso";
   static String egresos = "/egresos";
@@ -17,17 +18,22 @@ class Flurorouter {
   static String unidad = "/unidadMedida";
   static String tipoProducto = "/tipo/producto";
 
+  static String devoluciones = "/devoluciones";
+  static String devolucion = "/devolucion";
+
   static void configureRoutes() {
     router.define(rootRouter,
-        handler: Handlers.login, transitionType: TransitionType.none);
-    router.define(incio,
-        handler: Handlers.incio, transitionType: TransitionType.none);
+        handler: Handlers.login, transitionType: TransitionType.fadeIn);
+    router.define(inicio,
+        handler: Handlers.incio, transitionType: TransitionType.fadeIn);
     router.define(egreso,
         handler: Handlers.egreso, transitionType: TransitionType.fadeIn);
     router.define(egresos,
         handler: Handlers.egresos, transitionType: TransitionType.fadeIn);
-    router.define(ingreso,
+    router.define(ingresos,
         handler: Handlers.ingreso, transitionType: TransitionType.fadeIn);
+    router.define(ingreso,
+        handler: Handlers.ingresoCrud, transitionType: TransitionType.fadeIn);
     router.define(proveedores,
         handler: Handlers.proveedores, transitionType: TransitionType.fadeIn);
     router.define(proveedor,
@@ -40,6 +46,12 @@ class Flurorouter {
         handler: Handlers.unidad, transitionType: TransitionType.fadeIn);
     router.define(tipoProducto,
         handler: Handlers.tipoProducto, transitionType: TransitionType.fadeIn);
+
+    router.define(devoluciones,
+        handler: Handlers.devoluciones, transitionType: TransitionType.fadeIn);
+
+    router.define(devolucion,
+        handler: Handlers.devolucion, transitionType: TransitionType.fadeIn);
 
     router.notFoundHandler = Handlers.noFound;
   }

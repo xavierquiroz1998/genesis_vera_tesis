@@ -1,4 +1,5 @@
 import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
+import 'Devoluciones/devoluciones_entity.dart';
 import 'Proveedores/Proveedores.dart';
 import 'egreso/egresoProducto.dart';
 import 'unidad_medida/unidadMedida.dart';
@@ -8,6 +9,7 @@ import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 class Estaticas {
   static List<Productos> listProductos = [];
   static List<EgresoDetalle> listProductosEgreso = [];
+  static List<DevolucionesEntity> listDevoluciones = [];
   static List<RegistUser> listUsuarios = [];
   static List<ProveedoresEntity> listProveedores = [];
   static List<UnidadMedida> unidades = [];
@@ -16,7 +18,13 @@ class Estaticas {
   static cargaInicial() {
     for (int i = 0; i < 3; i++) {
       listProductos.add(
-        new Productos(id: i, descripcion: "Prod$i", stock: i + 50, precio: 1),
+        new Productos(
+            id: i,
+            descripcion: "Prod$i",
+            stock: i + 50,
+            precio: 1,
+            unidadMedida: 1,
+            tipoProdcuto: "1372"),
       );
 
 // proveedores

@@ -40,11 +40,11 @@ class EgresoProductosWidgets {
               var result = Estaticas.listProductos
                   .firstWhere((e) => e.id == p.idProducto);
               if (result.id! > 0) {
-                int totalStock = result.stock! - p.cantidad!;
+                double totalStock = result.stock! - p.cantidad!;
                 Estaticas.listProductos.remove(result);
                 result.stock = totalStock;
                 Estaticas.listProductos.add(result);
-                p.idEgresa = Estaticas.listProductosEgreso.length + 1;
+                p.idEgreso = Estaticas.listProductosEgreso.length + 1;
                 Estaticas.listProductosEgreso.add(p);
               }
             }

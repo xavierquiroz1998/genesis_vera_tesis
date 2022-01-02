@@ -1,5 +1,3 @@
-import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';
-
 import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/NavBar/NavBar.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +7,11 @@ import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/unidadMedida/unidadProvider.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
+import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';
+import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 
 void main() {
@@ -33,18 +32,25 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProveedoresProvider()),
         ChangeNotifierProvider(create: (_) => UnidadMedidaProvider()),
         ChangeNotifierProvider(create: (_) => ProductoProvider()),
+        ChangeNotifierProvider(create: (_) => DevolucionProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        initialRoute: "/inicio",
+        initialRoute: "/login", //"/inicio",
         onGenerateRoute: Flurorouter.router.generator,
         navigatorKey: NavigationService.navigatorKey,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        builder: (_, child) {
-          return HomePage(child: child!);
+        builder: (context1, child) {
+          final logeo = Provider.of<LoginProvider>(context1);
+
+          if (!logeo.authenticated) {
+            return child!;
+          } else {
+            return HomePage(child: child!);
+          }
         },
       ),
     );
@@ -64,7 +70,6 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    Estaticas.cargaInicial();
     SideMenuProvider.menuController = new AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),

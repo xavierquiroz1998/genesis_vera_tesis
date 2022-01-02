@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/Login/loginProvider.dart';
 import 'package:provider/provider.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    Estaticas.cargaInicial();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +23,19 @@ class Login extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        child: Row(
-          children: [
-            LoginIzquierdo(size: size),
-            LoginDerecho(size: size, logeo: logeo),
-          ],
-        ),
-      ),
+          child: size.width > 600
+              ? Row(
+                  children: [
+                    LoginIzquierdo(size: size),
+                    LoginDerecho(size: size, logeo: logeo),
+                  ],
+                )
+              : ListView(
+                  children: [
+                    //LoginIzquierdo(size: size),
+                    LoginDerecho(size: size, logeo: logeo),
+                  ],
+                )),
     );
   }
 }

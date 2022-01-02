@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/main.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 
 class LoginProvider extends ChangeNotifier {
   String _cedula = "";
   String get cedula => _cedula;
+
+  bool authenticated = false;
+
   final _keyLogin = GlobalKey<FormState>();
 
   set cedula(String cedula) {
@@ -26,7 +28,7 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logeo(BuildContext context) {
+  Future<void> logeo(BuildContext context) async {
     try {
       if (keyLogin.currentState!.validate()) {
         var result = Estaticas.listUsuarios.firstWhere(
@@ -38,7 +40,9 @@ class LoginProvider extends ChangeNotifier {
           //     builder: (_) => HomePage(),
           //   ),
           // );
-          NavigationService.replaceTo(Flurorouter.incio);
+          authenticated = true;
+          notifyListeners();
+          NavigationService.replaceTo(Flurorouter.inicio);
         }
       }
     } catch (e) {}

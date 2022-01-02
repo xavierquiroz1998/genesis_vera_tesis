@@ -1,26 +1,20 @@
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/ui/pages/Producto/productoCrud.dart';
+import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:provider/provider.dart';
 
-class ProductosTable extends StatefulWidget {
+class ProductosTable extends StatelessWidget {
   const ProductosTable({Key? key}) : super(key: key);
 
   @override
-  _ProductosState createState() => _ProductosState();
-}
-
-class _ProductosState extends State<ProductosTable> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final producto = Provider.of<ProductosProvider>(context);
     return Container(
       child: ListView(
         children: [
@@ -34,12 +28,8 @@ class _ProductosState extends State<ProductosTable> {
                     TextButton(
                       //style: ButtonStyle(),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ProductoCrud(),
-                          ),
-                        );
+                        producto.product = new Productos(precio: 0);
+                        NavigationService.navigateTo(Flurorouter.ingreso);
                       },
                       child: Text("Nuevo"),
                     ),
@@ -95,7 +85,10 @@ class _ProductosState extends State<ProductosTable> {
                           ),
                           DataCell(
                             Icon(Icons.edit),
-                            onTap: () {},
+                            onTap: () {
+                              producto.product = e;
+                              NavigationService.navigateTo(Flurorouter.ingreso);
+                            },
                           ),
                           DataCell(
                             Icon(Icons.delete),
@@ -142,7 +135,7 @@ Future<void> openFile() async {
             Productos p = new Productos(
                 codigo: codigo.toString(),
                 descripcion: descripcion.toString(),
-                stock: int.parse(stock.toString()),
+                stock: double.tryParse(stock.toString()),
                 precio: double.parse(precio.toString()));
             p.id = Estaticas.listProductos.length + 1;
             Estaticas.listProductos.add(p);

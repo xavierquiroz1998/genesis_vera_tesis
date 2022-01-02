@@ -23,38 +23,39 @@ class SideBar extends StatelessWidget {
           MenuItem(
             text: 'Home',
             icon: Icons.home,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.incio),
-            isActive: NavigationService.currentPage == Flurorouter.incio,
+            onPressed: () => NavigationService.navigateTo(Flurorouter.inicio),
+            isActive: NavigationService.currentPage == Flurorouter.inicio,
           ),
           MenuItem(
-            text: 'Ingreso Producto',
+            text: 'Productos',
             icon: Icons.photo_size_select_actual_rounded,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.ingreso),
-            isActive: NavigationService.currentPage == Flurorouter.ingreso,
+            onPressed: () => NavigationService.navigateTo(Flurorouter.ingresos),
+            isActive: NavigationService.currentPage == Flurorouter.ingresos,
           ),
+          // MenuItem(
+          //   text: 'Salida de Productos',
+          //   icon: Icons.photo_size_select_actual_rounded,
+          //   onPressed: () => NavigationService.navigateTo(Flurorouter.egreso),
+          //   isActive: NavigationService.currentPage == Flurorouter.egreso,
+          // ),
           MenuItem(
             text: 'Salida de Productos',
             icon: Icons.photo_size_select_actual_rounded,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.egreso),
-            isActive: NavigationService.currentPage == Flurorouter.egreso,
-          ),
-          MenuItem(
-            text: 'Egreso de Productos',
-            icon: Icons.photo_size_select_actual_rounded,
             onPressed: () => NavigationService.navigateTo(Flurorouter.egresos),
             isActive: NavigationService.currentPage == Flurorouter.egresos,
+          ),
+          MenuItem(
+            text: 'Devolucion de Productos',
+            icon: Icons.person_add_alt_outlined,
+            onPressed: () =>
+                NavigationService.navigateTo(Flurorouter.devoluciones),
+            isActive: NavigationService.currentPage == Flurorouter.devoluciones,
           ),
           MenuItem(
             text: 'Usuarios',
             icon: Icons.person_add_alt_outlined,
             onPressed: () => NavigationService.navigateTo(Flurorouter.usuarios),
             isActive: NavigationService.currentPage == Flurorouter.usuarios,
-          ),
-          MenuItem(
-            text: 'Registro de Usuario',
-            icon: Icons.person_add_alt_outlined,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.usuario),
-            isActive: NavigationService.currentPage == Flurorouter.usuario,
           ),
           MenuItem(
             text: 'Registro de Proveedores',

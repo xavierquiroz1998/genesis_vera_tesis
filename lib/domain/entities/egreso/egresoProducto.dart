@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class EgresoDetalle {
-  int? idEgresa;
+  int? idEgreso;
   int? idProducto;
   String? detalle;
   int? cantidad;
@@ -9,7 +9,7 @@ class EgresoDetalle {
   double? total;
 
   EgresoDetalle({
-    this.idEgresa,
+    this.idEgreso,
     this.idProducto,
     this.detalle,
     this.cantidad,
@@ -19,7 +19,7 @@ class EgresoDetalle {
 
   Map<String, dynamic> toMap() {
     return {
-      'idEgresa': idEgresa,
+      'idEgreso': idEgreso,
       'idProducto': idProducto,
       'detalle': detalle,
       'cantidad': cantidad,
@@ -30,7 +30,7 @@ class EgresoDetalle {
 
   factory EgresoDetalle.fromMap(Map<String, dynamic> map) {
     return EgresoDetalle(
-      idEgresa: map['idEgresa']?.toInt(),
+      idEgreso: map['idEgreso']?.toInt(),
       idProducto: map['idProducto']?.toInt(),
       detalle: map['detalle'],
       cantidad: map['cantidad']?.toInt(),
