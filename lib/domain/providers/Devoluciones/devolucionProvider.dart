@@ -1,11 +1,36 @@
 import 'package:flutter/cupertino.dart';
-import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devoluciones_entity.dart';
+import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
+import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_det.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
 class DevolucionProvider extends ChangeNotifier {
-  DevolucionesEntity _devolucion = new DevolucionesEntity();
-  List<DevolucionesEntity> _listaDevolucion = [];
+  DevolucionCab _cab = new DevolucionCab();
+  List<DevolucionDet> _detalleDevolucion = [];
+  TextEditingController _ctrObservacion = new TextEditingController();
   String _msgError = "";
+
+  // prueba devoluciones
+
+  DevolucionCab get cab => _cab;
+
+  set cab(DevolucionCab cab) {
+    _cab = cab;
+    ctrObservacion.text = cab.observacion == null ? "" : cab.observacion!;
+    detalleDevolucion =
+        cab.detalleDevolucion == null ? [] : cab.detalleDevolucion!;
+  }
+
+  List<DevolucionDet> get detalleDevolucion => _detalleDevolucion;
+
+  set detalleDevolucion(List<DevolucionDet> detalleDevolucion) {
+    _detalleDevolucion = detalleDevolucion;
+  }
+
+  TextEditingController get ctrObservacion => _ctrObservacion;
+
+  set ctrObservacion(TextEditingController ctrObservacion) {
+    _ctrObservacion = ctrObservacion;
+  }
 
   String get msgError => _msgError;
 
@@ -13,30 +38,18 @@ class DevolucionProvider extends ChangeNotifier {
     _msgError = msgError;
   }
 
-  List<DevolucionesEntity> get listaDevolucion => _listaDevolucion;
-
-  set listaDevolucion(List<DevolucionesEntity> listaDevolucion) {
-    _listaDevolucion = listaDevolucion;
-  }
-
-  DevolucionesEntity get devolucion => _devolucion;
-
-  set devolucion(DevolucionesEntity devolucion) {
-    _devolucion = devolucion;
-  }
-
   void agregarDevolucion() {
-    listaDevolucion.add(new DevolucionesEntity());
+    detalleDevolucion.add(new DevolucionDet());
     notifyListeners();
   }
 
-  void removerDevolucion(DevolucionesEntity entity) {
-    listaDevolucion.remove(entity);
+  void removerDevolucion(DevolucionDet entity) {
+    detalleDevolucion.remove(entity);
     notifyListeners();
   }
 
   void calcularTotal() {
-    for (var item in listaDevolucion) {
+    for (var item in detalleDevolucion) {
       if (item.cantidad != null && item.precio != null) {
         item.total = item.cantidad! * item.precio!;
       }
@@ -46,11 +59,13 @@ class DevolucionProvider extends ChangeNotifier {
 
   Future<void> guardarDevolucion() async {
     try {
-      for (var item in listaDevolucion) {
-        Estaticas.listDevoluciones.add(item);
-      }
+      cab.estado = "A";
+      cab.detalleDevolucion = detalleDevolucion;
+      cab.idDevolucion = Estaticas.listDevoluciones.length + 1;
+      cab.observacion = ctrObservacion.text;
+      Estaticas.listDevoluciones.add(cab);
 
-      msgError = "Ocurrio un error";
+      msgError = "";
     } catch (e) {
       msgError = "Error ${e.toString()}";
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devoluciones_entity.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
@@ -9,8 +8,6 @@ import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvi
 
 class DevolucionView extends StatefulWidget {
   DevolucionView({Key? key}) : super(key: key);
-
-  Productos prdSelect = new Productos(precio: 0);
 
   @override
   State<DevolucionView> createState() => _DevolucionViewState();
@@ -24,12 +21,13 @@ class _DevolucionViewState extends State<DevolucionView> {
       child: ListView(
         children: [
           WhiteCard(
-            title: devolucio.devolucion.idDevolucion == null
+            title: devolucio.cab.idDevolucion == null
                 ? "Nueva Devolucion"
                 : "Modificar Devolucion",
             child: Column(
               children: [
                 TextFormField(
+                  controller: devolucio.ctrObservacion,
                   decoration: InputDecoration(labelText: "Observacion"),
                 ),
                 TextButton(
@@ -61,7 +59,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         label: Center(child: Text("")),
                       ),
                     ],
-                    rows: devolucio.listaDevolucion.map<DataRow>((e) {
+                    rows: devolucio.detalleDevolucion.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
@@ -77,12 +75,13 @@ class _DevolucionViewState extends State<DevolucionView> {
                                   .toList(),
                               onChanged: (value) {
                                 e.idProducto = value?.id;
-                                widget.prdSelect = value!;
+                                e.prdSelect = value!;
+                                // prdSelect = value!;
                                 setState(() {});
                               },
                               hint: e.idProducto == null
                                   ? Text("Seleccione Producto")
-                                  : Text("${widget.prdSelect.descripcion}"),
+                                  : Text("${e.prdSelect.descripcion}"),
                             ),
                             // Combo(
                             //   provider: devolucio,
@@ -100,7 +99,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                             TextFormField(
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                e.cantidad = int.tryParse(value!);
+                                e.cantidad = int.tryParse(value);
                                 devolucio.calcularTotal();
                               },
                             ),
@@ -109,7 +108,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                             TextFormField(
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                e.precio = double.tryParse(value!);
+                                e.precio = double.tryParse(value);
                                 devolucio.calcularTotal();
                               },
                             ),
@@ -155,45 +154,6 @@ class _DevolucionViewState extends State<DevolucionView> {
           // ),
         ],
       ),
-    );
-  }
-}
-
-class Combo extends StatefulWidget {
-  Combo({
-    Key? key,
-    required this.provider,
-    required this.devolucionProd,
-  }) : super(key: key);
-
-  DevolucionProvider provider;
-  DevolucionesEntity devolucionProd;
-  Productos prdSelect = new Productos(precio: 0);
-
-  @override
-  _ComboState createState() => _ComboState();
-}
-
-class _ComboState extends State<Combo> {
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<Productos>(
-      items: Estaticas.listProductos
-          .map(
-            (eDrop) => DropdownMenuItem<Productos>(
-              child: Text(eDrop.descripcion!),
-              value: eDrop,
-            ),
-          )
-          .toList(),
-      onChanged: (value) {
-        widget.devolucionProd.idProducto = value?.id;
-        widget.prdSelect = value!;
-        setState(() {});
-      },
-      hint: widget.prdSelect.id == null
-          ? Text("Seleccione Producto")
-          : Text("${widget.prdSelect.descripcion}"),
     );
   }
 }

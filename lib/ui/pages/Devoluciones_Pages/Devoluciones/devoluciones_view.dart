@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
+import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:provider/provider.dart';
 
 class DevolucionesView extends StatelessWidget {
   const DevolucionesView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final devolucio = Provider.of<DevolucionProvider>(context);
     return Container(
       child: ListView(
         children: [
@@ -20,6 +24,7 @@ class DevolucionesView extends StatelessWidget {
               children: [
                 TextButton(
                     onPressed: () {
+                      devolucio.cab = new DevolucionCab();
                       NavigationService.navigateTo(Flurorouter.devolucion);
                     },
                     child: Text("Nueva Devolucion")),
@@ -31,13 +36,10 @@ class DevolucionesView extends StatelessWidget {
                         label: Center(child: Text("Id")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Producto")),
+                        label: Center(child: Text("Observacion")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Detalle")),
-                      ),
-                      const DataColumn(
-                        label: Center(child: Text("Cantidad")),
+                        label: Center(child: Text("Estado")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Editar")),
@@ -54,17 +56,18 @@ class DevolucionesView extends StatelessWidget {
                             Text(e.idDevolucion.toString()),
                           ),
                           DataCell(
-                            Text(e.idProducto.toString()),
+                            Text(e.observacion.toString()),
                           ),
                           DataCell(
-                            Text(e.detalle!.toString()),
-                          ),
-                          DataCell(
-                            Text(e.cantidad.toString()),
+                            Text(e.estado!.toString()),
                           ),
                           DataCell(
                             Icon(Icons.edit),
-                            onTap: () {},
+                            onTap: () {
+                              devolucio.cab = e;
+                              NavigationService.navigateTo(
+                                  Flurorouter.devolucion);
+                            },
                           ),
                           DataCell(
                             Icon(Icons.delete),
