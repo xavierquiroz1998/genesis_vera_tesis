@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/Login/loginProvider.dart';
+import 'package:genesis_vera_tesis/ui/pages/Login/Widgets/background_rigth.dart';
+import 'package:genesis_vera_tesis/ui/pages/Login/Widgets/form_login_view.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -19,130 +21,80 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final logeo = Provider.of<LoginProvider>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-          child: size.width > 600
-              ? Row(
-                  children: [
-                    LoginIzquierdo(size: size),
-                    LoginDerecho(size: size, logeo: logeo),
-                  ],
-                )
-              : ListView(
-                  children: [
-                    //LoginIzquierdo(size: size),
-                    LoginDerecho(size: size, logeo: logeo),
-                  ],
-                )),
-    );
+        body: Scrollbar(
+      // isAlwaysShown: true,
+      child: ListView(
+        physics: ClampingScrollPhysics(),
+        children: [
+          (size.width > 1000)
+              ? _DesktopBody(child: FormLoginView())
+              : _MobileBody(child: FormLoginView()),
+        ],
+      ),
+    ));
   }
 }
 
-class LoginDerecho extends StatelessWidget {
-  const LoginDerecho({
-    Key? key,
-    required this.size,
-    required this.logeo,
-  }) : super(key: key);
+class _MobileBody extends StatelessWidget {
+  final Widget child;
 
-  final Size size;
-  final LoginProvider logeo;
+  const _MobileBody({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size.width / 2,
-      height: size.height,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Form(
-          key: logeo.keyLogin,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                onChanged: (value) {
-                  logeo.cedula = value;
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Ingrese Usuario";
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: "Usuario",
-                ),
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  logeo.contrasenia = value;
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Ingrese Contraseña";
-                  }
-                },
-                obscureText: true,
-                decoration: InputDecoration(labelText: "Contraseña"),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                child: TextButton(
-                  onPressed: () {
-                    logeo.logeo(context);
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    elevation: 15,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(9),
-                    child: Text(
-                      "Ingresar",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+      height: 1000,
+      color: Colors.black,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 420,
+            child: child,
           ),
-        ),
+          Container(
+            width: double.infinity,
+            height: 400,
+            child: BackgroundRigth(),
+          )
+        ],
       ),
     );
   }
 }
 
-class LoginIzquierdo extends StatelessWidget {
-  const LoginIzquierdo({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
+class _DesktopBody extends StatelessWidget {
+  final Widget child;
 
-  final Size size;
+  const _DesktopBody({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
-      width: size.width / 2,
-      height: size.height,
-      color: Colors.red,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      width: size.width,
+      height: size.height * 0.95,
+      color: Colors.black,
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Distribuidora"),
-          ),
-          Text(
-            "KIARITA",
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-          Text(
-            "imagen",
-          ),
+          // Twitter Background
+          Expanded(child: BackgroundRigth()),
+
+          // View Container
+          Container(
+            width: 600,
+            height: double.infinity,
+            color: Colors.black,
+            child: Column(
+              children: [
+                Expanded(child: child),
+              ],
+            ),
+          )
         ],
       ),
     );

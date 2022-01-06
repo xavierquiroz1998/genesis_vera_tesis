@@ -90,6 +90,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                           ),
                           DataCell(
                             TextFormField(
+                              initialValue: e.detalle,
                               onChanged: (value) {
                                 e.detalle = value;
                               },
@@ -97,6 +98,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                           ),
                           DataCell(
                             TextFormField(
+                              initialValue: "${e.cantidad}",
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 e.cantidad = int.tryParse(value);
@@ -106,6 +108,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                           ),
                           DataCell(
                             TextFormField(
+                              initialValue: "${e.precio}",
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 e.precio = double.tryParse(value);
