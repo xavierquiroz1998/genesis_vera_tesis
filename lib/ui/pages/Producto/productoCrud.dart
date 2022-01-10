@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
+import 'package:genesis_vera_tesis/ui/widgets/toast_notification.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
   @override
   Widget build(BuildContext context) {
     final producto = Provider.of<ProductosProvider>(context);
+    final kardex = Provider.of<KardexProvider>(context);
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -40,7 +43,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             child: TextFormField(
                               controller: producto.controllerCodigo,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Ingrese Codigo";
                                 }
                               },
@@ -58,7 +61,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 // metodo de calcular
                               },
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Ingrese Codigo";
                                 }
                               },
@@ -79,7 +82,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 } catch (e) {}
                               },
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Ingrese Codigo";
                                 }
                               },
@@ -101,7 +104,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                           child: TextFormField(
                             controller: producto.controllerDescripcion,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return "Ingrese Codigo";
                               }
                             },
@@ -172,8 +175,20 @@ class _ProductoCrudState extends State<ProductoCrud> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    if (await producto.guardar()) {
+                    final otra = Estaticas.listProductos
+                        .where((element) =>
+                            element.codigo == producto.controllerCodigo.text)
+                        .toList();
+                    final opt = await producto.guardar();
+
+                    if (opt != null) {
+                      kardex.entradas(opt);
+                      kardex.existencias(opt, true, otra.isEmpty);
+                      kardex.impresion();
+
                       Navigator.pop(context);
+                    } else {
+                      ToastNotificationView.messageDanger('Error');
                     }
                   },
                   child: Text("Guardar"),

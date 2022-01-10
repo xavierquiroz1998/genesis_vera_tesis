@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/domain/providers/Login/loginProvider.dart';
 import 'package:genesis_vera_tesis/ui/pages/Login/Widgets/background_rigth.dart';
 import 'package:genesis_vera_tesis/ui/pages/Login/Widgets/form_login_view.dart';
-import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

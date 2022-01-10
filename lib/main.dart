@@ -1,3 +1,5 @@
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
+
 import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/NavBar/NavBar.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UnidadMedidaProvider()),
         ChangeNotifierProvider(create: (_) => ProductoProvider()),
         ChangeNotifierProvider(create: (_) => DevolucionProvider()),
+        ChangeNotifierProvider(create: (_) => KardexProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

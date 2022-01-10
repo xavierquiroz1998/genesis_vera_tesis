@@ -3,6 +3,7 @@ import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ class EgresoProducto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final egreso = Provider.of<EProductoProvider>(context);
+    final kardex = Provider.of<KardexProvider>(context);
     return Container(
       child: ListView(
         children: [
@@ -99,6 +101,19 @@ class EgresoProducto extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         egreso.guardarEgreso();
+                        for (var item in egreso.listaProducto) {
+                          var result = Estaticas.listProductos
+                              .firstWhere((e) => e.id == item.idProducto);
+                          if (result.id! > 0) {
+                            kardex.salidas(
+                                double.parse(item.cantidad.toString()), result);
+                            result.stock =
+                                double.parse(item.cantidad.toString());
+                            kardex.existencias(result, false, false);
+                            kardex.impresion();
+                          }
+                        }
+
                         Navigator.pop(context);
                       },
                       child: Text("Guardar"),

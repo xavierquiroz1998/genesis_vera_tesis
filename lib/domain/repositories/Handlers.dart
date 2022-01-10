@@ -5,6 +5,7 @@ import 'package:genesis_vera_tesis/ui/pages/Devoluciones_Pages/Devolucion/devolu
 import 'package:genesis_vera_tesis/ui/pages/Devoluciones_Pages/Devoluciones/devoluciones_view.dart';
 import 'package:genesis_vera_tesis/ui/pages/Egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/ui/pages/Egresos/egresoProductos.dart';
+import 'package:genesis_vera_tesis/ui/pages/Kardex/kardex_layout.dart';
 import 'package:genesis_vera_tesis/ui/pages/Login/login.dart';
 import 'package:genesis_vera_tesis/ui/pages/Producto/productoCrud.dart';
 import 'package:genesis_vera_tesis/ui/pages/Productos/productos.dart';
@@ -153,6 +154,16 @@ class Handlers {
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
       return DevolucionView();
+    } else {
+      return Login();
+    }
+  });
+
+  static Handler kardex = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    if (logeo.authenticated) {
+      return KardexLayout();
     } else {
       return Login();
     }

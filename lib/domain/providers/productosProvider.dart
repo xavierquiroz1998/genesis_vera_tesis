@@ -48,22 +48,23 @@ class ProductosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> guardar() async {
+  Future<Productos?> guardar() async {
     try {
-      if (!keyProducto.currentState!.validate()) {
+      if (keyProducto.currentState!.validate()) {
         product.id = Estaticas.listProductos.length + 1;
         product.descripcion = controllerDescripcion.text;
         product.codigo = controllerCodigo.text;
         product.stock = double.tryParse(controllerStock.text);
         product.precio = double.tryParse(controllerPrecio.text);
         Estaticas.listProductos.add(product);
-        product = new Productos(precio: 0);
-        return true;
+        /* product = new Productos(precio: 0); */
+
+        return product;
       } else {
-        return false;
+        return null;
       }
     } catch (e) {
-      return false;
+      return null;
     }
   }
 }

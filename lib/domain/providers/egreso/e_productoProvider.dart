@@ -7,8 +7,10 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class EProductoProvider extends ChangeNotifier {
   List<EgresoDetalle> _listPRoduct = [];
+
   late EmployeeDataSource employeeDataSource =
       EmployeeDataSource(employeeData: listaProducto);
+
   Productos _prd = new Productos(precio: 0);
 
   Productos get prd => _prd;

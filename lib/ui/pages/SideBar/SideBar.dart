@@ -83,6 +83,12 @@ class SideBar extends StatelessWidget {
             onPressed: () {},
             // isActive: NavigationService.currentPage == Flurorouter.unidad,
           ),
+          MenuItem(
+            text: 'Kardex',
+            icon: Icons.assessment,
+            onPressed: () => NavigationService.navigateTo(Flurorouter.kardex),
+            isActive: NavigationService.currentPage == Flurorouter.kardex,
+          ),
         ],
       ),
     );

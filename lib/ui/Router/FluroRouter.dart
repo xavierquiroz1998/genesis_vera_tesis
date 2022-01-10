@@ -1,6 +1,5 @@
 import 'package:fluro/fluro.dart';
 import 'package:genesis_vera_tesis/domain/repositories/Handlers.dart';
-import 'package:genesis_vera_tesis/ui/pages/404/noFound.dart';
 
 class Flurorouter {
   static final FluroRouter router = new FluroRouter();
@@ -20,6 +19,8 @@ class Flurorouter {
 
   static String devoluciones = "/devoluciones";
   static String devolucion = "/devolucion";
+
+  static String kardex = "/kardex";
 
   static void configureRoutes() {
     router.define(rootRouter,
@@ -52,6 +53,9 @@ class Flurorouter {
 
     router.define(devolucion,
         handler: Handlers.devolucion, transitionType: TransitionType.fadeIn);
+
+    router.define(kardex,
+        handler: Handlers.kardex, transitionType: TransitionType.fadeIn);
 
     router.notFoundHandler = Handlers.noFound;
   }
