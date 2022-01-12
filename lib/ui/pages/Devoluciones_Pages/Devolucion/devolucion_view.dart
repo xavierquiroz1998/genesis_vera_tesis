@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
@@ -17,6 +18,7 @@ class _DevolucionViewState extends State<DevolucionView> {
   @override
   Widget build(BuildContext context) {
     final devolucio = Provider.of<DevolucionProvider>(context);
+    final kardex = Provider.of<KardexProvider>(context);
     return Container(
       child: ListView(
         children: [
@@ -133,6 +135,14 @@ class _DevolucionViewState extends State<DevolucionView> {
                     TextButton(
                       onPressed: () {
                         devolucio.guardarDevolucion();
+                        devolucio.detalleDevolucion.forEach((element) {
+                          element.prdSelect.stock =
+                              double.parse("${element.cantidad}");
+                          kardex.entradas(element.prdSelect, false);
+                          kardex.existenciasDev(element.prdSelect, false);
+                          kardex.impresion();
+                        });
+
                         if (devolucio.msgError == "") {
                           Navigator.pop(context);
                         } else {

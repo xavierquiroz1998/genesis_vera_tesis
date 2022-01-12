@@ -182,7 +182,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                     final opt = await producto.guardar();
 
                     if (opt != null) {
-                      kardex.entradas(opt);
+                      kardex.entradas(opt, true);
                       kardex.existencias(opt, true, otra.isEmpty);
                       kardex.impresion();
 

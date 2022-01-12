@@ -7,10 +7,12 @@ class KardexProvider extends ChangeNotifier {
 
 /*Alimentar el inventario - compras  */
 /* CANTIDAD: 190  COST.UNIT: 200 TOTAL: 38000 */
-  void entradas(Productos producto) {
+  void entradas(Productos producto, bool x) {
     kardexRegistro.add(
       Kardex(
-          codMov: 'I-00${kardexRegistro.length}', // I-000
+          codMov: x
+              ? 'I-00${kardexRegistro.length}'
+              : 'DVC-00${kardexRegistro.length}', // I-000
           codPro: producto.codigo!, //1
           nomPro: producto.descripcion!, //martilos de casa
           proCan: producto.stock!, //190
@@ -77,6 +79,28 @@ class KardexProvider extends ChangeNotifier {
                   : (producto.stock! * producto.precio!) + kardexUltimo.proTtl
               : kardexUltimo.proTtl -
                   (producto.stock! * producto.precio!), //38000
+          fecPro: DateTime.now(), // 9/01/2022
+          stsPro: 'P'), //pendiente
+    );
+  }
+
+  void existenciasDev(Productos producto, bool condicion) {
+    var kardexUltimo = kardexRegistro.reversed
+        .where((element) =>
+            element.codPro == producto.codigo && element.codMov.contains("E"))
+        .toList()
+        .first;
+
+    kardexRegistro.add(
+      Kardex(
+          codMov: 'E-00${kardexRegistro.length}', //130 /
+          codPro: producto.codigo!,
+          nomPro: producto.descripcion!,
+          proCan: kardexUltimo.proCan - producto.stock!,
+          proUnt:
+              ((kardexUltimo.proTtl - (producto.stock! * producto.precio!)) /
+                  (kardexUltimo.proCan - producto.stock!)),
+          proTtl: kardexUltimo.proTtl - (producto.stock! * producto.precio!),
           fecPro: DateTime.now(), // 9/01/2022
           stsPro: 'P'), //pendiente
     );
