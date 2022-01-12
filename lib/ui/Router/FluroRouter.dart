@@ -19,6 +19,7 @@ class Flurorouter {
 
   static String devoluciones = "/devoluciones";
   static String devolucion = "/devolucion";
+  static String dashboarPorTipo = "/dashboard/PorTipo";
 
   static String kardex = "/kardex";
 
@@ -56,6 +57,10 @@ class Flurorouter {
 
     router.define(kardex,
         handler: Handlers.kardex, transitionType: TransitionType.fadeIn);
+
+    router.define(dashboarPorTipo,
+        handler: Handlers.dashboardPorTipo,
+        transitionType: TransitionType.fadeIn);
 
     router.notFoundHandler = Handlers.noFound;
   }

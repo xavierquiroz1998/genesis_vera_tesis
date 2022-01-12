@@ -84,6 +84,13 @@ class SideBar extends StatelessWidget {
             // isActive: NavigationService.currentPage == Flurorouter.unidad,
           ),
           MenuItem(
+            text: 'Reporte por Producto',
+            icon: Icons.home,
+            onPressed: () =>
+                NavigationService.navigateTo(Flurorouter.dashboarPorTipo),
+            // isActive: NavigationService.currentPage == Flurorouter.unidad,
+          ),
+          MenuItem(
             text: 'Kardex',
             icon: Icons.assessment,
             onPressed: () => NavigationService.navigateTo(Flurorouter.kardex),

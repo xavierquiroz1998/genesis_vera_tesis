@@ -18,6 +18,8 @@ import 'package:genesis_vera_tesis/ui/pages/tipo_producto/tipo_producto.dart';
 import 'package:genesis_vera_tesis/ui/pages/unidad_medidas/unidadMedidaView.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/pages/dashboard/dashboardXproducto.dart';
+
 class Handlers {
   static Handler login = Handler(handlerFunc: (context, param) {
     // validacion de sesion
@@ -44,9 +46,8 @@ class Handlers {
 
   static Handler noFound = Handler(handlerFunc: (context, param) {
     // validacion de sesion
-    if (true) {
-      return NoPageFoundView();
-    }
+
+    return NoPageFoundView();
   });
 
   static Handler proveedores = Handler(handlerFunc: (context, param) {
@@ -164,6 +165,16 @@ class Handlers {
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
       return KardexLayout();
+    } else {
+      return Login();
+    }
+  });
+
+  static Handler dashboardPorTipo = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    if (logeo.authenticated) {
+      return DashboardProducto();
     } else {
       return Login();
     }
