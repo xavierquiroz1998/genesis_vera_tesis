@@ -47,4 +47,11 @@ class LoginProvider extends ChangeNotifier {
       }
     } catch (e) {}
   }
+
+  Future<void> lagout() async {
+    try {
+      authenticated = false;
+      notifyListeners();
+    } catch (ex) {}
+  }
 }

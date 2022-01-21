@@ -1,6 +1,3 @@
-import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
-
-import 'domain/providers/dashboard/dashboard_provider.dart';
 import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/NavBar/NavBar.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +7,9 @@ import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/unidadMedida/unidadProvider.dart';
+import 'domain/providers/dashboard/dashboard_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';

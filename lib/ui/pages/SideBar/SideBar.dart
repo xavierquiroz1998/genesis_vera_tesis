@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/pages/Logo/Logo.dart';
 import 'package:genesis_vera_tesis/ui/pages/SideBar/widget/menu_item.dart';
+import 'package:provider/provider.dart';
+
+import '../../../domain/providers/Login/loginProvider.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final logeo = Provider.of<LoginProvider>(context);
     return Container(
       width: 200,
       height: double.infinity,
@@ -38,12 +43,16 @@ class SideBar extends StatelessWidget {
           //   onPressed: () => NavigationService.navigateTo(Flurorouter.egreso),
           //   isActive: NavigationService.currentPage == Flurorouter.egreso,
           // ),
-          MenuItem(
-            text: 'Salida de Productos',
-            icon: Icons.photo_size_select_actual_rounded,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.egresos),
-            isActive: NavigationService.currentPage == Flurorouter.egresos,
-          ),
+          if (Estaticas.permisos.egreso) ...{
+            MenuItem(
+              text: 'Salida de Productos',
+              icon: Icons.photo_size_select_actual_rounded,
+              onPressed: () =>
+                  NavigationService.navigateTo(Flurorouter.egresos),
+              isActive: NavigationService.currentPage == Flurorouter.egresos,
+            ),
+          },
+
           MenuItem(
             text: 'Devolucion de Productos',
             icon: Icons.person_add_alt_outlined,
@@ -95,6 +104,17 @@ class SideBar extends StatelessWidget {
             icon: Icons.assessment,
             onPressed: () => NavigationService.navigateTo(Flurorouter.kardex),
             isActive: NavigationService.currentPage == Flurorouter.kardex,
+          ),
+          MenuItem(
+            text: 'Salir',
+            icon: Icons.exit_to_app,
+            onPressed: () {
+              logeo.lagout();
+
+              NavigationService.navigateTo("/login");
+              //NavigationService.navigatorKey = new GlobalKey<NavigatorState>();
+            },
+            //isActive: NavigationService.currentPage == Flurorouter.salir,
           ),
         ],
       ),

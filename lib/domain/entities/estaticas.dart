@@ -1,3 +1,5 @@
+import 'package:genesis_vera_tesis/domain/entities/usuarios/permisos_usuarios.dart';
+
 import 'egreso/egresoProducto.dart';
 import 'Proveedores/Proveedores.dart';
 import 'usuarios/registroUsuarios.dart';
@@ -14,7 +16,7 @@ class Estaticas {
   static List<ProveedoresEntity> listProveedores = [];
   static List<UnidadMedida> unidades = [];
   static List<TipoProducto> listTipoProduct = [];
-
+  static PermisoUsuarios permisos = new PermisoUsuarios();
   static cargaInicial() {
     for (int i = 0; i < 3; i++) {
       listProductos.add(
@@ -61,6 +63,7 @@ class Estaticas {
           estado: "A"),
     );
 
+    permisos.egreso = true;
     //Tipo
 
     listTipoProduct.add(TipoProducto(

@@ -22,6 +22,7 @@ class Flurorouter {
   static String dashboarPorTipo = "/dashboard/PorTipo";
 
   static String kardex = "/kardex";
+  //static String salir = "/login";
 
   static void configureRoutes() {
     router.define(rootRouter,

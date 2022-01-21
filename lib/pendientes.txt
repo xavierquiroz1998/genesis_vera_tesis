@@ -1,9 +1,5 @@
 
 
 creacion de permisos de usuario (pendiente)
-devolucion de prductos
-metodo ponderado 
-carga de archivo excel para ingresos
-unidad de medida 
-Tipo o categoria de productos 
+
 

@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/Login/loginProvider.dart';
+import 'package:genesis_vera_tesis/main.dart';
 import 'package:genesis_vera_tesis/ui/pages/404/noFound.dart';
 import 'package:genesis_vera_tesis/ui/pages/Devoluciones_Pages/Devolucion/devolucion_view.dart';
 import 'package:genesis_vera_tesis/ui/pages/Devoluciones_Pages/Devoluciones/devoluciones_view.dart';
@@ -38,7 +40,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return EgresoProductosView();
+      if (Estaticas.permisos.egreso) {
+        return EgresoProductosView();
+      }
     } else {
       return Login();
     }
@@ -178,5 +182,11 @@ class Handlers {
     } else {
       return Login();
     }
+  });
+
+  static Handler salir = Handler(handlerFunc: (context, param) {
+    final logeo = Provider.of<LoginProvider>(context!);
+    logeo.lagout();
+    return Login();
   });
 }
