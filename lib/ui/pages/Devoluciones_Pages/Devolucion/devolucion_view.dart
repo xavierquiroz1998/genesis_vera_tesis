@@ -138,8 +138,18 @@ class _DevolucionViewState extends State<DevolucionView> {
                         devolucio.detalleDevolucion.forEach((element) {
                           element.prdSelect.stock =
                               double.parse("${element.cantidad}");
+
+                          /* Devolucion por compras */
                           kardex.entradas(element.prdSelect, false);
                           kardex.existenciasDev(element.prdSelect, false);
+                          /* Fin d edevolucion por compras */
+
+                          /* Dev por ventas */
+                          /*  kardex.salidas(
+                              element.prdSelect.stock!, element.prdSelect);
+                          kardex.existenciasDev(element.prdSelect, true); */
+                          /* Dev por venta fin */
+                          /* Evento de impresion de kardex :) */
                           kardex.impresion();
                         });
 
@@ -149,7 +159,36 @@ class _DevolucionViewState extends State<DevolucionView> {
                           // mensaje alerta
                         }
                       },
-                      child: Text("Guardar"),
+                      child: Text("Guardar Dev Compras"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        devolucio.guardarDevolucion();
+                        devolucio.detalleDevolucion.forEach((element) {
+                          element.prdSelect.stock =
+                              double.parse("${element.cantidad}");
+
+                          /* Devolucion por compras */
+                          /*    kardex.entradas(element.prdSelect, false);
+                          kardex.existenciasDev(element.prdSelect, false); */
+                          /* Fin d edevolucion por compras */
+
+                          /* Dev por ventas */
+                          kardex.salidas(element.prdSelect.stock!,
+                              element.prdSelect, false);
+                          kardex.existenciasComp(element.prdSelect, true);
+                          /* Dev por venta fin */
+                          /* Evento de impresion de kardex :) */
+                          kardex.impresion();
+                        });
+
+                        if (devolucio.msgError == "") {
+                          Navigator.pop(context);
+                        } else {
+                          // mensaje alerta
+                        }
+                      },
+                      child: Text("Guardar Dev Ventas"),
                     ),
                     TextButton(
                       onPressed: () {

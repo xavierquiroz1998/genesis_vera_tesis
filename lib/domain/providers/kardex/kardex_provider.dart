@@ -23,13 +23,18 @@ class KardexProvider extends ChangeNotifier {
     );
   }
 
-  void salidas(double cantidad, Productos producto) {
-    final kardexUltimo = kardexRegistro.reversed.singleWhere((element) =>
-        element.codPro == producto.codigo && element.codMov.contains("E"));
+  void salidas(double cantidad, Productos producto, bool x) {
+    final kardexUltimo = kardexRegistro.reversed
+        .where((element) =>
+            element.codPro == producto.codigo && element.codMov.contains("E"))
+        .toList()
+        .first;
 
     kardexRegistro.add(
       Kardex(
-          codMov: 'S-00${kardexRegistro.length}', // S-0000
+          codMov: x
+              ? 'S-00${kardexRegistro.length}'
+              : 'DVV-00${kardexRegistro.length}', // S-0000
           codPro: producto.codigo!, //1
           nomPro: producto.descripcion!, //martillo
           proCan: cantidad, // 100
@@ -71,14 +76,15 @@ class KardexProvider extends ChangeNotifier {
                   ? (kardexUltimo.proTtl +
                           (producto.stock! * producto.precio!)) /
                       (producto.stock! + kardexUltimo.proCan)
-                  : ((producto.stock! * producto.precio!) /
-                      producto.stock!), //  28500 / 90
+                  : ((kardexUltimo.proTtl -
+                          (producto.stock! * kardexUltimo.proUnt)) /
+                      (kardexUltimo.proCan - producto.stock!)), //  28500 / 90
           proTtl: condicion
               ? nuevo
                   ? producto.stock! * producto.precio!
                   : (producto.stock! * producto.precio!) + kardexUltimo.proTtl
               : kardexUltimo.proTtl -
-                  (producto.stock! * producto.precio!), //38000
+                  (producto.stock! * kardexUltimo.proUnt), //38000
           fecPro: DateTime.now(), // 9/01/2022
           stsPro: 'P'), //pendiente
     );
@@ -101,6 +107,28 @@ class KardexProvider extends ChangeNotifier {
               ((kardexUltimo.proTtl - (producto.stock! * producto.precio!)) /
                   (kardexUltimo.proCan - producto.stock!)),
           proTtl: kardexUltimo.proTtl - (producto.stock! * producto.precio!),
+          fecPro: DateTime.now(), // 9/01/2022
+          stsPro: 'P'), //pendiente
+    );
+  }
+
+  void existenciasComp(Productos producto, bool condicion) {
+    var kardexUltimo = kardexRegistro.reversed
+        .where((element) =>
+            element.codPro == producto.codigo && element.codMov.contains("E"))
+        .toList()
+        .first;
+
+    kardexRegistro.add(
+      Kardex(
+          codMov: 'E-00${kardexRegistro.length}', //130 /
+          codPro: producto.codigo!,
+          nomPro: producto.descripcion!,
+          proCan: kardexUltimo.proCan + producto.stock!,
+          proUnt:
+              ((kardexUltimo.proTtl - (producto.stock! * kardexUltimo.proUnt)) /
+                  (kardexUltimo.proCan - producto.stock!)),
+          proTtl: kardexUltimo.proTtl + (producto.stock! * kardexUltimo.proUnt),
           fecPro: DateTime.now(), // 9/01/2022
           stsPro: 'P'), //pendiente
     );
