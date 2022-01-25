@@ -1,5 +1,6 @@
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
@@ -34,7 +35,7 @@ class ProductosTable extends StatelessWidget {
                       child: Text("Nuevo"),
                     ),
                     TextButton(
-                        onPressed: () => openFile(),
+                        onPressed: () => openFile(context),
                         child: Text("Cargar Excel"))
                   ],
                 ),
@@ -108,15 +109,87 @@ class ProductosTable extends StatelessWidget {
   }
 }
 
-Future<void> openFile() async {
+Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
   try {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Productos"),
+          content: Container(
+            width: 500,
+            height: 300,
+            child: ListView(
+              children: [
+                DataTable(
+                  columns: <DataColumn>[
+                    const DataColumn(
+                      label: Center(child: Text("Codigo")),
+                    ),
+                    const DataColumn(
+                      label: Center(child: Text("Descripcion")),
+                    ),
+                    const DataColumn(
+                      label: Center(child: Text("Stock")),
+                    ),
+                    const DataColumn(
+                      label: Center(child: Text("Precio")),
+                    ),
+                  ],
+                  rows: temp.map<DataRow>((e) {
+                    return DataRow(
+                      //key: LocalKey(),
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(e.codigo.toString()),
+                        ),
+                        DataCell(
+                          Text(e.descripcion!),
+                        ),
+                        DataCell(
+                          Text(e.stock.toString()),
+                        ),
+                        DataCell(
+                          Text(e.precio.toString()),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  for (var value in temp) {
+                    value.id = Estaticas.listProductos.length + 1;
+                    Estaticas.listProductos.add(value);
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text("Guardar")),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Cancelar")),
+          ],
+        );
+      },
+    );
+  } catch (e) {
+    print("${e.toString()}");
+  }
+}
+
+Future<void> openFile(BuildContext context) async {
+  try {
+    List<Productos> listProductosTemp = [];
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
 
-    // String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
     if (result != null) {
-      //file = File(result.files.first.path!);
       var bytesData = result.files.first.bytes;
       var excel = Excel.decodeBytes(bytesData!);
 
@@ -129,6 +202,8 @@ Future<void> openFile() async {
           var descripcion = row[1]!.value;
           var stock = row[2]!.value;
           var precio = row[3]!.value;
+          var unidad = row[4]!.value;
+          var tipo = row[5]!.value;
           // valida encabezado
           if (codigo.toString() != "codigo") {
             // falta agregar validacion de los demas campos
@@ -136,11 +211,18 @@ Future<void> openFile() async {
                 codigo: codigo.toString(),
                 descripcion: descripcion.toString(),
                 stock: double.tryParse(stock.toString()),
-                precio: double.parse(precio.toString()));
-            p.id = Estaticas.listProductos.length + 1;
-            Estaticas.listProductos.add(p);
+                precio: double.parse(precio.toString()),
+                unidadMedida: Estaticas.unidades
+                    .firstWhere((e) => e.codigo == unidad.toString())
+                    .id,
+                tipoProdcuto: tipo.toString());
+
+            listProductosTemp.add(p);
           }
         }
+      }
+      if (listProductosTemp.length > 0) {
+        await dialogProductos(context, listProductosTemp);
       }
     } else {
       // User canceled the picker
