@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
+import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
@@ -15,6 +16,8 @@ class DevolucionView extends StatefulWidget {
 }
 
 class _DevolucionViewState extends State<DevolucionView> {
+  List<String> tipoDev = ["CLIENTE", "PROVEEDOR"];
+  String tipoDevSelect = "";
   @override
   Widget build(BuildContext context) {
     final devolucio = Provider.of<DevolucionProvider>(context);
@@ -31,6 +34,31 @@ class _DevolucionViewState extends State<DevolucionView> {
                 TextFormField(
                   controller: devolucio.ctrObservacion,
                   decoration: InputDecoration(labelText: "Observacion"),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DropdownButtonFormField<String>(
+                  onChanged: (value) {
+                    tipoDevSelect = value!;
+                    //producto.product.tipoProdcuto = value!.codRef;
+                  },
+                  items: tipoDev.map((item) {
+                    return DropdownMenuItem(
+                      value: item,
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            item,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w400),
+                          )),
+                    );
+                  }).toList(),
+                  decoration: CustomInputs.formInputDecoration(
+                      hint: '',
+                      label: 'Seleccione Tipo Devolución',
+                      icon: Icons.delete_outline),
                 ),
                 TextButton(
                   onPressed: () {
@@ -132,26 +160,79 @@ class _DevolucionViewState extends State<DevolucionView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // TextButton(
+                    //   onPressed: () {
+                    //     devolucio.guardarDevolucion();
+                    //     devolucio.detalleDevolucion.forEach((element) {
+                    //       element.prdSelect.stock =
+                    //           double.parse("${element.cantidad}");
+
+                    //       /* Devolucion por compras */
+                    //       kardex.entradas(element.prdSelect, false);
+                    //       kardex.existenciasDev(element.prdSelect, false);
+                    //       /* Fin d edevolucion por compras */
+
+                    //       /* Dev por ventas */
+                    //       /*  kardex.salidas(
+                    //           element.prdSelect.stock!, element.prdSelect);
+                    //       kardex.existenciasDev(element.prdSelect, true); */
+                    //       /* Dev por venta fin */
+                    //       /* Evento de impresion de kardex :) */
+                    //       kardex.impresion();
+                    //     });
+
+                    //     if (devolucio.msgError == "") {
+                    //       Navigator.pop(context);
+                    //     } else {
+                    //       // mensaje alerta
+                    //     }
+                    //   },
+                    //   child: Text("Guardar Dev Compras"),
+                    // ),
+
                     TextButton(
                       onPressed: () {
-                        devolucio.guardarDevolucion();
-                        devolucio.detalleDevolucion.forEach((element) {
-                          element.prdSelect.stock =
-                              double.parse("${element.cantidad}");
+                        if (tipoDevSelect == "CLIENTE") {
+                          devolucio.guardarDevolucion();
+                          devolucio.detalleDevolucion.forEach((element) {
+                            element.prdSelect.stock =
+                                double.parse("${element.cantidad}");
 
-                          /* Devolucion por compras */
-                          kardex.entradas(element.prdSelect, false);
-                          kardex.existenciasDev(element.prdSelect, false);
-                          /* Fin d edevolucion por compras */
+                            /* Devolucion por compras */
+                            /*    kardex.entradas(element.prdSelect, false);
+                          kardex.existenciasDev(element.prdSelect, false); */
+                            /* Fin d edevolucion por compras */
 
-                          /* Dev por ventas */
-                          /*  kardex.salidas(
+                            /* Dev por ventas */
+                            kardex.salidas(element.prdSelect.stock!,
+                                element.prdSelect, false);
+                            kardex.existenciasComp(element.prdSelect, true);
+                            /* Dev por venta fin */
+                            /* Evento de impresion de kardex :) */
+                            kardex.impresion();
+                          });
+                        } else if (tipoDevSelect == "PROVEEDOR") {
+                          devolucio.guardarDevolucion();
+                          devolucio.detalleDevolucion.forEach((element) {
+                            element.prdSelect.stock =
+                                double.parse("${element.cantidad}");
+
+                            /* Devolucion por compras */
+                            kardex.entradas(element.prdSelect, false);
+                            kardex.existenciasDev(element.prdSelect, false);
+                            /* Fin d edevolucion por compras */
+
+                            /* Dev por ventas */
+                            /*  kardex.salidas(
                               element.prdSelect.stock!, element.prdSelect);
                           kardex.existenciasDev(element.prdSelect, true); */
-                          /* Dev por venta fin */
-                          /* Evento de impresion de kardex :) */
-                          kardex.impresion();
-                        });
+                            /* Dev por venta fin */
+                            /* Evento de impresion de kardex :) */
+                            kardex.impresion();
+                          });
+                        } else {
+                          devolucio.msgError = "Seleccione Tipo de Devolución";
+                        }
 
                         if (devolucio.msgError == "") {
                           Navigator.pop(context);
@@ -159,36 +240,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                           // mensaje alerta
                         }
                       },
-                      child: Text("Guardar Dev Compras"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        devolucio.guardarDevolucion();
-                        devolucio.detalleDevolucion.forEach((element) {
-                          element.prdSelect.stock =
-                              double.parse("${element.cantidad}");
-
-                          /* Devolucion por compras */
-                          /*    kardex.entradas(element.prdSelect, false);
-                          kardex.existenciasDev(element.prdSelect, false); */
-                          /* Fin d edevolucion por compras */
-
-                          /* Dev por ventas */
-                          kardex.salidas(element.prdSelect.stock!,
-                              element.prdSelect, false);
-                          kardex.existenciasComp(element.prdSelect, true);
-                          /* Dev por venta fin */
-                          /* Evento de impresion de kardex :) */
-                          kardex.impresion();
-                        });
-
-                        if (devolucio.msgError == "") {
-                          Navigator.pop(context);
-                        } else {
-                          // mensaje alerta
-                        }
-                      },
-                      child: Text("Guardar Dev Ventas"),
+                      child: Text("Guardar"), // cliente
                     ),
                     TextButton(
                       onPressed: () {

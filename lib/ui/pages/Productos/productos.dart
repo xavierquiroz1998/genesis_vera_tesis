@@ -111,14 +111,15 @@ class ProductosTable extends StatelessWidget {
 
 Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
   try {
+    final size = MediaQuery.of(context).size;
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text("Productos"),
           content: Container(
-            width: 500,
-            height: 300,
+            width: size.width / 2,
+            height: size.height / 3,
             child: ListView(
               children: [
                 DataTable(

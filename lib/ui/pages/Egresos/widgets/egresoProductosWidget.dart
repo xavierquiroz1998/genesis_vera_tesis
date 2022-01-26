@@ -1,11 +1,14 @@
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
 class EgresoProductosWidgets {
-  static Future<void> openFileEgreso() async {
+  static Future<void> openFileEgreso(BuildContext context) async {
     try {
+      List<EgresoDetalle> listEgresoTemp = [];
       FilePickerResult? result = await FilePicker.platform
           .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
 
@@ -40,15 +43,13 @@ class EgresoProductosWidgets {
               var result = Estaticas.listProductos
                   .firstWhere((e) => e.id == p.idProducto);
               if (result.id! > 0) {
-                double totalStock = result.stock! - p.cantidad!;
-                Estaticas.listProductos.remove(result);
-                result.stock = totalStock;
-                Estaticas.listProductos.add(result);
-                p.idEgreso = Estaticas.listProductosEgreso.length + 1;
-                Estaticas.listProductosEgreso.add(p);
+                listEgresoTemp.add(p);
               }
             }
           }
+        }
+        if (listEgresoTemp.length > 0) {
+          await dialogProductos(context, listEgresoTemp);
         }
       } else {
         // User canceled the picker
@@ -58,6 +59,88 @@ class EgresoProductosWidgets {
 
     } catch (e) {
       print("erro en open file ${e.toString()}");
+    }
+  }
+
+  static Future<void> dialogProductos(
+      BuildContext context, List<EgresoDetalle> temp) async {
+    final size = MediaQuery.of(context).size;
+    try {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Productos"),
+            content: Container(
+              width: size.width / 2,
+              height: size.height / 3,
+              child: ListView(
+                children: [
+                  DataTable(
+                    columns: <DataColumn>[
+                      const DataColumn(
+                        label: Center(child: Text("Producto")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Detalle")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Cantidad")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Precio")),
+                      ),
+                    ],
+                    rows: temp.map<DataRow>((e) {
+                      return DataRow(
+                        //key: LocalKey(),
+                        cells: <DataCell>[
+                          DataCell(
+                            Text(e.idProducto.toString()),
+                          ),
+                          DataCell(
+                            Text(e.detalle!.toString()),
+                          ),
+                          DataCell(
+                            Text(e.cantidad.toString()),
+                          ),
+                          DataCell(
+                            Text(e.precio.toString()),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    for (var value in temp) {
+                      var result = Estaticas.listProductos
+                          .firstWhere((e) => e.id == value.idProducto);
+                      double totalStock = result.stock! - value.cantidad!;
+                      Estaticas.listProductos.remove(result);
+                      result.stock = totalStock;
+                      Estaticas.listProductos.add(result);
+                      value.idEgreso = Estaticas.listProductosEgreso.length + 1;
+                      Estaticas.listProductosEgreso.add(value);
+                    }
+                    Navigator.pop(context);
+                  },
+                  child: Text("Guardar")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Cancelar")),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print("${e.toString()}");
     }
   }
 }
