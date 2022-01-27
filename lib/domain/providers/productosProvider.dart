@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
 
 class ProductosProvider extends ChangeNotifier {
   Productos _productos = new Productos(precio: 0);
@@ -8,6 +10,9 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerCodigo = new TextEditingController();
   TextEditingController _controllerStock = new TextEditingController();
   TextEditingController _controllerPrecio = new TextEditingController();
+
+  final InsertarProducto insertarProducto;
+  ProductosProvider(this.insertarProducto);
 
   final _keyProducto = GlobalKey<FormState>();
 
@@ -51,6 +56,8 @@ class ProductosProvider extends ChangeNotifier {
   Future<Productos?> guardar() async {
     var opt = false;
     try {
+      await insertarProducto();
+
       if (keyProducto.currentState!.validate()) {
         product.id = Estaticas.listProductos.length + 1;
         product.descripcion = controllerDescripcion.text;
