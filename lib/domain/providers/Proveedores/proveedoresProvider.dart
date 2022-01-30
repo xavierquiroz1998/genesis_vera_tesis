@@ -92,12 +92,12 @@ class ProveedoresProvider extends ChangeNotifier {
     } catch (e) {}
   }
 
-  void anular() {
+  void anular(ProveedoresEntity prove) {
     try {
-      if (proveedor.idProveedor != null) {
-        Estaticas.listProveedores.remove(proveedor);
-        proveedor.estado = "I";
-        Estaticas.listProveedores.add(proveedor);
+      if (prove.idProveedor != null) {
+        Estaticas.listProveedores.remove(prove);
+        prove.estado = "I";
+        Estaticas.listProveedores.add(prove);
       }
     } catch (e) {
       print("error en anular");

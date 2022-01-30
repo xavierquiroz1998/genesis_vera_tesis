@@ -26,6 +26,7 @@ class Estaticas {
             stock: i + 50,
             precio: 1,
             unidadMedida: 1,
+            estado: "A",
             tipoProdcuto: "1372"),
       );
 

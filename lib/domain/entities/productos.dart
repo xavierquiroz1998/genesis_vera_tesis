@@ -8,6 +8,8 @@ class Productos {
   int? unidadMedida;
   double? stock;
   double? precio;
+  int? idProveedor;
+  String estado;
 
   Productos({
     this.id,
@@ -17,6 +19,7 @@ class Productos {
     this.unidadMedida,
     this.stock,
     required this.precio,
+    this.estado = "",
   });
 
   Map<String, dynamic> toMap() {

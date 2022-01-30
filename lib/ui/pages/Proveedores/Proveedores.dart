@@ -41,29 +41,73 @@ class Proveedores extends StatelessWidget {
                         DataColumn(label: Text("Anular")),
                       ],
                       rows: Estaticas.listProveedores.map<DataRow>((e) {
-                        return DataRow(cells: [
-                          DataCell(Text(e.identificacion.toString())),
-                          DataCell(Text(e.nombres.toString())),
-                          DataCell(Text(e.direccion.toString())),
-                          DataCell(Text(e.correo.toString())),
-                          DataCell(Text(e.estado.toString())),
-                          DataCell(TextButton(
-                            onPressed: () {
-                              provee.titulo = "Modificar Proveedor";
-                              provee.proveedor = e;
-                              NavigationService.navigateTo(
-                                  Flurorouter.proveedor);
-                            },
-                            child: Text("Editar"),
-                          )),
-                          DataCell(TextButton(
-                            onPressed: () {
-                              provee.proveedor = e;
-                              provee.anular();
-                            },
-                            child: Text("anular"),
-                          )),
-                        ]);
+                        return DataRow(
+                          color: MaterialStateProperty.resolveWith<Color?>(
+                              (states) {
+                            if (e.estado == "I") {
+                              return Colors.red.shade300;
+                            }
+                            return null;
+                          }),
+                          cells: [
+                            DataCell(Text(e.identificacion.toString())),
+                            DataCell(Text(e.nombres.toString())),
+                            DataCell(Text(e.direccion.toString())),
+                            DataCell(Text(e.correo.toString())),
+                            DataCell(Text(e.estado.toString())),
+                            DataCell(e.estado == "A"
+                                ? TextButton.icon(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () {
+                                      provee.titulo = "Modificar Proveedor";
+                                      provee.proveedor = e;
+                                      NavigationService.navigateTo(
+                                          Flurorouter.proveedor);
+                                    },
+                                    label: Text(""),
+                                  )
+                                : Container()),
+                            DataCell(
+                              e.estado == "A"
+                                  ? TextButton.icon(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () async {
+                                        await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text("Anular"),
+                                                content: Container(
+                                                  child: Text(
+                                                      "Seguro desea anular el item " +
+                                                          e.nombres!),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      provee.anular(e);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Aceptar"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Cancelar"),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      label: Text(
+                                        "",
+                                      ),
+                                    )
+                                  : Container(),
+                            ),
+                          ],
+                        );
                       }).toList()),
                 )
               ],

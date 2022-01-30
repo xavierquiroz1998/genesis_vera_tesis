@@ -53,6 +53,10 @@ class ProductosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void notificar() {
+    notifyListeners();
+  }
+
   Future<Productos?> guardar() async {
     var opt = false;
     try {

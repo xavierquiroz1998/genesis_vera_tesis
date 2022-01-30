@@ -9,6 +9,8 @@ import 'package:genesis_vera_tesis/ui/widgets/toast_notification.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
+import '../../../domain/entities/Proveedores/Proveedores.dart';
+
 class ProductoCrud extends StatefulWidget {
   ProductoCrud({Key? key}) : super(key: key);
 
@@ -163,6 +165,33 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             decoration: CustomInputs.formInputDecoration(
                                 hint: '',
                                 label: 'Seleccione Tipo Producto',
+                                icon: Icons.delete_outline),
+                          ),
+                        ),
+                        // proveedor
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 300, minWidth: 100),
+                          child: DropdownButtonFormField<ProveedoresEntity>(
+                            onChanged: (value) {
+                              producto.product.idProveedor = value!.idProveedor;
+                            },
+                            items: Estaticas.listProveedores.map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      item.nombres!,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                              );
+                            }).toList(),
+                            decoration: CustomInputs.formInputDecoration(
+                                hint: '',
+                                label: 'Seleccione Proveedor',
                                 icon: Icons.delete_outline),
                           ),
                         ),

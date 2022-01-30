@@ -59,6 +59,9 @@ class ProductosTable extends StatelessWidget {
                         label: Center(child: Text("Precio")),
                       ),
                       const DataColumn(
+                        label: Center(child: Text("Estado")),
+                      ),
+                      const DataColumn(
                         label: Center(child: Text("Editar")),
                       ),
                       const DataColumn(
@@ -67,6 +70,13 @@ class ProductosTable extends StatelessWidget {
                     ],
                     rows: Estaticas.listProductos.map<DataRow>((e) {
                       return DataRow(
+                        color:
+                            MaterialStateProperty.resolveWith<Color?>((states) {
+                          if (e.estado == "I") {
+                            return Colors.red.shade300;
+                          }
+                          return null;
+                        }),
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
@@ -85,15 +95,60 @@ class ProductosTable extends StatelessWidget {
                             Text(e.precio.toString()),
                           ),
                           DataCell(
-                            Icon(Icons.edit),
-                            onTap: () {
-                              producto.product = e;
-                              NavigationService.navigateTo(Flurorouter.ingreso);
-                            },
+                            Text(e.estado.toString()),
                           ),
                           DataCell(
-                            Icon(Icons.delete),
-                            onTap: () {},
+                            e.estado == "A"
+                                ? TextButton.icon(
+                                    onPressed: () {
+                                      producto.product = e;
+                                      NavigationService.navigateTo(
+                                          Flurorouter.ingreso);
+                                    },
+                                    icon: Icon(Icons.edit),
+                                    label: Text(""))
+                                : Container(),
+                          ),
+                          DataCell(
+                            e.estado == "A"
+                                ? TextButton.icon(
+                                    onPressed: () async {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text("Anular"),
+                                              content: Container(
+                                                child: Text(
+                                                    "Seguro desea anular el item " +
+                                                        e.descripcion!),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    e.estado = "I";
+                                                    Estaticas.listProductos
+                                                        .remove(e);
+                                                    Estaticas.listProductos
+                                                        .add(e);
+                                                    producto.notificar();
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("Aceptar"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("Cancelar"),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    icon: Icon(Icons.delete),
+                                    label: Text(""))
+                                : Container(),
                           ),
                         ],
                       );
