@@ -39,9 +39,10 @@ class KardexProvider extends ChangeNotifier {
                   ? ((producto.stock! * producto.precio!) +
                           kardexUltimo.proTtlE) /
                       (kardexUltimo.proCanE + producto.stock!)
-                  : ((producto.stock! * producto.precio!) -
-                          kardexUltimo.proTtlE) /
-                      (kardexUltimo.proCanE - producto.stock!)
+                  : (((producto.stock! * producto.precio!) -
+                              kardexUltimo.proTtlE) /
+                          (kardexUltimo.proCanE - producto.stock!)) *
+                      -1
               : (producto.stock! * producto.precio!) / producto.stock!,
           proTtlE: isExiste
               ? isTipo
@@ -61,7 +62,7 @@ class KardexProvider extends ChangeNotifier {
                       (kardexUltimo.proCanE - producto.stock!)
  */
   void salidas(double cantidad, Productos producto) {
-    final kardexUltimo = kardexRegistro.reversed
+    final kardexUltimo = kardexRegistro
         .where((element) => element.codPro == producto.codigo)
         .toList()
         .reversed
