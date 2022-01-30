@@ -30,27 +30,36 @@ class KardexProvider extends ChangeNotifier {
           proUntS: 0,
           proTtlS: 0,
           proCanE: isExiste
-              ? kardexUltimo.proCanE + producto.stock!
+              ? isTipo
+                  ? kardexUltimo.proCanE + producto.stock!
+                  : kardexUltimo.proCanE - producto.stock!
               : producto.stock!,
           proUntE: isExiste
               ? isTipo
                   ? ((producto.stock! * producto.precio!) +
                           kardexUltimo.proTtlE) /
                       (kardexUltimo.proCanE + producto.stock!)
-                  : (producto.stock! * producto.precio!) +
-                      kardexUltimo.proTtlE /
-                          (kardexUltimo.proCanE + producto.stock!)
+                  : ((producto.stock! * producto.precio!) -
+                          kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.stock!)
               : (producto.stock! * producto.precio!) / producto.stock!,
           proTtlE: isExiste
               ? isTipo
                   ? (producto.stock! * producto.precio!) + kardexUltimo.proTtlE
-                  : (producto.stock! * producto.precio!) - kardexUltimo.proTtlE
+                  : ((producto.stock! * producto.precio!) -
+                          kardexUltimo.proTtlE) *
+                      -1
               : (producto.stock! * producto.precio!),
           fecPro: DateTime.now(),
           stsPro: 'I'), //pendiente
     );
   }
 
+/*  ojo dev compras s
+    : ((producto.stock! * producto.precio!) -
+                          kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.stock!)
+ */
   void salidas(double cantidad, Productos producto) {
     final kardexUltimo = kardexRegistro.reversed
         .where((element) => element.codPro == producto.codigo)
