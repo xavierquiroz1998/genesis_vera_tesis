@@ -192,8 +192,8 @@ class _DevolucionViewState extends State<DevolucionView> {
 
                     TextButton(
                       onPressed: () {
-                        if (tipoDevSelect == "CLIENTE") {
-                          devolucio.guardarDevolucion();
+                        if (tipoDevSelect == "PROVEEEDOR") {
+                          /*   devolucio.guardarDevolucion();
                           devolucio.detalleDevolucion.forEach((element) {
                             element.prdSelect.stock =
                                 double.parse("${element.cantidad}");
@@ -210,16 +210,16 @@ class _DevolucionViewState extends State<DevolucionView> {
                             /* Dev por venta fin */
                             /* Evento de impresion de kardex :) */
                             kardex.impresion();
-                          });
-                        } else if (tipoDevSelect == "PROVEEDOR") {
+                          }); */
+                        } else if (tipoDevSelect == "CLIENTE") {
                           devolucio.guardarDevolucion();
                           devolucio.detalleDevolucion.forEach((element) {
                             element.prdSelect.stock =
                                 double.parse("${element.cantidad}");
 
                             /* Devolucion por compras */
-                            kardex.entradas(element.prdSelect, false);
-                            kardex.existenciasDev(element.prdSelect, false);
+                            kardex.entradas(element.prdSelect, true, false);
+                            /*    kardex.existenciasDev(element.prdSelect, false); */
                             /* Fin d edevolucion por compras */
 
                             /* Dev por ventas */

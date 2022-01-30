@@ -179,11 +179,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         .where((element) =>
                             element.codigo == producto.controllerCodigo.text)
                         .toList();
+
                     final opt = await producto.guardar();
 
                     if (opt != null) {
-                      kardex.entradas(opt, true);
-                      kardex.existencias(opt, true, otra.isEmpty);
+                      kardex.entradas(opt, otra.isNotEmpty, true);
+                      /* kardex.existencias(opt, true, otra.isEmpty); */
                       kardex.impresion();
 
                       Navigator.pop(context);

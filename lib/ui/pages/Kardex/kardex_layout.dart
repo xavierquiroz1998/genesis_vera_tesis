@@ -1,100 +1,152 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/pages/items_source.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class KardexLayout extends StatelessWidget {
+class KardexLayout extends StatefulWidget {
   const KardexLayout({Key? key}) : super(key: key);
 
+  @override
+  State<KardexLayout> createState() => _KardexLayoutState();
+}
+
+class _KardexLayoutState extends State<KardexLayout> {
   List<GridColumn> _getColumns() {
     List<GridColumn> columns;
     columns = <GridColumn>[
       GridColumn(
-          columnName: 'customerName',
-          width: 180,
+          columnName: 'fecha',
+          width: 90,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Customer Name',
+              'Fecha',
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
       GridColumn(
-          columnName: 'city',
-          width: 140,
+          columnName: 'producto',
+          width: 185,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'City',
+              'Producto',
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
       GridColumn(
-          columnName: 'orderId',
-          width: 140,
-          label: Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.all(8.0),
-            child: const Text(
-              'Order ID',
-              overflow: TextOverflow.ellipsis,
-            ),
-          )),
-      GridColumn(
-          columnName: 'orderDate',
-          width: 140,
-          label: Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.all(8.0),
-            child: const Text(
-              'Order Date',
-              overflow: TextOverflow.ellipsis,
-            ),
-          )),
-      GridColumn(
-          columnName: 'product',
-          width: 160,
+          columnName: 'cantidadI',
+          width: 85,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Product',
+              'Cantidad',
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
       GridColumn(
-          columnName: 'productId',
-          width: 150,
+          columnName: 'costoI',
+          width: 85,
           label: Container(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Product ID',
+              'Cost.Unit',
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
       GridColumn(
-          columnName: 'quantity',
-          width: 150,
+          columnName: 'totalI',
+          width: 85,
           label: Container(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Quantity',
+              'Total',
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
       GridColumn(
-          columnName: 'unitPrice',
-          width: 140,
+          columnName: 'cantidadS',
+          width: 85,
           label: Container(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Unit Price',
+              'Cantidad',
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )),
+      GridColumn(
+          columnName: 'costoS',
+          width: 85,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(8.0),
+            child: const Text(
+              'Cost.Unit',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )),
+      GridColumn(
+          columnName: 'totalS',
+          width: 85,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(8.0),
+            child: const Text(
+              'Total',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )),
+      GridColumn(
+          columnName: 'cantidadE',
+          width: 85,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(8.0),
+            child: const Text(
+              'Cantidad',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )),
+      GridColumn(
+          columnName: 'costoE',
+          width: 85,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(8.0),
+            child: const Text(
+              'Cost.Unit',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )),
+      GridColumn(
+          columnName: 'totalE',
+          width: 85,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(8.0),
+            child: const Text(
+              'Total',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
     ];
@@ -117,14 +169,17 @@ class KardexLayout extends StatelessWidget {
     _stackedHeaderRows = <StackedHeaderRow>[
       StackedHeaderRow(cells: <StackedHeaderCell>[
         StackedHeaderCell(
-            columnNames: <String>['customerName', 'city', 'city'],
+            columnNames: <String>['fecha', 'producto'],
+            child: _getWidgetForStackedHeaderCell('PRODUCTO')),
+        StackedHeaderCell(
+            columnNames: <String>['cantidadI', 'costoI', 'totalI'],
             child: _getWidgetForStackedHeaderCell('ENTRADAS')),
         StackedHeaderCell(
-            columnNames: <String>['orderId', 'orderDate', 'orderDate'],
+            columnNames: <String>['cantidadS', 'costoS', 'totalS'],
             child: _getWidgetForStackedHeaderCell('SALIDAS')),
         StackedHeaderCell(
-            columnNames: <String>['product', 'productId', 'quantity'],
-            child: _getWidgetForStackedHeaderCell('EXISTENCIA'))
+            columnNames: <String>['cantidadE', 'costoE', 'totalE'],
+            child: _getWidgetForStackedHeaderCell('EXISTENCIAS'))
       ])
     ];
     return _stackedHeaderRows;
@@ -132,6 +187,7 @@ class KardexLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kardex = Provider.of<KardexProvider>(context);
     return Container(
       child: ListView(
         children: [
@@ -142,7 +198,9 @@ class KardexLayout extends StatelessWidget {
                 SfDataGrid(
                   gridLinesVisibility: GridLinesVisibility.both,
                   headerGridLinesVisibility: GridLinesVisibility.both,
-                  source: ItemsDataSource([], context),
+                  columnWidthMode: ColumnWidthMode.fill,
+                  isScrollbarAlwaysShown: true,
+                  source: ItemsDataSource(kardex.kardexRegistro, context),
                   columns: _getColumns(),
                   stackedHeaderRows: _getStackedHeaderRows(),
                 )

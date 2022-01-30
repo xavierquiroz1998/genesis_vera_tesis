@@ -106,12 +106,10 @@ class EgresoProducto extends StatelessWidget {
                               .firstWhere((e) => e.id == item.idProducto);
                           if (result.id! > 0) {
                             kardex.salidas(
-                                double.parse(item.cantidad.toString()),
-                                result,
-                                true);
+                                double.parse(item.cantidad.toString()), result);
                             result.stock =
                                 double.parse(item.cantidad.toString());
-                            kardex.existencias(result, false, false);
+                            /*     kardex.existencias(result, false, false); */
                             kardex.impresion();
                           }
                         }

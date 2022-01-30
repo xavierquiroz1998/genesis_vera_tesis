@@ -2,9 +2,19 @@ class Kardex {
   final String codMov;
   final String codPro;
   final String nomPro;
-  final double proCan;
-  final double proUnt;
-  final double proTtl;
+
+  final double proCanI;
+  final double proUntI;
+  final double proTtlI;
+
+  final double proCanS;
+  final double proUntS;
+  final double proTtlS;
+
+  final double proCanE;
+  final double proUntE;
+  final double proTtlE;
+
   final DateTime fecPro;
   final String stsPro;
 
@@ -12,9 +22,15 @@ class Kardex {
       {required this.codMov,
       required this.codPro,
       required this.nomPro,
-      required this.proCan,
-      required this.proUnt,
-      required this.proTtl,
+      required this.proCanI,
+      required this.proUntI,
+      required this.proTtlI,
+      required this.proCanS,
+      required this.proUntS,
+      required this.proTtlS,
+      required this.proCanE,
+      required this.proUntE,
+      required this.proTtlE,
       required this.fecPro,
       required this.stsPro});
 
@@ -26,7 +42,7 @@ class Kardex {
         " / " +
         nomPro +
         " / " +
-        "$proCan / $proUnt / $proTtl";
+        "Entradas : $proCanI / $proUntI / $proTtlI Salidas: $proCanS / $proUntS / $proTtlS Existencias: $proCanE / $proUntE / $proTtlE";
   }
 }
 
