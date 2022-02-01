@@ -14,7 +14,6 @@ class DashboardProducto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prov = Provider.of<DashboardProvider>(context);
-    final size = MediaQuery.of(context).size;
     return WhiteCard(
         child: Column(
       children: [

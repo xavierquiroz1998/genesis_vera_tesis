@@ -8,7 +8,6 @@ class ProductoImp extends AbstractProducto {
 
   @override
   List<Productos> getAllProductos() {
-    // TODO: implement getAllProductos
     throw UnimplementedError();
   }
 
