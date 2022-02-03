@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/ui/pages/dashboard/Report/graficos_productos.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 
 class Inicio extends StatelessWidget {
@@ -8,10 +10,13 @@ class Inicio extends StatelessWidget {
   Widget build(BuildContext context) {
     return WhiteCard(
       title: "Inicio",
-      child: Container(
-        child: Center(
-          child: Text("-------------------------"),
-        ),
+      child: Row(
+        children: [
+          PieDefault(),
+          if (Estaticas.listProductosEgreso.length > 0) ...{
+            PieVentas(),
+          }
+        ],
       ),
     );
   }

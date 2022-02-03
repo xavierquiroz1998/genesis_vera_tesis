@@ -1,20 +1,24 @@
 import 'dart:convert';
 
+import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+
 class EgresoDetalle {
   int? idEgreso;
   int? idProducto;
   String? detalle;
-  int? cantidad;
+  int cantidad;
   double? precio;
   double? total;
+  Productos? prd;
 
   EgresoDetalle({
     this.idEgreso,
     this.idProducto,
     this.detalle,
-    this.cantidad,
+    this.cantidad = 0,
     this.precio,
     this.total,
+    this.prd,
   });
 
   Map<String, dynamic> toMap() {
