@@ -30,7 +30,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return UnidadMedidaView();
+      if (Estaticas.permisos.unidadMedida) {
+        return UnidadMedidaView();
+      }
     } else {
       return Login();
     }
@@ -57,7 +59,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return Proveedores();
+      if (Estaticas.permisos.proveedores) {
+        return Proveedores();
+      }
     } else {
       return Login();
     }
@@ -87,7 +91,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return UsuarioView();
+      if (Estaticas.permisos.usuarios) {
+        return UsuarioView();
+      }
     } else {
       return Login();
     }
@@ -117,7 +123,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return ProductosTable();
+      if (Estaticas.permisos.ingreso) {
+        return ProductosTable();
+      }
     } else {
       return Login();
     }
@@ -137,7 +145,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return TipoProducto();
+      if (Estaticas.permisos.tipoProd) {
+        return TipoProducto();
+      }
     } else {
       return Login();
     }
@@ -147,7 +157,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return DevolucionesView();
+      if (Estaticas.permisos.devoluciones) {
+        return DevolucionesView();
+      }
     } else {
       return Login();
     }
@@ -167,7 +179,9 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     if (logeo.authenticated) {
-      return KardexLayout();
+      if (Estaticas.permisos.kardex) {
+        return KardexLayout();
+      }
     } else {
       return Login();
     }

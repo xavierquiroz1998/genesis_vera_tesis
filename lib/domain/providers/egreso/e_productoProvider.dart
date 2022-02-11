@@ -39,7 +39,7 @@ class EProductoProvider extends ChangeNotifier {
         var result =
             Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
         if (result.id! > 0) {
-          double totalStock = result.stock! - item.cantidad!;
+          double totalStock = result.stock! - item.cantidad;
           Estaticas.listProductos.remove(result);
           result.stock = totalStock;
           Estaticas.listProductos.add(result);

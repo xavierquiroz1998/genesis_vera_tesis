@@ -80,7 +80,7 @@ class EgresoProducto extends StatelessWidget {
                             TextFormField(
                               onChanged: (value) {
                                 e.precio = double.parse(value);
-                                e.total = e.cantidad! * e.precio!;
+                                e.total = e.cantidad * e.precio!;
                               },
                             ),
                           ),

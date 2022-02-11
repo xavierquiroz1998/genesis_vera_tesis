@@ -65,6 +65,13 @@ class Estaticas {
     );
 
     permisos.egreso = true;
+    permisos.ingreso = true;
+    permisos.tipoProd = true;
+    permisos.proveedores = true;
+    permisos.devoluciones = true;
+    permisos.kardex = true;
+    permisos.unidadMedida = true;
+    permisos.usuarios = true;
     //Tipo
 
     listTipoProduct.add(TipoProducto(

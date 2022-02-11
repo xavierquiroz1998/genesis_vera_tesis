@@ -31,12 +31,16 @@ class SideBar extends StatelessWidget {
             onPressed: () => NavigationService.navigateTo(Flurorouter.inicio),
             isActive: NavigationService.currentPage == Flurorouter.inicio,
           ),
-          MenuItem(
-            text: 'Productos',
-            icon: Icons.photo_size_select_actual_rounded,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.ingresos),
-            isActive: NavigationService.currentPage == Flurorouter.ingresos,
-          ),
+          if (Estaticas.permisos.ingreso) ...{
+            MenuItem(
+              text: 'Productos',
+              icon: Icons.photo_size_select_actual_rounded,
+              onPressed: () =>
+                  NavigationService.navigateTo(Flurorouter.ingresos),
+              isActive: NavigationService.currentPage == Flurorouter.ingresos,
+            ),
+          },
+
           // MenuItem(
           //   text: 'Salida de Productos',
           //   icon: Icons.photo_size_select_actual_rounded,
@@ -52,40 +56,54 @@ class SideBar extends StatelessWidget {
               isActive: NavigationService.currentPage == Flurorouter.egresos,
             ),
           },
+          if (Estaticas.permisos.devoluciones) ...{
+            MenuItem(
+              text: 'Devolucion de Productos',
+              icon: Icons.person_add_alt_outlined,
+              onPressed: () =>
+                  NavigationService.navigateTo(Flurorouter.devoluciones),
+              isActive:
+                  NavigationService.currentPage == Flurorouter.devoluciones,
+            )
+          },
+          if (Estaticas.permisos.usuarios) ...{
+            MenuItem(
+              text: 'Usuarios',
+              icon: Icons.person_add_alt_outlined,
+              onPressed: () =>
+                  NavigationService.navigateTo(Flurorouter.usuarios),
+              isActive: NavigationService.currentPage == Flurorouter.usuarios,
+            )
+          },
+          if (Estaticas.permisos.proveedores) ...{
+            MenuItem(
+              text: 'Registro de Proveedores',
+              icon: Icons.home,
+              onPressed: () =>
+                  NavigationService.navigateTo(Flurorouter.proveedores),
+              isActive:
+                  NavigationService.currentPage == Flurorouter.proveedores,
+            ),
+          },
+          if (Estaticas.permisos.unidadMedida) ...{
+            MenuItem(
+              text: 'Unidad Medida',
+              icon: Icons.home,
+              onPressed: () => NavigationService.navigateTo(Flurorouter.unidad),
+              isActive: NavigationService.currentPage == Flurorouter.unidad,
+            )
+          },
+          if (Estaticas.permisos.tipoProd) ...{
+            MenuItem(
+              text: 'Tipos de Productos',
+              icon: Icons.home,
+              onPressed: () =>
+                  NavigationService.navigateTo(Flurorouter.tipoProducto),
+              isActive:
+                  NavigationService.currentPage == Flurorouter.tipoProducto,
+            ),
+          },
 
-          MenuItem(
-            text: 'Devolucion de Productos',
-            icon: Icons.person_add_alt_outlined,
-            onPressed: () =>
-                NavigationService.navigateTo(Flurorouter.devoluciones),
-            isActive: NavigationService.currentPage == Flurorouter.devoluciones,
-          ),
-          MenuItem(
-            text: 'Usuarios',
-            icon: Icons.person_add_alt_outlined,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.usuarios),
-            isActive: NavigationService.currentPage == Flurorouter.usuarios,
-          ),
-          MenuItem(
-            text: 'Registro de Proveedores',
-            icon: Icons.home,
-            onPressed: () =>
-                NavigationService.navigateTo(Flurorouter.proveedores),
-            isActive: NavigationService.currentPage == Flurorouter.proveedores,
-          ),
-          MenuItem(
-            text: 'Unidad Medida',
-            icon: Icons.home,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.unidad),
-            isActive: NavigationService.currentPage == Flurorouter.unidad,
-          ),
-          MenuItem(
-            text: 'Tipos de Productos',
-            icon: Icons.home,
-            onPressed: () =>
-                NavigationService.navigateTo(Flurorouter.tipoProducto),
-            isActive: NavigationService.currentPage == Flurorouter.tipoProducto,
-          ),
           MenuItem(
             text: 'Reporte Pendientes',
             icon: Icons.home,
@@ -99,12 +117,14 @@ class SideBar extends StatelessWidget {
                 NavigationService.navigateTo(Flurorouter.dashboarPorTipo),
             // isActive: NavigationService.currentPage == Flurorouter.unidad,
           ),
-          MenuItem(
-            text: 'Kardex',
-            icon: Icons.assessment,
-            onPressed: () => NavigationService.navigateTo(Flurorouter.kardex),
-            isActive: NavigationService.currentPage == Flurorouter.kardex,
-          ),
+          if (Estaticas.permisos.tipoProd) ...{
+            MenuItem(
+              text: 'Kardex',
+              icon: Icons.assessment,
+              onPressed: () => NavigationService.navigateTo(Flurorouter.kardex),
+              isActive: NavigationService.currentPage == Flurorouter.kardex,
+            )
+          },
           MenuItem(
             text: 'Salir',
             icon: Icons.exit_to_app,
