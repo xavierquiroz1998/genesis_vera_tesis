@@ -209,7 +209,8 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             element.codigo == producto.controllerCodigo.text)
                         .toList();
 
-                    final opt = await producto.guardar();
+                    final opt = await producto
+                        .guardar(otra.isNotEmpty ? otra.first : null);
 
                     if (opt != null) {
                       kardex.entradas(opt, otra.isNotEmpty, true);

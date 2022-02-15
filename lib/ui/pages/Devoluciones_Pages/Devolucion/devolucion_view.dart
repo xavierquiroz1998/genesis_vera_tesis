@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:provider/provider.dart';
@@ -192,6 +193,7 @@ class _DevolucionViewState extends State<DevolucionView> {
 
                     TextButton(
                       onPressed: () {
+                        var valTemp = 0.0;
                         if (tipoDevSelect == "PROVEEEDOR") {
                           /*   devolucio.guardarDevolucion();
                           devolucio.detalleDevolucion.forEach((element) {
@@ -214,11 +216,15 @@ class _DevolucionViewState extends State<DevolucionView> {
                         } else if (tipoDevSelect == "CLIENTE") {
                           devolucio.guardarDevolucion();
                           devolucio.detalleDevolucion.forEach((element) {
+                            valTemp = element.prdSelect.stock! -
+                                double.parse("${element.cantidad}");
+
                             element.prdSelect.stock =
                                 double.parse("${element.cantidad}");
 
                             /* Devolucion por compras */
-                            kardex.entradas(element.prdSelect, true, false);
+                            /* kardex.entradas(element.prdSelect, true, false); */
+                            kardex.devoluciones(element.prdSelect, true);
                             /*    kardex.existenciasDev(element.prdSelect, false); */
                             /* Fin d edevolucion por compras */
 
@@ -228,6 +234,8 @@ class _DevolucionViewState extends State<DevolucionView> {
                           kardex.existenciasDev(element.prdSelect, true); */
                             /* Dev por venta fin */
                             /* Evento de impresion de kardex :) */
+                            element.prdSelect.stock = valTemp;
+
                             kardex.impresion();
                           });
                         } else {

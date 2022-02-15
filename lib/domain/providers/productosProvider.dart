@@ -57,10 +57,10 @@ class ProductosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Productos?> guardar() async {
+  Future<Productos?> guardar(Productos? p) async {
     var opt = false;
     try {
-      await insertarProducto();
+      /*  await insertarProducto(); */
 
       if (keyProducto.currentState!.validate()) {
         product.id = Estaticas.listProductos.length + 1;
@@ -72,7 +72,8 @@ class ProductosProvider extends ChangeNotifier {
         Estaticas.listProductos.forEach((element) {
           if (element.codigo == controllerCodigo.text) {
             element.descripcion = controllerDescripcion.text;
-            element.stock = double.tryParse(controllerStock.text);
+            element.stock =
+                element.stock! + double.tryParse(controllerStock.text)!;
             element.precio = double.tryParse(controllerPrecio.text);
             opt = true;
           }

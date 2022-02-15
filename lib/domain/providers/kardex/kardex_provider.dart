@@ -90,6 +90,39 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
     );
   }
 
+  void devoluciones(Productos producto, bool isTipo) {
+    var kardexUltimo = kardexRegistro
+        .where((element) => element.codPro == producto.codigo)
+        .toList()
+        .reversed
+        .first;
+
+    kardexRegistro.add(
+      Kardex(
+          codMov: isTipo
+              ? 'DEV-C${kardexRegistro.length}'
+              : "DEV-V${kardexRegistro.length}",
+          codPro: producto.codigo!,
+          nomPro: producto.descripcion!,
+          proCanI: isTipo ? producto.stock! : 0,
+          proUntI: isTipo ? producto.precio! : 0,
+          proTtlI: isTipo ? (producto.stock! * producto.precio!) : 0,
+          proCanS: isTipo ? 0 : producto.stock!,
+          proUntS: isTipo ? 0 : kardexUltimo.proUntE,
+          proTtlS: isTipo ? 0 : producto.stock! * kardexUltimo.proUntE,
+          proCanE: kardexUltimo.proCanE - producto.stock!,
+          proUntE:
+              (((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.stock!)) *
+                  -1,
+          proTtlE:
+              ((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) *
+                  -1,
+          fecPro: DateTime.now(),
+          stsPro: 'I'), //pendiente
+    );
+  }
+
 /* 
   void salidas(double cantidad, Productos producto, bool x) {
     final kardexUltimo = kardexRegistro.reversed

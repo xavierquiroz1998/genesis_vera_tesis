@@ -107,8 +107,8 @@ class EgresoProducto extends StatelessWidget {
                           if (result.id! > 0) {
                             kardex.salidas(
                                 double.parse(item.cantidad.toString()), result);
-                            result.stock =
-                                double.parse(item.cantidad.toString());
+                            /*   result.stock =
+                                double.parse(item.cantidad.toString()); */
                             /*     kardex.existencias(result, false, false); */
                             kardex.impresion();
                           }
