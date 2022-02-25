@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:collection/collection.dart';
 
 class EProductoProvider extends ChangeNotifier {
-  List<EgresoDetalle> _listPRoduct = [];
+  EgresoCabecera _listPRoduct = new EgresoCabecera();
+  TextEditingController _ctrObservacion = new TextEditingController();
 
-  late EmployeeDataSource employeeDataSource =
-      EmployeeDataSource(employeeData: listaProducto);
+  TextEditingController get ctrObservacion => _ctrObservacion;
+
+  set ctrObservacion(TextEditingController ctrObservacion) {
+    _ctrObservacion = ctrObservacion;
+  }
 
   Productos _prd = new Productos(precio: 0);
 
@@ -20,22 +24,28 @@ class EProductoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<EgresoDetalle> get listaProducto => _listPRoduct;
+  EgresoCabecera get listaProducto => _listPRoduct;
+
+  set listaProducto(EgresoCabecera cab) {
+    cab.detalle = [];
+    _listPRoduct = cab;
+    notifyListeners();
+  }
 
   void agregar() {
-    listaProducto.add(new EgresoDetalle());
-    employeeDataSource = EmployeeDataSource(employeeData: listaProducto);
+    listaProducto.detalle!.add(new EgresoDetalle());
     notifyListeners();
   }
 
   void remover(EgresoDetalle e) {
-    listaProducto.remove(e);
+    listaProducto.detalle!.remove(e);
     notifyListeners();
   }
 
   Future<void> guardarEgreso() async {
     try {
-      for (var item in listaProducto) {
+      int sec = 0;
+      for (var item in listaProducto.detalle!) {
         var result =
             Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
         if (result.id! > 0) {
@@ -43,55 +53,19 @@ class EProductoProvider extends ChangeNotifier {
           Estaticas.listProductos.remove(result);
           result.stock = totalStock;
           Estaticas.listProductos.add(result);
-          item.idEgreso = Estaticas.listProductosEgreso.length + 1;
-          Estaticas.listProductosEgreso.add(item);
+          item.idEgresoDetalle = item.secuencia = sec++;
+          item.total = item.cantidad * item.precio!;
         }
       }
+      listaProducto.observacion = ctrObservacion.text;
+      listaProducto.estado = "A";
+      listaProducto.detalle!.forEach((e) {
+        listaProducto.total += e.total!;
+      });
+      listaProducto.idEgreso = Estaticas.listProductosEgreso.length + 1;
+      Estaticas.listProductosEgreso.add(listaProducto);
     } catch (e) {
       print("Error en guardar ${e.toString()}");
     }
-  }
-}
-
-// prueba
-class EmployeeDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<EgresoDetalle> employeeData}) {
-    _employeeData = employeeData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(columnName: 'id', value: e.idProducto),
-              DataGridCell<String>(columnName: 'name', value: e.detalle),
-              DataGridCell<int>(columnName: 'designation', value: e.cantidad),
-              DataGridCell<double>(columnName: 'salary', value: e.precio),
-              DataGridCell<String>(columnName: 'salary', value: ""),
-            ]))
-        .toList();
-  }
-
-  List<DataGridRow> _employeeData = [];
-
-  @override
-  List<DataGridRow> get rows => _employeeData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(cells: [
-      DropdownButton<Productos>(
-        items: Estaticas.listProductos
-            .map(
-              (e) => DropdownMenuItem<Productos>(
-                child: Text(e.descripcion!),
-              ),
-            )
-            .toList(),
-        onChanged: (prod) {},
-        //value: new Productos(precio: 0),
-        hint: Text("funciona?"),
-      ),
-      TextField(),
-      Text(""),
-      Text(""),
-      Icon(Icons.delete)
-    ]);
   }
 }

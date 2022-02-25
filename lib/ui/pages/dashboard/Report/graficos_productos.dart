@@ -54,14 +54,16 @@ class _PieVentasState extends State<PieVentas> {
     super.initState();
 
     var asd = Estaticas.listProductosEgreso.groupListsBy(
-      (e) => e.idProducto,
+      (e) => e.idEgreso,
     );
 
     for (var item in asd.entries) {
       EgresoDetalle t = new EgresoDetalle();
-      t.idProducto = item.key;
-      for (var valu in item.value) {
-        t.cantidad += valu.cantidad;
+      t.idEgresoDetalle = item.key;
+      for (var cabe in item.value) {
+        for (var det in cabe.detalle!) {
+          t.cantidad += det.cantidad;
+        }
       }
       temp.add(t);
     }

@@ -7,6 +7,7 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 class EgresoProductosWidgets {
   static Future<void> openFileEgreso(BuildContext context) async {
     try {
+      EgresoCabecera cabecera = new EgresoCabecera();
       List<EgresoDetalle> listEgresoTemp = [];
       FilePickerResult? result = await FilePicker.platform
           .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
@@ -48,7 +49,8 @@ class EgresoProductosWidgets {
           }
         }
         if (listEgresoTemp.length > 0) {
-          await dialogProductos(context, listEgresoTemp);
+          cabecera.detalle = listEgresoTemp;
+          await dialogProductos(context, cabecera);
         }
       } else {
         // User canceled the picker
@@ -62,7 +64,7 @@ class EgresoProductosWidgets {
   }
 
   static Future<void> dialogProductos(
-      BuildContext context, List<EgresoDetalle> temp) async {
+      BuildContext context, EgresoCabecera temp) async {
     final size = MediaQuery.of(context).size;
     try {
       showDialog(
@@ -90,7 +92,7 @@ class EgresoProductosWidgets {
                         label: Center(child: Text("Precio")),
                       ),
                     ],
-                    rows: temp.map<DataRow>((e) {
+                    rows: temp.detalle!.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
@@ -116,16 +118,18 @@ class EgresoProductosWidgets {
             actions: [
               TextButton(
                   onPressed: () {
-                    for (var value in temp) {
+                    int sec = 0;
+                    for (var value in temp.detalle!) {
                       var result = Estaticas.listProductos
                           .firstWhere((e) => e.id == value.idProducto);
                       double totalStock = result.stock! - value.cantidad;
                       Estaticas.listProductos.remove(result);
                       result.stock = totalStock;
                       Estaticas.listProductos.add(result);
-                      value.idEgreso = Estaticas.listProductosEgreso.length + 1;
-                      Estaticas.listProductosEgreso.add(value);
+                      value.idEgresoDetalle = value.secuencia = sec++;
                     }
+                    temp.idEgreso = Estaticas.listProductosEgreso.length + 1;
+                    Estaticas.listProductosEgreso.add(temp);
                     Navigator.pop(context);
                   },
                   child: Text("Guardar")),

@@ -10,7 +10,7 @@ import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.d
 
 class Estaticas {
   static List<Productos> listProductos = [];
-  static List<EgresoDetalle> listProductosEgreso = [];
+  static List<EgresoCabecera> listProductosEgreso = [];
   static List<DevolucionCab> listDevoluciones = [];
   static List<RegistUser> listUsuarios = [];
   static List<ProveedoresEntity> listProveedores = [];
@@ -19,16 +19,17 @@ class Estaticas {
   static PermisoUsuarios permisos = new PermisoUsuarios();
   static cargaInicial() {
     for (int i = 0; i < 3; i++) {
-      listProductos.add(
-        new Productos(
-            id: i,
-            descripcion: "Prod$i",
-            stock: i + 50,
-            precio: 1,
-            unidadMedida: 1,
-            estado: "A",
-            tipoProdcuto: "1372"),
-      );
+      // listProductos.add(
+      //   new Productos(
+      //       id: i,
+      //       codigo: "0$i",
+      //       descripcion: "Prod$i",
+      //       stock: i + 50,
+      //       precio: 1,
+      //       unidadMedida: 1,
+      //       estado: "A",
+      //       tipoProdcuto: "1372"),
+      // );
 
 // proveedores
       listProveedores.add(new ProveedoresEntity(

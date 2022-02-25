@@ -3,7 +3,10 @@ import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.da
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:provider/provider.dart';
 
+import '../../../domain/entities/egreso/egresoProducto.dart';
+import '../../../domain/providers/egreso/e_productoProvider.dart';
 import 'widgets/egresoProductosWidget.dart';
 
 class EgresoProductosView extends StatelessWidget {
@@ -11,6 +14,7 @@ class EgresoProductosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final egreso = Provider.of<EProductoProvider>(context);
     return Container(
       child: ListView(
         children: [
@@ -24,6 +28,7 @@ class EgresoProductosView extends StatelessWidget {
                     TextButton(
                       //style: ButtonStyle(),
                       onPressed: () {
+                        egreso.listaProducto = new EgresoCabecera();
                         NavigationService.navigateTo(Flurorouter.egreso);
                       },
                       child: Text("Nuevo"),
@@ -43,13 +48,13 @@ class EgresoProductosView extends StatelessWidget {
                         label: Center(child: Text("Id")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Producto")),
+                        label: Center(child: Text("Observacion")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Detalle")),
+                        label: Center(child: Text("Total")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Cantidad")),
+                        label: Center(child: Text("Estado")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Editar")),
@@ -66,13 +71,13 @@ class EgresoProductosView extends StatelessWidget {
                             Text(e.idEgreso.toString()),
                           ),
                           DataCell(
-                            Text(e.idProducto.toString()),
+                            Text(e.observacion.toString()),
                           ),
                           DataCell(
-                            Text(e.detalle!.toString()),
+                            Text(e.total.toString()),
                           ),
                           DataCell(
-                            Text(e.cantidad.toString()),
+                            Text(e.estado.toString()),
                           ),
                           DataCell(
                             Icon(Icons.edit),

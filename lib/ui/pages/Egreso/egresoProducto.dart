@@ -21,7 +21,11 @@ class EgresoProducto extends StatelessWidget {
             child: Column(
               children: [
                 TextFormField(
+                  initialValue: egreso.ctrObservacion.text,
                   decoration: InputDecoration(labelText: "Observacion"),
+                  onChanged: (value) {
+                    egreso.ctrObservacion.text = value;
+                  },
                 ),
                 TextButton(
                   onPressed: () {
@@ -52,7 +56,7 @@ class EgresoProducto extends StatelessWidget {
                         label: Center(child: Text("")),
                       ),
                     ],
-                    rows: egreso.listaProducto.map<DataRow>((e) {
+                    rows: egreso.listaProducto.detalle!.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
@@ -101,7 +105,7 @@ class EgresoProducto extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         egreso.guardarEgreso();
-                        for (var item in egreso.listaProducto) {
+                        for (var item in egreso.listaProducto.detalle!) {
                           var result = Estaticas.listProductos
                               .firstWhere((e) => e.id == item.idProducto);
                           if (result.id! > 0) {
@@ -113,7 +117,6 @@ class EgresoProducto extends StatelessWidget {
                             kardex.impresion();
                           }
                         }
-
                         Navigator.pop(context);
                       },
                       child: Text("Guardar"),
