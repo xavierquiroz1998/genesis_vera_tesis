@@ -1,12 +1,7 @@
-
-
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
-abstract class AbstractProducto{
-  
+abstract class AbstractProducto {
+  List<Productos> getAllProductos();
 
-List<Productos> getAllProductos();
-
-
-
+  Future<String> insertProducto();
 }

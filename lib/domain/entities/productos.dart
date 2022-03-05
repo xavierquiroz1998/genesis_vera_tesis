@@ -4,15 +4,22 @@ class Productos {
   int? id;
   String? descripcion;
   String? codigo;
-  int? stock;
-  var precio;
+  String? tipoProdcuto;
+  int? unidadMedida;
+  double? stock;
+  double? precio;
+  int? idProveedor;
+  String estado;
 
   Productos({
     this.id,
     this.descripcion,
     this.codigo,
+    this.tipoProdcuto,
+    this.unidadMedida,
     this.stock,
     required this.precio,
+    this.estado = "",
   });
 
   Map<String, dynamic> toMap() {
@@ -21,7 +28,9 @@ class Productos {
       'descripcion': descripcion,
       'codigo': codigo,
       'stock': stock,
-      'precio': precio.toMap(),
+      'tipo': tipoProdcuto,
+      'unidad': unidadMedida,
+      'precio': precio,
     };
   }
 
