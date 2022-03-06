@@ -6,6 +6,11 @@ import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
 
+import '../entities/tipo/grupo.dart';
+import '../entities/unidad_medida/unidadMedida.dart';
+import '../uses cases/grupo/get_grupos.dart';
+import '../uses cases/unidad_medida/get_medidas.dart';
+
 class ProductosProvider extends ChangeNotifier {
   Productos _productos = new Productos();
   TextEditingController _controllerDescripcion = new TextEditingController();
@@ -13,10 +18,15 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerStock = new TextEditingController();
   TextEditingController _controllerPrecio = new TextEditingController();
   List<Productos> listado = [];
+  List<UnidadMedidaEntity> listUnidades = [];
+  List<GrupoEntity> listGrupos = [];
 
   final InsertarProducto insertarProducto;
   final GetProductos getProductos;
-  ProductosProvider(this.insertarProducto, this.getProductos);
+  final GetMedidas unidadesMedidas;
+  final GetGrupos grupos;
+  ProductosProvider(this.insertarProducto, this.getProductos,
+      this.unidadesMedidas, this.grupos);
 
   final _keyProducto = GlobalKey<FormState>();
 
@@ -62,11 +72,32 @@ class ProductosProvider extends ChangeNotifier {
   }
 
   Future<void> cargarPrd() async {
-    String a = "";
     var temporal = await getProductos.call();
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listado = result as List<Productos>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
+    notifyListeners();
+  }
+
+  Future<void> cargarUnidades() async {
+    var temporal = await unidadesMedidas.call();
+    var result = temporal.fold((fail) => failure(fail), (prd) => prd);
+    try {
+      listUnidades = result as List<UnidadMedidaEntity>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
+    notifyListeners();
+  }
+
+  Future<void> cargarGrupo() async {
+    var temporal = await grupos.call();
+    var result = temporal.fold((fail) => failure(fail), (prd) => prd);
+    try {
+      listGrupos = result as List<GrupoEntity>;
     } catch (ex) {
       print("error${result.toString()}");
     }

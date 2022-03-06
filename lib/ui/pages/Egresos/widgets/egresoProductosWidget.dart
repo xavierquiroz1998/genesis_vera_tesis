@@ -42,7 +42,7 @@ class EgresoProductosWidgets {
 
               var result = Estaticas.listProductos
                   .firstWhere((e) => e.id == p.idProducto);
-              if (result.id! > 0) {
+              if (result.id > 0) {
                 listEgresoTemp.add(p);
               }
             }

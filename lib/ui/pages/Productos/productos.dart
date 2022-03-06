@@ -177,74 +177,85 @@ class _ProductosTableState extends State<ProductosTable> {
   }
 }
 
-Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
+Future<void> dialogProductos(BuildContext context, List<Productos> temp,
+    {String msj = ""}) async {
   try {
     final size = MediaQuery.of(context).size;
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Productos"),
-          content: Container(
-            width: size.width / 2,
-            height: size.height / 3,
-            child: ListView(
-              children: [
-                DataTable(
-                  columns: <DataColumn>[
-                    const DataColumn(
-                      label: Center(child: Text("Codigo")),
-                    ),
-                    const DataColumn(
-                      label: Center(child: Text("Descripcion")),
-                    ),
-                    // const DataColumn(
-                    //   label: Center(child: Text("Stock")),
-                    // ),
-                    const DataColumn(
-                      label: Center(child: Text("Precio")),
-                    ),
-                  ],
-                  rows: temp.map<DataRow>((e) {
-                    return DataRow(
-                      //key: LocalKey(),
-                      cells: <DataCell>[
-                        DataCell(
-                          Text(e.referencia.toString()),
-                        ),
-                        DataCell(
-                          Text(e.detalle),
-                        ),
-                        // DataCell(
-                        //   Text(e.stock.toString()),
-                        // ),
-                        DataCell(
-                          Text(e.precio.toString()),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+        return msj == ""
+            ? AlertDialog(
+                title: Text("Productos"),
+                content: Container(
+                  width: size.width / 2,
+                  height: size.height / 3,
+                  child: ListView(
+                    children: [
+                      DataTable(
+                        columns: <DataColumn>[
+                          const DataColumn(
+                            label: Center(child: Text("Codigo")),
+                          ),
+                          const DataColumn(
+                            label: Center(child: Text("Descripcion")),
+                          ),
+                          const DataColumn(
+                            label: Center(child: Text("Stock")),
+                          ),
+                          const DataColumn(
+                            label: Center(child: Text("Precio")),
+                          ),
+                        ],
+                        rows: temp.map<DataRow>((e) {
+                          return DataRow(
+                            //key: LocalKey(),
+                            cells: <DataCell>[
+                              DataCell(
+                                Text(e.referencia),
+                              ),
+                              DataCell(
+                                Text(e.detalle),
+                              ),
+                              DataCell(
+                                Text(e.cantidad.toString()),
+                              ),
+                              DataCell(
+                                Text(e.precio.toString()),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  for (var value in temp) {
-                    value.id = Estaticas.listProductos.length + 1;
-                    Estaticas.listProductos.add(value);
-                  }
-                  Navigator.pop(context);
-                },
-                child: Text("Guardar")),
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Cancelar")),
-          ],
-        );
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        for (var value in temp) {
+                          value.id = Estaticas.listProductos.length + 1;
+                          Estaticas.listProductos.add(value);
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: Text("Guardar")),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Cancelar")),
+                ],
+              )
+            : AlertDialog(
+                title: Text("Error"),
+                content: Container(child: Text(msj)),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text("Aceptar")),
+                ],
+              );
       },
     );
   } catch (e) {
@@ -254,6 +265,9 @@ Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
 
 Future<void> openFile(BuildContext context) async {
   try {
+    final prv = context.read<ProductosProvider>();
+    String msgError = "";
+    await prv.cargarUnidades();
     List<Productos> listProductosTemp = [];
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
@@ -276,24 +290,27 @@ Future<void> openFile(BuildContext context) async {
           // valida encabezado
           if (codigo.toString() != "codigo") {
             // falta agregar validacion de los demas campos
-            Productos p = new Productos(
-              referencia: codigo.toString(),
-              detalle: descripcion.toString(),
-              //stock: double.tryParse(stock.toString()),
-              precio: double.parse(precio.toString()),
-              // idUnidad: Estaticas.unidades
-              //     .firstWhere((e) => e.codigo == unidad.toString())
-              //     .id,
-              //tipoProdcuto: tipo.toString()
-            );
+            Productos p = new Productos();
+            p.referencia = codigo.toString();
+            p.detalle = descripcion.toString();
+            p.cantidad = double.tryParse(stock.toString()) ?? 0;
+            p.precio = double.parse(precio.toString());
+            try {
+              var uni = prv.listUnidades
+                  .firstWhere((e) => e.codigo == unidad.toString());
+              p.idUnidad = uni.id;
+            } catch (e) {
+              msgError = "Codigo Unidad de medida Invalido";
+              break;
+            }
+
+            //p.tipoProdcuto: tipo.toString()
 
             listProductosTemp.add(p);
           }
         }
       }
-      if (listProductosTemp.length > 0) {
-        await dialogProductos(context, listProductosTemp);
-      }
+      await dialogProductos(context, listProductosTemp, msj: msgError);
     } else {
       // User canceled the picker
     }

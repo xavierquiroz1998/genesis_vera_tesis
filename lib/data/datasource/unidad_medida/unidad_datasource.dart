@@ -1,4 +1,3 @@
-import 'package:genesis_vera_tesis/data/datasource/http_static.dart';
 import 'package:genesis_vera_tesis/data/models/unidad_medida/unidad_medida.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -14,7 +13,6 @@ class UnidadMedidaDTSImp extends UnidadMediaDTS {
   @override
   Future<List<UnidadMedidaModelo>> getAllUnidades() async {
     try {
-      String url = HttpStatic.baseUrl + "unidades";
       String url2 = "http://localhost:8000/api/unidades";
       List<UnidadMedidaModelo> tem = [];
       final result = await cliente.get(Uri.parse(url2));

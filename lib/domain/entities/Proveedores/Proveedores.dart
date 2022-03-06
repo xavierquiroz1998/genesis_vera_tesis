@@ -20,7 +20,6 @@ class ProveedoresEntity extends Equatable {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props =>
       [id, identificacion, nombre, correo, telefono, direccion, estado];
 }

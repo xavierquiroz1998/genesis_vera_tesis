@@ -31,7 +31,8 @@ import 'domain/uses cases/proveedores/getproveedores.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(() => ProductosProvider(sl(), sl())); //injectar provider
+  sl.registerFactory(
+      () => ProductosProvider(sl(), sl(), sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl()));
   sl.registerFactory(() => GrupoProvider(sl()));
