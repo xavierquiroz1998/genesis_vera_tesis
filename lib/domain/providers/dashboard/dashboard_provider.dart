@@ -13,8 +13,8 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   void cargarLista(String idTipo) {
-    listProductos =
-        Estaticas.listProductos.where((x) => x.tipoProdcuto == idTipo).toList();
+    // listProductos =
+    //     Estaticas.listProductos.where((x) => x.tipoProdcuto == idTipo).toList();
 
     notifyListeners();
   }

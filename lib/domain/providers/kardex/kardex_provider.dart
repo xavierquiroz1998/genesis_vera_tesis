@@ -10,50 +10,50 @@ class KardexProvider extends ChangeNotifier {
 
     if (isExiste) {
       kardexUltimo = kardexRegistro
-          .where((element) => element.codPro == producto.codigo)
+          .where((element) => element.codPro == producto.referencia)
           .toList()
           .reversed
           .first;
     }
 
-    kardexRegistro.add(
-      Kardex(
-          codMov: isTipo
-              ? 'I-${kardexRegistro.length}'
-              : "DEV-${kardexRegistro.length}",
-          codPro: producto.codigo!,
-          nomPro: producto.descripcion!,
-          proCanI: producto.stock!,
-          proUntI: producto.precio!,
-          proTtlI: (producto.stock! * producto.precio!),
-          proCanS: 0,
-          proUntS: 0,
-          proTtlS: 0,
-          proCanE: isExiste
-              ? isTipo
-                  ? kardexUltimo.proCanE + producto.stock!
-                  : kardexUltimo.proCanE - producto.stock!
-              : producto.stock!,
-          proUntE: isExiste
-              ? isTipo
-                  ? ((producto.stock! * producto.precio!) +
-                          kardexUltimo.proTtlE) /
-                      (kardexUltimo.proCanE + producto.stock!)
-                  : (((producto.stock! * producto.precio!) -
-                              kardexUltimo.proTtlE) /
-                          (kardexUltimo.proCanE - producto.stock!)) *
-                      -1
-              : (producto.stock! * producto.precio!) / producto.stock!,
-          proTtlE: isExiste
-              ? isTipo
-                  ? (producto.stock! * producto.precio!) + kardexUltimo.proTtlE
-                  : ((producto.stock! * producto.precio!) -
-                          kardexUltimo.proTtlE) *
-                      -1
-              : (producto.stock! * producto.precio!),
-          fecPro: DateTime.now(),
-          stsPro: 'I'), //pendiente
-    );
+    // kardexRegistro.add(
+    //   Kardex(
+    //       codMov: isTipo
+    //           ? 'I-${kardexRegistro.length}'
+    //           : "DEV-${kardexRegistro.length}",
+    //       codPro: producto.referencia!,
+    //       nomPro: producto.detalle!,
+    //       //proCanI: producto.stock!,
+    //       proUntI: producto.precio!,
+    //       //proTtlI: (producto.stock! * producto.precio!),
+    //       proCanS: 0,
+    //       proUntS: 0,
+    //       proTtlS: 0,
+    //       proCanE: isExiste
+    //           ? isTipo
+    //               ? kardexUltimo.proCanE + producto.stock!
+    //               : kardexUltimo.proCanE - producto.stock!
+    //           : producto.stock!,
+    //       proUntE: isExiste
+    //           ? isTipo
+    //               ? ((producto.stock! * producto.precio!) +
+    //                       kardexUltimo.proTtlE) /
+    //                   (kardexUltimo.proCanE + producto.stock!)
+    //               : (((producto.stock! * producto.precio!) -
+    //                           kardexUltimo.proTtlE) /
+    //                       (kardexUltimo.proCanE - producto.stock!)) *
+    //                   -1
+    //           : (producto.stock! * producto.precio!) / producto.stock!,
+    //       proTtlE: isExiste
+    //           ? isTipo
+    //               ? (producto.stock! * producto.precio!) + kardexUltimo.proTtlE
+    //               : ((producto.stock! * producto.precio!) -
+    //                       kardexUltimo.proTtlE) *
+    //                   -1
+    //           : (producto.stock! * producto.precio!),
+    //       fecPro: DateTime.now(),
+    //       stsPro: 'I'), //pendiente
+    //);
   }
 
 /*  ojo dev compras s
@@ -62,65 +62,65 @@ class KardexProvider extends ChangeNotifier {
                       (kardexUltimo.proCanE - producto.stock!)
  */
   void salidas(double cantidad, Productos producto) {
-    final kardexUltimo = kardexRegistro
-        .where((element) => element.codPro == producto.codigo)
-        .toList()
-        .reversed
-        .first;
-/* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL 
-CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
-    var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
+//     final kardexUltimo = kardexRegistro
+//         .where((element) => element.codPro == producto.codigo)
+//         .toList()
+//         .reversed
+//         .first;
+// /* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL
+// CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
+//     var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
 
-    kardexRegistro.add(
-      Kardex(
-          codMov: 'S-00${kardexRegistro.length}',
-          codPro: producto.codigo!, //1
-          nomPro: producto.descripcion!, //martillo
-          proCanI: 0,
-          proUntI: 0,
-          proTtlI: 0,
-          proCanS: cantidad,
-          proUntS: kardexUltimo.proUntE,
-          proTtlS: (cantidad * kardexUltimo.proUntE), //
-          proCanE: producto.stock!,
-          proUntE: total / producto.stock!,
-          proTtlE: total,
-          fecPro: DateTime.now(),
-          stsPro: 'P'),
-    );
+//     kardexRegistro.add(
+//       Kardex(
+//           codMov: 'S-00${kardexRegistro.length}',
+//           codPro: producto.codigo!, //1
+//           nomPro: producto.descripcion!, //martillo
+//           proCanI: 0,
+//           proUntI: 0,
+//           proTtlI: 0,
+//           proCanS: cantidad,
+//           proUntS: kardexUltimo.proUntE,
+//           proTtlS: (cantidad * kardexUltimo.proUntE), //
+//           proCanE: producto.stock!,
+//           proUntE: total / producto.stock!,
+//           proTtlE: total,
+//           fecPro: DateTime.now(),
+//           stsPro: 'P'),
+//     );
   }
 
   void devoluciones(Productos producto, bool isTipo) {
-    var kardexUltimo = kardexRegistro
-        .where((element) => element.codPro == producto.codigo)
-        .toList()
-        .reversed
-        .first;
+    // var kardexUltimo = kardexRegistro
+    //     .where((element) => element.codPro == producto.codigo)
+    //     .toList()
+    //     .reversed
+    //     .first;
 
-    kardexRegistro.add(
-      Kardex(
-          codMov: isTipo
-              ? 'DEV-C${kardexRegistro.length}'
-              : "DEV-V${kardexRegistro.length}",
-          codPro: producto.codigo!,
-          nomPro: producto.descripcion!,
-          proCanI: isTipo ? producto.stock! : 0,
-          proUntI: isTipo ? producto.precio! : 0,
-          proTtlI: isTipo ? (producto.stock! * producto.precio!) : 0,
-          proCanS: isTipo ? 0 : producto.stock!,
-          proUntS: isTipo ? 0 : kardexUltimo.proUntE,
-          proTtlS: isTipo ? 0 : producto.stock! * kardexUltimo.proUntE,
-          proCanE: kardexUltimo.proCanE - producto.stock!,
-          proUntE:
-              (((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) /
-                      (kardexUltimo.proCanE - producto.stock!)) *
-                  -1,
-          proTtlE:
-              ((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) *
-                  -1,
-          fecPro: DateTime.now(),
-          stsPro: 'I'), //pendiente
-    );
+    // kardexRegistro.add(
+    //   Kardex(
+    //       codMov: isTipo
+    //           ? 'DEV-C${kardexRegistro.length}'
+    //           : "DEV-V${kardexRegistro.length}",
+    //       codPro: producto.codigo!,
+    //       nomPro: producto.descripcion!,
+    //       proCanI: isTipo ? producto.stock! : 0,
+    //       proUntI: isTipo ? producto.precio! : 0,
+    //       proTtlI: isTipo ? (producto.stock! * producto.precio!) : 0,
+    //       proCanS: isTipo ? 0 : producto.stock!,
+    //       proUntS: isTipo ? 0 : kardexUltimo.proUntE,
+    //       proTtlS: isTipo ? 0 : producto.stock! * kardexUltimo.proUntE,
+    //       proCanE: kardexUltimo.proCanE - producto.stock!,
+    //       proUntE:
+    //           (((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) /
+    //                   (kardexUltimo.proCanE - producto.stock!)) *
+    //               -1,
+    //       proTtlE:
+    //           ((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) *
+    //               -1,
+    //       fecPro: DateTime.now(),
+    //       stsPro: 'I'), //pendiente
+    // );
   }
 
 /* 

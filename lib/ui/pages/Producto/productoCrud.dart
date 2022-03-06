@@ -121,7 +121,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               BoxConstraints(maxWidth: 300, minWidth: 100),
                           child: DropdownButtonFormField<UnidadMedida>(
                             onChanged: (value) {
-                              producto.product.unidadMedida = value!.id;
+                              // producto.product.idUnidad = value!.id;
                             },
                             items: Estaticas.unidades.map((item) {
                               return DropdownMenuItem(
@@ -147,7 +147,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               BoxConstraints(maxWidth: 300, minWidth: 100),
                           child: DropdownButtonFormField<TipoProducto>(
                             onChanged: (value) {
-                              producto.product.tipoProdcuto = value!.codRef;
+                              //producto.product.tipoProdcuto = value!.codRef;
                             },
                             items: Estaticas.listTipoProduct.map((item) {
                               return DropdownMenuItem(
@@ -174,7 +174,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               BoxConstraints(maxWidth: 300, minWidth: 100),
                           child: DropdownButtonFormField<ProveedoresEntity>(
                             onChanged: (value) {
-                              producto.product.idProveedor = value!.idProveedor;
+                              // producto.product.idProveedor = value!.idProveedor;
                             },
                             items: Estaticas.listProveedores.map((item) {
                               return DropdownMenuItem(
@@ -206,7 +206,8 @@ class _ProductoCrudState extends State<ProductoCrud> {
                   onPressed: () async {
                     final otra = Estaticas.listProductos
                         .where((element) =>
-                            element.codigo == producto.controllerCodigo.text)
+                            element.referencia ==
+                            producto.controllerCodigo.text)
                         .toList();
 
                     final opt = await producto

@@ -74,7 +74,7 @@ class EgresoDetalle {
       'cantidad': cantidad,
       'precio': precio,
       'total': total,
-      'prd': prd?.toMap(),
+      //'prd': prd.toMap(),
     };
   }
 

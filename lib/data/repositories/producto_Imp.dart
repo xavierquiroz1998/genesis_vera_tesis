@@ -1,14 +1,21 @@
+import 'package:dartz/dartz.dart';
+import 'package:genesis_vera_tesis/core/Errors/exceptions.dart';
+import 'package:genesis_vera_tesis/core/Errors/failure.dart';
 import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/repositories/abstractPRoducto.dart';
 
-class ProductoImp extends AbstractProducto {
+class ProductoImp implements AbstractProducto {
   final ProductosDataSource dataSource;
   ProductoImp(this.dataSource);
 
   @override
-  List<Productos> getAllProductos() {
-    throw UnimplementedError();
+  Future<Either<Failure, List<Productos>>> getAllProductos() async {
+    try {
+      return right(await dataSource.getProducto());
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener datos"));
+    }
   }
 
   @override

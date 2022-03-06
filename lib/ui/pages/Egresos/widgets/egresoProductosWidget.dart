@@ -122,9 +122,9 @@ class EgresoProductosWidgets {
                     for (var value in temp.detalle!) {
                       var result = Estaticas.listProductos
                           .firstWhere((e) => e.id == value.idProducto);
-                      double totalStock = result.stock! - value.cantidad;
+                      //double totalStock = result.stock! - value.cantidad;
                       Estaticas.listProductos.remove(result);
-                      result.stock = totalStock;
+                      //result.stock = totalStock;
                       Estaticas.listProductos.add(result);
                       value.idEgresoDetalle = value.secuencia = sec++;
                     }

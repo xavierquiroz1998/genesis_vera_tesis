@@ -99,7 +99,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                               items: Estaticas.listProductos
                                   .map(
                                     (eDrop) => DropdownMenuItem<Productos>(
-                                      child: Text(eDrop.descripcion!),
+                                      child: Text(eDrop.detalle),
                                       value: eDrop,
                                     ),
                                   )
@@ -112,7 +112,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                               },
                               hint: e.idProducto == null
                                   ? Text("Seleccione Producto")
-                                  : Text("${e.prdSelect.descripcion}"),
+                                  : Text("${e.prdSelect.detalle}"),
                             ),
                             // Combo(
                             //   provider: devolucio,
@@ -215,29 +215,29 @@ class _DevolucionViewState extends State<DevolucionView> {
                           }); */
                         } else if (tipoDevSelect == "CLIENTE") {
                           devolucio.guardarDevolucion();
-                          devolucio.detalleDevolucion.forEach((element) {
-                            valTemp = element.prdSelect.stock! -
-                                double.parse("${element.cantidad}");
+                          // devolucio.detalleDevolucion.forEach((element) {
+                          //   valTemp = element.prdSelect.stock! -
+                          //       double.parse("${element.cantidad}");
 
-                            element.prdSelect.stock =
-                                double.parse("${element.cantidad}");
+                          //   element.prdSelect.stock =
+                          //       double.parse("${element.cantidad}");
 
-                            /* Devolucion por compras */
-                            /* kardex.entradas(element.prdSelect, true, false); */
-                            kardex.devoluciones(element.prdSelect, true);
-                            /*    kardex.existenciasDev(element.prdSelect, false); */
-                            /* Fin d edevolucion por compras */
+                          //   /* Devolucion por compras */
+                          //   /* kardex.entradas(element.prdSelect, true, false); */
+                          //   kardex.devoluciones(element.prdSelect, true);
+                          //   /*    kardex.existenciasDev(element.prdSelect, false); */
+                          //   /* Fin d edevolucion por compras */
 
-                            /* Dev por ventas */
-                            /*  kardex.salidas(
-                              element.prdSelect.stock!, element.prdSelect);
-                          kardex.existenciasDev(element.prdSelect, true); */
-                            /* Dev por venta fin */
-                            /* Evento de impresion de kardex :) */
-                            element.prdSelect.stock = valTemp;
+                          //   /* Dev por ventas */
+                          //   /*  kardex.salidas(
+                          //     element.prdSelect.stock!, element.prdSelect);
+                          // kardex.existenciasDev(element.prdSelect, true); */
+                          //   /* Dev por venta fin */
+                          //   /* Evento de impresion de kardex :) */
+                          //   element.prdSelect.stock = valTemp;
 
-                            kardex.impresion();
-                          });
+                          //   kardex.impresion();
+                          // });
                         } else {
                           devolucio.msgError = "Seleccione Tipo de Devolución";
                         }

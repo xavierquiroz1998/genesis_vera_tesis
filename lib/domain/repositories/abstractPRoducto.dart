@@ -1,7 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
+import '../../core/Errors/failure.dart';
+
 abstract class AbstractProducto {
-  List<Productos> getAllProductos();
+  Future<Either<Failure, List<Productos>>> getAllProductos();
 
   Future<String> insertProducto();
 }

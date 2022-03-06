@@ -1,9 +1,9 @@
 import 'injection.dart';
+import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/NavBar/NavBar.dart';
+import 'package:flutter/material.dart';
 import 'ui/pages/SideBar/SideBar.dart';
 import 'package:provider/provider.dart';
-import 'ui/Router/FluroRouter.dart';
-import 'package:flutter/material.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Home/sideMenuProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';

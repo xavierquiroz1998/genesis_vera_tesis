@@ -28,8 +28,8 @@ class _PieDefaultState extends State<PieDefault> {
             series: <CircularSeries>[
               PieSeries<Productos, String>(
                   dataSource: Estaticas.listProductos,
-                  xValueMapper: (Productos data, _) => data.descripcion,
-                  yValueMapper: (Productos data, _) => data.stock,
+                  //  xValueMapper: (Productos data, _) => data.descripcion,
+                  //  yValueMapper: (Productos data, _) => data.stock,
                   dataLabelSettings: DataLabelSettings(isVisible: true)),
             ],
           )
@@ -87,8 +87,7 @@ class _PieVentasState extends State<PieVentas> {
             series: <CircularSeries>[
               PieSeries<EgresoDetalle, String>(
                   dataSource: temp,
-                  xValueMapper: (EgresoDetalle data, _) =>
-                      data.prd!.descripcion,
+                  xValueMapper: (EgresoDetalle data, _) => data.prd!.detalle,
                   yValueMapper: (EgresoDetalle data, _) => data.cantidad,
                   dataLabelSettings: DataLabelSettings(isVisible: true)),
             ],

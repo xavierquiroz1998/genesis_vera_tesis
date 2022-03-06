@@ -28,9 +28,10 @@ class ProductosTable extends StatelessWidget {
                   children: [
                     TextButton(
                       //style: ButtonStyle(),
-                      onPressed: () {
-                        producto.product = new Productos(precio: 0);
-                        NavigationService.navigateTo(Flurorouter.ingreso);
+                      onPressed: () async {
+                        await producto.cargarPrd();
+                        //producto.product = new Productos(precio: 0);
+                        //NavigationService.navigateTo(Flurorouter.ingreso);
                       },
                       child: Text("Nuevo"),
                     ),
@@ -52,9 +53,9 @@ class ProductosTable extends StatelessWidget {
                       const DataColumn(
                         label: Center(child: Text("Descripcion")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Stock")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Stock")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("Precio")),
                       ),
@@ -83,14 +84,15 @@ class ProductosTable extends StatelessWidget {
                             Text(e.id.toString()),
                           ),
                           DataCell(
-                            Text(e.codigo.toString()),
+                            //Text(e.codigo.toString()),
+                            Text(e.referencia.toString()),
                           ),
                           DataCell(
-                            Text(e.descripcion!),
+                            Text(e.detalle!),
                           ),
-                          DataCell(
-                            Text(e.stock.toString()),
-                          ),
+                          // DataCell(
+                          //   Text(e.stock.toString()),
+                          // ),
                           DataCell(
                             Text(e.precio.toString()),
                           ),
@@ -121,12 +123,12 @@ class ProductosTable extends StatelessWidget {
                                               content: Container(
                                                 child: Text(
                                                     "Seguro desea anular el item " +
-                                                        e.descripcion!),
+                                                        e.detalle!),
                                               ),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
-                                                    e.estado = "I";
+                                                    e.estado = false;
                                                     Estaticas.listProductos
                                                         .remove(e);
                                                     Estaticas.listProductos
@@ -185,9 +187,9 @@ Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
                     const DataColumn(
                       label: Center(child: Text("Descripcion")),
                     ),
-                    const DataColumn(
-                      label: Center(child: Text("Stock")),
-                    ),
+                    // const DataColumn(
+                    //   label: Center(child: Text("Stock")),
+                    // ),
                     const DataColumn(
                       label: Center(child: Text("Precio")),
                     ),
@@ -197,14 +199,14 @@ Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
                       //key: LocalKey(),
                       cells: <DataCell>[
                         DataCell(
-                          Text(e.codigo.toString()),
+                          Text(e.referencia.toString()),
                         ),
                         DataCell(
-                          Text(e.descripcion!),
+                          Text(e.detalle!),
                         ),
-                        DataCell(
-                          Text(e.stock.toString()),
-                        ),
+                        // DataCell(
+                        //   Text(e.stock.toString()),
+                        // ),
                         DataCell(
                           Text(e.precio.toString()),
                         ),
@@ -264,14 +266,15 @@ Future<void> openFile(BuildContext context) async {
           if (codigo.toString() != "codigo") {
             // falta agregar validacion de los demas campos
             Productos p = new Productos(
-                codigo: codigo.toString(),
-                descripcion: descripcion.toString(),
-                stock: double.tryParse(stock.toString()),
-                precio: double.parse(precio.toString()),
-                unidadMedida: Estaticas.unidades
-                    .firstWhere((e) => e.codigo == unidad.toString())
-                    .id,
-                tipoProdcuto: tipo.toString());
+              referencia: codigo.toString(),
+              detalle: descripcion.toString(),
+              //stock: double.tryParse(stock.toString()),
+              precio: double.parse(precio.toString()),
+              // idUnidad: Estaticas.unidades
+              //     .firstWhere((e) => e.codigo == unidad.toString())
+              //     .id,
+              //tipoProdcuto: tipo.toString()
+            );
 
             listProductosTemp.add(p);
           }

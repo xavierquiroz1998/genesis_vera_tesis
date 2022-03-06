@@ -108,7 +108,7 @@ class EgresoProducto extends StatelessWidget {
                         for (var item in egreso.listaProducto.detalle!) {
                           var result = Estaticas.listProductos
                               .firstWhere((e) => e.id == item.idProducto);
-                          if (result.id! > 0) {
+                          if (result.id > 0) {
                             kardex.salidas(
                                 double.parse(item.cantidad.toString()), result);
                             /*   result.stock =
@@ -164,7 +164,7 @@ class _ComboState extends State<Combo> {
       items: Estaticas.listProductos
           .map(
             (eDrop) => DropdownMenuItem<Productos>(
-              child: Text(eDrop.descripcion!),
+              child: Text(eDrop.detalle),
               value: eDrop,
             ),
           )
@@ -176,7 +176,7 @@ class _ComboState extends State<Combo> {
       },
       hint: widget.prdSelect.id == null
           ? Text("Seleccione Producto")
-          : Text("${widget.prdSelect.descripcion}"),
+          : Text("${widget.prdSelect.detalle}"),
     );
   }
 }

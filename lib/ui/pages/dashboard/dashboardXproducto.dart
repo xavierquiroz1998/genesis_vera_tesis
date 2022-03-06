@@ -52,7 +52,7 @@ class DashboardProducto extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("${item.descripcion}"),
+                    child: Text("${item.detalle}"),
                   ),
                 ],
               ),

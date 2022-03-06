@@ -1,6 +1,7 @@
 import 'package:genesis_vera_tesis/data/datasource/logeo/logeo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,11 +16,11 @@ import 'domain/uses cases/productos/insert_producto.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(() => ProductosProvider(sl())); //injectar provider
+  sl.registerFactory(() => ProductosProvider(sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl())); //injectar provider
 
-  sl.registerLazySingleton(
-      () => InsertarProducto(sl())); //injeccion casos de uso
+  sl.registerLazySingleton(() => InsertarProducto(sl()));
+  sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
   sl.registerLazySingleton(() => InicioSesion(sl())); //injeccion casos de uso
 
   sl.registerLazySingleton<AbstractProducto>(
