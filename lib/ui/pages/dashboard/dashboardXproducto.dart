@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/estaticas.dart';
-import '../../../domain/entities/tipo/tipo_producto.dart';
+import '../../../domain/entities/tipo/grupo.dart';
 import '../../../domain/providers/dashboard/dashboard_provider.dart';
 import '../../style/custom_inputs.dart';
 import '../../widgets/white_card.dart';
@@ -20,9 +20,9 @@ class DashboardProducto extends StatelessWidget {
         Center(
           child: Container(
             constraints: BoxConstraints(maxWidth: 300, minWidth: 100),
-            child: DropdownButtonFormField<TipoProducto>(
+            child: DropdownButtonFormField<GrupoEntity>(
               onChanged: (value) {
-                prov.cargarLista(value!.codRef);
+                prov.cargarLista(value!.referencia);
                 //producto.product.tipoProdcuto = value!.codRef;
               },
               items: Estaticas.listTipoProduct.map((item) {
@@ -31,7 +31,7 @@ class DashboardProducto extends StatelessWidget {
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        item.nomPro,
+                        item.nombre,
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w400),
                       )),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
+import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
@@ -145,7 +145,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         Container(
                           constraints:
                               BoxConstraints(maxWidth: 300, minWidth: 100),
-                          child: DropdownButtonFormField<TipoProducto>(
+                          child: DropdownButtonFormField<GrupoEntity>(
                             onChanged: (value) {
                               //producto.product.tipoProdcuto = value!.codRef;
                             },
@@ -155,7 +155,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      item.nomPro,
+                                      item.nombre,
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400),

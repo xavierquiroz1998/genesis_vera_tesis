@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
-import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';
+import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
+import 'package:genesis_vera_tesis/domain/providers/grupo/grupo_provider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:genesis_vera_tesis/ui/widgets/custom_outlined_button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class TipoModal extends StatefulWidget {
-  final TipoProducto? categoria;
+  final GrupoEntity? categoria;
 
   const TipoModal({Key? key, this.categoria}) : super(key: key);
 
@@ -25,15 +25,15 @@ class _TipoModalState extends State<TipoModal> {
   @override
   void initState() {
     super.initState();
-    id = widget.categoria?.codPro;
-    codigo = widget.categoria?.codRef ?? '';
-    nombre = widget.categoria?.nomPro ?? '';
-    descripcion = widget.categoria?.desPro ?? '';
+    id = widget.categoria?.id.toString();
+    codigo = widget.categoria?.referencia ?? '';
+    nombre = widget.categoria?.nombre ?? '';
+    descripcion = widget.categoria?.detalle ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductoProvider>(context);
+    final productProvider = Provider.of<GrupoProvider>(context);
     return Container(
         padding: EdgeInsets.all(20),
         height: 500,
@@ -44,7 +44,7 @@ class _TipoModalState extends State<TipoModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.categoria?.nomPro ?? 'Nuevo Tipo',
+                  widget.categoria?.nombre ?? 'Nuevo Tipo',
                   style: GoogleFonts.roboto(color: Colors.white, fontSize: 18),
                 ),
                 IconButton(
@@ -67,7 +67,7 @@ class _TipoModalState extends State<TipoModal> {
               children: [
                 Flexible(
                   child: TextFormField(
-                    initialValue: widget.categoria?.codRef ?? '',
+                    initialValue: widget.categoria?.referencia ?? '',
                     onChanged: (value) => codigo = value,
                     decoration: CustomInputs.loginInputDecoration(
                         hint: 'Codigo de tipo',
@@ -79,7 +79,7 @@ class _TipoModalState extends State<TipoModal> {
                 SizedBox(width: 10),
                 Flexible(
                   child: TextFormField(
-                    initialValue: widget.categoria?.nomPro ?? '',
+                    initialValue: widget.categoria?.nombre ?? '',
                     onChanged: (value) => nombre = value,
                     decoration: CustomInputs.loginInputDecoration(
                         hint: 'Nombre de tipo',
@@ -94,7 +94,7 @@ class _TipoModalState extends State<TipoModal> {
               height: 10,
             ),
             TextFormField(
-              initialValue: widget.categoria?.desPro ?? '',
+              initialValue: widget.categoria?.detalle ?? '',
               onChanged: (value) => descripcion = value,
               decoration: CustomInputs.loginInputDecoration(
                   hint: 'Descripcion de tipo',
@@ -108,12 +108,12 @@ class _TipoModalState extends State<TipoModal> {
               child: CustomOutlinedButton(
                   onPressed: () async {
                     try {
-                      if (id == null) {
+                      /*  if (id == null) {
                         productProvider.saveTyped(codigo, nombre, descripcion);
                       } else {
                         productProvider.updateTyped(
                             id!, codigo, nombre, descripcion);
-                      }
+                      } */
                       Navigator.of(context).pop();
                     } catch (e) {
                       print(e);

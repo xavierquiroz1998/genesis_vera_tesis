@@ -1,3 +1,5 @@
+import 'package:genesis_vera_tesis/domain/providers/grupo/grupo_provider.dart';
+
 import 'injection.dart';
 import 'ui/Router/FluroRouter.dart';
 import 'ui/pages/NavBar/NavBar.dart';
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DevolucionProvider()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(create: (_) => KardexProvider()),
+        ChangeNotifierProvider(create: (_) => sl<GrupoProvider>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

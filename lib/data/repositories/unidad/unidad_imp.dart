@@ -14,7 +14,7 @@ class UnidadImp implements AbstractMedidaUnidad {
     try {
       return right(await datasource.getAllUnidades());
     } on ServerException {
-      return left(ServerFailure(mensaje: "Error al obtener lista d eunidades"));
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }
   }
 }

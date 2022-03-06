@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';
+import 'package:genesis_vera_tesis/domain/providers/grupo/grupo_provider.dart';
 import 'package:genesis_vera_tesis/ui/pages/tipo_producto/modal/tipo_modal.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,8 +15,14 @@ class TipoProducto extends StatefulWidget {
 
 class _TipoProductoState extends State<TipoProducto> {
   @override
+  void initState() {
+    Provider.of<GrupoProvider>(context, listen: false).callgetGrupos();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final productoProvider = Provider.of<ProductoProvider>(context);
+    final productoProvider = Provider.of<GrupoProvider>(context);
     return Scaffold(
       body: Container(
         child: Padding(
@@ -61,12 +66,15 @@ class _TipoProductoState extends State<TipoProducto> {
                                   label: Text("Acciones",
                                       style: buildCustomStyle())),
                             ],
-                            rows: Estaticas.listTipoProduct.map<DataRow>((e) {
+                            rows: productoProvider.listGrupo.map<DataRow>((e) {
                               return DataRow(cells: [
-                                DataCell(Text(e.codRef.toString())),
-                                DataCell(Text(e.nomPro.toString())),
-                                DataCell(Text(e.desPro.toString())),
-                                DataCell(Text(e.stsPro.toString())),
+                                DataCell(Text(e.referencia.toString())),
+                                DataCell(Text(e.nombre.toString())),
+                                DataCell(Text(e.detalle.toString())),
+                                DataCell(Icon(
+                                  e.estado ? Icons.check : Icons.dangerous,
+                                  color: e.estado ? Colors.green : Colors.red,
+                                )),
                                 DataCell(Row(
                                   children: [
                                     InkWell(
@@ -86,8 +94,9 @@ class _TipoProductoState extends State<TipoProducto> {
                                       ),
                                     ),
                                     InkWell(
-                                        onTap: () =>
-                                            productoProvider.deleteTipo(e),
+                                        onTap: () => {},
+
+                                        //productoProvider.deleteTipo(e)
                                         child: Icon(
                                           Icons.delete,
                                           color: Colors.red,

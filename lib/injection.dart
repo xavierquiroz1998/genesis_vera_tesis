@@ -1,10 +1,15 @@
+import 'package:genesis_vera_tesis/data/datasource/grupo/grupo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/logeo/logeo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/unidad_medida/unidad_datasource.dart';
+import 'package:genesis_vera_tesis/data/repositories/grupo/grupo_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/unidad/unidad_imp.dart';
+import 'package:genesis_vera_tesis/domain/providers/grupo/grupo_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/unidadMedida/unidadProvider.dart';
+import 'package:genesis_vera_tesis/domain/repositories/grupo/abstract_grupo.dart';
 import 'package:genesis_vera_tesis/domain/repositories/unidad_medida/abstractMedida.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/grupo/get_grupos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
 import 'package:get_it/get_it.dart';
@@ -24,11 +29,13 @@ Future<void> init() async {
   sl.registerFactory(() => ProductosProvider(sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl()));
+  sl.registerFactory(() => GrupoProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
   sl.registerLazySingleton(() => InicioSesion(sl())); //injeccion casos de uso
   sl.registerLazySingleton(() => GetMedidas(sl()));
+  sl.registerLazySingleton(() => GetGrupos(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -37,6 +44,8 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AbstractSesion>(
       () => SesionImp(sl())); // injeccion de repository
+  sl.registerLazySingleton<AbstractGrupo>(
+      () => GrupoImp(sl())); // injeccion de repository
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));
@@ -47,6 +56,8 @@ Future<void> init() async {
       () => LogeoDatasourceImp(sl())); // injeccion de datasourse
   sl.registerLazySingleton<UnidadMediaDTS>(
       () => UnidadMedidaDTSImp(sl())); // injeccion de datasourse
+  sl.registerLazySingleton<GrupoDTS>(
+      () => GrupoDTSImp(sl())); // injeccion de datasourse
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 

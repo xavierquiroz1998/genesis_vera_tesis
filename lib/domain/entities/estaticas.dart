@@ -5,7 +5,7 @@ import 'Proveedores/Proveedores.dart';
 import 'usuarios/registroUsuarios.dart';
 import 'unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/domain/entities/tipo/tipo_producto.dart';
+import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
 
 class Estaticas {
@@ -15,7 +15,7 @@ class Estaticas {
   static List<RegistUser> listUsuarios = [];
   static List<ProveedoresEntity> listProveedores = [];
   static List<UnidadMedidaEntity> unidades = [];
-  static List<TipoProducto> listTipoProduct = [];
+  static List<GrupoEntity> listTipoProduct = [];
   static PermisoUsuarios permisos = new PermisoUsuarios();
   static cargaInicial() {
     for (int i = 0; i < 3; i++) {
@@ -75,11 +75,11 @@ class Estaticas {
     permisos.usuarios = true;
     //Tipo
 
-    listTipoProduct.add(TipoProducto(
+/*     listTipoProduct.add(TipoProducto(
         codPro: "${listTipoProduct.length}",
         codRef: '1372',
         nomPro: 'Herramientas de casa',
         desPro: 'Artefactos para el uso de viviendas',
-        stsPro: 'A'));
+        stsPro: 'A')); */
   }
 }
