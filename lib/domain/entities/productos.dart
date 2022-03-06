@@ -9,6 +9,7 @@ class Productos extends Equatable {
   double cantidad;
   int idUnidad;
   int idProveedor;
+  int idGrupo;
   bool estado;
 
   Productos({
@@ -20,6 +21,7 @@ class Productos extends Equatable {
     this.cantidad = 0,
     this.idUnidad = 0,
     this.idProveedor = 0,
+    this.idGrupo = 0,
     this.estado = false,
   });
 

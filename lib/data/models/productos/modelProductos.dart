@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
 import '../../../domain/entities/Proveedores/Proveedores.dart';
+import '../grupo/grupo_modelo.dart';
 
 class ModelProducto extends Productos {
   ModelProducto({
@@ -13,9 +14,11 @@ class ModelProducto extends Productos {
     required this.cantidad,
     required this.idUnidad,
     required this.idProveedor,
+    required this.idGrupo,
     required this.estado,
     required this.proveedor,
     required this.unidad,
+    required this.grupo,
   }) : super(
             id: id,
             referencia: referencia,
@@ -25,6 +28,7 @@ class ModelProducto extends Productos {
             cantidad: cantidad,
             idUnidad: idUnidad,
             idProveedor: idProveedor,
+            idGrupo: idGrupo,
             estado: estado);
 
   final int id;
@@ -35,9 +39,11 @@ class ModelProducto extends Productos {
   final double cantidad;
   final int idUnidad;
   final int idProveedor;
+  final int idGrupo;
   final bool estado;
   final Proveedor proveedor;
   final Unidad unidad;
+  final GruposModelo grupo;
 
   factory ModelProducto.fromJson(String str) =>
       ModelProducto.fromMap(json.decode(str));
@@ -53,9 +59,11 @@ class ModelProducto extends Productos {
         cantidad: json["cantidad"].toDouble(),
         idUnidad: json["idUnidad"],
         idProveedor: json["idProveedor"],
+        idGrupo: json["idGrupo"],
         estado: json["estado"],
         proveedor: Proveedor.fromMap(json["Proveedor"]),
         unidad: Unidad.fromMap(json["Unidad"]),
+        grupo: GruposModelo.fromMap(json["Grupo"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -67,9 +75,11 @@ class ModelProducto extends Productos {
         "cantidad": cantidad,
         "idUnidad": idUnidad,
         "idProveedor": idProveedor,
+        "idGrupo": idGrupo,
         "estado": estado,
-        //"Proveedor": proveedor.toMap(),
-        //"Unidad": unidad.toMap(),
+        "Proveedor": proveedor.toMap(),
+        "Unidad": unidad.toMap(),
+        "Grupo": grupo.toMap(),
       };
 }
 

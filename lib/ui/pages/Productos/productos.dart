@@ -268,6 +268,7 @@ Future<void> openFile(BuildContext context) async {
     final prv = context.read<ProductosProvider>();
     String msgError = "";
     await prv.cargarUnidades();
+    await prv.cargarGrupo();
     List<Productos> listProductosTemp = [];
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
@@ -303,8 +304,14 @@ Future<void> openFile(BuildContext context) async {
               msgError = "Codigo Unidad de medida Invalido";
               break;
             }
-
-            //p.tipoProdcuto: tipo.toString()
+            try {
+              var grupo = prv.listGrupos
+                  .firstWhere((e) => e.referencia == tipo.toString());
+              p.idGrupo = grupo.id;
+            } catch (e) {
+              msgError = "Codigo Tipo de Producto Invalido";
+              break;
+            }
 
             listProductosTemp.add(p);
           }

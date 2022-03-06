@@ -123,10 +123,7 @@ class ProductosProvider extends ChangeNotifier {
         product.id = Estaticas.listProductos.length + 1;
         product.detalle = controllerDescripcion.text;
         product.referencia = controllerCodigo.text;
-        product.cantidad = double.parse(
-          controllerStock.text,
-          (source) => 0,
-        );
+        product.cantidad = double.tryParse(controllerStock.text) ?? 0;
         product.precio = double.parse(controllerPrecio.text);
         product.estado = true;
         Estaticas.listProductos.forEach((element) {
