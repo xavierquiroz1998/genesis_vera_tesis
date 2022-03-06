@@ -29,7 +29,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
         child: ListView(
           children: [
             WhiteCard(
-                title: producto.product.id == null
+                title: producto.product.id == 0
                     ? "Nuevo Producto"
                     : "Modificar Producto",
                 child: Column(
@@ -182,7 +182,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      item.nombres!,
+                                      item.nombre,
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400),

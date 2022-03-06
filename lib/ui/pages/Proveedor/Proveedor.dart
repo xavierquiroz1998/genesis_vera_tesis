@@ -22,7 +22,7 @@ class Proveedor extends StatelessWidget {
                       return "Ingrese Numero de Identificacion";
                     }
                   },
-                  enabled: provee.proveedor.idProveedor != null ? false : true,
+                  enabled: provee.proveedor.id != 0 ? false : true,
                   controller: provee.controllIdentificacion,
                   decoration: InputDecoration(labelText: "Identificacion"),
                 ),

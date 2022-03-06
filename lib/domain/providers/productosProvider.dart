@@ -12,6 +12,7 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerCodigo = new TextEditingController();
   TextEditingController _controllerStock = new TextEditingController();
   TextEditingController _controllerPrecio = new TextEditingController();
+  List<Productos> listado = [];
 
   final InsertarProducto insertarProducto;
   final GetProductos getProductos;
@@ -49,10 +50,10 @@ class ProductosProvider extends ChangeNotifier {
 
   set product(Productos p) {
     _productos = p;
-    controllerDescripcion.text = p.detalle ?? "";
-    controllerCodigo.text = p.referencia ?? "";
-    //controllerStock.text = p.stock == null ? "" : p.stock!.toString();
-    controllerPrecio.text = p.precio == null ? "" : p.precio!.toString();
+    controllerDescripcion.text = p.detalle;
+    controllerCodigo.text = p.referencia;
+    controllerStock.text = p.cantidad.toString();
+    controllerPrecio.text = p.precio == null ? "" : p.precio.toString();
     notifyListeners();
   }
 
@@ -63,13 +64,13 @@ class ProductosProvider extends ChangeNotifier {
   Future<void> cargarPrd() async {
     String a = "";
     var temporal = await getProductos.call();
-    List<Productos> listado = [];
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listado = result as List<Productos>;
     } catch (ex) {
       print("error${result.toString()}");
     }
+    notifyListeners();
   }
 
   String failure(Failure fail) {
@@ -91,7 +92,10 @@ class ProductosProvider extends ChangeNotifier {
         product.id = Estaticas.listProductos.length + 1;
         product.detalle = controllerDescripcion.text;
         product.referencia = controllerCodigo.text;
-        //product.stock = double.tryParse(controllerStock.text);
+        product.cantidad = double.parse(
+          controllerStock.text,
+          (source) => 0,
+        );
         product.precio = double.parse(controllerPrecio.text);
         product.estado = true;
         Estaticas.listProductos.forEach((element) {

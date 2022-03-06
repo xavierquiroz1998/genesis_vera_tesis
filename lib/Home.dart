@@ -15,7 +15,6 @@ import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/providers/Productos/producto_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 
@@ -28,9 +27,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EProductoProvider()),
         ChangeNotifierProvider(create: (_) => UsuariosProvider()),
         ChangeNotifierProvider(create: (_) => sl<LoginProvider>()),
-        ChangeNotifierProvider(create: (_) => ProveedoresProvider()),
+        ChangeNotifierProvider(create: (_) => sl<ProveedoresProvider>()),
         ChangeNotifierProvider(create: (_) => sl<UnidadMedidaProvider>()),
-        ChangeNotifierProvider(create: (_) => ProductoProvider()),
         ChangeNotifierProvider(create: (_) => DevolucionProvider()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(create: (_) => KardexProvider()),

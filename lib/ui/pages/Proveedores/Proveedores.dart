@@ -2,13 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/Proveedores/Proveedores.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 
-class Proveedores extends StatelessWidget {
+class Proveedores extends StatefulWidget {
   const Proveedores({Key? key}) : super(key: key);
+
+  @override
+  State<Proveedores> createState() => _ProveedoresState();
+}
+
+class _ProveedoresState extends State<Proveedores> {
+  @override
+  void initState() {
+    Provider.of<ProveedoresProvider>(context, listen: false)
+        .obtenerProveedores();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +51,25 @@ class Proveedores extends StatelessWidget {
                         DataColumn(label: Text("Editar")),
                         DataColumn(label: Text("Anular")),
                       ],
-                      rows: Estaticas.listProveedores.map<DataRow>((e) {
+                      rows: provee.listaProveedores.map<DataRow>((e) {
                         return DataRow(
                           color: MaterialStateProperty.resolveWith<Color?>(
                               (states) {
-                            if (e.estado == "I") {
+                            if (!e.estado) {
                               return Colors.red.shade300;
                             }
                             return null;
                           }),
                           cells: [
-                            DataCell(Text(e.identificacion.toString())),
-                            DataCell(Text(e.nombres.toString())),
-                            DataCell(Text(e.direccion.toString())),
-                            DataCell(Text(e.correo.toString())),
-                            DataCell(Text(e.estado.toString())),
-                            DataCell(e.estado == "A"
+                            DataCell(Text(e.identificacion)),
+                            DataCell(Text(e.nombre)),
+                            DataCell(Text(e.direccion)),
+                            DataCell(Text(e.correo)),
+                            DataCell(Icon(
+                              e.estado ? Icons.check : Icons.dangerous,
+                              color: e.estado ? Colors.green : Colors.red,
+                            )),
+                            DataCell(e.estado
                                 ? TextButton.icon(
                                     icon: Icon(Icons.edit),
                                     onPressed: () {
@@ -68,7 +82,7 @@ class Proveedores extends StatelessWidget {
                                   )
                                 : Container()),
                             DataCell(
-                              e.estado == "A"
+                              e.estado
                                   ? TextButton.icon(
                                       icon: Icon(Icons.delete),
                                       onPressed: () async {
@@ -80,7 +94,7 @@ class Proveedores extends StatelessWidget {
                                                 content: Container(
                                                   child: Text(
                                                       "Seguro desea anular el item " +
-                                                          e.nombres!),
+                                                          e.nombre),
                                                 ),
                                                 actions: [
                                                   TextButton(

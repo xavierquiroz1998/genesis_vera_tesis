@@ -1,6 +1,7 @@
 import 'package:genesis_vera_tesis/data/datasource/grupo/grupo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/logeo/logeo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
+import 'package:genesis_vera_tesis/data/datasource/proveedores/proveedores_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/unidad_medida/unidad_datasource.dart';
 import 'package:genesis_vera_tesis/data/repositories/grupo/grupo_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/unidad/unidad_imp.dart';
@@ -17,11 +18,15 @@ import 'package:http/http.dart' as http;
 
 import 'data/repositories/logeo/sesion_Imp.dart';
 import 'data/repositories/producto_Imp.dart';
+import 'data/repositories/proveedores/proveedor_imp.dart';
 import 'domain/providers/Login/loginProvider.dart';
+import 'domain/providers/Proveedores/proveedoresProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
+import 'domain/repositories/proveedores/abtract_proveedores.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
+import 'domain/uses cases/proveedores/getproveedores.dart';
 
 final sl = GetIt.instance;
 
@@ -30,12 +35,14 @@ Future<void> init() async {
   sl.registerFactory(() => LoginProvider(sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl()));
   sl.registerFactory(() => GrupoProvider(sl()));
+  sl.registerFactory(() => ProveedoresProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
   sl.registerLazySingleton(() => InicioSesion(sl())); //injeccion casos de uso
   sl.registerLazySingleton(() => GetMedidas(sl()));
   sl.registerLazySingleton(() => GetGrupos(sl()));
+  sl.registerLazySingleton(() => GetProveedores(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -46,6 +53,8 @@ Future<void> init() async {
       () => SesionImp(sl())); // injeccion de repository
   sl.registerLazySingleton<AbstractGrupo>(
       () => GrupoImp(sl())); // injeccion de repository
+  sl.registerLazySingleton<AbstractProveedores>(
+      () => ProveedoresImp(sl())); // injeccion de repository
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));
@@ -58,6 +67,8 @@ Future<void> init() async {
       () => UnidadMedidaDTSImp(sl())); // injeccion de datasourse
   sl.registerLazySingleton<GrupoDTS>(
       () => GrupoDTSImp(sl())); // injeccion de datasourse
+  sl.registerLazySingleton<ProveedoresDatasourceADS>(
+      () => ProveedoresDataSourceImp(sl())); // injeccion de datasourse
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 

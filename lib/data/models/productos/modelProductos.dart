@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
+import '../../../domain/entities/Proveedores/Proveedores.dart';
+
 class ModelProducto extends Productos {
   ModelProducto({
     required this.id,
@@ -8,6 +10,7 @@ class ModelProducto extends Productos {
     required this.nombre,
     required this.detalle,
     required this.precio,
+    required this.cantidad,
     required this.idUnidad,
     required this.idProveedor,
     required this.estado,
@@ -19,6 +22,7 @@ class ModelProducto extends Productos {
             nombre: nombre,
             detalle: detalle,
             precio: precio,
+            cantidad: cantidad,
             idUnidad: idUnidad,
             idProveedor: idProveedor,
             estado: estado);
@@ -28,6 +32,7 @@ class ModelProducto extends Productos {
   final String nombre;
   final String detalle;
   final double precio;
+  final double cantidad;
   final int idUnidad;
   final int idProveedor;
   final bool estado;
@@ -45,6 +50,7 @@ class ModelProducto extends Productos {
         nombre: json["nombre"],
         detalle: json["detalle"],
         precio: json["precio"].toDouble(),
+        cantidad: json["cantidad"].toDouble(),
         idUnidad: json["idUnidad"],
         idProveedor: json["idProveedor"],
         estado: json["estado"],
@@ -58,6 +64,7 @@ class ModelProducto extends Productos {
         "nombre": nombre,
         "detalle": detalle,
         "precio": precio,
+        "cantidad": cantidad,
         "idUnidad": idUnidad,
         "idProveedor": idProveedor,
         "estado": estado,
@@ -66,7 +73,7 @@ class ModelProducto extends Productos {
       };
 }
 
-class Proveedor {
+class Proveedor extends ProveedoresEntity {
   Proveedor({
     required this.id,
     required this.identificacion,

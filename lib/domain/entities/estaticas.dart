@@ -32,14 +32,14 @@ class Estaticas {
       // );
 
 // proveedores
-      listProveedores.add(new ProveedoresEntity(
-          idProveedor: i,
-          identificacion: "0988888879",
-          nombres: "Proveedorer$i",
-          direccion: "direccion",
-          correo: "noexiste@gmail.com",
-          estado: "A",
-          celular: "123456789"));
+      // listProveedores.add(new ProveedoresEntity(
+      //     idProveedor: i,
+      //     identificacion: "0988888879",
+      //     nombres: "Proveedorer$i",
+      //     direccion: "direccion",
+      //     correo: "noexiste@gmail.com",
+      //     estado: "A",
+      //     celular: "123456789"));
     }
 
 // unidad medida

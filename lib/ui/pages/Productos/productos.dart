@@ -10,8 +10,19 @@ import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-class ProductosTable extends StatelessWidget {
+class ProductosTable extends StatefulWidget {
   const ProductosTable({Key? key}) : super(key: key);
+
+  @override
+  State<ProductosTable> createState() => _ProductosTableState();
+}
+
+class _ProductosTableState extends State<ProductosTable> {
+  @override
+  void initState() {
+    Provider.of<ProductosProvider>(context, listen: false).cargarPrd();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +40,8 @@ class ProductosTable extends StatelessWidget {
                     TextButton(
                       //style: ButtonStyle(),
                       onPressed: () async {
-                        await producto.cargarPrd();
-                        //producto.product = new Productos(precio: 0);
-                        //NavigationService.navigateTo(Flurorouter.ingreso);
+                        producto.product = new Productos(precio: 0);
+                        NavigationService.navigateTo(Flurorouter.ingreso);
                       },
                       child: Text("Nuevo"),
                     ),
@@ -53,9 +63,9 @@ class ProductosTable extends StatelessWidget {
                       const DataColumn(
                         label: Center(child: Text("Descripcion")),
                       ),
-                      // const DataColumn(
-                      //   label: Center(child: Text("Stock")),
-                      // ),
+                      const DataColumn(
+                        label: Center(child: Text("Stock")),
+                      ),
                       const DataColumn(
                         label: Center(child: Text("Precio")),
                       ),
@@ -69,11 +79,11 @@ class ProductosTable extends StatelessWidget {
                         label: Center(child: Text("Anular")),
                       ),
                     ],
-                    rows: Estaticas.listProductos.map<DataRow>((e) {
+                    rows: producto.listado.map<DataRow>((e) {
                       return DataRow(
                         color:
                             MaterialStateProperty.resolveWith<Color?>((states) {
-                          if (e.estado == "I") {
+                          if (!e.estado) {
                             return Colors.red.shade300;
                           }
                           return null;
@@ -90,17 +100,18 @@ class ProductosTable extends StatelessWidget {
                           DataCell(
                             Text(e.detalle),
                           ),
-                          // DataCell(
-                          //   Text(e.stock.toString()),
-                          // ),
+                          DataCell(
+                            Text(e.cantidad.toString()),
+                          ),
                           DataCell(
                             Text(e.precio.toString()),
                           ),
+                          DataCell(Icon(
+                            e.estado ? Icons.check : Icons.dangerous,
+                            color: e.estado ? Colors.green : Colors.red,
+                          )),
                           DataCell(
-                            Text(e.estado.toString()),
-                          ),
-                          DataCell(
-                            e.estado == "A"
+                            e.estado
                                 ? TextButton.icon(
                                     onPressed: () {
                                       producto.product = e;
@@ -112,7 +123,7 @@ class ProductosTable extends StatelessWidget {
                                 : Container(),
                           ),
                           DataCell(
-                            e.estado == "A"
+                            e.estado
                                 ? TextButton.icon(
                                     onPressed: () async {
                                       await showDialog(
@@ -123,7 +134,7 @@ class ProductosTable extends StatelessWidget {
                                               content: Container(
                                                 child: Text(
                                                     "Seguro desea anular el item " +
-                                                        e.detalle!),
+                                                        e.detalle),
                                               ),
                                               actions: [
                                                 TextButton(

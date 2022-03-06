@@ -2,8 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/Proveedores/Proveedores.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
+import '../../../core/Errors/failure.dart';
+import '../../uses cases/proveedores/getproveedores.dart';
+
 class ProveedoresProvider extends ChangeNotifier {
   String _titulo = "";
+
+  final GetProveedores useCaseProveedores;
+  ProveedoresProvider(this.useCaseProveedores);
+
+  List<ProveedoresEntity> listaProveedores = [];
 
   ProveedoresEntity _proveedores = new ProveedoresEntity();
   TextEditingController _controllIdentificacion = new TextEditingController();
@@ -60,23 +68,44 @@ class ProveedoresProvider extends ChangeNotifier {
 
   set proveedor(ProveedoresEntity proveedores) {
     _proveedores = proveedores;
-    controllIdentificacion.text = proveedor.identificacion ?? "";
-    controllCorreo.text = proveedor.correo ?? "";
-    controllDireccion.text = proveedor.direccion ?? "";
-    controllNombres.text = proveedor.nombres ?? "";
-    controllCelular.text = proveedor.celular ?? "";
+    controllIdentificacion.text = proveedor.identificacion;
+    controllCorreo.text = proveedor.correo;
+    controllDireccion.text = proveedor.direccion;
+    controllNombres.text = proveedor.nombre;
+    controllCelular.text = proveedor.identificacion;
     notifyListeners();
   }
 
   GlobalKey<FormState> get keyProvider => _keyProveedor;
+
+  Future<void> obtenerProveedores() async {
+    var temporal = await useCaseProveedores.call();
+    var result = temporal.fold((fail) => failure(fail), (prd) => prd);
+    try {
+      listaProveedores = result as List<ProveedoresEntity>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
+    notifyListeners();
+  }
+
+  String failure(Failure fail) {
+    switch (fail.runtimeType) {
+      case ServerFailure:
+        return "Ocurrio un Error";
+
+      default:
+        return "Error";
+    }
+  }
 
   getProveedor() {
     try {
       proveedor.identificacion = controllIdentificacion.text;
       proveedor.correo = controllCorreo.text;
       proveedor.direccion = controllDireccion.text;
-      proveedor.nombres = controllNombres.text;
-      proveedor.celular = controllCelular.text;
+      proveedor.nombre = controllNombres.text;
+      proveedor.identificacion = controllCelular.text;
     } catch (e) {}
   }
 
@@ -84,7 +113,7 @@ class ProveedoresProvider extends ChangeNotifier {
     try {
       if (keyProvider.currentState!.validate()) {
         getProveedor();
-        proveedor.idProveedor = Estaticas.listProveedores.length + 1;
+        proveedor.id = Estaticas.listProveedores.length + 1;
         Estaticas.listProveedores.add(proveedor);
         print("Nuevo Proveedor registrado");
         Navigator.pop(context);
@@ -94,9 +123,9 @@ class ProveedoresProvider extends ChangeNotifier {
 
   void anular(ProveedoresEntity prove) {
     try {
-      if (prove.idProveedor != null) {
+      if (prove.id != 0) {
         Estaticas.listProveedores.remove(prove);
-        prove.estado = "I";
+        prove.estado = false;
         Estaticas.listProveedores.add(prove);
       }
     } catch (e) {
