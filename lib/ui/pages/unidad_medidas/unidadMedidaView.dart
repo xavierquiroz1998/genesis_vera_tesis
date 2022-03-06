@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/providers/unidadMedida/unidadProvider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 import 'Widget/unidadWidget.dart';
 
-class UnidadMedidaView extends StatelessWidget {
+class UnidadMedidaView extends StatefulWidget {
   const UnidadMedidaView({Key? key}) : super(key: key);
+
+  @override
+  State<UnidadMedidaView> createState() => _UnidadMedidaViewState();
+}
+
+class _UnidadMedidaViewState extends State<UnidadMedidaView> {
+  @override
+  void initState() {
+    Provider.of<UnidadMedidaProvider>(context, listen: false).callgetMedidas();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +31,10 @@ class UnidadMedidaView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextButton(
-                      onPressed: () {
-                        unidadP.unidad = new UnidadMedida();
-                        UnidadWidget.dialogoUnidad(context);
+                      onPressed: () async {
+                        //unidadP.callgetMedidas();
+                        /*  unidadP.unidad = new UnidadMedidaEntity();
+                        UnidadWidget.dialogoUnidad(context); */
                       },
                       child: Text("Nuevo")),
                   Container(
@@ -36,12 +47,15 @@ class UnidadMedidaView extends StatelessWidget {
                           DataColumn(label: Text("Estado")),
                           DataColumn(label: Text("Editar")),
                         ],
-                        rows: unidadP.unidades.map<DataRow>((e) {
+                        rows: unidadP.listUnidad.map<DataRow>((e) {
                           return DataRow(cells: [
                             DataCell(Text(e.id.toString())),
                             DataCell(Text(e.codigo.toString())),
-                            DataCell(Text(e.descripcion.toString())),
-                            DataCell(Text(e.estado.toString())),
+                            DataCell(Text(e.detalle.toString())),
+                            DataCell(Icon(
+                              e.estado ? Icons.check : Icons.dangerous,
+                              color: e.estado ? Colors.green : Colors.red,
+                            )),
                             DataCell(TextButton(
                                 onPressed: () {
                                   unidadP.unidad = e;

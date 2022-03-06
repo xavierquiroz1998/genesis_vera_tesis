@@ -14,7 +14,7 @@ class Estaticas {
   static List<DevolucionCab> listDevoluciones = [];
   static List<RegistUser> listUsuarios = [];
   static List<ProveedoresEntity> listProveedores = [];
-  static List<UnidadMedida> unidades = [];
+  static List<UnidadMedidaEntity> unidades = [];
   static List<TipoProducto> listTipoProduct = [];
   static PermisoUsuarios permisos = new PermisoUsuarios();
   static cargaInicial() {
@@ -43,7 +43,7 @@ class Estaticas {
     }
 
 // unidad medida
-    unidades.add(new UnidadMedida(
+/*     unidades.add(new UnidadMedida(
         id: 1, codigo: "UNI", descripcion: "UNIDAD", estado: "A"));
     unidades.add(new UnidadMedida(
         id: 2, codigo: "M", descripcion: "METRO", estado: "A"));
@@ -52,7 +52,7 @@ class Estaticas {
     unidades.add(new UnidadMedida(
         id: 4, codigo: "LB", descripcion: "LIBRA", estado: "A"));
     unidades.add(new UnidadMedida(
-        id: 5, codigo: "G", descripcion: "GRAMO", estado: "A"));
+        id: 5, codigo: "G", descripcion: "GRAMO", estado: "A")); */
 
     listUsuarios.add(
       new RegistUser(

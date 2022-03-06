@@ -88,7 +88,7 @@ class ProductosTable extends StatelessWidget {
                             Text(e.referencia.toString()),
                           ),
                           DataCell(
-                            Text(e.detalle!),
+                            Text(e.detalle),
                           ),
                           // DataCell(
                           //   Text(e.stock.toString()),
@@ -202,7 +202,7 @@ Future<void> dialogProductos(BuildContext context, List<Productos> temp) async {
                           Text(e.referencia.toString()),
                         ),
                         DataCell(
-                          Text(e.detalle!),
+                          Text(e.detalle),
                         ),
                         // DataCell(
                         //   Text(e.stock.toString()),

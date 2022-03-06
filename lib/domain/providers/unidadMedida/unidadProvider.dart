@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/core/Errors/failure.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
 
 class UnidadMedidaProvider extends ChangeNotifier {
-  UnidadMedida _unidad = new UnidadMedida();
+  UnidadMedidaEntity _unidad = new UnidadMedidaEntity();
+  final GetMedidas getMedidas;
+  List<UnidadMedidaEntity> listUnidad = [];
+
+  UnidadMedidaProvider(this.getMedidas);
 
   TextEditingController _controllCodigo = TextEditingController();
   TextEditingController _controlldescripcion = TextEditingController();
+
+  Future<void> callgetMedidas() async {
+    var temp = await getMedidas.call();
+    try {
+      listUnidad = temp.getOrElse(() => []);
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    //  var result = temp.fold((fail) => failure(fail), (unidades) => unidades);
+  }
+
+  String failure(Failure fail) {
+    switch (fail.runtimeType) {
+      case ServerFailure:
+        return "Ocurrio un Error";
+
+      default:
+        return "Error";
+    }
+  }
 
   TextEditingController get controlldescripcion => _controlldescripcion;
 
@@ -22,18 +49,18 @@ class UnidadMedidaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  UnidadMedida get unidad => _unidad;
+  UnidadMedidaEntity get unidad => _unidad;
 
-  set unidad(UnidadMedida unidad) {
+  set unidad(UnidadMedidaEntity unidad) {
     _unidad = unidad;
-    controllCodigo.text = unidad.codigo ?? "";
-    controlldescripcion.text = unidad.descripcion ?? "";
+    controllCodigo.text = unidad.codigo;
+    controlldescripcion.text = unidad.detalle;
     notifyListeners();
   }
 
-  List<UnidadMedida> get unidades => Estaticas.unidades;
+  List<UnidadMedidaEntity> get unidades => this.listUnidad;
 
-  set unidades(List<UnidadMedida> unid) {
+  set unidades(List<UnidadMedidaEntity> unid) {
     Estaticas.unidades = unid;
     notifyListeners();
   }
@@ -41,7 +68,7 @@ class UnidadMedidaProvider extends ChangeNotifier {
   void getValor() {
     try {
       unidad.codigo = controllCodigo.text;
-      unidad.descripcion = controlldescripcion.text;
+      unidad.detalle = controlldescripcion.text;
     } catch (e) {}
   }
 
@@ -57,16 +84,16 @@ class UnidadMedidaProvider extends ChangeNotifier {
         // agrega
         var existe =
             unidades.firstWhere((e) => e.codigo == unidad.codigo, orElse: () {
-          return new UnidadMedida();
+          return new UnidadMedidaEntity();
         });
         if (existe.codigo != null) {
           return false;
         }
         unidad.id = unidades.length + 1;
-        unidad.estado = "A";
+        unidad.estado = true;
         Estaticas.unidades.add(unidad);
       }
-      unidades = Estaticas.unidades;
+      //  unidades = Estaticas.unidades;
 
       return true;
     } catch (e) {

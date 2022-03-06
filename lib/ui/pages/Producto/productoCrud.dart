@@ -119,7 +119,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         Container(
                           constraints:
                               BoxConstraints(maxWidth: 300, minWidth: 100),
-                          child: DropdownButtonFormField<UnidadMedida>(
+                          child: DropdownButtonFormField<UnidadMedidaEntity>(
                             onChanged: (value) {
                               // producto.product.idUnidad = value!.id;
                             },
@@ -129,7 +129,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      item.descripcion!,
+                                      item.detalle,
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:genesis_vera_tesis/data/models/productos/modelProductos.dart';
-import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ProductosDataSource {
