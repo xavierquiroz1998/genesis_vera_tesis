@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/datasource/reference/local_storage.dart';
 import 'package:genesis_vera_tesis/domain/providers/Login/loginProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ class FormLoginView extends StatefulWidget {
 }
 
 class _FormLoginViewState extends State<FormLoginView> {
+  final _keyLogin = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final logeo = Provider.of<LoginProvider>(context);
@@ -20,7 +22,7 @@ class _FormLoginViewState extends State<FormLoginView> {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Form(
-          key: logeo.keyLogin,
+          key: _keyLogin,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -52,8 +54,10 @@ class _FormLoginViewState extends State<FormLoginView> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                 child: TextButton(
-                  onPressed: () {
-                    logeo.logeo(context);
+                  onPressed: () async {
+                    if (_keyLogin.currentState!.validate()) {
+                      logeo.logeo(context);
+                    }
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.blue,

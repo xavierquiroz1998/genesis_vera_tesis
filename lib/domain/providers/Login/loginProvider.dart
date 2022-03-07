@@ -13,8 +13,6 @@ class LoginProvider extends ChangeNotifier {
 
   bool authenticated = false;
 
-  final _keyLogin = GlobalKey<FormState>();
-
   set cedula(String cedula) {
     _cedula = cedula;
     notifyListeners();
@@ -23,8 +21,6 @@ class LoginProvider extends ChangeNotifier {
   final InicioSesion logeoUsesCase;
 
   String _contrasenia = "";
-
-  GlobalKey<FormState> get keyLogin => _keyLogin;
 
   String get contrasenia => _contrasenia;
 
@@ -35,16 +31,14 @@ class LoginProvider extends ChangeNotifier {
 
   Future<void> logeo(BuildContext context) async {
     try {
-      if (keyLogin.currentState!.validate()) {
-        var result = Estaticas.listUsuarios.firstWhere(
-            (e) => e.cedula == cedula && e.contrasenia == contrasenia);
-        if (result.cedula != "") {
-          final result = await logeoUsesCase.call(cedula, contrasenia);
-          print("valor de result $result");
-          authenticated = true;
-          notifyListeners();
-          NavigationService.replaceTo(Flurorouter.inicio);
-        }
+      var result = Estaticas.listUsuarios.firstWhere(
+          (e) => e.cedula == cedula && e.contrasenia == contrasenia);
+      if (result.cedula != "") {
+        final result = await logeoUsesCase.call(cedula, contrasenia);
+        print("valor de result $result");
+        authenticated = true;
+        notifyListeners();
+        NavigationService.replaceTo(Flurorouter.inicio);
       }
     } catch (e) {}
   }

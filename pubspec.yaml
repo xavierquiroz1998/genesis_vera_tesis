@@ -28,6 +28,7 @@ dependencies:
   intl: ^0.17.0
   open_file: ^3.2.1
   provider: ^6.0.1
+  shared_preferences: ^2.0.13
   syncfusion_flutter_charts: ^19.4.48
   syncfusion_flutter_core: ^19.4.47
   syncfusion_flutter_datagrid: ^19.4.47

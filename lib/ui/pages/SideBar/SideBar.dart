@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/datasource/reference/local_storage.dart';
+import 'package:genesis_vera_tesis/data/models/permiso/permiso.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/providers/permiso/permiso_provider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/pages/Logo/Logo.dart';
 import 'package:genesis_vera_tesis/ui/pages/SideBar/widget/menu_item.dart';
@@ -8,12 +11,25 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/providers/Login/loginProvider.dart';
 
-class SideBar extends StatelessWidget {
+class SideBar extends StatefulWidget {
   const SideBar({Key? key}) : super(key: key);
+
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
+  @override
+  void initState() {
+    Provider.of<PermisoProvider>(context, listen: false).callgetPermisos("2");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final logeo = Provider.of<LoginProvider>(context);
+    final permiso = Provider.of<PermisoProvider>(context);
+    /*   final LocalStorage _prefService = LocalStorage(); */
     return Container(
       width: 200,
       height: double.infinity,
@@ -25,7 +41,21 @@ class SideBar extends StatelessWidget {
           SizedBox(
             height: 50,
           ),
-          MenuItem(
+          for (var value in permiso.listGrupo) ...[
+            MenuItem(
+              text: value.proyecto!.nombre,
+              icon: Icons.home,
+              onPressed: () async {
+                NavigationService.navigateTo(value.proyecto!.ruta);
+                /*      _prefService.createCache(value).whenComplete(() {
+                  Navigator.pushNamed(context, 'dashboard');
+                }); */
+              },
+              isActive: NavigationService.currentPage == value.proyecto!.ruta,
+            ),
+          ],
+
+          /*  MenuItem(
             text: 'Home',
             icon: Icons.home,
             onPressed: () => NavigationService.navigateTo(Flurorouter.inicio),
@@ -124,13 +154,12 @@ class SideBar extends StatelessWidget {
               onPressed: () => NavigationService.navigateTo(Flurorouter.kardex),
               isActive: NavigationService.currentPage == Flurorouter.kardex,
             )
-          },
+          }, */
           MenuItem(
             text: 'Salir',
             icon: Icons.exit_to_app,
             onPressed: () {
               logeo.lagout();
-
               NavigationService.navigateTo("/login");
               //NavigationService.navigatorKey = new GlobalKey<NavigatorState>();
             },
