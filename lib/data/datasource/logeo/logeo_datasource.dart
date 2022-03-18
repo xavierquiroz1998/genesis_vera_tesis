@@ -13,12 +13,11 @@ class LogeoDatasourceImp extends LogeoDatasource {
   Future<String> inicioSesion(String usuario, String contrasenia) async {
     try {
       final data = {"correo": usuario, "password": contrasenia};
-      //final formData = FormData.fromMap(data);
       final result = await cliente
           .post(Uri.parse(HttpStatic.baseUrl + "auth/login"), body: data);
       return result.body;
     } catch (ex) {
-      return "Error en Datasource";
+      return "Error en Datasource" + ex.toString();
     }
   }
 }

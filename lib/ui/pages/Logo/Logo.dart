@@ -6,22 +6,23 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 30),
-      child: Row(
+      //padding: EdgeInsets.only(top: 10),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.bubble_chart_outlined,
-            color: Colors.red,
+          Image.asset(
+            "Ferreteria.png",
+            //width: double.infinity,
+            height: 100,
           ),
           SizedBox(
             width: 10,
           ),
-          Text(
-            "Admin",
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w200, color: Colors.white),
-          ),
+          // Text(
+          //   "Kiarita",
+          //   style: TextStyle(
+          //       fontSize: 20, fontWeight: FontWeight.w200, color: Colors.white),
+          // ),
         ],
       ),
     );

@@ -5,7 +5,9 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
 
+import '../entities/Proveedores/Proveedores.dart';
 import '../entities/tipo/grupo.dart';
 import '../entities/unidad_medida/unidadMedida.dart';
 import '../uses cases/grupo/get_grupos.dart';
@@ -20,13 +22,15 @@ class ProductosProvider extends ChangeNotifier {
   List<Productos> listado = [];
   List<UnidadMedidaEntity> listUnidades = [];
   List<GrupoEntity> listGrupos = [];
+  List<ProveedoresEntity> listaProveedores = [];
 
   final InsertarProducto insertarProducto;
   final GetProductos getProductos;
   final GetMedidas unidadesMedidas;
   final GetGrupos grupos;
+  final GetProveedores useCaseProveedores;
   ProductosProvider(this.insertarProducto, this.getProductos,
-      this.unidadesMedidas, this.grupos);
+      this.unidadesMedidas, this.grupos, this.useCaseProveedores);
 
   final _keyProducto = GlobalKey<FormState>();
 
@@ -98,6 +102,17 @@ class ProductosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listGrupos = result as List<GrupoEntity>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
+    notifyListeners();
+  }
+
+  Future<void> cargarProveedores() async {
+    var temporal = await useCaseProveedores.call();
+    var result = temporal.fold((fail) => failure(fail), (prd) => prd);
+    try {
+      listaProveedores = result as List<ProveedoresEntity>;
     } catch (ex) {
       print("error${result.toString()}");
     }

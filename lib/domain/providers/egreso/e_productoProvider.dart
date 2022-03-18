@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:collection/collection.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
+
+import '../../services/fail.dart';
 
 class EProductoProvider extends ChangeNotifier {
   EgresoCabecera _listPRoduct = new EgresoCabecera();
   TextEditingController _ctrObservacion = new TextEditingController();
+  List<Productos> listado = [];
+  final GetProductos getProductos;
+
+  EProductoProvider(this.getProductos);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 
@@ -39,6 +45,17 @@ class EProductoProvider extends ChangeNotifier {
 
   void remover(EgresoDetalle e) {
     listaProducto.detalle!.remove(e);
+    notifyListeners();
+  }
+
+  Future<void> cargarPrd() async {
+    var temporal = await getProductos.call();
+    var result = temporal.fold((fail) => Extras.failure(fail), (prd) => prd);
+    try {
+      listado = result as List<Productos>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
     notifyListeners();
   }
 

@@ -19,6 +19,13 @@ class DevolucionView extends StatefulWidget {
 class _DevolucionViewState extends State<DevolucionView> {
   List<String> tipoDev = ["CLIENTE", "PROVEEDOR"];
   String tipoDevSelect = "";
+
+  @override
+  void initState() {
+    Provider.of<DevolucionProvider>(context, listen: false).cargarPrd();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final devolucio = Provider.of<DevolucionProvider>(context);
@@ -95,24 +102,35 @@ class _DevolucionViewState extends State<DevolucionView> {
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            DropdownButton<Productos>(
-                              items: Estaticas.listProductos
-                                  .map(
-                                    (eDrop) => DropdownMenuItem<Productos>(
-                                      child: Text(eDrop.detalle),
-                                      value: eDrop,
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                e.idProducto = value?.id;
-                                e.prdSelect = value!;
-                                // prdSelect = value!;
-                                setState(() {});
-                              },
-                              hint: e.idProducto == null
-                                  ? Text("Seleccione Producto")
-                                  : Text("${e.prdSelect.detalle}"),
+                            Expanded(
+                              child: Container(
+                                width: 300,
+                                child: DropdownButton<Productos>(
+                                  items: devolucio.listado
+                                      .map(
+                                        (eDrop) => DropdownMenuItem<Productos>(
+                                          child: Container(
+                                            width: 300,
+                                            child: Text(eDrop.detalle),
+                                          ),
+                                          value: eDrop,
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    e.idProducto = value?.id;
+                                    e.prdSelect = value!;
+                                    // prdSelect = value!;
+                                    setState(() {});
+                                  },
+                                  hint: e.idProducto == null
+                                      ? Text("Seleccione Producto")
+                                      : Container(
+                                          width: 300,
+                                          child:
+                                              Text("${e.prdSelect.detalle}")),
+                                ),
+                              ),
                             ),
                             // Combo(
                             //   provider: devolucio,

@@ -20,6 +20,15 @@ class ProductoCrud extends StatefulWidget {
 
 class _ProductoCrudState extends State<ProductoCrud> {
   @override
+  void initState() {
+    final cargaPRd = Provider.of<ProductosProvider>(context, listen: false);
+    cargaPRd.cargarUnidades();
+    cargaPRd.cargarGrupo();
+    cargaPRd.cargarProveedores();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final producto = Provider.of<ProductosProvider>(context);
     final kardex = Provider.of<KardexProvider>(context);
@@ -123,7 +132,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             onChanged: (value) {
                               // producto.product.idUnidad = value!.id;
                             },
-                            items: Estaticas.unidades.map((item) {
+                            items: producto.listUnidades.map((item) {
                               return DropdownMenuItem(
                                 value: item,
                                 child: Align(
@@ -149,7 +158,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             onChanged: (value) {
                               //producto.product.tipoProdcuto = value!.codRef;
                             },
-                            items: Estaticas.listTipoProduct.map((item) {
+                            items: producto.listGrupos.map((item) {
                               return DropdownMenuItem(
                                 value: item,
                                 child: Align(
@@ -176,7 +185,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             onChanged: (value) {
                               // producto.product.idProveedor = value!.idProveedor;
                             },
-                            items: Estaticas.listProveedores.map((item) {
+                            items: producto.listaProveedores.map((item) {
                               return DropdownMenuItem(
                                 value: item,
                                 child: Align(

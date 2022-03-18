@@ -6,5 +6,5 @@ import '../../core/Errors/failure.dart';
 abstract class AbstractProducto {
   Future<Either<Failure, List<Productos>>> getAllProductos();
 
-  Future<String> insertProducto();
+  Future<String> insertProducto(Productos model);
 }

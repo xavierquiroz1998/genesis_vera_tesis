@@ -7,8 +7,19 @@ import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart'
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-class EgresoProducto extends StatelessWidget {
+class EgresoProducto extends StatefulWidget {
   const EgresoProducto({Key? key}) : super(key: key);
+
+  @override
+  State<EgresoProducto> createState() => _EgresoProductoState();
+}
+
+class _EgresoProductoState extends State<EgresoProducto> {
+  @override
+  void initState() {
+    Provider.of<EProductoProvider>(context, listen: false).cargarPrd();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +172,7 @@ class _ComboState extends State<Combo> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<Productos>(
-      items: Estaticas.listProductos
+      items: widget.provider.listado
           .map(
             (eDrop) => DropdownMenuItem<Productos>(
               child: Text(eDrop.detalle),
@@ -174,7 +185,7 @@ class _ComboState extends State<Combo> {
         widget.prdSelect = value!;
         setState(() {});
       },
-      hint: widget.prdSelect.id == null
+      hint: widget.prdSelect.id == 0
           ? Text("Seleccione Producto")
           : Text("${widget.prdSelect.detalle}"),
     );

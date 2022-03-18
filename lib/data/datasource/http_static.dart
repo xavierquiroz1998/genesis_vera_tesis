@@ -1,3 +1,3 @@
 class HttpStatic {
-  static String baseUrl = "http://localhost:8080/api/";
+  static String baseUrl = "http://localhost:8000/api/";
 }

@@ -40,7 +40,7 @@ class _SideBarState extends State<SideBar> {
         children: [
           Logo(),
           SizedBox(
-            height: 50,
+            height: 30,
           ),
           for (var value in permiso.listGrupo) ...[
             MenuItem(

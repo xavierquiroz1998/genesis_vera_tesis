@@ -4,6 +4,7 @@ import '../../models/productos/modelProductos.dart';
 
 abstract class ProveedoresDatasourceADS {
   Future<List<Proveedor>> getAllProveedores();
+  Future<String> insertProveedores();
 }
 
 class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
@@ -29,5 +30,20 @@ class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
   List<Proveedor> decodeProveedores(String respuesta) {
     var parseo = jsonDecode(respuesta);
     return parseo.map<Proveedor>((json) => Proveedor.fromMap(json)).toList();
+  }
+
+  @override
+  Future<String> insertProveedores() async {
+    try {
+      String url = urlBase;
+      List<Proveedor> tem = [];
+      final result = await cliente.post(Uri.parse(url));
+      if (result.statusCode == 200) {
+        return result.body;
+      }
+      return result.statusCode.toString();
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 abstract class GrupoDTS {
   Future<List<GruposModelo>> getAllGrupos();
+  Future<String> insertGrupos();
 }
 
 class GrupoDTSImp extends GrupoDTS {
@@ -31,5 +32,21 @@ class GrupoDTSImp extends GrupoDTS {
     return parseo
         .map<GruposModelo>((json) => GruposModelo.fromMap(json))
         .toList();
+  }
+
+  @override
+  Future<String> insertGrupos() async {
+    try {
+      String url2 = "http://localhost:8000/api/grupos";
+      List<GruposModelo> tem = [];
+      final result = await cliente.post(Uri.parse(url2));
+      if (result.statusCode == 200) {
+        return result.body;
+      }
+
+      return result.statusCode.toString();
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

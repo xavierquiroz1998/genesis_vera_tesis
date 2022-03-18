@@ -17,4 +17,13 @@ class UnidadImp implements AbstractMedidaUnidad {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }
   }
+
+  @override
+  Future<String> insetUnidades() async {
+    try {
+      return await datasource.insertUnidades();
+    } on ServerException {
+      return "Error al obtener lista de unidades";
+    }
+  }
 }

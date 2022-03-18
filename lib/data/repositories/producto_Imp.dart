@@ -5,6 +5,8 @@ import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/repositories/abstractPRoducto.dart';
 
+import '../models/productos/modelProductos.dart';
+
 class ProductoImp implements AbstractProducto {
   final ProductosDataSource dataSource;
   ProductoImp(this.dataSource);
@@ -19,7 +21,7 @@ class ProductoImp implements AbstractProducto {
   }
 
   @override
-  Future<String> insertProducto() async {
-    return await dataSource.insertProducto();
+  Future<String> insertProducto(Productos model) async {
+    return await dataSource.insertProducto(model);
   }
 }

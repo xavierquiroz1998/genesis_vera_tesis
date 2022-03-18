@@ -19,4 +19,13 @@ class ProveedoresImp implements AbstractProveedores {
       return left(ServerFailure(mensaje: "Error al obtener datos"));
     }
   }
+
+  @override
+  Future<String> insertProveedores() async {
+    try {
+      return await dataSource.insertProveedores();
+    } on ServerException {
+      return "Error al obtener datos";
+    }
+  }
 }

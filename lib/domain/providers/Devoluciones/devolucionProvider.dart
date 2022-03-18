@@ -2,12 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
 import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_det.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+
+import '../../services/fail.dart';
+import '../../uses cases/productos/getproductos.dart';
 
 class DevolucionProvider extends ChangeNotifier {
   DevolucionCab _cab = new DevolucionCab();
   List<DevolucionDet> _detalleDevolucion = [];
   TextEditingController _ctrObservacion = new TextEditingController();
   String _msgError = "";
+  List<Productos> listado = [];
+  final GetProductos getProductos;
+
+  DevolucionProvider(this.getProductos);
 
   // prueba devoluciones
 
@@ -53,6 +61,17 @@ class DevolucionProvider extends ChangeNotifier {
       if (item.cantidad != null && item.precio != null) {
         item.total = item.cantidad! * item.precio!;
       }
+    }
+    notifyListeners();
+  }
+
+  Future<void> cargarPrd() async {
+    var temporal = await getProductos.call();
+    var result = temporal.fold((fail) => Extras.failure(fail), (prd) => prd);
+    try {
+      listado = result as List<Productos>;
+    } catch (ex) {
+      print("error${result.toString()}");
     }
     notifyListeners();
   }

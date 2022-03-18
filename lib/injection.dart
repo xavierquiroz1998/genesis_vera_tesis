@@ -29,8 +29,10 @@ import 'package:http/http.dart' as http;
 import 'data/repositories/logeo/sesion_Imp.dart';
 import 'data/repositories/producto_Imp.dart';
 import 'data/repositories/proveedores/proveedor_imp.dart';
+import 'domain/providers/Devoluciones/devolucionProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Proveedores/proveedoresProvider.dart';
+import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
 import 'domain/repositories/proveedores/abtract_proveedores.dart';
@@ -41,14 +43,16 @@ import 'domain/uses cases/proveedores/getproveedores.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(
-      () => ProductosProvider(sl(), sl(), sl(), sl())); //injectar provider
+  sl.registerFactory(() =>
+      ProductosProvider(sl(), sl(), sl(), sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl()));
   sl.registerFactory(() => GrupoProvider(sl()));
   sl.registerFactory(() => ProveedoresProvider(sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
   sl.registerFactory(() => ProyectoProvider(sl()));
+  sl.registerFactory(() => EProductoProvider(sl()));
+  sl.registerFactory(() => DevolucionProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso

@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:genesis_vera_tesis/data/models/productos/modelProductos.dart';
 import 'package:http/http.dart' as http;
 
+import '../../domain/entities/productos.dart';
+
 abstract class ProductosDataSource {
-  Future<String> insertProducto();
+  Future<String> insertProducto(Productos model);
   Future<List<ModelProducto>> getProducto();
 }
 
@@ -14,7 +16,7 @@ class ProductosDataSourceImp extends ProductosDataSource {
   String urlBase = "http://localhost:8000/api/productos";
 
   @override
-  Future<String> insertProducto() async {
+  Future<String> insertProducto(Productos modelo) async {
     try {
       String url = "";
       final result = await cliente.post(Uri.parse(url));
