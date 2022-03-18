@@ -7,6 +7,7 @@ import 'package:genesis_vera_tesis/domain/providers/permiso/permiso_provider.dar
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/pages/Logo/Logo.dart';
 import 'package:genesis_vera_tesis/ui/pages/SideBar/widget/menu_item.dart';
+import 'package:genesis_vera_tesis/util/util_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/providers/Login/loginProvider.dart';
@@ -44,7 +45,7 @@ class _SideBarState extends State<SideBar> {
           for (var value in permiso.listGrupo) ...[
             MenuItem(
               text: value.proyecto!.nombre,
-              icon: Icons.home,
+              icon: UtilView.icons[int.parse(value.proyecto!.referencia)],
               onPressed: () async {
                 NavigationService.navigateTo(value.proyecto!.ruta);
                 /*      _prefService.createCache(value).whenComplete(() {
