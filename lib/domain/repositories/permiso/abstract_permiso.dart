@@ -4,4 +4,6 @@ import 'package:genesis_vera_tesis/domain/entities/permiso/permiso_entity.dart';
 
 abstract class AbstractPermiso {
   Future<Either<Failure, List<PermisosEntity>>> getAllPermisosUser(String uid);
+  Future<Either<Failure, PermisosEntity>> insertPermisosUser(
+      PermisosEntity usuario);
 }

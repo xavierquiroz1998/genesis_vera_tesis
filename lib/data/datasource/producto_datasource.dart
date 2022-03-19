@@ -17,9 +17,12 @@ class ProductosDataSourceImp extends ProductosDataSource {
 
   @override
   Future<String> insertProducto(Productos modelo) async {
+    var prd = json.encode(modelo.toMap());
+
     try {
-      String url = "";
-      final result = await cliente.post(Uri.parse(url));
+      final result = await cliente.post(Uri.parse(urlBase),
+          body: prd, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {}
       return "";
     } catch (ex) {
       return "";

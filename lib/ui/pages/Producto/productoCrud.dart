@@ -130,7 +130,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               BoxConstraints(maxWidth: 300, minWidth: 100),
                           child: DropdownButtonFormField<UnidadMedidaEntity>(
                             onChanged: (value) {
-                              // producto.product.idUnidad = value!.id;
+                              producto.product.idUnidad = value!.id;
                             },
                             items: producto.listUnidades.map((item) {
                               return DropdownMenuItem(
@@ -156,7 +156,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               BoxConstraints(maxWidth: 300, minWidth: 100),
                           child: DropdownButtonFormField<GrupoEntity>(
                             onChanged: (value) {
-                              //producto.product.tipoProdcuto = value!.codRef;
+                              producto.product.idGrupo = value!.id;
                             },
                             items: producto.listGrupos.map((item) {
                               return DropdownMenuItem(
@@ -183,7 +183,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               BoxConstraints(maxWidth: 300, minWidth: 100),
                           child: DropdownButtonFormField<ProveedoresEntity>(
                             onChanged: (value) {
-                              // producto.product.idProveedor = value!.idProveedor;
+                              producto.product.idProveedor = value!.id;
                             },
                             items: producto.listaProveedores.map((item) {
                               return DropdownMenuItem(
@@ -219,8 +219,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             producto.controllerCodigo.text)
                         .toList();
 
-                    final opt = await producto
-                        .guardar(otra.isNotEmpty ? otra.first : null);
+                    // final opt = await producto
+                    //     .guardar(otra.isNotEmpty ? otra.first : null);
+
+                    final opt = await producto.guardar(producto.product);
 
                     if (opt != null) {
                       kardex.entradas(opt, otra.isNotEmpty, true);

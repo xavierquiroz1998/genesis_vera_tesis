@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/usuarios/registroUsuarios.dart';
 
+import '../../uses cases/usuarios/get_usuarios.dart';
+
 class UsuariosProvider extends ChangeNotifier {
   String isShowUpdate = "1";
   bool blockCedula = true;
+
+  final GetUsuarios usuarios;
+  List<RegistUser> listaUsuarios = [];
   final controlCedula = TextEditingController();
   final controlNombre = TextEditingController();
   final controlDireccion = TextEditingController();
@@ -13,6 +18,8 @@ class UsuariosProvider extends ChangeNotifier {
   final controlpassword = TextEditingController();
   final controlpassword2 = TextEditingController();
 
+  UsuariosProvider(this.usuarios);
+
   String get getIsShow => isShowUpdate;
 
   set setIsShow(String repiteContrasenia) {
@@ -20,30 +27,38 @@ class UsuariosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future cargaProveedores() async {
+    var temp = await usuarios.call();
+    try {
+      listaUsuarios = temp.getOrElse(() => []);
+    } catch (ex) {}
+    notifyListeners();
+  }
+
   void saveUser() {
     try {
-      if (isShowUpdate == "1") {
-        final usuarioModel = RegistUser(
-            cedula: controlCedula.text,
-            nombres: controlNombre.text,
-            direccion: controlDireccion.text,
-            correo: controlEmail.text,
-            celular: controlCelular.text,
-            contrasenia: controlpassword.text);
-        Estaticas.listUsuarios.add(usuarioModel);
-      } else {
-        Estaticas.listUsuarios = Estaticas.listUsuarios.map((e) {
-          if (e.cedula != controlCedula.text) return e;
-          e.nombres = controlNombre.text;
-          e.direccion = controlDireccion.text;
-          e.correo = controlEmail.text;
-          e.celular = controlCelular.text;
-          e.contrasenia = controlpassword.text;
+      // if (isShowUpdate == "1") {
+      //   final usuarioModel = RegistUser(
+      //       cedula: controlCedula.text,
+      //       nombres: controlNombre.text,
+      //       direccion: controlDireccion.text,
+      //       correo: controlEmail.text,
+      //       celular: controlCelular.text,
+      //       contrasenia: controlpassword.text);
+      //   Estaticas.listUsuarios.add(usuarioModel);
+      // } else {
+      //   Estaticas.listUsuarios = Estaticas.listUsuarios.map((e) {
+      //     if (e.cedula != controlCedula.text) return e;
+      //     e.nombres = controlNombre.text;
+      //     e.direccion = controlDireccion.text;
+      //     e.correo = controlEmail.text;
+      //     e.celular = controlCelular.text;
+      //     e.contrasenia = controlpassword.text;
 
-          return e;
-        }).toList();
-        print(Estaticas.listUsuarios);
-      }
+      //     return e;
+      //   }).toList();
+      //   print(Estaticas.listUsuarios);
+      // }
       notifyListeners();
     } catch (e) {
       print("Erro en guardar usuario ${e.toString()}");
@@ -52,11 +67,11 @@ class UsuariosProvider extends ChangeNotifier {
 
   void fillText(RegistUser usuario) {
     try {
-      controlCedula.text = usuario.cedula;
-      controlNombre.text = usuario.nombres;
-      controlDireccion.text = usuario.direccion;
-      controlEmail.text = usuario.correo;
-      controlCelular.text = usuario.celular;
+      // controlCedula.text = usuario.cedula;
+      // controlNombre.text = usuario.nombres;
+      // controlDireccion.text = usuario.direccion;
+      // controlEmail.text = usuario.correo;
+      // controlCelular.text = usuario.celular;
       controlpassword.text = "";
       controlpassword2.text = "";
       blockCedula = false;

@@ -56,13 +56,13 @@ class Estaticas {
 
     listUsuarios.add(
       new RegistUser(
-          idUsuario: 1,
-          nombres: "Administrador",
-          correo: "admin@gmail.com",
-          celular: "099999999",
-          cedula: "admin",
-          contrasenia: "123",
-          estado: "A"),
+          //idUsuario: 1,
+          nombre: "Administrador",
+          email: "admin",
+          // celular: "099999999",
+          // cedula: "admin",
+          clave: "123",
+          estado: true),
     );
 
     permisos.egreso = true;

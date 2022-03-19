@@ -6,8 +6,19 @@ import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-class UsuarioView extends StatelessWidget {
+class UsuarioView extends StatefulWidget {
   const UsuarioView({Key? key}) : super(key: key);
+
+  @override
+  State<UsuarioView> createState() => _UsuarioViewState();
+}
+
+class _UsuarioViewState extends State<UsuarioView> {
+  @override
+  void initState() {
+    Provider.of<UsuariosProvider>(context, listen: false).cargaProveedores();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +43,20 @@ class UsuarioView extends StatelessWidget {
                         DataColumn(label: Text("Id")),
                         DataColumn(label: Text("Nombres")),
                         DataColumn(label: Text("Correo")),
-                        DataColumn(label: Text("Celular")),
+                        DataColumn(label: Text("Expiracion")),
                         DataColumn(label: Text("Estado")),
                         DataColumn(label: Text("Acciones")),
                       ],
-                      rows: Estaticas.listUsuarios.map<DataRow>((e) {
+                      rows: userProvider.listaUsuarios.map<DataRow>((e) {
                         return DataRow(cells: [
-                          DataCell(Text(e.idUsuario.toString())),
-                          DataCell(Text(e.nombres.toString())),
-                          DataCell(Text(e.correo.toString())),
-                          DataCell(Text(e.celular.toString())),
-                          DataCell(Text(e.estado.toString())),
+                          DataCell(Text(e.id.toString())),
+                          DataCell(Text(e.nombre.toString())),
+                          DataCell(Text(e.email.toString())),
+                          DataCell(Text(e.expiracion.toString())),
+                          DataCell(Icon(
+                            e.estado ? Icons.check : Icons.dangerous,
+                            color: e.estado ? Colors.green : Colors.red,
+                          )),
                           DataCell(Row(
                             children: [
                               InkWell(

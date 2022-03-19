@@ -21,9 +21,9 @@ class ProveedoresImp implements AbstractProveedores {
   }
 
   @override
-  Future<String> insertProveedores() async {
+  Future<String> insertProveedores(ProveedoresEntity prod) async {
     try {
-      return await dataSource.insertProveedores();
+      return await dataSource.insertProveedores(prod);
     } on ServerException {
       return "Error al obtener datos";
     }

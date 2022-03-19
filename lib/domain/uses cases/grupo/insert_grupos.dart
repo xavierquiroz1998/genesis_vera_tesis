@@ -1,3 +1,4 @@
+import '../../entities/tipo/grupo.dart';
 import '../../repositories/grupo/abstract_grupo.dart';
 
 class InsertProducto {
@@ -5,7 +6,7 @@ class InsertProducto {
 
   InsertProducto(this.repository);
 
-  Future<String> insert() async {
-    return await repository.insertGrupos();
+  Future<String> insert(GrupoEntity grupo) async {
+    return await repository.insertGrupos(grupo);
   }
 }

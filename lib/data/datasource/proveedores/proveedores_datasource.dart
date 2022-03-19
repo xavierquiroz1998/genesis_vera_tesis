@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../../domain/entities/Proveedores/Proveedores.dart';
 import '../../models/productos/modelProductos.dart';
 
 abstract class ProveedoresDatasourceADS {
   Future<List<Proveedor>> getAllProveedores();
-  Future<String> insertProveedores();
+  Future<String> insertProveedores(ProveedoresEntity prod);
 }
 
 class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
@@ -33,7 +34,7 @@ class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
   }
 
   @override
-  Future<String> insertProveedores() async {
+  Future<String> insertProveedores(ProveedoresEntity prod) async {
     try {
       String url = urlBase;
       List<Proveedor> tem = [];

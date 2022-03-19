@@ -2,10 +2,12 @@ import 'package:genesis_vera_tesis/data/models/unidad_medida/unidad_medida.dart'
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../../domain/entities/unidad_medida/unidadMedida.dart';
+
 abstract class UnidadMediaDTS {
   Future<List<UnidadMedidaModelo>> getAllUnidades();
 
-  Future<String> insertUnidades();
+  Future<UnidadMedidaEntity> insertUnidades(UnidadMedidaEntity unid);
 }
 
 class UnidadMedidaDTSImp extends UnidadMediaDTS {
@@ -36,18 +38,20 @@ class UnidadMedidaDTSImp extends UnidadMediaDTS {
   }
 
   @override
-  Future<String> insertUnidades() async {
+  Future<UnidadMedidaModelo> insertUnidades(UnidadMedidaEntity unidad) async {
     try {
       String url2 = "http://localhost:8000/api/unidades";
-      List<UnidadMedidaModelo> tem = [];
+
       final result = await cliente.post(Uri.parse(url2));
       if (result.statusCode == 200) {
-        return result.body;
+        return UnidadMedidaModelo.fromMap(json.decode(result.body));
       } else {
-        return result.statusCode.toString();
+        return new UnidadMedidaModelo(
+            id: 0, codigo: "", detalle: "", estado: false);
       }
     } catch (e) {
-      return e.toString();
+      return new UnidadMedidaModelo(
+          id: 0, codigo: "", detalle: "", estado: false);
     }
   }
 }

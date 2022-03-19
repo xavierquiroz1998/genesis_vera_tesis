@@ -9,16 +9,16 @@ import 'package:genesis_vera_tesis/domain/entities/permiso/permiso_entity.dart';
 
 class PermisoModelo extends PermisosEntity {
   PermisoModelo({
-    required this.id,
-    required this.idProyecto,
-    required this.idUsuario,
-    required this.creacion,
-    required this.actualizar,
-    required this.anular,
-    required this.consulta,
-    required this.estado,
-    required this.usuario,
-    required this.proyecto,
+    this.id = 0,
+    this.idProyecto = 0,
+    this.idUsuario = 0,
+    this.creacion = 0,
+    this.actualizar = 0,
+    this.anular = 0,
+    this.consulta = 0,
+    this.estado = false,
+    this.usuario,
+    this.proyecto,
   }) : super(
             id: id,
             idProyecto: idProyecto,
@@ -39,8 +39,8 @@ class PermisoModelo extends PermisosEntity {
   int anular;
   int consulta;
   bool estado;
-  final Usuario usuario;
-  final ProyectoModelo proyecto;
+  final Usuario? usuario;
+  final ProyectoModelo? proyecto;
 
   factory PermisoModelo.fromJson(String str) =>
       PermisoModelo.fromMap(json.decode(str));
@@ -69,8 +69,8 @@ class PermisoModelo extends PermisosEntity {
         "anular": anular,
         "consulta": consulta,
         "estado": estado,
-        "Usuario": usuario.toMap(),
-        "Proyecto": proyecto.toMap(),
+        "Usuario": usuario!.toMap(),
+        "Proyecto": proyecto!.toMap(),
       };
 }
 

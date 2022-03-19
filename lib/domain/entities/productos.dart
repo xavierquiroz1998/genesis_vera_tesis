@@ -27,4 +27,17 @@ class Productos extends Equatable {
 
   List<Object?> get props =>
       [id, referencia, nombre, detalle, precio, idUnidad, idProveedor, estado];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "referencia": referencia,
+        "nombre": nombre,
+        "detalle": detalle,
+        "precio": precio,
+        "cantidad": cantidad,
+        "idUnidad": idUnidad,
+        "idProveedor": idProveedor,
+        "idGrupo": idGrupo,
+        "estado": estado,
+      };
 }

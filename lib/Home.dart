@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => sl<ProductosProvider>()),
         ChangeNotifierProvider(create: (_) => sl<EProductoProvider>()),
-        ChangeNotifierProvider(create: (_) => UsuariosProvider()),
+        ChangeNotifierProvider(create: (_) => sl<UsuariosProvider>()),
         ChangeNotifierProvider(create: (_) => sl<LoginProvider>()),
         ChangeNotifierProvider(create: (_) => sl<ProveedoresProvider>()),
         ChangeNotifierProvider(create: (_) => sl<UnidadMedidaProvider>()),

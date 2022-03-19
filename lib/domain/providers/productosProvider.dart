@@ -129,10 +129,16 @@ class ProductosProvider extends ChangeNotifier {
     }
   }
 
-  Future<Productos?> guardar(Productos? p) async {
+  Future<Productos?> guardar(Productos p) async {
     var opt = false;
     try {
-      /*  await insertarProducto(); */
+      product.referencia = controllerCodigo.text;
+      p.nombre = controllerDescripcion.text;
+      p.detalle = controllerDescripcion.text;
+      p.cantidad = double.tryParse(controllerStock.text) ?? 0;
+      product.precio = double.tryParse(controllerPrecio.text) ?? 0;
+      product.estado = true;
+      var tem = await insertarProducto.insert(p);
 
       if (keyProducto.currentState!.validate()) {
         product.id = Estaticas.listProductos.length + 1;

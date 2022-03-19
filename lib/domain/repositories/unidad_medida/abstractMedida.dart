@@ -4,5 +4,6 @@ import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.da
 
 abstract class AbstractMedidaUnidad {
   Future<Either<Failure, List<UnidadMedidaEntity>>> getAllUnidades();
-  Future<String> insetUnidades();
+  Future<Either<Failure, UnidadMedidaEntity>> insetUnidades(
+      UnidadMedidaEntity unid);
 }

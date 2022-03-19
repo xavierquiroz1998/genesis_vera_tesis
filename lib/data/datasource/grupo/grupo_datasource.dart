@@ -2,9 +2,11 @@ import 'package:genesis_vera_tesis/data/models/grupo/grupo_modelo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../../domain/entities/tipo/grupo.dart';
+
 abstract class GrupoDTS {
   Future<List<GruposModelo>> getAllGrupos();
-  Future<String> insertGrupos();
+  Future<String> insertGrupos(GrupoEntity grupo);
 }
 
 class GrupoDTSImp extends GrupoDTS {
@@ -35,7 +37,7 @@ class GrupoDTSImp extends GrupoDTS {
   }
 
   @override
-  Future<String> insertGrupos() async {
+  Future<String> insertGrupos(GrupoEntity grupo) async {
     try {
       String url2 = "http://localhost:8000/api/grupos";
       List<GruposModelo> tem = [];

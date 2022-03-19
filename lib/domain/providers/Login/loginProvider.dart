@@ -28,12 +28,24 @@ class LoginProvider extends ChangeNotifier {
     _contrasenia = contrasenia;
     notifyListeners();
   }
+  //no guardas el tyoken? no
+  //necesitas el sharedpreference si pero quiero hacer la inseercion de datos
+  //cual inserncion de datos? todos
+  //Los datos que tienes que usar para el logeo son estos
+  /// http://localhost:8080/api/auth/login?correo=jesusvera19_24@hotmail.com&password=123456
+  /// esa es la ruta que necesitas con em metodo de tipo POST
+  /// de ahi para validar el token necesitas esta ruta
+  /// pero lo tienes en mongo db
+  /// y quien va  asaber que estas consumiendo los usuarios de mongo db
+  /// si pero debo abrir el mongo db y no se usar bien eso
+  /// explicame
+  /// https://flutter-web-admin-odontograma.herokuapp.com/api
 
   Future<void> logeo(BuildContext context) async {
     try {
-      var result = Estaticas.listUsuarios.firstWhere(
-          (e) => e.cedula == cedula && e.contrasenia == contrasenia);
-      if (result.cedula != "") {
+      var result = Estaticas.listUsuarios
+          .firstWhere((e) => e.email == cedula && e.clave == contrasenia);
+      if (result.email != "") {
         final result = await logeoUsesCase.call(cedula, contrasenia);
         print("valor de result $result");
         authenticated = true;

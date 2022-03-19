@@ -1,3 +1,7 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../core/Errors/failure.dart';
+import '../../entities/unidad_medida/unidadMedida.dart';
 import '../../repositories/unidad_medida/abstractMedida.dart';
 
 class InsertMedidas {
@@ -5,7 +9,8 @@ class InsertMedidas {
 
   InsertMedidas(this.repository);
 
-  Future<String> insert() async {
-    return await repository.insetUnidades();
+  Future<Either<Failure, UnidadMedidaEntity>> insert(
+      UnidadMedidaEntity unid) async {
+    return await repository.insetUnidades(unid);
   }
 }

@@ -5,6 +5,7 @@ import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/proveedores/proveedores_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/proyecto/proyecto_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/unidad_medida/unidad_datasource.dart';
+import 'package:genesis_vera_tesis/data/repositories/Usuarios/usuarios_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/grupo/grupo_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/permiso/permiso_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/proyecto/proyecto_imp.dart';
@@ -14,6 +15,7 @@ import 'package:genesis_vera_tesis/domain/providers/permiso/permiso_provider.dar
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/proyecto/proyecto_provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/unidadMedida/unidadProvider.dart';
+import 'package:genesis_vera_tesis/domain/repositories/Usuarios/abstractUsuarios.dart';
 import 'package:genesis_vera_tesis/domain/repositories/grupo/abstract_grupo.dart';
 import 'package:genesis_vera_tesis/domain/repositories/permiso/abstract_permiso.dart';
 import 'package:genesis_vera_tesis/domain/repositories/proyecto/abstract_proyecto.dart';
@@ -23,15 +25,18 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/permiso/get_permiso.dart'
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/proyecto/get_proyectos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/usuarios/get_usuarios.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'data/datasource/usuarios/usuarios_datasource.dart';
 import 'data/repositories/logeo/sesion_Imp.dart';
 import 'data/repositories/producto_Imp.dart';
 import 'data/repositories/proveedores/proveedor_imp.dart';
 import 'domain/providers/Devoluciones/devolucionProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Proveedores/proveedoresProvider.dart';
+import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
@@ -53,6 +58,7 @@ Future<void> init() async {
   sl.registerFactory(() => ProyectoProvider(sl()));
   sl.registerFactory(() => EProductoProvider(sl()));
   sl.registerFactory(() => DevolucionProvider(sl()));
+  sl.registerFactory(() => UsuariosProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
@@ -62,6 +68,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetProveedores(sl()));
   sl.registerLazySingleton(() => GetProyectos(sl()));
   sl.registerLazySingleton(() => GetPermiso(sl()));
+  sl.registerLazySingleton(() => GetUsuarios(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -78,6 +85,7 @@ Future<void> init() async {
       () => ProyectoImpl(sl())); // injeccion de repository
   sl.registerLazySingleton<AbstractPermiso>(
       () => PermisoImp(sl())); // injeccion de repository
+  sl.registerLazySingleton<AbstractUsuarios>(() => UsuariosImp(sl()));
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));
@@ -96,6 +104,7 @@ Future<void> init() async {
       () => PermisoDTSImp(sl())); // injeccion de datasourse
   sl.registerLazySingleton<ProyectoDTS>(
       () => ProyectoDTSImp(sl())); // injeccion de datasourse
+  sl.registerLazySingleton<UsuarioDatasource>(() => UsuarioDatasourceImp(sl()));
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 

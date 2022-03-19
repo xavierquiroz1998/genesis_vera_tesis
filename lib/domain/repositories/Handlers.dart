@@ -40,6 +40,7 @@ class Handlers {
   static Handler egresos = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
+
     if (logeo.authenticated) {
       if (Estaticas.permisos.egreso) {
         return EgresoProductosView();
