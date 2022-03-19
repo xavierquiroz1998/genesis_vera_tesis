@@ -39,7 +39,9 @@ class UsuarioDatasourceImp extends UsuarioDatasource {
   @override
   Future<ModelUsuarios> insertUsuarios(RegistUser usuario) async {
     try {
-      final result = await cliente.post(Uri.parse(urlBase));
+      var uss = json.encode(usuario.toMap());
+      final result = await cliente.post(Uri.parse(urlBase),
+          body: uss, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelUsuarios.fromMap(json.decode(result.body));
       } else {

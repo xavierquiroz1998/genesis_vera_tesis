@@ -3,12 +3,14 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/usuarios/registroUsuarios.dart';
 
 import '../../uses cases/usuarios/get_usuarios.dart';
+import '../../uses cases/usuarios/insert_usuario.dart';
 
 class UsuariosProvider extends ChangeNotifier {
   String isShowUpdate = "1";
   bool blockCedula = true;
 
   final GetUsuarios usuarios;
+  final InsertUsuarios insertUser;
   List<RegistUser> listaUsuarios = [];
   final controlCedula = TextEditingController();
   final controlNombre = TextEditingController();
@@ -18,7 +20,7 @@ class UsuariosProvider extends ChangeNotifier {
   final controlpassword = TextEditingController();
   final controlpassword2 = TextEditingController();
 
-  UsuariosProvider(this.usuarios);
+  UsuariosProvider(this.usuarios, this.insertUser);
 
   String get getIsShow => isShowUpdate;
 
@@ -35,30 +37,31 @@ class UsuariosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveUser() {
+  Future saveUser() async {
     try {
-      // if (isShowUpdate == "1") {
-      //   final usuarioModel = RegistUser(
-      //       cedula: controlCedula.text,
-      //       nombres: controlNombre.text,
-      //       direccion: controlDireccion.text,
-      //       correo: controlEmail.text,
-      //       celular: controlCelular.text,
-      //       contrasenia: controlpassword.text);
-      //   Estaticas.listUsuarios.add(usuarioModel);
-      // } else {
-      //   Estaticas.listUsuarios = Estaticas.listUsuarios.map((e) {
-      //     if (e.cedula != controlCedula.text) return e;
-      //     e.nombres = controlNombre.text;
-      //     e.direccion = controlDireccion.text;
-      //     e.correo = controlEmail.text;
-      //     e.celular = controlCelular.text;
-      //     e.contrasenia = controlpassword.text;
+      if (isShowUpdate == "1") {
+        var user = RegistUser(
+            //cedula: controlCedula.text,
+            nombre: controlNombre.text,
+            //direccion: controlDireccion.text,
+            email: controlEmail.text,
+            estado: true,
+            //celular: controlCelular.text,
+            clave: controlpassword.text);
+        var result = await insertUser.insertUsuario(user);
+      } else {
+        // Estaticas.listUsuarios = Estaticas.listUsuarios.map((e) {
+        //   if (e.cedula != controlCedula.text) return e;
+        //   e.nombres = controlNombre.text;
+        //   e.direccion = controlDireccion.text;
+        //   e.correo = controlEmail.text;
+        //   e.celular = controlCelular.text;
+        //   e.contrasenia = controlpassword.text;
 
-      //     return e;
-      //   }).toList();
-      //   print(Estaticas.listUsuarios);
-      // }
+        //   return e;
+        // }).toList();
+        print(Estaticas.listUsuarios);
+      }
       notifyListeners();
     } catch (e) {
       print("Erro en guardar usuario ${e.toString()}");

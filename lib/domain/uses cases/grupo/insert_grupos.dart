@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../core/Errors/failure.dart';
 import '../../entities/tipo/grupo.dart';
 import '../../repositories/grupo/abstract_grupo.dart';
 
@@ -6,7 +9,7 @@ class InsertProducto {
 
   InsertProducto(this.repository);
 
-  Future<String> insert(GrupoEntity grupo) async {
+  Future<Either<Failure, GrupoEntity>> insert(GrupoEntity grupo) async {
     return await repository.insertGrupos(grupo);
   }
 }

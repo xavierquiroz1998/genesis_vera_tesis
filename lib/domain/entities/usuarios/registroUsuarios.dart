@@ -24,4 +24,20 @@ class RegistUser extends Equatable {
   @override
   List<Object?> get props =>
       [id, nombre, email, clave, estado, expiracion, createdAt, updatedAt];
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "nombre": nombre,
+        "email": email,
+        "clave": clave,
+        "estado": estado,
+        "expiracion": expiracion == null
+            ? DateTime.now().toIso8601String()
+            : expiracion!.toIso8601String(),
+        "createdAt": createdAt == null
+            ? DateTime.now().toIso8601String()
+            : createdAt!.toIso8601String(),
+        "updatedAt": updatedAt == null
+            ? DateTime.now().toIso8601String()
+            : updatedAt!.toIso8601String(),
+      };
 }

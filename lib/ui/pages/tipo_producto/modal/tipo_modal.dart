@@ -108,12 +108,12 @@ class _TipoModalState extends State<TipoModal> {
               child: CustomOutlinedButton(
                   onPressed: () async {
                     try {
-                      /*  if (id == null) {
-                        productProvider.saveTyped(codigo, nombre, descripcion);
+                      if (id == null) {
+                        productProvider.guardarGrupo(widget.categoria!);
                       } else {
-                        productProvider.updateTyped(
-                            id!, codigo, nombre, descripcion);
-                      } */
+                        // productProvider.updateTyped(
+                        //     id!, codigo, nombre, descripcion);
+                      }
                       Navigator.of(context).pop();
                     } catch (e) {
                       print(e);

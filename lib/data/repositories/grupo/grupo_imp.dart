@@ -20,7 +20,11 @@ class GrupoImp implements AbstractGrupo {
   }
 
   @override
-  Future<String> insertGrupos(GrupoEntity grupo) async {
-    return await datasource.insertGrupos(grupo);
+  Future<Either<Failure, GrupoEntity>> insertGrupos(GrupoEntity grupo) async {
+    try {
+      return right(await datasource.insertGrupos(grupo));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
+    }
   }
 }

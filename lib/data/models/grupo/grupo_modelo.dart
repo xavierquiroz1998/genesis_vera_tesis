@@ -4,13 +4,13 @@ import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 
 class GruposModelo extends GrupoEntity {
   GruposModelo({
-    required this.id,
-    required this.referencia,
-    required this.nombre,
-    required this.detalle,
-    required this.estado,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id = 0,
+    this.referencia = "",
+    this.nombre = "",
+    this.detalle = "",
+    this.estado = false,
+    this.createdAt,
+    this.updatedAt,
   }) : super(
             id: id,
             referencia: referencia,

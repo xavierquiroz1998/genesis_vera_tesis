@@ -22,10 +22,14 @@ import 'package:genesis_vera_tesis/domain/repositories/proyecto/abstract_proyect
 import 'package:genesis_vera_tesis/domain/repositories/unidad_medida/abstractMedida.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/grupo/get_grupos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/permiso/get_permiso.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/permiso/insert_permiso.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/insert_proveedor.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/proyecto/get_proyectos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/insert_medidas.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/usuarios/get_usuarios.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/usuarios/insert_usuario.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -51,14 +55,14 @@ Future<void> init() async {
   sl.registerFactory(() =>
       ProductosProvider(sl(), sl(), sl(), sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl())); //injectar provider
-  sl.registerFactory(() => UnidadMedidaProvider(sl()));
-  sl.registerFactory(() => GrupoProvider(sl()));
-  sl.registerFactory(() => ProveedoresProvider(sl()));
+  sl.registerFactory(() => UnidadMedidaProvider(sl(), sl()));
+  sl.registerFactory(() => GrupoProvider(sl(), sl()));
+  sl.registerFactory(() => ProveedoresProvider(sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
   sl.registerFactory(() => ProyectoProvider(sl()));
   sl.registerFactory(() => EProductoProvider(sl()));
   sl.registerFactory(() => DevolucionProvider(sl()));
-  sl.registerFactory(() => UsuariosProvider(sl()));
+  sl.registerFactory(() => UsuariosProvider(sl(), sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
@@ -69,6 +73,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetProyectos(sl()));
   sl.registerLazySingleton(() => GetPermiso(sl()));
   sl.registerLazySingleton(() => GetUsuarios(sl()));
+  sl.registerLazySingleton(() => InsertMedidas(sl()));
+  sl.registerLazySingleton(() => InsertPermiso(sl()));
+  sl.registerLazySingleton(() => InsertProveedor(sl()));
+  sl.registerLazySingleton(() => InsertUsuarios(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository

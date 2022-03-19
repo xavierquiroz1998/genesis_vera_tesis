@@ -4,12 +4,14 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
 import '../../../core/Errors/failure.dart';
 import '../../uses cases/proveedores/getproveedores.dart';
+import '../../uses cases/proveedores/insert_proveedor.dart';
 
 class ProveedoresProvider extends ChangeNotifier {
   String _titulo = "";
 
   final GetProveedores useCaseProveedores;
-  ProveedoresProvider(this.useCaseProveedores);
+  final InsertProveedor insertProveedor;
+  ProveedoresProvider(this.useCaseProveedores, this.insertProveedor);
 
   List<ProveedoresEntity> listaProveedores = [];
 
@@ -109,12 +111,12 @@ class ProveedoresProvider extends ChangeNotifier {
     } catch (e) {}
   }
 
-  void guardar(BuildContext context) {
+  Future guardar(BuildContext context) async {
     try {
       if (keyProvider.currentState!.validate()) {
         getProveedor();
-        proveedor.id = Estaticas.listProveedores.length + 1;
-        Estaticas.listProveedores.add(proveedor);
+        await insertProveedor.insert(proveedor);
+
         print("Nuevo Proveedor registrado");
         Navigator.pop(context);
       }

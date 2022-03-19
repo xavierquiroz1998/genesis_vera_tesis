@@ -4,12 +4,15 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
 
+import '../../uses cases/unidad_medida/insert_medidas.dart';
+
 class UnidadMedidaProvider extends ChangeNotifier {
   UnidadMedidaEntity _unidad = new UnidadMedidaEntity();
   final GetMedidas getMedidas;
+  final InsertMedidas insertUnidad;
   List<UnidadMedidaEntity> listUnidad = [];
 
-  UnidadMedidaProvider(this.getMedidas);
+  UnidadMedidaProvider(this.getMedidas, this.insertUnidad);
 
   TextEditingController _controllCodigo = TextEditingController();
   TextEditingController _controlldescripcion = TextEditingController();
@@ -69,6 +72,7 @@ class UnidadMedidaProvider extends ChangeNotifier {
     try {
       unidad.codigo = controllCodigo.text;
       unidad.detalle = controlldescripcion.text;
+      unidad.estado = true;
     } catch (e) {}
   }
 
@@ -82,16 +86,8 @@ class UnidadMedidaProvider extends ChangeNotifier {
         Estaticas.unidades.add(unidad);
       } else {
         // agrega
-        var existe =
-            unidades.firstWhere((e) => e.codigo == unidad.codigo, orElse: () {
-          return new UnidadMedidaEntity();
-        });
-        if (existe.codigo != null) {
-          return false;
-        }
-        unidad.id = unidades.length + 1;
-        unidad.estado = true;
-        Estaticas.unidades.add(unidad);
+
+        var result = await insertUnidad.insert(unidad);
       }
       //  unidades = Estaticas.unidades;
 

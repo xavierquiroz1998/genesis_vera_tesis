@@ -13,13 +13,12 @@ abstract class UnidadMediaDTS {
 class UnidadMedidaDTSImp extends UnidadMediaDTS {
   final http.Client cliente;
   UnidadMedidaDTSImp(this.cliente);
-
+  String urlBase = "http://localhost:8000/api/unidades";
   @override
   Future<List<UnidadMedidaModelo>> getAllUnidades() async {
     try {
-      String url2 = "http://localhost:8000/api/unidades";
       List<UnidadMedidaModelo> tem = [];
-      final result = await cliente.get(Uri.parse(url2));
+      final result = await cliente.get(Uri.parse(urlBase));
       if (result.statusCode == 200) {
         tem = decodeProducts(utf8.decode(result.bodyBytes));
       }
@@ -40,9 +39,9 @@ class UnidadMedidaDTSImp extends UnidadMediaDTS {
   @override
   Future<UnidadMedidaModelo> insertUnidades(UnidadMedidaEntity unidad) async {
     try {
-      String url2 = "http://localhost:8000/api/unidades";
-
-      final result = await cliente.post(Uri.parse(url2));
+      var uni = json.encode(unidad.toMap());
+      final result = await cliente.post(Uri.parse(urlBase),
+          body: uni, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return UnidadMedidaModelo.fromMap(json.decode(result.body));
       } else {

@@ -9,7 +9,7 @@ class InsertUsuarios {
 
   InsertUsuarios(this.repository);
 
-  Future<Either<Failure, List<RegistUser>>> call() async {
-    return repository.getAllUsuarios();
+  Future<Either<Failure, RegistUser>> insertUsuario(RegistUser user) async {
+    return repository.insertUsuarios(user);
   }
 }

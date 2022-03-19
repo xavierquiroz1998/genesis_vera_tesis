@@ -85,13 +85,13 @@ class ModelProducto extends Productos {
 
 class Proveedor extends ProveedoresEntity {
   Proveedor({
-    required this.id,
-    required this.identificacion,
-    required this.nombre,
-    required this.correo,
-    required this.telefono,
-    required this.direccion,
-    required this.estado,
+    this.id = 0,
+    this.identificacion = "",
+    this.nombre = "",
+    this.correo = "",
+    this.telefono = "",
+    this.direccion = "",
+    this.estado = false,
   });
 
   int id;

@@ -23,4 +23,14 @@ class GrupoEntity extends Equatable {
   // TODO: implement props
   List<Object?> get props =>
       [id, referencia, nombre, detalle, estado, createdAt, updatedAt];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "referencia": referencia,
+        "nombre": nombre,
+        "detalle": detalle,
+        "estado": estado,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+      };
 }

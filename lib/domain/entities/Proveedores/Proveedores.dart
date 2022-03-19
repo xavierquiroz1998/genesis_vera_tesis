@@ -22,4 +22,14 @@ class ProveedoresEntity extends Equatable {
   @override
   List<Object?> get props =>
       [id, identificacion, nombre, correo, telefono, direccion, estado];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "identificacion": identificacion,
+        "nombre": nombre,
+        "correo": correo,
+        "telefono": telefono,
+        "direccion": direccion,
+        "estado": estado,
+      };
 }

@@ -15,4 +15,11 @@ class UnidadMedidaEntity extends Equatable {
 
   @override
   List<Object?> get props => [id, codigo, detalle, estado];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "codigo": codigo,
+        "detalle": detalle,
+        "estado": estado,
+      };
 }

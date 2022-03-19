@@ -6,19 +6,18 @@ import '../../../domain/entities/tipo/grupo.dart';
 
 abstract class GrupoDTS {
   Future<List<GruposModelo>> getAllGrupos();
-  Future<String> insertGrupos(GrupoEntity grupo);
+  Future<GruposModelo> insertGrupos(GrupoEntity grupo);
 }
 
 class GrupoDTSImp extends GrupoDTS {
   final http.Client cliente;
   GrupoDTSImp(this.cliente);
-
+  String urlBase = "http://localhost:8000/api/grupos";
   @override
   Future<List<GruposModelo>> getAllGrupos() async {
     try {
-      String url2 = "http://localhost:8000/api/grupos";
       List<GruposModelo> tem = [];
-      final result = await cliente.get(Uri.parse(url2));
+      final result = await cliente.get(Uri.parse(urlBase));
       if (result.statusCode == 200) {
         tem = decodeProducts(utf8.decode(result.bodyBytes));
       }
@@ -37,18 +36,19 @@ class GrupoDTSImp extends GrupoDTS {
   }
 
   @override
-  Future<String> insertGrupos(GrupoEntity grupo) async {
+  Future<GruposModelo> insertGrupos(GrupoEntity grupo) async {
     try {
-      String url2 = "http://localhost:8000/api/grupos";
-      List<GruposModelo> tem = [];
-      final result = await cliente.post(Uri.parse(url2));
+      var grp = json.encode(grupo.toMap());
+
+      final result = await cliente.post(Uri.parse(urlBase),
+          body: grp, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
-        return result.body;
+        return GruposModelo.fromMap(json.decode(result.body));
       }
 
-      return result.statusCode.toString();
+      return new GruposModelo();
     } catch (e) {
-      return e.toString();
+      return new GruposModelo();
     }
   }
 }

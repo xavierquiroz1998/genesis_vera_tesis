@@ -4,5 +4,6 @@ import 'package:genesis_vera_tesis/domain/entities/Proveedores/Proveedores.dart'
 
 abstract class AbstractProveedores {
   Future<Either<Failure, List<ProveedoresEntity>>> getAllProveedores();
-  Future<String> insertProveedores(ProveedoresEntity prod);
+  Future<Either<Failure, ProveedoresEntity>> insertProveedores(
+      ProveedoresEntity prod);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/providers/unidadMedida/unidadProvider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
+import '../../../domain/entities/unidad_medida/unidadMedida.dart';
 import 'Widget/unidadWidget.dart';
 
 class UnidadMedidaView extends StatefulWidget {
@@ -33,8 +34,8 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                   TextButton(
                       onPressed: () async {
                         //unidadP.callgetMedidas();
-                        /*  unidadP.unidad = new UnidadMedidaEntity();
-                        UnidadWidget.dialogoUnidad(context); */
+                        unidadP.unidad = new UnidadMedidaEntity();
+                        UnidadWidget.dialogoUnidad(context);
                       },
                       child: Text("Nuevo")),
                   Container(
