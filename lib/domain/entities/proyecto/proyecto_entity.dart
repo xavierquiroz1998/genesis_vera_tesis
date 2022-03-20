@@ -8,7 +8,11 @@ class ProyectoEntity extends Equatable {
     this.nombre = "",
     this.detalle = "",
     this.ruta = "",
-    this.estado = true,
+    this.estado = false,
+    this.crear = false,
+    this.modificar = false,
+    this.anular = false,
+    this.consultar = false,
   });
 
   int id;
@@ -17,7 +21,20 @@ class ProyectoEntity extends Equatable {
   String detalle;
   String ruta;
   bool estado;
+  bool crear;
+  bool modificar;
+  bool anular;
+  bool consultar;
 
   @override
   List<Object?> get props => [id, referencia, nombre, detalle, ruta, estado];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "referencia": referencia,
+        "nombre": nombre,
+        "detalle": detalle,
+        "ruta": ruta,
+        "estado": estado,
+      };
 }

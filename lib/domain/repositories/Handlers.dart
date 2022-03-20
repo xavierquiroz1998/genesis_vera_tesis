@@ -19,7 +19,9 @@ import 'package:genesis_vera_tesis/ui/pages/tipo_producto/tipo_producto.dart';
 import 'package:genesis_vera_tesis/ui/pages/unidad_medidas/unidadMedidaView.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/Router/FluroRouter.dart';
 import '../../ui/pages/dashboard/dashboardXproducto.dart';
+import '../providers/Home/sideMenuProvider.dart';
 
 class Handlers {
   static Handler login = Handler(handlerFunc: (context, param) {
@@ -29,22 +31,22 @@ class Handlers {
   static Handler unidad = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.unidadMedida) {
-        return UnidadMedidaView();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.unidad);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return UnidadMedidaView();
     } else {
       return Login();
     }
   });
+
   static Handler egresos = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.egreso) {
-        return EgresoProductosView();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.egresos);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return EgresoProductosView();
     } else {
       return Login();
     }
@@ -59,10 +61,10 @@ class Handlers {
   static Handler proveedores = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.proveedores) {
-        return Proveedores();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.proveedores);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return Proveedores();
     } else {
       return Login();
     }
@@ -71,7 +73,9 @@ class Handlers {
   static Handler proveedor = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.proveedor);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return Proveedor();
     } else {
       return Login();
@@ -81,7 +85,9 @@ class Handlers {
   static Handler usuario = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.usuario);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return RegistroUsuario();
     } else {
       return Login();
@@ -91,10 +97,10 @@ class Handlers {
   static Handler usuarios = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.usuarios) {
-        return UsuarioView();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.usuarios);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return UsuarioView();
     } else {
       return Login();
     }
@@ -103,7 +109,9 @@ class Handlers {
   static Handler incio = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.inicio);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return Inicio();
     } else {
       return Login();
@@ -113,7 +121,9 @@ class Handlers {
   static Handler egreso = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.egreso);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return EgresoProducto();
     } else {
       return Login();
@@ -123,10 +133,10 @@ class Handlers {
   static Handler ingreso = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.ingreso) {
-        return ProductosTable();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.ingresos);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return ProductosTable();
     } else {
       return Login();
     }
@@ -135,7 +145,9 @@ class Handlers {
   static Handler ingresoCrud = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.ingreso);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return ProductoCrud();
     } else {
       return Login();
@@ -145,10 +157,10 @@ class Handlers {
   static Handler tipoProducto = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.tipoProd) {
-        return TipoProducto();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.tipoProducto);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return TipoProducto();
     } else {
       return Login();
     }
@@ -157,10 +169,10 @@ class Handlers {
   static Handler devoluciones = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.devoluciones) {
-        return DevolucionesView();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.devoluciones);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return DevolucionesView();
     } else {
       return Login();
     }
@@ -169,7 +181,9 @@ class Handlers {
   static Handler devolucion = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.devolucion);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return DevolucionView();
     } else {
       return Login();
@@ -179,10 +193,10 @@ class Handlers {
   static Handler kardex = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
-      if (Estaticas.permisos.kardex) {
-        return KardexLayout();
-      }
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.kardex);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return KardexLayout();
     } else {
       return Login();
     }
@@ -191,7 +205,9 @@ class Handlers {
   static Handler dashboardPorTipo = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
-    if (logeo.authenticated) {
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.dashboarPorTipo);
+    if (logeo.authStatus == AuthStatus.authenticated) {
       return DashboardProducto();
     } else {
       return Login();

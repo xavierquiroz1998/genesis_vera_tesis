@@ -33,13 +33,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => sl<UnidadMedidaProvider>()),
         ChangeNotifierProvider(create: (_) => sl<DevolucionProvider>()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
+        ChangeNotifierProvider(lazy: false, create: (_) => SideMenuProvider()),
         ChangeNotifierProvider(create: (_) => KardexProvider()),
         ChangeNotifierProvider(create: (_) => sl<GrupoProvider>()),
         ChangeNotifierProvider(create: (_) => sl<PermisoProvider>()),
         ChangeNotifierProvider(create: (_) => sl<ProyectoProvider>()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Kiarita',
         debugShowCheckedModeBanner: false,
         initialRoute: "/login", //"/inicio",
         onGenerateRoute: Flurorouter.router.generator,
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         builder: (context1, child) {
           final logeo = Provider.of<LoginProvider>(context1);
 
-          if (!logeo.authenticated) {
+          if (logeo.authStatus == AuthStatus.notAuthenticated) {
             return child!;
           } else {
             return HomePage(child: child!);

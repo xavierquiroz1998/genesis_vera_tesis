@@ -9,7 +9,8 @@ class InsertPermiso {
 
   InsertPermiso(this.repository);
 
-  Future<Either<Failure, PermisosEntity>> call(PermisosEntity usuario) async {
+  Future<Either<Failure, PermisosEntity>> inserPermis(
+      PermisosEntity usuario) async {
     return repository.insertPermisosUser(usuario);
   }
 }

@@ -38,4 +38,15 @@ class PermisosEntity extends Equatable {
         consulta,
         estado
       ];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "idProyecto": idProyecto,
+        "idUsuario": idUsuario,
+        "creacion": creacion,
+        "actualizar": actualizar,
+        "anular": anular,
+        "consulta": consulta,
+        "estado": estado,
+      };
 }

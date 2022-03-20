@@ -45,21 +45,23 @@ import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
 import 'domain/repositories/proveedores/abtract_proveedores.dart';
+import 'domain/uses cases/grupo/insert_grupos.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
 import 'domain/uses cases/proveedores/getproveedores.dart';
+import 'domain/uses cases/proyecto/insert_proyectos.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   sl.registerFactory(() =>
       ProductosProvider(sl(), sl(), sl(), sl(), sl())); //injectar provider
-  sl.registerFactory(() => LoginProvider(sl())); //injectar provider
+  sl.registerFactory(() => LoginProvider(sl(), sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl(), sl()));
   sl.registerFactory(() => GrupoProvider(sl(), sl()));
   sl.registerFactory(() => ProveedoresProvider(sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
-  sl.registerFactory(() => ProyectoProvider(sl()));
+  sl.registerFactory(() => ProyectoProvider(sl(), sl()));
   sl.registerFactory(() => EProductoProvider(sl()));
   sl.registerFactory(() => DevolucionProvider(sl()));
   sl.registerFactory(() => UsuariosProvider(sl(), sl()));
@@ -77,6 +79,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InsertPermiso(sl()));
   sl.registerLazySingleton(() => InsertProveedor(sl()));
   sl.registerLazySingleton(() => InsertUsuarios(sl()));
+  sl.registerLazySingleton(() => InsertGrupo(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository

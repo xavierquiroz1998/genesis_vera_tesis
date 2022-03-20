@@ -3,6 +3,7 @@ import 'package:genesis_vera_tesis/domain/entities/Proveedores/Proveedores.dart'
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
 import '../../../core/Errors/failure.dart';
+import '../../services/fail.dart';
 import '../../uses cases/proveedores/getproveedores.dart';
 import '../../uses cases/proveedores/insert_proveedor.dart';
 
@@ -111,16 +112,20 @@ class ProveedoresProvider extends ChangeNotifier {
     } catch (e) {}
   }
 
-  Future guardar(BuildContext context) async {
+  Future<bool> guardar() async {
     try {
       if (keyProvider.currentState!.validate()) {
         getProveedor();
-        await insertProveedor.insert(proveedor);
-
-        print("Nuevo Proveedor registrado");
-        Navigator.pop(context);
+        var result = await insertProveedor.insert(proveedor);
+        var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+        tem as ProveedoresEntity;
+        clear();
+        return true;
       }
-    } catch (e) {}
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 
   void anular(ProveedoresEntity prove) {
@@ -133,5 +138,12 @@ class ProveedoresProvider extends ChangeNotifier {
     } catch (e) {
       print("error en anular");
     }
+  }
+
+  void clear() {
+    proveedor = new ProveedoresEntity();
+    controllIdentificacion.text = proveedor.identificacion;
+    controllDireccion.text =
+        controllNombres.text = controllCorreo.text = controllCelular.text = "";
   }
 }

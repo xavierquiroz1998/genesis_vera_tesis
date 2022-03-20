@@ -1,3 +1,4 @@
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:genesis_vera_tesis/core/Errors/exceptions.dart';
 import 'package:genesis_vera_tesis/data/datasource/proyecto/proyecto_datasource.dart';
 import 'package:genesis_vera_tesis/domain/entities/proyecto/proyecto_entity.dart';
@@ -16,6 +17,18 @@ class ProyectoImpl implements AbstractProyecto {
       return right(await datasource.getAll());
     } on ServerException {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
+
+  @override
+  Future<bool> insertProyectos(List<ProyectoEntity> listProject) async {
+    try {
+      for (var item in listProject) {
+        await datasource.insertProyect(item);
+      }
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -40,8 +40,9 @@ class PermisoDTSImp extends PermisoDTS {
   Future<PermisoModelo> insertPermisosUser(PermisosEntity permisos) async {
     try {
       String url2 = "http://localhost:8000/api/permisos";
-
-      final result = await cliente.get(Uri.parse(url2));
+      var per = json.encode(permisos.toMap());
+      final result = await cliente.post(Uri.parse(url2),
+          body: per, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return PermisoModelo.fromMap(json.decode(result.body));
       }

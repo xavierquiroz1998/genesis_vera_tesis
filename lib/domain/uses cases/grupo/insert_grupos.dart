@@ -4,10 +4,10 @@ import '../../../core/Errors/failure.dart';
 import '../../entities/tipo/grupo.dart';
 import '../../repositories/grupo/abstract_grupo.dart';
 
-class InsertProducto {
+class InsertGrupo {
   final AbstractGrupo repository;
 
-  InsertProducto(this.repository);
+  InsertGrupo(this.repository);
 
   Future<Either<Failure, GrupoEntity>> insert(GrupoEntity grupo) async {
     return await repository.insertGrupos(grupo);

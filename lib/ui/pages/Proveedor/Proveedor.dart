@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
@@ -66,12 +67,15 @@ class Proveedor extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                        onPressed: () {
-                          provee.guardar(context);
+                        onPressed: () async {
+                          if (await provee.guardar()) {
+                            NavigationService.replaceTo("/proveedores");
+                          }
                         },
                         child: Text("Guardar")),
                     TextButton(
                         onPressed: () {
+                          provee.clear();
                           Navigator.pop(context);
                         },
                         child: Text("Cancelar"))

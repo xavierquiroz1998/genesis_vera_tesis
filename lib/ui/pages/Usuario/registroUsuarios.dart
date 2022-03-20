@@ -7,12 +7,27 @@ import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/Usuarios/UsuariosProvider.dart';
 
-class RegistroUsuario extends StatelessWidget {
+import '../../../data/services/Navigation/NavigationService.dart';
+import '../../../domain/providers/proyecto/proyecto_provider.dart';
+
+class RegistroUsuario extends StatefulWidget {
   const RegistroUsuario({Key? key}) : super(key: key);
+
+  @override
+  State<RegistroUsuario> createState() => _RegistroUsuarioState();
+}
+
+class _RegistroUsuarioState extends State<RegistroUsuario> {
+  @override
+  void initState() {
+    Provider.of<ProyectoProvider>(context, listen: false).callgetProyecto();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final usuarios = Provider.of<UsuariosProvider>(context);
+    final permisos = Provider.of<ProyectoProvider>(context);
     return ChangeNotifierProvider(
       create: (_) => LoginFormProvider(),
       child: Builder(builder: (context) {
@@ -186,15 +201,64 @@ class RegistroUsuario extends StatelessWidget {
                   ),
                 ),
               ),
+              Container(
+                width: double.infinity,
+                child: DataTable(
+                    columns: [
+                      DataColumn(label: Text("Id")),
+                      DataColumn(label: Text("Nombres")),
+                      DataColumn(label: Text("Crear")),
+                      DataColumn(label: Text("Modificar")),
+                      DataColumn(label: Text("Consultar")),
+                      DataColumn(label: Text("Anular")),
+                    ],
+                    rows: permisos.listProyectos.map<DataRow>((e) {
+                      return DataRow(cells: [
+                        DataCell(Text(e.id.toString())),
+                        DataCell(Text(e.nombre.toString())),
+                        DataCell(Checkbox(
+                          value: e.crear,
+                          onChanged: (value) {
+                            e.crear = value!;
+                            setState(() {});
+                          },
+                        )),
+                        DataCell(Checkbox(
+                          value: e.modificar,
+                          onChanged: (value) {
+                            e.modificar = value!;
+                            setState(() {});
+                          },
+                        )),
+                        DataCell(Checkbox(
+                          value: e.consultar,
+                          onChanged: (value) {
+                            e.consultar = value!;
+                            setState(() {});
+                          },
+                        )),
+                        DataCell(Checkbox(
+                          value: e.anular,
+                          onChanged: (value) {
+                            e.anular = value!;
+                            setState(() {});
+                          },
+                        )),
+                      ]);
+                    }).toList()),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final opt = loginFormProvider.validateForm();
                       if (opt) {
-                        usuarios.saveUser();
-                        usuarios.clearText();
+                        var usu = await usuarios.saveUser();
+                        if (usu != null) {
+                          await permisos.guardar(usu.id);
+                          NavigationService.replaceTo("/usuarios");
+                        }
                       }
                     },
                     child: Text("Ingresar"),
@@ -202,6 +266,7 @@ class RegistroUsuario extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       usuarios.clearText();
+                      permisos.clear();
                       Navigator.pop(context);
                     },
                     child: Text("Cancelar"),

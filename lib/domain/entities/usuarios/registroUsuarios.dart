@@ -40,4 +40,15 @@ class RegistUser extends Equatable {
             ? DateTime.now().toIso8601String()
             : updatedAt!.toIso8601String(),
       };
+
+  factory RegistUser.fromMap(Map<String, dynamic> json) => RegistUser(
+        id: json["id"],
+        nombre: json["nombre"],
+        email: json["email"],
+        clave: json["clave"],
+        estado: json["estado"],
+        expiracion: DateTime.parse(json["expiracion"]),
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+      );
 }

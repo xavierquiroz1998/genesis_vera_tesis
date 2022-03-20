@@ -7,7 +7,7 @@ import '../../uses cases/grupo/insert_grupos.dart';
 
 class GrupoProvider extends ChangeNotifier {
   final GetGrupos getGrupos;
-  final InsertProducto insertGrupo;
+  final InsertGrupo insertGrupo;
   String isShowUpdate = "1";
   List<GrupoEntity> listGrupo = [];
 

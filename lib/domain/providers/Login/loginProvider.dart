@@ -1,14 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/logeo/inicio_sesion.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
+import '../../../data/datasource/reference/local_storage.dart';
+import '../../uses cases/usuarios/get_usuarios.dart';
+
+enum AuthStatus { checking, authenticated, notAuthenticated }
 
 class LoginProvider extends ChangeNotifier {
   String _cedula = "";
+  AuthStatus authStatus = AuthStatus.checking;
+  final GetUsuarios usuarios;
+  final InicioSesion logeoUsesCase;
 
-  LoginProvider(this.logeoUsesCase);
+  LoginProvider(this.logeoUsesCase, this.usuarios) {
+    isAuthenticated();
+  }
   String get cedula => _cedula;
 
   bool authenticated = false;
@@ -17,8 +28,6 @@ class LoginProvider extends ChangeNotifier {
     _cedula = cedula;
     notifyListeners();
   }
-
-  final InicioSesion logeoUsesCase;
 
   String _contrasenia = "";
 
@@ -41,24 +50,54 @@ class LoginProvider extends ChangeNotifier {
   /// explicame
   /// https://flutter-web-admin-odontograma.herokuapp.com/api
 
-  Future<void> logeo(BuildContext context) async {
+  Future<void> logeo() async {
     try {
-      var result = Estaticas.listUsuarios
-          .firstWhere((e) => e.email == cedula && e.clave == contrasenia);
-      if (result.email != "") {
-        final result = await logeoUsesCase.call(cedula, contrasenia);
-        print("valor de result $result");
-        authenticated = true;
-        notifyListeners();
-        NavigationService.replaceTo(Flurorouter.inicio);
+      var temp = await usuarios.call();
+      var listaUsuarios = temp.getOrElse(() => []);
+      for (var item in listaUsuarios) {
+        if (item.email == cedula && item.clave == contrasenia) {
+          authStatus = AuthStatus.authenticated;
+          LocalStorage.prefs.setString('token', "asdddsswwee");
+          LocalStorage.prefs.setString('usuario', json.encode(item.toMap()));
+          authenticated = true;
+          notifyListeners();
+          NavigationService.replaceTo(Flurorouter.inicio);
+        }
       }
+      //final result = await logeoUsesCase.call(cedula, contrasenia);
+      //print("valor de result $result");
     } catch (e) {}
   }
 
   Future<void> lagout() async {
     try {
       authenticated = false;
+      LocalStorage.prefs.remove('token');
+      LocalStorage.prefs.remove('usuario');
       notifyListeners();
     } catch (ex) {}
+  }
+
+  Future<bool> isAuthenticated() async {
+    final token = LocalStorage.prefs.getString('token');
+    LocalStorage.prefs.getString('usuario');
+
+    if (token == null) {
+      authStatus = AuthStatus.notAuthenticated;
+      notifyListeners();
+      return false;
+    } else {
+      authStatus = AuthStatus.authenticated;
+      notifyListeners();
+      return true;
+    }
+
+    // try {
+
+    // } catch (e) {
+    //   authStatus = AuthStatus.notAuthenticated;
+    //   notifyListeners();
+    //   return false;
+    // }
   }
 }

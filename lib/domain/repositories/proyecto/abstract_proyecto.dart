@@ -4,4 +4,5 @@ import 'package:genesis_vera_tesis/domain/entities/proyecto/proyecto_entity.dart
 
 abstract class AbstractProyecto {
   Future<Either<Failure, List<ProyectoEntity>>> getAllProyectos();
+  Future<bool> insertProyectos(List<ProyectoEntity> listProject);
 }

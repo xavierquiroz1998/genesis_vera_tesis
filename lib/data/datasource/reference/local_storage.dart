@@ -4,6 +4,11 @@ import 'package:genesis_vera_tesis/data/models/permiso/permiso.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
+  static late SharedPreferences prefs;
+  static Future<void> configurePrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   Future createCache(PermisoModelo permiso) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     _preferences.setString('permiso', json.encode(permiso.toMap()));

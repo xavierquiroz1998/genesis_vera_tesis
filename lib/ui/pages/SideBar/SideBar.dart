@@ -10,6 +10,7 @@ import 'package:genesis_vera_tesis/ui/pages/SideBar/widget/menu_item.dart';
 import 'package:genesis_vera_tesis/util/util_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../domain/providers/Home/sideMenuProvider.dart';
 import '../../../domain/providers/Login/loginProvider.dart';
 
 class SideBar extends StatefulWidget {
@@ -22,14 +23,20 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   @override
   void initState() {
-    Provider.of<PermisoProvider>(context, listen: false).callgetPermisos("2");
+    Provider.of<PermisoProvider>(context, listen: false).callgetPermisos();
     super.initState();
+  }
+
+  void navigateTo(String routeName) {
+    NavigationService.replaceTo(routeName);
+    SideMenuProvider.closeMenu();
   }
 
   @override
   Widget build(BuildContext context) {
     final logeo = Provider.of<LoginProvider>(context);
     final permiso = Provider.of<PermisoProvider>(context);
+    final sideMenuProvider = Provider.of<SideMenuProvider>(context);
     /*   final LocalStorage _prefService = LocalStorage(); */
     return Container(
       width: 200,
@@ -47,12 +54,12 @@ class _SideBarState extends State<SideBar> {
               text: value.proyecto!.nombre,
               icon: UtilView.icons[int.parse(value.proyecto!.referencia)],
               onPressed: () async {
-                NavigationService.navigateTo(value.proyecto!.ruta);
+                navigateTo(value.proyecto!.ruta);
                 /*      _prefService.createCache(value).whenComplete(() {
                   Navigator.pushNamed(context, 'dashboard');
                 }); */
               },
-              isActive: NavigationService.currentPage == value.proyecto!.ruta,
+              isActive: sideMenuProvider.currentPage == value.proyecto!.ruta,
             ),
           ],
 

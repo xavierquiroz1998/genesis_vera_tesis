@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/usuarios/registroUsuarios.dart';
 
+import '../../services/fail.dart';
 import '../../uses cases/usuarios/get_usuarios.dart';
 import '../../uses cases/usuarios/insert_usuario.dart';
 
@@ -37,7 +38,7 @@ class UsuariosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future saveUser() async {
+  Future<RegistUser?> saveUser() async {
     try {
       if (isShowUpdate == "1") {
         var user = RegistUser(
@@ -49,6 +50,14 @@ class UsuariosProvider extends ChangeNotifier {
             //celular: controlCelular.text,
             clave: controlpassword.text);
         var result = await insertUser.insertUsuario(user);
+        var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+        try {
+          var obj = tem as RegistUser;
+          clearText();
+          return obj;
+        } catch (ex) {
+          return null;
+        }
       } else {
         // Estaticas.listUsuarios = Estaticas.listUsuarios.map((e) {
         //   if (e.cedula != controlCedula.text) return e;
@@ -60,11 +69,12 @@ class UsuariosProvider extends ChangeNotifier {
 
         //   return e;
         // }).toList();
-        print(Estaticas.listUsuarios);
+        return null;
       }
-      notifyListeners();
+      // notifyListeners();
     } catch (e) {
       print("Erro en guardar usuario ${e.toString()}");
+      return null;
     }
   }
 
