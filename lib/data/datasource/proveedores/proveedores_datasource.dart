@@ -6,6 +6,8 @@ import '../../models/productos/modelProductos.dart';
 abstract class ProveedoresDatasourceADS {
   Future<List<Proveedor>> getAllProveedores();
   Future<Proveedor> insertProveedores(ProveedoresEntity prod);
+  Future<Proveedor> updateProveedores(ProveedoresEntity prod);
+  Future<Proveedor> deleteProveedores(ProveedoresEntity prod);
 }
 
 class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
@@ -38,6 +40,36 @@ class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
     try {
       var provee = json.encode(prod.toMap());
       final result = await cliente.post(Uri.parse(urlBase),
+          body: provee, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return Proveedor.fromMap(json.decode(result.body));
+      }
+      return new Proveedor();
+    } catch (e) {
+      return new Proveedor();
+    }
+  }
+
+  @override
+  Future<Proveedor> deleteProveedores(ProveedoresEntity prod) async {
+    try {
+      var provee = json.encode(prod.toMap());
+      final result = await cliente.delete(Uri.parse(urlBase),
+          body: provee, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return Proveedor.fromMap(json.decode(result.body));
+      }
+      return new Proveedor();
+    } catch (e) {
+      return new Proveedor();
+    }
+  }
+
+  @override
+  Future<Proveedor> updateProveedores(ProveedoresEntity prod) async {
+    try {
+      var provee = json.encode(prod.toMap());
+      final result = await cliente.put(Uri.parse(urlBase),
           body: provee, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return Proveedor.fromMap(json.decode(result.body));

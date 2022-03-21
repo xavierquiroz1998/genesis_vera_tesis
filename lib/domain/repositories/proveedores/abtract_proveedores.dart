@@ -6,4 +6,8 @@ abstract class AbstractProveedores {
   Future<Either<Failure, List<ProveedoresEntity>>> getAllProveedores();
   Future<Either<Failure, ProveedoresEntity>> insertProveedores(
       ProveedoresEntity prod);
+  Future<Either<Failure, ProveedoresEntity>> updateProveedores(
+      ProveedoresEntity prod);
+  Future<Either<Failure, ProveedoresEntity>> deleteProveedores(
+      ProveedoresEntity prod);
 }

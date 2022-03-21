@@ -4,15 +4,21 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
 
+import '../../uses cases/unidad_medida/delete_medidas.dart';
 import '../../uses cases/unidad_medida/insert_medidas.dart';
+import '../../uses cases/unidad_medida/update_medidas.dart';
+import '../../uses cases/usuarios/update_usuarios.dart';
 
 class UnidadMedidaProvider extends ChangeNotifier {
   UnidadMedidaEntity _unidad = new UnidadMedidaEntity();
   final GetMedidas getMedidas;
   final InsertMedidas insertUnidad;
+  final DeleteMedidas deleteUnidad;
+  final UpdateMedidas updateUnidad;
   List<UnidadMedidaEntity> listUnidad = [];
 
-  UnidadMedidaProvider(this.getMedidas, this.insertUnidad);
+  UnidadMedidaProvider(
+      this.getMedidas, this.insertUnidad, this.deleteUnidad, this.updateUnidad);
 
   TextEditingController _controllCodigo = TextEditingController();
   TextEditingController _controlldescripcion = TextEditingController();
@@ -82,8 +88,7 @@ class UnidadMedidaProvider extends ChangeNotifier {
 
       if (unidad.id != null) {
         // modifica
-        Estaticas.unidades.remove(unidad);
-        Estaticas.unidades.add(unidad);
+        var result = await updateUnidad.update(unidad);
       } else {
         // agrega
 
@@ -96,5 +101,12 @@ class UnidadMedidaProvider extends ChangeNotifier {
       print("erro en guardar ${e.toString()}");
       return false;
     }
+  }
+
+  Future<void> anular() async {
+    try {
+      getValor();
+      var result = await deleteUnidad.delete(unidad);
+    } catch (e) {}
   }
 }

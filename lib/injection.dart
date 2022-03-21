@@ -50,6 +50,8 @@ import 'domain/uses cases/logeo/inicio_sesion.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
 import 'domain/uses cases/proveedores/getproveedores.dart';
 import 'domain/uses cases/proyecto/insert_proyectos.dart';
+import 'domain/uses cases/usuarios/delete_usuarios.dart';
+import 'domain/uses cases/usuarios/update_usuarios.dart';
 
 final sl = GetIt.instance;
 
@@ -64,7 +66,7 @@ Future<void> init() async {
   sl.registerFactory(() => ProyectoProvider(sl(), sl()));
   sl.registerFactory(() => EProductoProvider(sl()));
   sl.registerFactory(() => DevolucionProvider(sl()));
-  sl.registerFactory(() => UsuariosProvider(sl(), sl()));
+  sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
@@ -80,6 +82,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InsertProveedor(sl()));
   sl.registerLazySingleton(() => InsertUsuarios(sl()));
   sl.registerLazySingleton(() => InsertGrupo(sl()));
+  sl.registerLazySingleton(() => DeleteUsuarios(sl()));
+  sl.registerLazySingleton(() => UpdatetUsuarios(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository

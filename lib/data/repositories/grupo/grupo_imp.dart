@@ -27,4 +27,22 @@ class GrupoImp implements AbstractGrupo {
       return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
     }
   }
+
+  @override
+  Future<Either<Failure, GrupoEntity>> deleteGrupos(GrupoEntity grupo) async {
+    try {
+      return right(await datasource.deleteGrupos(grupo));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, GrupoEntity>> updateGrupos(GrupoEntity grupo) async {
+    try {
+      return right(await datasource.updateGrupos(grupo));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
+    }
+  }
 }

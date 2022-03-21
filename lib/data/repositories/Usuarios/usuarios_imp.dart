@@ -30,4 +30,22 @@ class UsuariosImp implements AbstractUsuarios {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }
   }
+
+  @override
+  Future<Either<Failure, RegistUser>> deleteUsuarios(RegistUser usuario) async {
+    try {
+      return right(await dataSource.deleteUsuarios(usuario));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, RegistUser>> updateUsuarios(RegistUser usuario) async {
+    try {
+      return right(await dataSource.updateUsuarios(usuario));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
 }

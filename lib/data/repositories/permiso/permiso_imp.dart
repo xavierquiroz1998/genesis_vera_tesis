@@ -28,4 +28,24 @@ class PermisoImp implements AbstractPermiso {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }
   }
+
+  @override
+  Future<Either<Failure, PermisosEntity>> deletePermisosUser(
+      PermisosEntity usuario) async {
+    try {
+      return right(await datasource.deletePermisosUser(usuario));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PermisosEntity>> updatePermisosUser(
+      PermisosEntity usuario) async {
+    try {
+      return right(await datasource.updatePermisosUser(usuario));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/providers/grupo/grupo_provider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
@@ -111,10 +112,9 @@ class _TipoModalState extends State<TipoModal> {
                       if (id == null) {
                         productProvider.guardarGrupo(widget.categoria!);
                       } else {
-                        // productProvider.updateTyped(
-                        //     id!, codigo, nombre, descripcion);
+                        productProvider.modifica(widget.categoria!);
                       }
-                      Navigator.of(context).pop();
+                      NavigationService.replaceTo("/tipo/producto");
                     } catch (e) {
                       print(e);
                       Navigator.of(context).pop();

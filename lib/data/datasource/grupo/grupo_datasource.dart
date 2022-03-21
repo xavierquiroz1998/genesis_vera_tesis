@@ -7,6 +7,8 @@ import '../../../domain/entities/tipo/grupo.dart';
 abstract class GrupoDTS {
   Future<List<GruposModelo>> getAllGrupos();
   Future<GruposModelo> insertGrupos(GrupoEntity grupo);
+  Future<GruposModelo> updateGrupos(GrupoEntity grupo);
+  Future<GruposModelo> deleteGrupos(GrupoEntity grupo);
 }
 
 class GrupoDTSImp extends GrupoDTS {
@@ -41,6 +43,40 @@ class GrupoDTSImp extends GrupoDTS {
       var grp = json.encode(grupo.toMap());
 
       final result = await cliente.post(Uri.parse(urlBase),
+          body: grp, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return GruposModelo.fromMap(json.decode(result.body));
+      }
+
+      return new GruposModelo();
+    } catch (e) {
+      return new GruposModelo();
+    }
+  }
+
+  @override
+  Future<GruposModelo> deleteGrupos(GrupoEntity grupo) async {
+    try {
+      var grp = json.encode(grupo.toMap());
+
+      final result = await cliente.delete(Uri.parse(urlBase),
+          body: grp, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return GruposModelo.fromMap(json.decode(result.body));
+      }
+
+      return new GruposModelo();
+    } catch (e) {
+      return new GruposModelo();
+    }
+  }
+
+  @override
+  Future<GruposModelo> updateGrupos(GrupoEntity grupo) async {
+    try {
+      var grp = json.encode(grupo.toMap());
+
+      final result = await cliente.put(Uri.parse(urlBase),
           body: grp, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return GruposModelo.fromMap(json.decode(result.body));

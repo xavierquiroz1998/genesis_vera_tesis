@@ -4,15 +4,20 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
 import '../../../core/Errors/failure.dart';
 import '../../services/fail.dart';
+import '../../uses cases/proveedores/delete_proveedores.dart';
 import '../../uses cases/proveedores/getproveedores.dart';
 import '../../uses cases/proveedores/insert_proveedor.dart';
+import '../../uses cases/proveedores/update_proveedores.dart';
 
 class ProveedoresProvider extends ChangeNotifier {
   String _titulo = "";
 
   final GetProveedores useCaseProveedores;
   final InsertProveedor insertProveedor;
-  ProveedoresProvider(this.useCaseProveedores, this.insertProveedor);
+  final UpdateProveedor updateProveedor;
+  final DeleteProveedor deleteProveedor;
+  ProveedoresProvider(this.useCaseProveedores, this.insertProveedor,
+      this.updateProveedor, this.deleteProveedor);
 
   List<ProveedoresEntity> listaProveedores = [];
 
@@ -116,9 +121,16 @@ class ProveedoresProvider extends ChangeNotifier {
     try {
       if (keyProvider.currentState!.validate()) {
         getProveedor();
-        var result = await insertProveedor.insert(proveedor);
-        var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
-        tem as ProveedoresEntity;
+        if (proveedor.id == 0) {
+          var result = await insertProveedor.insert(proveedor);
+          var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+          tem as ProveedoresEntity;
+        } else {
+          var result = await updateProveedor.update(proveedor);
+          var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+          tem as ProveedoresEntity;
+        }
+
         clear();
         return true;
       }
@@ -128,12 +140,10 @@ class ProveedoresProvider extends ChangeNotifier {
     }
   }
 
-  void anular(ProveedoresEntity prove) {
+  void anular(ProveedoresEntity prove) async {
     try {
       if (prove.id != 0) {
-        Estaticas.listProveedores.remove(prove);
-        prove.estado = false;
-        Estaticas.listProveedores.add(prove);
+        var tem = await deleteProveedor.delete(prove);
       }
     } catch (e) {
       print("error en anular");

@@ -47,6 +47,7 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                           DataColumn(label: Text("Descripcion")),
                           DataColumn(label: Text("Estado")),
                           DataColumn(label: Text("Editar")),
+                          DataColumn(label: Text("Anular")),
                         ],
                         rows: unidadP.listUnidad.map<DataRow>((e) {
                           return DataRow(cells: [
@@ -57,12 +58,24 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                               e.estado ? Icons.check : Icons.dangerous,
                               color: e.estado ? Colors.green : Colors.red,
                             )),
-                            DataCell(TextButton(
+                            DataCell(
+                              TextButton(
                                 onPressed: () {
                                   unidadP.unidad = e;
                                   UnidadWidget.dialogoUnidad(context);
                                 },
-                                child: Text("Editar"))),
+                                child: Text("Editar"),
+                              ),
+                            ),
+                            DataCell(
+                              TextButton(
+                                onPressed: () async {
+                                  unidadP.unidad = e;
+                                  await unidadP.anular();
+                                },
+                                child: Text("Anular"),
+                              ),
+                            ),
                           ]);
                         }).toList()),
                   ),

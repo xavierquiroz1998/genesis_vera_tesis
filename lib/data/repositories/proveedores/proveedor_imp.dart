@@ -29,4 +29,24 @@ class ProveedoresImp implements AbstractProveedores {
       return left(ServerFailure(mensaje: "Error al obtener datos"));
     }
   }
+
+  @override
+  Future<Either<Failure, ProveedoresEntity>> deleteProveedores(
+      ProveedoresEntity prod) async {
+    try {
+      return right(await dataSource.deleteProveedores(prod));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener datos"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProveedoresEntity>> updateProveedores(
+      ProveedoresEntity prod) async {
+    try {
+      return right(await dataSource.updateProveedores(prod));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener datos"));
+    }
+  }
 }

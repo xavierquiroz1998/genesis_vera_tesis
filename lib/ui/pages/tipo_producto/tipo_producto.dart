@@ -94,7 +94,9 @@ class _TipoProductoState extends State<TipoProducto> {
                                       ),
                                     ),
                                     InkWell(
-                                        onTap: () => {},
+                                        onTap: () async {
+                                          await productoProvider.anular(e);
+                                        },
 
                                         //productoProvider.deleteTipo(e)
                                         child: Icon(

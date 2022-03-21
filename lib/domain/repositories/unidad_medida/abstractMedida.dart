@@ -6,4 +6,8 @@ abstract class AbstractMedidaUnidad {
   Future<Either<Failure, List<UnidadMedidaEntity>>> getAllUnidades();
   Future<Either<Failure, UnidadMedidaEntity>> insetUnidades(
       UnidadMedidaEntity unid);
+  Future<Either<Failure, UnidadMedidaEntity>> updateUnidades(
+      UnidadMedidaEntity unid);
+  Future<Either<Failure, UnidadMedidaEntity>> deleteUnidades(
+      UnidadMedidaEntity unid);
 }

@@ -6,4 +6,8 @@ abstract class AbstractPermiso {
   Future<Either<Failure, List<PermisosEntity>>> getAllPermisosUser(String uid);
   Future<Either<Failure, PermisosEntity>> insertPermisosUser(
       PermisosEntity usuario);
+  Future<Either<Failure, PermisosEntity>> updatePermisosUser(
+      PermisosEntity usuario);
+  Future<Either<Failure, PermisosEntity>> deletePermisosUser(
+      PermisosEntity usuario);
 }

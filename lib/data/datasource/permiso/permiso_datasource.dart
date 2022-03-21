@@ -7,6 +7,8 @@ import '../../../domain/entities/permiso/permiso_entity.dart';
 abstract class PermisoDTS {
   Future<List<PermisoModelo>> getAllPermisosUser(String id);
   Future<PermisoModelo> insertPermisosUser(PermisosEntity permisos);
+  Future<PermisoModelo> updatePermisosUser(PermisosEntity permisos);
+  Future<PermisoModelo> deletePermisosUser(PermisosEntity permisos);
 }
 
 class PermisoDTSImp extends PermisoDTS {
@@ -42,6 +44,40 @@ class PermisoDTSImp extends PermisoDTS {
       String url2 = "http://localhost:8000/api/permisos";
       var per = json.encode(permisos.toMap());
       final result = await cliente.post(Uri.parse(url2),
+          body: per, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return PermisoModelo.fromMap(json.decode(result.body));
+      }
+
+      return new PermisoModelo();
+    } catch (e) {
+      return new PermisoModelo();
+    }
+  }
+
+  @override
+  Future<PermisoModelo> deletePermisosUser(PermisosEntity permisos) async {
+    try {
+      String url2 = "http://localhost:8000/api/permisos";
+      var per = json.encode(permisos.toMap());
+      final result = await cliente.delete(Uri.parse(url2),
+          body: per, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return PermisoModelo.fromMap(json.decode(result.body));
+      }
+
+      return new PermisoModelo();
+    } catch (e) {
+      return new PermisoModelo();
+    }
+  }
+
+  @override
+  Future<PermisoModelo> updatePermisosUser(PermisosEntity permisos) async {
+    try {
+      String url2 = "http://localhost:8000/api/permisos";
+      var per = json.encode(permisos.toMap());
+      final result = await cliente.put(Uri.parse(url2),
           body: per, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return PermisoModelo.fromMap(json.decode(result.body));

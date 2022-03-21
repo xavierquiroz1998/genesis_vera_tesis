@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 abstract class UsuarioDatasource {
   Future<List<ModelUsuarios>> getUsuarios();
   Future<ModelUsuarios> insertUsuarios(RegistUser usuario);
+  Future<ModelUsuarios> updateUsuarios(RegistUser usuario);
+  Future<ModelUsuarios> deleteUsuarios(RegistUser usuario);
 }
 
 class UsuarioDatasourceImp extends UsuarioDatasource {
@@ -41,6 +43,38 @@ class UsuarioDatasourceImp extends UsuarioDatasource {
     try {
       var uss = json.encode(usuario.toMap());
       final result = await cliente.post(Uri.parse(urlBase),
+          body: uss, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return ModelUsuarios.fromMap(json.decode(result.body));
+      } else {
+        return new ModelUsuarios();
+      }
+    } catch (e) {
+      return new ModelUsuarios();
+    }
+  }
+
+  @override
+  Future<ModelUsuarios> deleteUsuarios(RegistUser usuario) async {
+    try {
+      var uss = json.encode(usuario.toMap());
+      final result = await cliente.delete(Uri.parse(urlBase),
+          body: uss, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return ModelUsuarios.fromMap(json.decode(result.body));
+      } else {
+        return new ModelUsuarios();
+      }
+    } catch (e) {
+      return new ModelUsuarios();
+    }
+  }
+
+  @override
+  Future<ModelUsuarios> updateUsuarios(RegistUser usuario) async {
+    try {
+      var uss = json.encode(usuario.toMap());
+      final result = await cliente.put(Uri.parse(urlBase),
           body: uss, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelUsuarios.fromMap(json.decode(result.body));

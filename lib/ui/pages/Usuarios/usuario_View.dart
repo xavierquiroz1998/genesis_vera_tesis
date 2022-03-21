@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/Usuarios/UsuariosProvider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
@@ -57,27 +56,30 @@ class _UsuarioViewState extends State<UsuarioView> {
                             e.estado ? Icons.check : Icons.dangerous,
                             color: e.estado ? Colors.green : Colors.red,
                           )),
-                          DataCell(Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  userProvider.fillText(e);
-                                  NavigationService.navigateTo(
-                                      Flurorouter.usuario);
-                                },
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Colors.blue,
+                          DataCell(
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    userProvider.fillText(e);
+                                    NavigationService.navigateTo(
+                                        Flurorouter.usuario);
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.blue,
+                                  ),
                                 ),
-                              ),
-                              InkWell(
-                                  onTap: () => userProvider.deleteUser(e),
+                                InkWell(
+                                  onTap: () => userProvider.anularUsuario(e),
                                   child: Icon(
                                     Icons.delete,
                                     color: Colors.red,
-                                  ))
-                            ],
-                          )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ]);
                       }).toList()),
                 ),

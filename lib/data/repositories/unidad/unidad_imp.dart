@@ -27,4 +27,24 @@ class UnidadImp implements AbstractMedidaUnidad {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }
   }
+
+  @override
+  Future<Either<Failure, UnidadMedidaEntity>> deleteUnidades(
+      UnidadMedidaEntity unid) async {
+    try {
+      return right(await datasource.deleteUnidades(unid));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UnidadMedidaEntity>> updateUnidades(
+      UnidadMedidaEntity unid) async {
+    try {
+      return right(await datasource.updateUnidades(unid));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
 }

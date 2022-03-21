@@ -3,8 +3,10 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/usuarios/registroUsuarios.dart';
 
 import '../../services/fail.dart';
+import '../../uses cases/usuarios/delete_usuarios.dart';
 import '../../uses cases/usuarios/get_usuarios.dart';
 import '../../uses cases/usuarios/insert_usuario.dart';
+import '../../uses cases/usuarios/update_usuarios.dart';
 
 class UsuariosProvider extends ChangeNotifier {
   String isShowUpdate = "1";
@@ -12,6 +14,8 @@ class UsuariosProvider extends ChangeNotifier {
 
   final GetUsuarios usuarios;
   final InsertUsuarios insertUser;
+  final DeleteUsuarios deleteUser;
+  final UpdatetUsuarios updateUser;
   List<RegistUser> listaUsuarios = [];
   final controlCedula = TextEditingController();
   final controlNombre = TextEditingController();
@@ -21,7 +25,8 @@ class UsuariosProvider extends ChangeNotifier {
   final controlpassword = TextEditingController();
   final controlpassword2 = TextEditingController();
 
-  UsuariosProvider(this.usuarios, this.insertUser);
+  UsuariosProvider(
+      this.usuarios, this.insertUser, this.deleteUser, this.updateUser);
 
   String get getIsShow => isShowUpdate;
 
@@ -59,17 +64,23 @@ class UsuariosProvider extends ChangeNotifier {
           return null;
         }
       } else {
-        // Estaticas.listUsuarios = Estaticas.listUsuarios.map((e) {
-        //   if (e.cedula != controlCedula.text) return e;
-        //   e.nombres = controlNombre.text;
-        //   e.direccion = controlDireccion.text;
-        //   e.correo = controlEmail.text;
-        //   e.celular = controlCelular.text;
-        //   e.contrasenia = controlpassword.text;
-
-        //   return e;
-        // }).toList();
-        return null;
+        var user = RegistUser(
+            //cedula: controlCedula.text,
+            nombre: controlNombre.text,
+            //direccion: controlDireccion.text,
+            email: controlEmail.text,
+            estado: true,
+            //celular: controlCelular.text,
+            clave: controlpassword.text);
+        var result = await updateUser.update(user);
+        var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+        try {
+          var obj = tem as RegistUser;
+          clearText();
+          return obj;
+        } catch (ex) {
+          return null;
+        }
       }
       // notifyListeners();
     } catch (e) {
@@ -107,9 +118,14 @@ class UsuariosProvider extends ChangeNotifier {
     isShowUpdate = '1';
   }
 
-  void deleteUser(RegistUser e) {
+  void anularUsuario(RegistUser e) async {
     try {
-      Estaticas.listUsuarios.remove(e);
+      var temp = await deleteUser.delete(e);
+      var tem = temp.fold((fail) => Extras.failure(fail), (prd) => prd);
+      try {
+        var obj = tem as RegistUser;
+        clearText();
+      } catch (ex) {}
       notifyListeners();
     } catch (e) {
       print("Error usuario ${e.toString()}");
