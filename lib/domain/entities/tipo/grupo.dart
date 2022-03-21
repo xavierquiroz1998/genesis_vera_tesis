@@ -30,7 +30,11 @@ class GrupoEntity extends Equatable {
         "nombre": nombre,
         "detalle": detalle,
         "estado": estado,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
+        "createdAt": createdAt == null
+            ? DateTime.now().toIso8601String()
+            : createdAt?.toIso8601String(),
+        "updatedAt": updatedAt == null
+            ? DateTime.now().toIso8601String()
+            : updatedAt?.toIso8601String(),
       };
 }

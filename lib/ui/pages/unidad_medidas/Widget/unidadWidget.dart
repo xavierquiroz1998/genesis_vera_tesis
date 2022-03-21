@@ -18,7 +18,7 @@ class UnidadWidget {
             children: [
               TextFormField(
                 controller: unidadP.controllCodigo,
-                enabled: unidadP.unidad.id != null ? false : true,
+                enabled: unidadP.unidad.id != 0 ? false : true,
                 inputFormatters: [UpperCaseTextFormatter()],
                 decoration: InputDecoration(labelText: "Codigo"),
               ),
@@ -34,7 +34,7 @@ class UnidadWidget {
           TextButton(
             onPressed: () async {
               if (await unidadP.guardar()) {
-                Navigator.pop(context);
+                //Navigator.pop(context);
                 ToastNotificationView.messageAccess('Exito :) ');
               }
             },
@@ -42,7 +42,7 @@ class UnidadWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              unidadP.refresh();
             },
             child: Text("Cancelar"),
           ),

@@ -45,11 +45,16 @@ import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
 import 'domain/repositories/proveedores/abtract_proveedores.dart';
+import 'domain/uses cases/grupo/delete_grupo.dart';
 import 'domain/uses cases/grupo/insert_grupos.dart';
+import 'domain/uses cases/grupo/update_grupos.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
+import 'domain/uses cases/proveedores/delete_proveedores.dart';
 import 'domain/uses cases/proveedores/getproveedores.dart';
-import 'domain/uses cases/proyecto/insert_proyectos.dart';
+import 'domain/uses cases/proveedores/update_proveedores.dart';
+import 'domain/uses cases/unidad_medida/delete_medidas.dart';
+import 'domain/uses cases/unidad_medida/update_medidas.dart';
 import 'domain/uses cases/usuarios/delete_usuarios.dart';
 import 'domain/uses cases/usuarios/update_usuarios.dart';
 
@@ -59,9 +64,9 @@ Future<void> init() async {
   sl.registerFactory(() =>
       ProductosProvider(sl(), sl(), sl(), sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl(), sl())); //injectar provider
-  sl.registerFactory(() => UnidadMedidaProvider(sl(), sl()));
-  sl.registerFactory(() => GrupoProvider(sl(), sl()));
-  sl.registerFactory(() => ProveedoresProvider(sl(), sl()));
+  sl.registerFactory(() => UnidadMedidaProvider(sl(), sl(), sl(), sl()));
+  sl.registerFactory(() => GrupoProvider(sl(), sl(), sl(), sl()));
+  sl.registerFactory(() => ProveedoresProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
   sl.registerFactory(() => ProyectoProvider(sl(), sl()));
   sl.registerFactory(() => EProductoProvider(sl()));
@@ -84,6 +89,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InsertGrupo(sl()));
   sl.registerLazySingleton(() => DeleteUsuarios(sl()));
   sl.registerLazySingleton(() => UpdatetUsuarios(sl()));
+  sl.registerLazySingleton(() => UpdateGrupos(sl()));
+  sl.registerLazySingleton(() => DeleteGrupo(sl()));
+  sl.registerLazySingleton(() => UpdateProveedor(sl()));
+  sl.registerLazySingleton(() => DeleteProveedor(sl()));
+  sl.registerLazySingleton(() => DeleteMedidas(sl()));
+  sl.registerLazySingleton(() => UpdateMedidas(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository

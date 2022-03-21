@@ -3,6 +3,7 @@ import 'package:genesis_vera_tesis/domain/entities/Proveedores/Proveedores.dart'
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 
 import '../../../core/Errors/failure.dart';
+import '../../../data/services/Navigation/NavigationService.dart';
 import '../../services/fail.dart';
 import '../../uses cases/proveedores/delete_proveedores.dart';
 import '../../uses cases/proveedores/getproveedores.dart';
@@ -114,26 +115,27 @@ class ProveedoresProvider extends ChangeNotifier {
       proveedor.direccion = controllDireccion.text;
       proveedor.nombre = controllNombres.text;
       proveedor.identificacion = controllCelular.text;
+      proveedor.estado = true;
     } catch (e) {}
   }
 
   Future<bool> guardar() async {
     try {
-      if (keyProvider.currentState!.validate()) {
-        getProveedor();
-        if (proveedor.id == 0) {
-          var result = await insertProveedor.insert(proveedor);
-          var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
-          tem as ProveedoresEntity;
-        } else {
-          var result = await updateProveedor.update(proveedor);
-          var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
-          tem as ProveedoresEntity;
-        }
-
-        clear();
-        return true;
+      //if (keyProvider.currentState!.validate()) {
+      getProveedor();
+      if (proveedor.id == 0) {
+        var result = await insertProveedor.insert(proveedor);
+        var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+        tem as ProveedoresEntity;
+      } else {
+        var result = await updateProveedor.update(proveedor);
+        var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+        tem as ProveedoresEntity;
       }
+
+      clear();
+      return true;
+      //}
       return false;
     } catch (e) {
       return false;
@@ -143,7 +145,9 @@ class ProveedoresProvider extends ChangeNotifier {
   void anular(ProveedoresEntity prove) async {
     try {
       if (prove.id != 0) {
-        var tem = await deleteProveedor.delete(prove);
+        prove.estado = false;
+        var tem = await updateProveedor.update(prove);
+        NavigationService.replaceTo("/proveedores");
       }
     } catch (e) {
       print("error en anular");

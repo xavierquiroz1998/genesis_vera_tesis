@@ -54,7 +54,7 @@ class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
   Future<Proveedor> deleteProveedores(ProveedoresEntity prod) async {
     try {
       var provee = json.encode(prod.toMap());
-      final result = await cliente.delete(Uri.parse(urlBase),
+      final result = await cliente.delete(Uri.parse(urlBase + "/${prod.id}"),
           body: provee, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return Proveedor.fromMap(json.decode(result.body));
@@ -69,7 +69,7 @@ class ProveedoresDataSourceImp implements ProveedoresDatasourceADS {
   Future<Proveedor> updateProveedores(ProveedoresEntity prod) async {
     try {
       var provee = json.encode(prod.toMap());
-      final result = await cliente.put(Uri.parse(urlBase),
+      final result = await cliente.put(Uri.parse(urlBase + "/${prod.id}"),
           body: provee, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return Proveedor.fromMap(json.decode(result.body));

@@ -43,6 +43,7 @@ class GrupoProvider extends ChangeNotifier {
 
   Future anular(GrupoEntity grupo) async {
     try {
+      grupo.estado = false;
       var result = await deleteGrupo.delete(grupo);
     } catch (ex) {}
   }

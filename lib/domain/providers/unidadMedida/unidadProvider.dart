@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/core/Errors/failure.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/unidad_medida/get_medidas.dart';
@@ -86,7 +87,7 @@ class UnidadMedidaProvider extends ChangeNotifier {
     try {
       getValor();
 
-      if (unidad.id != null) {
+      if (unidad.id > 0) {
         // modifica
         var result = await updateUnidad.update(unidad);
       } else {
@@ -95,7 +96,7 @@ class UnidadMedidaProvider extends ChangeNotifier {
         var result = await insertUnidad.insert(unidad);
       }
       //  unidades = Estaticas.unidades;
-
+      refresh();
       return true;
     } catch (e) {
       print("erro en guardar ${e.toString()}");
@@ -106,7 +107,13 @@ class UnidadMedidaProvider extends ChangeNotifier {
   Future<void> anular() async {
     try {
       getValor();
+      unidad.estado = false;
       var result = await deleteUnidad.delete(unidad);
+      refresh();
     } catch (e) {}
+  }
+
+  void refresh() {
+    NavigationService.replaceTo("/unidadMedida");
   }
 }

@@ -59,7 +59,7 @@ class GrupoDTSImp extends GrupoDTS {
     try {
       var grp = json.encode(grupo.toMap());
 
-      final result = await cliente.delete(Uri.parse(urlBase),
+      final result = await cliente.delete(Uri.parse(urlBase + "/${grupo.id}"),
           body: grp, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return GruposModelo.fromMap(json.decode(result.body));
@@ -76,7 +76,7 @@ class GrupoDTSImp extends GrupoDTS {
     try {
       var grp = json.encode(grupo.toMap());
 
-      final result = await cliente.put(Uri.parse(urlBase),
+      final result = await cliente.put(Uri.parse(urlBase + "/${grupo.id}"),
           body: grp, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return GruposModelo.fromMap(json.decode(result.body));

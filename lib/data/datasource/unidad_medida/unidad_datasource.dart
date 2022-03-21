@@ -60,7 +60,7 @@ class UnidadMedidaDTSImp extends UnidadMediaDTS {
   Future<UnidadMedidaEntity> deleteUnidades(UnidadMedidaEntity unid) async {
     try {
       var uni = json.encode(unid.toMap());
-      final result = await cliente.delete(Uri.parse(urlBase),
+      final result = await cliente.delete(Uri.parse(urlBase + "/${unid.id}"),
           body: uni, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return UnidadMedidaModelo.fromMap(json.decode(result.body));
@@ -78,7 +78,7 @@ class UnidadMedidaDTSImp extends UnidadMediaDTS {
   Future<UnidadMedidaEntity> updateUnidades(UnidadMedidaEntity unid) async {
     try {
       var uni = json.encode(unid.toMap());
-      final result = await cliente.put(Uri.parse(urlBase),
+      final result = await cliente.put(Uri.parse(urlBase + "/${unid.id}"),
           body: uni, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return UnidadMedidaModelo.fromMap(json.decode(result.body));

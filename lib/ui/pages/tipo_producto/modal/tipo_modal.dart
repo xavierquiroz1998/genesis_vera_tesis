@@ -109,10 +109,17 @@ class _TipoModalState extends State<TipoModal> {
               child: CustomOutlinedButton(
                   onPressed: () async {
                     try {
+                      GrupoEntity grp = new GrupoEntity(
+                        nombre: nombre,
+                        detalle: descripcion,
+                        referencia: codigo,
+                        estado: true,
+                      );
                       if (id == null) {
-                        productProvider.guardarGrupo(widget.categoria!);
+                        productProvider.guardarGrupo(grp);
                       } else {
-                        productProvider.modifica(widget.categoria!);
+                        grp.id = int.tryParse(id!) ?? 0;
+                        productProvider.modifica(grp);
                       }
                       NavigationService.replaceTo("/tipo/producto");
                     } catch (e) {
