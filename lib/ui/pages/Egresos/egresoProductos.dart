@@ -6,6 +6,7 @@ import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/egreso/egresoProducto.dart';
+import '../../../domain/entities/registro/entityRegistor.dart';
 import '../../../domain/providers/egreso/e_productoProvider.dart';
 import 'widgets/egresoProductosWidget.dart';
 
@@ -28,7 +29,7 @@ class EgresoProductosView extends StatelessWidget {
                     TextButton(
                       //style: ButtonStyle(),
                       onPressed: () {
-                        egreso.listaProducto = new EgresoCabecera();
+                        egreso.cab = new EntityRegistro();
                         NavigationService.navigateTo(Flurorouter.egreso);
                       },
                       child: Text("Nuevo"),

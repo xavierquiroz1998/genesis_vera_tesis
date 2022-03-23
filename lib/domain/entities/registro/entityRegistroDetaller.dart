@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../productos.dart';
+
 class EntityRegistroDetalle extends Equatable {
   EntityRegistroDetalle({
     this.cantidad = 0,
@@ -8,6 +10,7 @@ class EntityRegistroDetalle extends Equatable {
     this.idProducto = 0,
     this.idRegistro = 0,
     this.observacion = "",
+    this.to = 0,
   });
 
   int cantidad;
@@ -16,6 +19,8 @@ class EntityRegistroDetalle extends Equatable {
   int idProducto;
   int idRegistro;
   String observacion;
+  double to;
+  Productos? productos;
 
   Map<String, dynamic> toMap() => {
         "cantidad": cantidad,

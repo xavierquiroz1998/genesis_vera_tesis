@@ -6,13 +6,17 @@ import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 
 import '../../entities/registro/entityRegistor.dart';
+import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class EProductoProvider extends ChangeNotifier {
-  EgresoCabecera _listPRoduct = new EgresoCabecera();
+  //EgresoCabecera _listPRoduct = new EgresoCabecera();
+  EntityRegistro cab = new EntityRegistro();
+  List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
   List<Productos> listado = [];
+  double to = 0;
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
 
@@ -24,7 +28,7 @@ class EProductoProvider extends ChangeNotifier {
     _ctrObservacion = ctrObservacion;
   }
 
-  Productos _prd = new Productos(precio: 0);
+  Productos _prd = new Productos();
 
   Productos get prd => _prd;
 
@@ -33,21 +37,29 @@ class EProductoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  EgresoCabecera get listaProducto => _listPRoduct;
-
-  set listaProducto(EgresoCabecera cab) {
-    cab.detalle = [];
-    _listPRoduct = cab;
+  void calcular() {
+    for (var item in detalles) {
+      item.to = item.cantidad * item.total;
+    }
     notifyListeners();
   }
+
+  // EgresoCabecera get listaProducto => _listPRoduct;
+
+  // set listaProducto(EgresoCabecera cab) {
+  //   cab.detalle = [];
+  //   _listPRoduct = cab;
+  //   notifyListeners();
+  // }
 
   void agregar() {
-    listaProducto.detalle!.add(new EgresoDetalle());
+    detalles.add(new EntityRegistroDetalle());
+
     notifyListeners();
   }
 
-  void remover(EgresoDetalle e) {
-    listaProducto.detalle!.remove(e);
+  void remover(EntityRegistroDetalle e) {
+    detalles.remove(e);
     notifyListeners();
   }
 
@@ -71,27 +83,32 @@ class EProductoProvider extends ChangeNotifier {
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
-
-      int sec = 0;
-      for (var item in listaProducto.detalle!) {
-        var result =
-            Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
-        if (result.id > 0) {
-          //double totalStock = result.stock! - item.cantidad;
-          Estaticas.listProductos.remove(result);
-          //result.stock = totalStock;
-          Estaticas.listProductos.add(result);
-          item.idEgresoDetalle = item.secuencia = sec++;
-          item.total = item.cantidad * item.precio!;
-        }
+      for (var item in detalles) {
+        item.idRegistro = tem.id;
+        var detResultv = await usesCases.insertRegistrosDetalles(item);
       }
-      listaProducto.observacion = ctrObservacion.text;
-      listaProducto.estado = "A";
-      listaProducto.detalle!.forEach((e) {
-        listaProducto.total += e.total!;
-      });
-      listaProducto.idEgreso = Estaticas.listProductosEgreso.length + 1;
-      Estaticas.listProductosEgreso.add(listaProducto);
+
+//--------------------------------------------
+      // int sec = 0;
+      // for (var item in listaProducto.detalle!) {
+      //   var result =
+      //       Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
+      //   if (result.id > 0) {
+      //     //double totalStock = result.stock! - item.cantidad;
+      //     Estaticas.listProductos.remove(result);
+      //     //result.stock = totalStock;
+      //     Estaticas.listProductos.add(result);
+      //     item.idEgresoDetalle = item.secuencia = sec++;
+      //     item.total = item.cantidad * item.precio!;
+      //   }
+      // }
+      // listaProducto.observacion = ctrObservacion.text;
+      // listaProducto.estado = "A";
+      // listaProducto.detalle!.forEach((e) {
+      //   listaProducto.total += e.total!;
+      // });
+      // listaProducto.idEgreso = Estaticas.listProductosEgreso.length + 1;
+      // Estaticas.listProductosEgreso.add(listaProducto);
     } catch (e) {
       print("Error en guardar ${e.toString()}");
     }

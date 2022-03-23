@@ -67,20 +67,32 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("")),
                       ),
                     ],
-                    rows: egreso.listaProducto.detalle!.map<DataRow>((e) {
+                    rows: egreso.detalles.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          DataCell(
-                            Combo(
-                              provider: egreso,
-                              egresoProd: e,
-                            ),
-                          ),
+                          DataCell(DropdownButton<Productos>(
+                            items: egreso.listado
+                                .map(
+                                  (eDrop) => DropdownMenuItem<Productos>(
+                                    child: Text(eDrop.detalle),
+                                    value: eDrop,
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              e.idProducto = value!.id;
+                              e.productos = value;
+                              setState(() {});
+                            },
+                            hint: e.idProducto == 0
+                                ? Text("Seleccione Producto")
+                                : Text("${e.productos!.detalle}"),
+                          )),
                           DataCell(
                             TextFormField(
                               onChanged: (value) {
-                                e.detalle = value;
+                                e.observacion = value;
                               },
                             ),
                           ),
@@ -88,14 +100,16 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             TextFormField(
                               onChanged: (value) {
                                 e.cantidad = int.parse(value);
+                                egreso.calcular();
                               },
                             ),
                           ),
                           DataCell(
                             TextFormField(
                               onChanged: (value) {
-                                e.precio = double.parse(value);
-                                e.total = e.cantidad * e.precio!;
+                                e.to = double.parse(value);
+                                egreso.calcular();
+                                //e.total = e.cantidad * e.precio!;
                               },
                             ),
                           ),
@@ -116,18 +130,18 @@ class _EgresoProductoState extends State<EgresoProducto> {
                     TextButton(
                       onPressed: () {
                         egreso.guardarEgreso();
-                        for (var item in egreso.listaProducto.detalle!) {
-                          var result = Estaticas.listProductos
-                              .firstWhere((e) => e.id == item.idProducto);
-                          if (result.id > 0) {
-                            kardex.salidas(
-                                double.parse(item.cantidad.toString()), result);
-                            /*   result.stock =
-                                double.parse(item.cantidad.toString()); */
-                            /*     kardex.existencias(result, false, false); */
-                            kardex.impresion();
-                          }
-                        }
+                        // for (var item in egreso.listaProducto.detalle!) {
+                        //   var result = Estaticas.listProductos
+                        //       .firstWhere((e) => e.id == item.idProducto);
+                        //   if (result.id > 0) {
+                        //     kardex.salidas(
+                        //         double.parse(item.cantidad.toString()), result);
+                        //     /*   result.stock =
+                        //         double.parse(item.cantidad.toString()); */
+                        //     /*     kardex.existencias(result, false, false); */
+                        //     kardex.impresion();
+                        //   }
+                        // }
                         Navigator.pop(context);
                       },
                       child: Text("Guardar"),
@@ -148,46 +162,6 @@ class _EgresoProductoState extends State<EgresoProducto> {
           // ),
         ],
       ),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class Combo extends StatefulWidget {
-  Combo({
-    Key? key,
-    required this.provider,
-    required this.egresoProd,
-  }) : super(key: key);
-
-  EProductoProvider provider;
-  EgresoDetalle egresoProd;
-  Productos prdSelect = new Productos(precio: 0);
-
-  @override
-  _ComboState createState() => _ComboState();
-}
-
-class _ComboState extends State<Combo> {
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<Productos>(
-      items: widget.provider.listado
-          .map(
-            (eDrop) => DropdownMenuItem<Productos>(
-              child: Text(eDrop.detalle),
-              value: eDrop,
-            ),
-          )
-          .toList(),
-      onChanged: (value) {
-        widget.egresoProd.idProducto = value?.id;
-        widget.prdSelect = value!;
-        setState(() {});
-      },
-      hint: widget.prdSelect.id == 0
-          ? Text("Seleccione Producto")
-          : Text("${widget.prdSelect.detalle}"),
     );
   }
 }
