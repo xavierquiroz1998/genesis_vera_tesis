@@ -38,14 +38,17 @@ import 'data/datasource/usuarios/usuarios_datasource.dart';
 import 'data/repositories/logeo/sesion_Imp.dart';
 import 'data/repositories/producto_Imp.dart';
 import 'data/repositories/proveedores/proveedor_imp.dart';
+import 'data/repositories/registros/registros_imp.dart';
 import 'domain/providers/Devoluciones/devolucionProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Proveedores/proveedoresProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/egreso/e_productoProvider.dart';
+import 'domain/providers/registros/registrosProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
 import 'domain/repositories/proveedores/abtract_proveedores.dart';
+import 'domain/repositories/registros/abstract_registros.dart';
 import 'domain/uses cases/grupo/delete_grupo.dart';
 import 'domain/uses cases/grupo/insert_grupos.dart';
 import 'domain/uses cases/grupo/update_grupos.dart';
@@ -54,6 +57,7 @@ import 'domain/uses cases/productos/insert_producto.dart';
 import 'domain/uses cases/proveedores/delete_proveedores.dart';
 import 'domain/uses cases/proveedores/getproveedores.dart';
 import 'domain/uses cases/proveedores/update_proveedores.dart';
+import 'domain/uses cases/registros/usesCaseRegistros.dart';
 import 'domain/uses cases/unidad_medida/delete_medidas.dart';
 import 'domain/uses cases/unidad_medida/update_medidas.dart';
 import 'domain/uses cases/usuarios/delete_usuarios.dart';
@@ -70,9 +74,10 @@ Future<void> init() async {
   sl.registerFactory(() => ProveedoresProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
   sl.registerFactory(() => ProyectoProvider(sl(), sl()));
-  sl.registerFactory(() => EProductoProvider(sl()));
+  sl.registerFactory(() => EProductoProvider(sl(), sl()));
   sl.registerFactory(() => DevolucionProvider(sl()));
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
+  sl.registerFactory(() => RegistrosProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
@@ -96,6 +101,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteProveedor(sl()));
   sl.registerLazySingleton(() => DeleteMedidas(sl()));
   sl.registerLazySingleton(() => UpdateMedidas(sl()));
+  sl.registerLazySingleton(() => UsesCaseRegistros(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -113,6 +119,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AbstractPermiso>(
       () => PermisoImp(sl())); // injeccion de repository
   sl.registerLazySingleton<AbstractUsuarios>(() => UsuariosImp(sl()));
+  sl.registerLazySingleton<AbstractRegistros>(() => RegistrosImp(sl()));
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));

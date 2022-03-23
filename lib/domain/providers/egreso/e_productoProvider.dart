@@ -5,15 +5,18 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 
+import '../../entities/registro/entityRegistor.dart';
 import '../../services/fail.dart';
+import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class EProductoProvider extends ChangeNotifier {
   EgresoCabecera _listPRoduct = new EgresoCabecera();
   TextEditingController _ctrObservacion = new TextEditingController();
   List<Productos> listado = [];
   final GetProductos getProductos;
+  final UsesCaseRegistros usesCases;
 
-  EProductoProvider(this.getProductos);
+  EProductoProvider(this.getProductos, this.usesCases);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 
@@ -61,6 +64,14 @@ class EProductoProvider extends ChangeNotifier {
 
   Future<void> guardarEgreso() async {
     try {
+      EntityRegistro reg = new EntityRegistro();
+      reg.idTipo = "1";
+      reg.detalle = ctrObservacion.text;
+      reg.estado = true;
+      var result = await usesCases.insertRegistros(reg);
+      var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+      tem as EntityRegistro;
+
       int sec = 0;
       for (var item in listaProducto.detalle!) {
         var result =
