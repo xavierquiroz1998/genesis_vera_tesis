@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../../ui/Router/FluroRouter.dart';
 import '../../ui/pages/dashboard/dashboardXproducto.dart';
+import '../../ui/pages/parametros/parameter.dart';
 import '../providers/Home/sideMenuProvider.dart';
 
 class Handlers {
@@ -214,6 +215,17 @@ class Handlers {
     }
   });
 
+  static Handler parametros = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.parametros);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return ParametrosView();
+    } else {
+      return Login();
+    }
+  });
   static Handler salir = Handler(handlerFunc: (context, param) {
     final logeo = Provider.of<LoginProvider>(context!);
     logeo.lagout();

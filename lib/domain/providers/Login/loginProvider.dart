@@ -72,6 +72,7 @@ class LoginProvider extends ChangeNotifier {
   Future<void> lagout() async {
     try {
       authenticated = false;
+      authStatus = AuthStatus.notAuthenticated;
       LocalStorage.prefs.remove('token');
       LocalStorage.prefs.remove('usuario');
       notifyListeners();

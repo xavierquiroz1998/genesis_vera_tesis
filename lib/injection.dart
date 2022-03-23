@@ -33,6 +33,7 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/usuarios/insert_usuario.d
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'data/datasource/registros/registroDataSource.dart';
 import 'data/datasource/usuarios/usuarios_datasource.dart';
 import 'data/repositories/logeo/sesion_Imp.dart';
 import 'data/repositories/producto_Imp.dart';
@@ -131,6 +132,7 @@ Future<void> init() async {
   sl.registerLazySingleton<ProyectoDTS>(
       () => ProyectoDTSImp(sl())); // injeccion de datasourse
   sl.registerLazySingleton<UsuarioDatasource>(() => UsuarioDatasourceImp(sl()));
+  sl.registerLazySingleton<RegistroDTS>(() => RegistroDTSImp(sl()));
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 
