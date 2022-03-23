@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
@@ -34,7 +35,7 @@ class _DevolucionViewState extends State<DevolucionView> {
       child: ListView(
         children: [
           WhiteCard(
-            title: devolucio.cab.idDevolucion == null
+            title: devolucio.cab.id == 0
                 ? "Nueva Devolucion"
                 : "Modificar Devolucion",
             child: Column(
@@ -97,7 +98,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         label: Center(child: Text("")),
                       ),
                     ],
-                    rows: devolucio.detalleDevolucion.map<DataRow>((e) {
+                    rows: devolucio.detalles.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
@@ -118,17 +119,17 @@ class _DevolucionViewState extends State<DevolucionView> {
                                       )
                                       .toList(),
                                   onChanged: (value) {
-                                    e.idProducto = value?.id;
-                                    e.prdSelect = value!;
+                                    e.idProducto = value!.id;
+                                    e.productos = value;
                                     // prdSelect = value!;
                                     setState(() {});
                                   },
-                                  hint: e.idProducto == null
+                                  hint: e.idProducto == 0
                                       ? Text("Seleccione Producto")
                                       : Container(
                                           width: 300,
                                           child:
-                                              Text("${e.prdSelect.detalle}")),
+                                              Text("${e.productos!.nombre}")),
                                 ),
                               ),
                             ),
@@ -139,34 +140,40 @@ class _DevolucionViewState extends State<DevolucionView> {
                           ),
                           DataCell(
                             TextFormField(
-                              initialValue: e.detalle,
+                              initialValue: e.observacion,
                               onChanged: (value) {
-                                e.detalle = value;
+                                e.observacion = value;
                               },
                             ),
                           ),
                           DataCell(
                             TextFormField(
                               initialValue: "${e.cantidad}",
-                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(?:\+|-)?\d+$'))
+                              ],
                               onChanged: (value) {
-                                e.cantidad = int.tryParse(value);
+                                e.cantidad = int.parse(value);
                                 devolucio.calcularTotal();
                               },
                             ),
                           ),
                           DataCell(
                             TextFormField(
-                              initialValue: "${e.precio}",
-                              keyboardType: TextInputType.number,
+                              initialValue: "${e.total}",
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(?:\+|-)?\d+$'))
+                              ],
                               onChanged: (value) {
-                                e.precio = double.tryParse(value);
+                                e.total = double.parse(value);
                                 devolucio.calcularTotal();
                               },
                             ),
                           ),
                           DataCell(
-                            Text(e.total.toString()),
+                            Text(e.to.toString()),
                           ),
                           DataCell(Icon(Icons.delete), onTap: () {
                             devolucio.removerDevolucion(e);
@@ -210,11 +217,11 @@ class _DevolucionViewState extends State<DevolucionView> {
                     // ),
 
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         var valTemp = 0.0;
                         if (tipoDevSelect == "PROVEEEDOR") {
-                          /*   devolucio.guardarDevolucion();
-                          devolucio.detalleDevolucion.forEach((element) {
+                          await devolucio.guardarDevolucion();
+                          /*devolucio.detalleDevolucion.forEach((element) {
                             element.prdSelect.stock =
                                 double.parse("${element.cantidad}");
 
@@ -232,7 +239,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                             kardex.impresion();
                           }); */
                         } else if (tipoDevSelect == "CLIENTE") {
-                          devolucio.guardarDevolucion();
+                          await devolucio.guardarDevolucion();
                           // devolucio.detalleDevolucion.forEach((element) {
                           //   valTemp = element.prdSelect.stock! -
                           //       double.parse("${element.cantidad}");

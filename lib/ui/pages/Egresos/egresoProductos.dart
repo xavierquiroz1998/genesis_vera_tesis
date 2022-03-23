@@ -5,13 +5,23 @@ import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/entities/egreso/egresoProducto.dart';
 import '../../../domain/entities/registro/entityRegistor.dart';
 import '../../../domain/providers/egreso/e_productoProvider.dart';
 import 'widgets/egresoProductosWidget.dart';
 
-class EgresoProductosView extends StatelessWidget {
+class EgresoProductosView extends StatefulWidget {
   const EgresoProductosView({Key? key}) : super(key: key);
+
+  @override
+  State<EgresoProductosView> createState() => _EgresoProductosViewState();
+}
+
+class _EgresoProductosViewState extends State<EgresoProductosView> {
+  @override
+  void initState() {
+    Provider.of<EProductoProvider>(context, listen: false).getRegistrosDev();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +62,6 @@ class EgresoProductosView extends StatelessWidget {
                         label: Center(child: Text("Observacion")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Total")),
-                      ),
-                      const DataColumn(
                         label: Center(child: Text("Estado")),
                       ),
                       const DataColumn(
@@ -64,18 +71,15 @@ class EgresoProductosView extends StatelessWidget {
                         label: Center(child: Text("Anular")),
                       ),
                     ],
-                    rows: Estaticas.listProductosEgreso.map<DataRow>((e) {
+                    rows: egreso.listTableRegistrosDev.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            Text(e.idEgreso.toString()),
+                            Text(e.id.toString()),
                           ),
                           DataCell(
-                            Text(e.observacion.toString()),
-                          ),
-                          DataCell(
-                            Text(e.total.toString()),
+                            Text(e.detalle.toString()),
                           ),
                           DataCell(
                             Text(e.estado.toString()),

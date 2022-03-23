@@ -13,6 +13,7 @@ import '../../uses cases/registros/usesCaseRegistros.dart';
 class EProductoProvider extends ChangeNotifier {
   //EgresoCabecera _listPRoduct = new EgresoCabecera();
   EntityRegistro cab = new EntityRegistro();
+  List<EntityRegistro> listTableRegistrosDev = [];
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
   List<Productos> listado = [];
@@ -72,6 +73,18 @@ class EProductoProvider extends ChangeNotifier {
       print("error${result.toString()}");
     }
     notifyListeners();
+  }
+
+  Future<void> getRegistrosDev() async {
+    try {
+      var tem = await usesCases.getAll();
+
+      listTableRegistrosDev = tem.getOrElse(() => []);
+
+      notifyListeners();
+    } catch (ex) {
+      listTableRegistrosDev = [];
+    }
   }
 
   Future<void> guardarEgreso() async {

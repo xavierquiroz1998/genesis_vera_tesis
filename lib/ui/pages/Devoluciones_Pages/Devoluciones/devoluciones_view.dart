@@ -8,8 +8,21 @@ import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-class DevolucionesView extends StatelessWidget {
+import '../../../../domain/entities/registro/entityRegistor.dart';
+
+class DevolucionesView extends StatefulWidget {
   const DevolucionesView({Key? key}) : super(key: key);
+
+  @override
+  State<DevolucionesView> createState() => _DevolucionesViewState();
+}
+
+class _DevolucionesViewState extends State<DevolucionesView> {
+  @override
+  void initState() {
+    Provider.of<DevolucionProvider>(context, listen: false).getRegistrosDev();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +37,8 @@ class DevolucionesView extends StatelessWidget {
               children: [
                 TextButton(
                     onPressed: () {
-                      devolucio.cab = new DevolucionCab();
+                      devolucio.cab = new EntityRegistro();
+                      devolucio.detalles = [];
                       NavigationService.navigateTo(Flurorouter.devolucion);
                     },
                     child: Text("Nueva Devolucion")),
@@ -48,18 +62,18 @@ class DevolucionesView extends StatelessWidget {
                         label: Center(child: Text("Anular")),
                       ),
                     ],
-                    rows: Estaticas.listDevoluciones.map<DataRow>((e) {
+                    rows: devolucio.listTableRegistrosDev.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            Text(e.idDevolucion.toString()),
+                            Text(e.id.toString()),
                           ),
                           DataCell(
-                            Text(e.observacion.toString()),
+                            Text(e.detalle.toString()),
                           ),
                           DataCell(
-                            Text(e.estado!.toString()),
+                            Text(e.estado.toString()),
                           ),
                           DataCell(
                             Icon(Icons.edit),
