@@ -91,6 +91,25 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 BoxConstraints(maxWidth: 300, minWidth: 100),
                             child: TextFormField(
                               onChanged: (value) {
+                                producto.pedid = int.parse(value);
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Ingrese Maximo";
+                                }
+                              },
+                              controller: producto.controllerStock,
+                              decoration: CustomInputs.formInputDecoration(
+                                  hint: 'Maximo',
+                                  label: 'Maximo',
+                                  icon: Icons.delete_outline),
+                            ),
+                          ),
+                          Container(
+                            constraints:
+                                BoxConstraints(maxWidth: 300, minWidth: 100),
+                            child: TextFormField(
+                              onChanged: (value) {
                                 try {
                                   // calcular
                                 } catch (e) {}

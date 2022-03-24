@@ -20,6 +20,7 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerStock = new TextEditingController();
   TextEditingController _controllerPrecio = new TextEditingController();
   TextEditingController _controllerHolgura = new TextEditingController();
+  int pedid = 0;
 
   TextEditingController get controllerHolgura => _controllerHolgura;
 
@@ -138,8 +139,24 @@ class ProductosProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> calculos(Productos p) async {
+    try {
+      double converturaDias = (p.cantidad * pedid) / 30; // 7,5
+// cosulto el proveedor por producto y veo el tiempo de holgura que sea mayor
+// como envaluar los los dias trasncurridos
+      double mesaActual = p.cantidad + pedid;
+
+      // categorizacion  de todos los productos
+
+      double stockSeguridad = 0;
+      // obtengo las ventas de ese producto los ultimos 3 meses y lo sumo el total
+
+    } catch (ex) {}
+  }
+
   Future<Productos?> guardar(Productos p) async {
     var opt = false;
+
     try {
       product.referencia = controllerCodigo.text;
       p.nombre = controllerDescripcion.text;
@@ -147,6 +164,7 @@ class ProductosProvider extends ChangeNotifier {
       p.cantidad = double.tryParse(controllerStock.text) ?? 0;
       product.precio = double.tryParse(controllerPrecio.text) ?? 0;
       product.estado = true;
+      await calculos(p);
       var tem = await insertarProducto.insert(p);
 
       if (keyProducto.currentState!.validate()) {

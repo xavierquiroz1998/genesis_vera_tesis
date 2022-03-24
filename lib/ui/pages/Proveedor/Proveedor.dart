@@ -63,6 +63,15 @@ class Proveedor extends StatelessWidget {
                   controller: provee.controllCelular,
                   decoration: InputDecoration(labelText: "Celular"),
                 ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null) {
+                      return "Ingrese Holgura";
+                    }
+                  },
+                  controller: provee.controllCelular,
+                  decoration: InputDecoration(labelText: "Holgura"),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
