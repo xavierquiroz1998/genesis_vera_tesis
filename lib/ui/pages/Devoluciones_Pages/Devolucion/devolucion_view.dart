@@ -54,10 +54,11 @@ class _DevolucionViewState extends State<DevolucionView> {
                 DropdownButtonFormField<String>(
                   onChanged: (value) async {
                     tipoDevSelect = value!;
+                    devolucio.pedidoSelec = new EntityRegistro();
                     if (tipoDevSelect == "PROVEEDOR") {
-                      devolucio.getRegistrosDev(1);
+                      await devolucio.getRegistrosDev(1);
                     } else if (tipoDevSelect == "CLIENTE") {
-                      devolucio.getRegistrosDev(2);
+                      await devolucio.getRegistrosDev(2);
                     }
 
                     //producto.product.tipoProdcuto = value!.codRef;
@@ -90,12 +91,13 @@ class _DevolucionViewState extends State<DevolucionView> {
                     return DropdownMenuItem<EntityRegistro>(
                       value: item,
                       child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            item.detalle,
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w400),
-                          )),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          item.detalle,
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w400),
+                        ),
+                      ),
                     );
                   }).toList(),
                   decoration: CustomInputs.formInputDecoration(

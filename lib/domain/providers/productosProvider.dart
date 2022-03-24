@@ -1,3 +1,4 @@
+import 'package:darq/darq.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/core/Errors/failure.dart';
 
@@ -8,10 +9,13 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto
 import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
 
 import '../entities/Proveedores/Proveedores.dart';
+import '../entities/registro/entityRegistroDetaller.dart';
 import '../entities/tipo/grupo.dart';
 import '../entities/unidad_medida/unidadMedida.dart';
 import '../uses cases/grupo/get_grupos.dart';
+import '../uses cases/registros/usesCaseRegistros.dart';
 import '../uses cases/unidad_medida/get_medidas.dart';
+import 'package:collection/collection.dart';
 
 class ProductosProvider extends ChangeNotifier {
   Productos _productos = new Productos();
@@ -21,6 +25,7 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerPrecio = new TextEditingController();
   TextEditingController _controllerHolgura = new TextEditingController();
   int pedid = 0;
+  List<Clasificacion> lisCla = [];
 
   TextEditingController get controllerHolgura => _controllerHolgura;
 
@@ -39,8 +44,14 @@ class ProductosProvider extends ChangeNotifier {
   final GetMedidas unidadesMedidas;
   final GetGrupos grupos;
   final GetProveedores useCaseProveedores;
-  ProductosProvider(this.insertarProducto, this.getProductos,
-      this.unidadesMedidas, this.grupos, this.useCaseProveedores);
+  final UsesCaseRegistros registro;
+  ProductosProvider(
+      this.insertarProducto,
+      this.getProductos,
+      this.unidadesMedidas,
+      this.grupos,
+      this.useCaseProveedores,
+      this.registro);
 
   final _keyProducto = GlobalKey<FormState>();
 
@@ -139,19 +150,87 @@ class ProductosProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> calculos(Productos p) async {
+  Future<void> calculos() async {
     try {
-      double converturaDias = (p.cantidad * pedid) / 30; // 7,5
-// cosulto el proveedor por producto y veo el tiempo de holgura que sea mayor
-// como envaluar los los dias trasncurridos
-      double mesaActual = p.cantidad + pedid;
+//       double converturaDias = (p.cantidad * pedid) / 30; // 7,5
+// // cosulto el proveedor por producto y veo el tiempo de holgura que sea mayor
+// // como envaluar los los dias trasncurridos
+//       double mesaActual = p.cantidad + pedid;
 
       // categorizacion  de todos los productos
-
+      List<EntityRegistroDetalle> temporal = [];
       double stockSeguridad = 0;
       // obtengo las ventas de ese producto los ultimos 3 meses y lo sumo el total
+      var tem = await registro.getAllDetalle(1);
+      var cab = await registro.getAll(2);
+      var lisDet = tem.getOrElse(() => []);
+      var lisCab = cab.getOrElse(() => []);
+      var fechaActual = DateTime.now();
+      var fechaFinal = DateTime.now().add(Duration(days: -90));
+      for (var item in lisCab) {
+        var dife = DateTime.parse(item.createdAt).difference(fechaActual);
+        if (dife.inDays <= 30) {
+          var total =
+              lisDet.where((element) => element.idRegistro == item.id).toList();
+          if (total.length != 0) {
+            for (var deta in total) {
+              temporal.add(deta);
+            }
+          }
+        }
+      }
+      lisCla = [];
+      var grupos = temporal.groupListsBy((e) => e.idProducto);
+      for (var idPrd in grupos.entries) {
+        Clasificacion obj = Clasificacion();
+        obj.idProducto = idPrd.key;
+        for (var item in idPrd.value) {
+          obj.total += item.cantidad * item.total;
+        }
+        lisCla.add(obj);
+      }
 
+      for (var forma in lisCla) {
+        forma.total = forma.total.roundToDouble();
+      }
+      lisCla = lisCla.orderByDescending((et) => et.total).toList();
+      var totalGlobal = lisCla.sum(
+        (p) => p.total,
+      );
+
+      await cargarPrd();
+// ahora si a categorizar
+      totalGlobal = formatting(totalGlobal);
+      for (var cat in lisCla) {
+        try {
+          var prd =
+              listado.firstWhere((element) => element.id == cat.idProducto);
+          cat.detalle = prd.nombre;
+        } catch (ex) {
+          cat.detalle = "####";
+        }
+
+        var valu = cat.total * 100 / totalGlobal;
+        valu = valu.roundToDouble();
+        if (valu > 60) {
+          cat.clasificacion = "A";
+        } else if (valu < 60 && valu > 20) {
+          cat.clasificacion = "B";
+        } else if (valu < 20) {
+          cat.clasificacion = "C";
+        }
+      }
+      notifyListeners();
     } catch (ex) {}
+  }
+
+  double formatting(double valor) {
+    try {
+      var valueSt = valor.toStringAsFixed(2);
+      return double.parse(valueSt);
+    } catch (ex) {
+      return 0;
+    }
   }
 
   Future<Productos?> guardar(Productos p) async {
@@ -164,7 +243,6 @@ class ProductosProvider extends ChangeNotifier {
       p.cantidad = double.tryParse(controllerStock.text) ?? 0;
       product.precio = double.tryParse(controllerPrecio.text) ?? 0;
       product.estado = true;
-      await calculos(p);
       var tem = await insertarProducto.insert(p);
 
       if (keyProducto.currentState!.validate()) {
@@ -196,4 +274,11 @@ class ProductosProvider extends ChangeNotifier {
       return null;
     }
   }
+}
+
+class Clasificacion {
+  int idProducto = 0;
+  double total = 0;
+  String detalle = "";
+  String clasificacion = "";
 }

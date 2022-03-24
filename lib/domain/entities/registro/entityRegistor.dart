@@ -6,15 +6,17 @@ class EntityRegistro extends Equatable {
     this.idTipo = 0,
     this.detalle = "",
     this.estado = false,
+    this.createdAt = "",
   });
   int id;
   int idTipo;
   String detalle;
   bool estado;
+  String createdAt;
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id, idTipo, detalle, estado];
+  List<Object?> get props => [id, idTipo, detalle, estado, createdAt];
 
   Map<String, dynamic> toMap() => {
         "id": id,

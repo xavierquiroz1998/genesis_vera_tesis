@@ -72,24 +72,27 @@ class _EgresoProductoState extends State<EgresoProducto> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          DataCell(DropdownButton<Productos>(
-                            items: egreso.listado
-                                .map(
-                                  (eDrop) => DropdownMenuItem<Productos>(
-                                    child: Text(eDrop.detalle),
-                                    value: eDrop,
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              e.idProducto = value!.id;
-                              e.productos = value;
-                              setState(() {});
-                            },
-                            hint: e.idProducto == 0
-                                ? Text("Seleccione Producto")
-                                : Text("${e.productos!.detalle}"),
-                          )),
+                          DataCell(
+                            DropdownButton<Productos>(
+                              items: egreso.listado
+                                  .map(
+                                    (eDrop) => DropdownMenuItem<Productos>(
+                                      child: Text(eDrop.detalle),
+                                      value: eDrop,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                e.idProducto = value!.id;
+                                e.productos = value;
+                                e.total = value.precio;
+                                setState(() {});
+                              },
+                              hint: e.idProducto == 0
+                                  ? Text("Seleccione Producto")
+                                  : Text("${e.productos!.detalle}"),
+                            ),
+                          ),
                           DataCell(
                             TextFormField(
                               onChanged: (value) {
@@ -108,7 +111,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           DataCell(
                             TextFormField(
                               onChanged: (value) {
-                                e.to = double.parse(value);
+                                e.total = double.parse(value);
                                 egreso.calcular();
                                 //e.total = e.cantidad * e.precio!;
                               },

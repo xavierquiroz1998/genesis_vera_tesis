@@ -8,11 +8,18 @@ class ModelRegistro extends EntityRegistro {
     this.idTipo = 0,
     this.detalle = "",
     this.estado = false,
-  }) : super(id: id, idTipo: idTipo, detalle: detalle, estado: estado);
+    this.createdAt = "",
+  }) : super(
+            id: id,
+            idTipo: idTipo,
+            detalle: detalle,
+            estado: estado,
+            createdAt: createdAt);
   int id;
   int idTipo;
   String detalle;
   bool estado;
+  String createdAt;
 
   factory ModelRegistro.fromJson(String str) =>
       ModelRegistro.fromMap(json.decode(str));
@@ -24,6 +31,7 @@ class ModelRegistro extends EntityRegistro {
         idTipo: json["idTipo"],
         detalle: json["detalle"],
         estado: json["estado"],
+        createdAt: json["createdAt"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -31,5 +39,6 @@ class ModelRegistro extends EntityRegistro {
         "idTipo": idTipo,
         "detalle": detalle,
         "estado": estado,
+        "createdAt": createdAt,
       };
 }

@@ -119,9 +119,25 @@ class RegistroDTSImp extends RegistroDTS {
   }
 
   @override
-  Future<List<ModelRegistroDetalle>> getDetalleXregistro(int idRegistro) {
-    // TODO: implement getDetalleXregistro
-    throw UnimplementedError();
+  Future<List<ModelRegistroDetalle>> getDetalleXregistro(int idRegistro) async {
+    try {
+      List<ModelRegistroDetalle> tem = [];
+      final result = await cliente.get(Uri.parse(urlBaseDetalle));
+      if (result.statusCode == 200) {
+        tem = decodeRegistroDetalle(result.body);
+      }
+
+      return tem;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  List<ModelRegistroDetalle> decodeRegistroDetalle(String respuesta) {
+    var parseo = jsonDecode(respuesta);
+    return parseo
+        .map<ModelRegistroDetalle>((json) => ModelRegistroDetalle.fromMap(json))
+        .toList();
   }
 
   @override

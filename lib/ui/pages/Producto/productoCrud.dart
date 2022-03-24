@@ -21,7 +21,7 @@ class ProductoCrud extends StatefulWidget {
 
 class _ProductoCrudState extends State<ProductoCrud> {
   List<String> tipoDev = ["A", "B", "C"];
-  String categoriaSelect = "";
+
   @override
   void initState() {
     final cargaPRd = Provider.of<ProductosProvider>(context, listen: false);
@@ -86,25 +86,25 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                   icon: Icons.delete_outline),
                             ),
                           ),
-                          Container(
-                            constraints:
-                                BoxConstraints(maxWidth: 300, minWidth: 100),
-                            child: TextFormField(
-                              onChanged: (value) {
-                                producto.pedid = int.parse(value);
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Ingrese Maximo";
-                                }
-                              },
-                              controller: producto.controllerStock,
-                              decoration: CustomInputs.formInputDecoration(
-                                  hint: 'Maximo',
-                                  label: 'Maximo',
-                                  icon: Icons.delete_outline),
-                            ),
-                          ),
+                          // Container(
+                          //   constraints:
+                          //       BoxConstraints(maxWidth: 300, minWidth: 100),
+                          //   child: TextFormField(
+                          //     onChanged: (value) {
+                          //       producto.pedid = int.parse(value);
+                          //     },
+                          //     validator: (value) {
+                          //       if (value!.isEmpty) {
+                          //         return "Ingrese Maximo";
+                          //       }
+                          //     },
+                          //     controller: producto.controllerStock,
+                          //     decoration: CustomInputs.formInputDecoration(
+                          //         hint: 'Maximo',
+                          //         label: 'Maximo',
+                          //         icon: Icons.delete_outline),
+                          //   ),
+                          // ),
                           Container(
                             constraints:
                                 BoxConstraints(maxWidth: 300, minWidth: 100),
@@ -197,35 +197,6 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 hint: '',
                                 label: 'Seleccione Tipo Producto',
                                 icon: Icons.delete_outline),
-                          ),
-                        ),
-
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, minWidth: 100),
-                          child: DropdownButtonFormField<String>(
-                            onChanged: (value) async {
-                              categoriaSelect = value!;
-
-                              //producto.product.tipoProdcuto = value!.codRef;
-                            },
-                            items: tipoDev.map((item) {
-                              return DropdownMenuItem(
-                                value: item,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      item,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400),
-                                    )),
-                              );
-                            }).toList(),
-                            decoration: CustomInputs.formInputDecoration(
-                                hint: '',
-                                label: 'Seleccione Categoria',
-                                icon: Icons.info),
                           ),
                         ),
 
