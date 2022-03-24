@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:collection/collection.dart';
 
+import '../../../../domain/providers/egreso/e_productoProvider.dart';
+import '../../../../domain/providers/productosProvider.dart';
 import '../../../widgets/white_card.dart';
 
 class PieDefault extends StatefulWidget {
@@ -16,26 +19,38 @@ class PieDefault extends StatefulWidget {
 
 class _PieDefaultState extends State<PieDefault> {
   @override
+  void initState() {
+    Provider.of<ProductosProvider>(context, listen: false).cargarPrd();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return WhiteCard(
-      title: "Reporte",
-      child: Column(
-        children: [
-          SfCircularChart(
-            title: ChartTitle(text: 'Productos'),
-            legend: Legend(isVisible: true),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CircularSeries>[
-              PieSeries<Productos, String>(
-                  dataSource: Estaticas.listProductos,
-                  //  xValueMapper: (Productos data, _) => data.descripcion,
-                  //  yValueMapper: (Productos data, _) => data.stock,
-                  dataLabelSettings: DataLabelSettings(isVisible: true)),
-            ],
+    final producto = Provider.of<ProductosProvider>(context);
+    return producto.listado.length > 0
+        ? WhiteCard(
+            title: "Reporte",
+            child: Column(
+              children: [
+                SfCircularChart(
+                  title: ChartTitle(text: 'Productos'),
+                  legend: Legend(isVisible: true),
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <CircularSeries>[
+                    PieSeries<Productos, String>(
+                        dataSource: producto.listado,
+                        xValueMapper: (Productos data, _) =>
+                            data.detalle.length > 10
+                                ? data.detalle.substring(0, 9)
+                                : data.detalle,
+                        yValueMapper: (Productos data, _) => data.cantidad,
+                        dataLabelSettings: DataLabelSettings(isVisible: true)),
+                  ],
+                )
+              ],
+            ),
           )
-        ],
-      ),
-    );
+        : Container();
   }
 }
 
@@ -51,19 +66,19 @@ class _PieVentasState extends State<PieVentas> {
 
   @override
   void initState() {
+    final egreso = Provider.of<EProductoProvider>(context, listen: false);
+    egreso.getRegistrosDev();
     super.initState();
 
-    var asd = Estaticas.listProductosEgreso.groupListsBy(
-      (e) => e.idEgreso,
+    var asd = egreso.listTableRegistrosDev.groupListsBy(
+      (e) => e.id,
     );
 
     for (var item in asd.entries) {
       EgresoDetalle t = new EgresoDetalle();
       t.idEgresoDetalle = item.key;
       for (var cabe in item.value) {
-        for (var det in cabe.detalle!) {
-          t.cantidad += det.cantidad;
-        }
+        //t.cantidad += det.cantidad;
       }
       temp.add(t);
     }

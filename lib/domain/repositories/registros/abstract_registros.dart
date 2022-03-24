@@ -6,7 +6,7 @@ import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
 
 abstract class AbstractRegistros {
-  Future<Either<Failure, List<EntityRegistro>>> getAll();
+  Future<Either<Failure, List<EntityRegistro>>> getAll(int idTipo);
   Future<Either<Failure, EntityRegistro>> insertRegistros(
       EntityRegistro registro);
   Future<Either<Failure, EntityRegistro>> updateRegistros(

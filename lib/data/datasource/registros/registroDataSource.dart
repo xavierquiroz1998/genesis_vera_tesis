@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../../models/registros/modelRegistroDetalle.dart';
 
 abstract class RegistroDTS {
-  Future<List<ModelRegistro>> getAll();
+  Future<List<ModelRegistro>> getAll(int idTipo);
   Future<ModelRegistro> insertRegistro(EntityRegistro registro);
   Future<ModelRegistro> updateRegistro(EntityRegistro registro);
   Future<ModelRegistro> deleteRegistro(EntityRegistro registro);
@@ -27,7 +27,7 @@ class RegistroDTSImp extends RegistroDTS {
   RegistroDTSImp(this.cliente);
 
   String urlBase = "http://localhost:8000/api/registros";
-  String urlBaseDetalle = "http://localhost:8000/api/registros_detalles";
+  String urlBaseDetalle = "http://localhost:8000/api/detalleRegistros";
 
   @override
   Future<ModelRegistro> deleteRegistro(EntityRegistro registro) async {
@@ -48,12 +48,12 @@ class RegistroDTSImp extends RegistroDTS {
   }
 
   @override
-  Future<List<ModelRegistro>> getAll() async {
+  Future<List<ModelRegistro>> getAll(int idTipo) async {
     try {
       List<ModelRegistro> tem = [];
-      final result = await cliente.get(Uri.parse(urlBase));
+      final result = await cliente.get(Uri.parse(urlBase + "/gettipo/$idTipo"));
       if (result.statusCode == 200) {
-        tem = decodePermisos(utf8.decode(result.bodyBytes));
+        tem = decodePermisos(result.body);
       }
 
       return tem;
@@ -130,10 +130,8 @@ class RegistroDTSImp extends RegistroDTS {
     try {
       var p = json.encode(registro.toMap());
 
-      final result = await cliente.post(
-          Uri.parse(urlBaseDetalle + "/${registro.id}"),
-          body: p,
-          headers: {"Content-type": "application/json"});
+      final result = await cliente.post(Uri.parse(urlBaseDetalle),
+          body: p, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelRegistroDetalle.fromMap(json.decode(result.body));
       }

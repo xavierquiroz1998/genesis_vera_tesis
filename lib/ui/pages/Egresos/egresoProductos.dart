@@ -40,9 +40,10 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                       //style: ButtonStyle(),
                       onPressed: () {
                         egreso.cab = new EntityRegistro();
+                        egreso.detalles = [];
                         NavigationService.navigateTo(Flurorouter.egreso);
                       },
-                      child: Text("Nuevo"),
+                      child: Text("Nuevo Egreso"),
                     ),
                     TextButton(
                         onPressed: () {
@@ -81,9 +82,10 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
-                          DataCell(
-                            Text(e.estado.toString()),
-                          ),
+                          DataCell(Icon(
+                            e.estado ? Icons.check : Icons.dangerous,
+                            color: e.estado ? Colors.green : Colors.red,
+                          )),
                           DataCell(
                             Icon(Icons.edit),
                             onTap: () {},

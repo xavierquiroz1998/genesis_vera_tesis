@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 class EntityRegistro extends Equatable {
   EntityRegistro({
     this.id = 0,
-    this.idTipo = "",
+    this.idTipo = 0,
     this.detalle = "",
     this.estado = false,
   });
   int id;
-  String idTipo;
+  int idTipo;
   String detalle;
   bool estado;
 

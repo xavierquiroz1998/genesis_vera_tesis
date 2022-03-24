@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 
@@ -10,7 +8,7 @@ import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
-class EProductoProvider extends ChangeNotifier {
+class IngresosProvider extends ChangeNotifier {
   //EgresoCabecera _listPRoduct = new EgresoCabecera();
   EntityRegistro cab = new EntityRegistro();
   List<EntityRegistro> listTableRegistrosDev = [];
@@ -21,7 +19,7 @@ class EProductoProvider extends ChangeNotifier {
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
 
-  EProductoProvider(this.getProductos, this.usesCases);
+  IngresosProvider(this.getProductos, this.usesCases);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 
@@ -77,7 +75,7 @@ class EProductoProvider extends ChangeNotifier {
 
   Future<void> getRegistrosDev() async {
     try {
-      var tem = await usesCases.getAll(2);
+      var tem = await usesCases.getAll(1);
 
       listTableRegistrosDev = tem.getOrElse(() => []);
 
@@ -87,10 +85,10 @@ class EProductoProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> guardarEgreso() async {
+  Future<void> guardarIngresos() async {
     try {
       EntityRegistro reg = new EntityRegistro();
-      reg.idTipo = 2;
+      reg.idTipo = 1;
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
       var result = await usesCases.insertRegistros(reg);

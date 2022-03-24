@@ -5,12 +5,12 @@ import 'dart:convert';
 class ModelRegistro extends EntityRegistro {
   ModelRegistro({
     this.id = 0,
-    this.idTipo = "",
+    this.idTipo = 0,
     this.detalle = "",
     this.estado = false,
   }) : super(id: id, idTipo: idTipo, detalle: detalle, estado: estado);
   int id;
-  String idTipo;
+  int idTipo;
   String detalle;
   bool estado;
 

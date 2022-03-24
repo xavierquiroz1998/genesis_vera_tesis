@@ -21,6 +21,8 @@ import 'package:provider/provider.dart';
 
 import '../../ui/Router/FluroRouter.dart';
 import '../../ui/pages/dashboard/dashboardXproducto.dart';
+import '../../ui/pages/ingresos/ingresos.dart';
+import '../../ui/pages/ingresos/ingresosView.dart';
 import '../../ui/pages/parametros/parameter.dart';
 import '../providers/Home/sideMenuProvider.dart';
 
@@ -226,6 +228,31 @@ class Handlers {
       return Login();
     }
   });
+
+  static Handler ingresoss = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.parametros);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return IngresosView();
+    } else {
+      return Login();
+    }
+  });
+
+  static Handler ingresossCrud = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.parametros);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return IngresoView();
+    } else {
+      return Login();
+    }
+  });
+
   static Handler salir = Handler(handlerFunc: (context, param) {
     final logeo = Provider.of<LoginProvider>(context!);
     logeo.lagout();

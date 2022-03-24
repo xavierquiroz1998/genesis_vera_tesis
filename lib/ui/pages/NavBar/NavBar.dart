@@ -27,11 +27,11 @@ class NavBar extends StatelessWidget {
           // icono de menu
 
           // buscar
-          if (size.width > 400)
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 250),
-              child: SearchText(),
-            ),
+          // if (size.width > 400)
+          //   ConstrainedBox(
+          //     constraints: BoxConstraints(maxWidth: 250),
+          //     child: SearchText(),
+          //   ),
           Spacer(),
           NavBarAvatar(),
           SizedBox(

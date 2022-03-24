@@ -1,48 +1,58 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
-import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../domain/entities/registro/entityRegistor.dart';
+import '../../../domain/entities/registro/entityRegistor.dart';
+import '../../../domain/providers/egreso/e_productoProvider.dart';
+import '../../../domain/providers/ingreso/ingresosProvider.dart';
 
-class DevolucionesView extends StatefulWidget {
-  const DevolucionesView({Key? key}) : super(key: key);
+class IngresosView extends StatefulWidget {
+  const IngresosView({Key? key}) : super(key: key);
 
   @override
-  State<DevolucionesView> createState() => _DevolucionesViewState();
+  State<IngresosView> createState() => _IngresosViewState();
 }
 
-class _DevolucionesViewState extends State<DevolucionesView> {
+class _IngresosViewState extends State<IngresosView> {
   @override
   void initState() {
-    Provider.of<DevolucionProvider>(context, listen: false).getRegistrosDev(3);
+    Provider.of<IngresosProvider>(context, listen: false).getRegistrosDev();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final devolucio = Provider.of<DevolucionProvider>(context);
+    final ingreso = Provider.of<IngresosProvider>(context);
     return Container(
       child: ListView(
         children: [
           WhiteCard(
-            title: "Devoluciones",
+            title: "Salida de Productos",
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                TextButton(
-                    onPressed: () {
-                      devolucio.cab = new EntityRegistro();
-                      devolucio.ctrObservacion.text = "";
-                      devolucio.detalles = [];
-                      NavigationService.navigateTo(Flurorouter.devolucion);
-                    },
-                    child: Text("Nueva Devolucion")),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      //style: ButtonStyle(),
+                      onPressed: () {
+                        ingreso.cab = new EntityRegistro();
+                        ingreso.detalles = [];
+                        NavigationService.navigateTo(Flurorouter.ingresossCrud);
+                      },
+                      child: Text("Nuevo Ingreso"),
+                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     // EgresoProductosWidgets.openFileEgreso(context);
+                    //   },
+                    //   child: Text("Cargar Excel"),
+                    // ),
+                  ],
+                ),
                 Container(
                   width: double.infinity,
                   child: DataTable(
@@ -63,7 +73,7 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                         label: Center(child: Text("Anular")),
                       ),
                     ],
-                    rows: devolucio.listTableRegistrosDev.map<DataRow>((e) {
+                    rows: ingreso.listTableRegistrosDev.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
@@ -79,11 +89,7 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                           )),
                           DataCell(
                             Icon(Icons.edit),
-                            onTap: () {
-                              devolucio.cab = e;
-                              NavigationService.navigateTo(
-                                  Flurorouter.devolucion);
-                            },
+                            onTap: () {},
                           ),
                           DataCell(
                             Icon(Icons.delete),
@@ -96,7 +102,7 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

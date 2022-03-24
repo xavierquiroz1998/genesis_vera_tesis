@@ -19,6 +19,15 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerCodigo = new TextEditingController();
   TextEditingController _controllerStock = new TextEditingController();
   TextEditingController _controllerPrecio = new TextEditingController();
+  TextEditingController _controllerHolgura = new TextEditingController();
+
+  TextEditingController get controllerHolgura => _controllerHolgura;
+
+  set controllerHolgura(TextEditingController controllerHolgura) {
+    _controllerHolgura = controllerHolgura;
+    notifyListeners();
+  }
+
   List<Productos> listado = [];
   List<UnidadMedidaEntity> listUnidades = [];
   List<GrupoEntity> listGrupos = [];

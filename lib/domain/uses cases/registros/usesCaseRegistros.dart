@@ -10,8 +10,8 @@ class UsesCaseRegistros {
 
   UsesCaseRegistros(this.regi);
 
-  Future<Either<Failure, List<EntityRegistro>>> getAll() async {
-    return await regi.getAll();
+  Future<Either<Failure, List<EntityRegistro>>> getAll(int idTipo) async {
+    return await regi.getAll(idTipo);
   }
 
   Future<Either<Failure, EntityRegistro>> insertRegistros(

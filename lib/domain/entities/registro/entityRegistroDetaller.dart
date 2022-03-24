@@ -23,6 +23,7 @@ class EntityRegistroDetalle extends Equatable {
   Productos? productos;
 
   Map<String, dynamic> toMap() => {
+        "id": id,
         "cantidad": cantidad,
         "total": total,
         "idProducto": idProducto,

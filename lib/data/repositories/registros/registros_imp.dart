@@ -26,9 +26,9 @@ class RegistrosImp extends AbstractRegistros {
   }
 
   @override
-  Future<Either<Failure, List<EntityRegistro>>> getAll() async {
+  Future<Either<Failure, List<EntityRegistro>>> getAll(int idTipo) async {
     try {
-      return right(await dataSource.getAll());
+      return right(await dataSource.getAll(idTipo));
     } on ServerException {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }

@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-class EgresoProducto extends StatefulWidget {
-  const EgresoProducto({Key? key}) : super(key: key);
+import '../../../domain/providers/ingreso/ingresosProvider.dart';
+
+class IngresoView extends StatefulWidget {
+  const IngresoView({Key? key}) : super(key: key);
 
   @override
-  State<EgresoProducto> createState() => _EgresoProductoState();
+  State<IngresoView> createState() => _IngresoViewState();
 }
 
-class _EgresoProductoState extends State<EgresoProducto> {
+class _IngresoViewState extends State<IngresoView> {
   @override
   void initState() {
-    Provider.of<EProductoProvider>(context, listen: false).cargarPrd();
+    Provider.of<IngresosProvider>(context, listen: false).cargarPrd();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final egreso = Provider.of<EProductoProvider>(context);
+    final ingreso = Provider.of<IngresosProvider>(context);
     final kardex = Provider.of<KardexProvider>(context);
     return Container(
       child: ListView(
@@ -33,15 +33,15 @@ class _EgresoProductoState extends State<EgresoProducto> {
             child: Column(
               children: [
                 TextFormField(
-                  initialValue: egreso.ctrObservacion.text,
+                  initialValue: ingreso.ctrObservacion.text,
                   decoration: InputDecoration(labelText: "Observacion"),
                   onChanged: (value) {
-                    egreso.ctrObservacion.text = value;
+                    ingreso.ctrObservacion.text = value;
                   },
                 ),
                 TextButton(
                   onPressed: () {
-                    egreso.agregar();
+                    ingreso.agregar();
                   },
                   child: Text("Agregar"),
                 ),
@@ -68,12 +68,12 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("")),
                       ),
                     ],
-                    rows: egreso.detalles.map<DataRow>((e) {
+                    rows: ingreso.detalles.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(DropdownButton<Productos>(
-                            items: egreso.listado
+                            items: ingreso.listado
                                 .map(
                                   (eDrop) => DropdownMenuItem<Productos>(
                                     child: Text(eDrop.detalle),
@@ -101,7 +101,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             TextFormField(
                               onChanged: (value) {
                                 e.cantidad = int.parse(value);
-                                egreso.calcular();
+                                ingreso.calcular();
                               },
                             ),
                           ),
@@ -109,7 +109,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             TextFormField(
                               onChanged: (value) {
                                 e.to = double.parse(value);
-                                egreso.calcular();
+                                ingreso.calcular();
                                 //e.total = e.cantidad * e.precio!;
                               },
                             ),
@@ -118,7 +118,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             Text(e.to.toString()),
                           ),
                           DataCell(Icon(Icons.delete), onTap: () {
-                            egreso.remover(e);
+                            ingreso.remover(e);
                           }),
                         ],
                       );
@@ -130,7 +130,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        egreso.guardarEgreso();
+                        ingreso.guardarIngresos();
                         // for (var item in egreso.listaProducto.detalle!) {
                         //   var result = Estaticas.listProductos
                         //       .firstWhere((e) => e.id == item.idProducto);
@@ -143,7 +143,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         //     kardex.impresion();
                         //   }
                         // }
-                        NavigationService.replaceTo("/egresos");
+                        NavigationService.replaceTo("/ingresoss");
                       },
                       child: Text("Guardar"),
                     ),

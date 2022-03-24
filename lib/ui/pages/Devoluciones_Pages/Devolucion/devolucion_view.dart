@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
+
+import '../../../../domain/entities/registro/entityRegistor.dart';
 
 class DevolucionView extends StatefulWidget {
   DevolucionView({Key? key}) : super(key: key);
@@ -19,11 +20,14 @@ class DevolucionView extends StatefulWidget {
 
 class _DevolucionViewState extends State<DevolucionView> {
   List<String> tipoDev = ["CLIENTE", "PROVEEDOR"];
+  List<String> tipoFlujo = ["+", "-"];
   String tipoDevSelect = "";
+  String flujoSelect = "";
 
   @override
   void initState() {
-    Provider.of<DevolucionProvider>(context, listen: false).cargarPrd();
+    var provi = Provider.of<DevolucionProvider>(context, listen: false);
+    provi.cargarPrd();
     super.initState();
   }
 
@@ -48,8 +52,14 @@ class _DevolucionViewState extends State<DevolucionView> {
                   height: 20,
                 ),
                 DropdownButtonFormField<String>(
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     tipoDevSelect = value!;
+                    if (tipoDevSelect == "PROVEEDOR") {
+                      devolucio.getRegistrosDev(1);
+                    } else if (tipoDevSelect == "CLIENTE") {
+                      devolucio.getRegistrosDev(2);
+                    }
+
                     //producto.product.tipoProdcuto = value!.codRef;
                   },
                   items: tipoDev.map((item) {
@@ -67,13 +77,67 @@ class _DevolucionViewState extends State<DevolucionView> {
                   decoration: CustomInputs.formInputDecoration(
                       hint: '',
                       label: 'Seleccione Tipo Devolución',
-                      icon: Icons.delete_outline),
+                      icon: Icons.info),
                 ),
-                TextButton(
-                  onPressed: () {
-                    devolucio.agregarDevolucion();
+                SizedBox(
+                  height: 10,
+                ),
+                DropdownButtonFormField<EntityRegistro>(
+                  onChanged: (value) {
+                    devolucio.pedidoSelec = value!;
                   },
-                  child: Text("Agregar"),
+                  items: devolucio.listTableRegistrosDev.map((item) {
+                    return DropdownMenuItem<EntityRegistro>(
+                      value: item,
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            item.detalle,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w400),
+                          )),
+                    );
+                  }).toList(),
+                  decoration: CustomInputs.formInputDecoration(
+                      hint: '', label: 'Seleccione Pedido', icon: Icons.info),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                DropdownButtonFormField<String>(
+                  onChanged: (value) async {
+                    flujoSelect = value!;
+                  },
+                  items: tipoFlujo.map((item) {
+                    return DropdownMenuItem(
+                      value: item,
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            item,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w400),
+                          )),
+                    );
+                  }).toList(),
+                  decoration: CustomInputs.formInputDecoration(
+                      hint: '',
+                      label: 'Seleccione Tipo Flujo',
+                      icon: Icons.info),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        devolucio.agregarDevolucion();
+                      },
+                      child: Text("Agregar"),
+                    ),
+                  ],
                 ),
                 Container(
                   width: double.infinity,
@@ -219,7 +283,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                     TextButton(
                       onPressed: () async {
                         var valTemp = 0.0;
-                        if (tipoDevSelect == "PROVEEEDOR") {
+                        if (tipoDevSelect == "PROVEEDOR") {
                           await devolucio.guardarDevolucion();
                           /*devolucio.detalleDevolucion.forEach((element) {
                             element.prdSelect.stock =
@@ -268,7 +332,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         }
 
                         if (devolucio.msgError == "") {
-                          Navigator.pop(context);
+                          NavigationService.replaceTo("/devoluciones");
                         } else {
                           // mensaje alerta
                         }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
@@ -19,6 +20,8 @@ class ProductoCrud extends StatefulWidget {
 }
 
 class _ProductoCrudState extends State<ProductoCrud> {
+  List<String> tipoDev = ["A", "B", "C"];
+  String categoriaSelect = "";
   @override
   void initState() {
     final cargaPRd = Provider.of<ProductosProvider>(context, listen: false);
@@ -177,6 +180,36 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 icon: Icons.delete_outline),
                           ),
                         ),
+
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 300, minWidth: 100),
+                          child: DropdownButtonFormField<String>(
+                            onChanged: (value) async {
+                              categoriaSelect = value!;
+
+                              //producto.product.tipoProdcuto = value!.codRef;
+                            },
+                            items: tipoDev.map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                              );
+                            }).toList(),
+                            decoration: CustomInputs.formInputDecoration(
+                                hint: '',
+                                label: 'Seleccione Categoria',
+                                icon: Icons.info),
+                          ),
+                        ),
+
                         // proveedor
                         Container(
                           constraints:
@@ -204,6 +237,22 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 icon: Icons.delete_outline),
                           ),
                         ),
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 300, minWidth: 100),
+                          child: TextFormField(
+                            controller: producto.controllerHolgura,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Ingrese Holgura";
+                              }
+                            },
+                            decoration: CustomInputs.formInputDecoration(
+                                hint: 'Holgura',
+                                label: 'Tiempo de Holgura',
+                                icon: Icons.info),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -229,7 +278,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                       /* kardex.existencias(opt, true, otra.isEmpty); */
                       kardex.impresion();
 
-                      Navigator.pop(context);
+                      NavigationService.replaceTo("/ingresos");
                     } else {
                       ToastNotificationView.messageDanger('Error');
                     }

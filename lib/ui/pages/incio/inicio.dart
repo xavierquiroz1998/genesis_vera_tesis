@@ -12,9 +12,7 @@ class Inicio extends StatelessWidget {
       title: "Inicio",
       child: Row(
         children: [
-          if (Estaticas.listProductos.length > 0) ...{
-            PieDefault(),
-          },
+          PieDefault(),
           if (Estaticas.listProductosEgreso.length > 0) ...{
             PieVentas(),
           }

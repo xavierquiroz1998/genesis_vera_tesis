@@ -15,6 +15,7 @@ class DevolucionProvider extends ChangeNotifier {
   // List<DevolucionDet> _detalleDevolucion = [];
   EntityRegistro cab = new EntityRegistro();
   List<EntityRegistro> listTableRegistrosDev = [];
+  EntityRegistro pedidoSelec = new EntityRegistro();
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
   String _msgError = "";
@@ -41,9 +42,9 @@ class DevolucionProvider extends ChangeNotifier {
   //   _detalleDevolucion = detalleDevolucion;
   // }
 
-  Future<void> getRegistrosDev() async {
+  Future<void> getRegistrosDev(int idTipo) async {
     try {
-      var tem = await usesCases.getAll();
+      var tem = await usesCases.getAll(idTipo);
 
       listTableRegistrosDev = tem.getOrElse(() => []);
 
@@ -110,7 +111,7 @@ class DevolucionProvider extends ChangeNotifier {
       // Estaticas.listDevoluciones.add(cab);
 
       EntityRegistro reg = new EntityRegistro();
-      reg.idTipo = "1";
+      reg.idTipo = 3;
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
       var result = await usesCases.insertRegistros(reg);
