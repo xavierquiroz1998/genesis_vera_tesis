@@ -1,4 +1,6 @@
-class Kardex {
+import 'package:equatable/equatable.dart';
+
+class Kardex extends Equatable {
   final String codMov;
   final String codPro;
   final String nomPro;
@@ -15,24 +17,25 @@ class Kardex {
   final double proUntE;
   final double proTtlE;
 
-  final DateTime fecPro;
+  final DateTime? fecPro;
   final String stsPro;
 
-  Kardex(
-      {required this.codMov,
-      required this.codPro,
-      required this.nomPro,
-      required this.proCanI,
-      required this.proUntI,
-      required this.proTtlI,
-      required this.proCanS,
-      required this.proUntS,
-      required this.proTtlS,
-      required this.proCanE,
-      required this.proUntE,
-      required this.proTtlE,
-      required this.fecPro,
-      required this.stsPro});
+  Kardex({
+    this.codMov = "",
+    this.codPro = "",
+    this.nomPro = "",
+    this.proCanI = 0,
+    this.proUntI = 0,
+    this.proTtlI = 0,
+    this.proCanS = 0,
+    this.proUntS = 0,
+    this.proTtlS = 0,
+    this.proCanE = 0,
+    this.proUntE = 0,
+    this.proTtlE = 0,
+    this.fecPro,
+    this.stsPro = "",
+  });
 
   @override
   String toString() {
@@ -44,6 +47,42 @@ class Kardex {
         " / " +
         "Entradas : $proCanI / $proUntI / $proTtlI Salidas: $proCanS / $proUntS / $proTtlS Existencias: $proCanE / $proUntE / $proTtlE";
   }
+
+  Map<String, dynamic> toMap() => {
+        "codMov": codMov,
+        "codPro": codPro,
+        "nomPro": nomPro,
+        "proCanI": proCanI,
+        "proUntI": proUntI,
+        "proTtlI": proTtlI,
+        "proCanS": proCanS,
+        "proUntS": proUntS,
+        "proTtlS": proTtlS,
+        "proCanE": proCanE,
+        "proUntE": proUntE,
+        "proTtlE": proTtlE,
+        "fecPro": fecPro!.toIso8601String(),
+        "stsPro": stsPro,
+      };
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        codMov,
+        codPro,
+        nomPro,
+        proCanI,
+        proUntI,
+        proTtlI,
+        proCanS,
+        proUntS,
+        proTtlS,
+        proCanE,
+        proUntE,
+        proTtlE,
+        fecPro,
+        stsPro
+      ];
 }
 
 

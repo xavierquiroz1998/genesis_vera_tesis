@@ -1,4 +1,5 @@
 import 'package:genesis_vera_tesis/data/datasource/grupo/grupo_datasource.dart';
+import 'package:genesis_vera_tesis/data/datasource/kardex/kardex_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/logeo/logeo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/permiso/permiso_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
@@ -7,6 +8,7 @@ import 'package:genesis_vera_tesis/data/datasource/proyecto/proyecto_datasource.
 import 'package:genesis_vera_tesis/data/datasource/unidad_medida/unidad_datasource.dart';
 import 'package:genesis_vera_tesis/data/repositories/Usuarios/usuarios_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/grupo/grupo_imp.dart';
+import 'package:genesis_vera_tesis/data/repositories/kardex/kardex_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/permiso/permiso_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/proyecto/proyecto_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/unidad/unidad_imp.dart';
@@ -17,9 +19,11 @@ import 'package:genesis_vera_tesis/domain/providers/proyecto/proyecto_provider.d
 import 'package:genesis_vera_tesis/domain/providers/unidadMedida/unidadProvider.dart';
 import 'package:genesis_vera_tesis/domain/repositories/Usuarios/abstractUsuarios.dart';
 import 'package:genesis_vera_tesis/domain/repositories/grupo/abstract_grupo.dart';
+import 'package:genesis_vera_tesis/domain/repositories/kardex/abstract_kardex.dart';
 import 'package:genesis_vera_tesis/domain/repositories/permiso/abstract_permiso.dart';
 import 'package:genesis_vera_tesis/domain/repositories/proyecto/abstract_proyecto.dart';
 import 'package:genesis_vera_tesis/domain/repositories/unidad_medida/abstractMedida.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/Kardex/kardex_general.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/grupo/get_grupos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/permiso/get_permiso.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/permiso/insert_permiso.dart';
@@ -104,6 +108,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteMedidas(sl()));
   sl.registerLazySingleton(() => UpdateMedidas(sl()));
   sl.registerLazySingleton(() => UsesCaseRegistros(sl()));
+  sl.registerLazySingleton(() => KardexGeneral(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -122,6 +127,7 @@ Future<void> init() async {
       () => PermisoImp(sl())); // injeccion de repository
   sl.registerLazySingleton<AbstractUsuarios>(() => UsuariosImp(sl()));
   sl.registerLazySingleton<AbstractRegistros>(() => RegistrosImp(sl()));
+  sl.registerLazySingleton<AbstractKardex>(() => KardexImp(sl()));
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));
@@ -142,6 +148,7 @@ Future<void> init() async {
       () => ProyectoDTSImp(sl())); // injeccion de datasourse
   sl.registerLazySingleton<UsuarioDatasource>(() => UsuarioDatasourceImp(sl()));
   sl.registerLazySingleton<RegistroDTS>(() => RegistroDTSImp(sl()));
+  sl.registerLazySingleton<KardexDTS>(() => KardexDTSImp(sl()));
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 
