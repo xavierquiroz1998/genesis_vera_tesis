@@ -3,6 +3,7 @@ import 'package:genesis_vera_tesis/domain/providers/permiso/permiso_provider.dar
 import 'package:genesis_vera_tesis/domain/providers/proyecto/proyecto_provider.dart';
 
 import 'domain/providers/ingreso/ingresosProvider.dart';
+import 'domain/providers/parametros/provider_parametros.dart';
 import 'domain/providers/registros/registrosProvider.dart';
 import 'injection.dart';
 import 'ui/Router/FluroRouter.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => sl<ProyectoProvider>()),
         ChangeNotifierProvider(create: (_) => sl<RegistrosProvider>()),
         ChangeNotifierProvider(create: (_) => sl<IngresosProvider>()),
+        ChangeNotifierProvider(create: (_) => sl<ParametrosPRovider>()),
       ],
       child: MaterialApp(
         title: 'Kiarita',

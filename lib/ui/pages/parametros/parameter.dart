@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import '../../../domain/providers/parametros/provider_parametros.dart';
 import '../../widgets/white_card.dart';
 
 class ParametrosView extends StatefulWidget {
@@ -12,8 +14,16 @@ class ParametrosView extends StatefulWidget {
 
 class _ParametrosViewState extends State<ParametrosView> {
   String numeros = r'^(?:\+|-)?\d+$';
+
+  @override
+  void initState() {
+    Provider.of<ParametrosPRovider>(context, listen: false).getAllParametros();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provi = Provider.of<ParametrosPRovider>(context);
     return Container(
       child: WhiteCard(
           title: "Parametros",

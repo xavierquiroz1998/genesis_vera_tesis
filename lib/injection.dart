@@ -1,6 +1,7 @@
 import 'package:genesis_vera_tesis/data/datasource/grupo/grupo_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/kardex/kardex_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/logeo/logeo_datasource.dart';
+import 'package:genesis_vera_tesis/data/datasource/parametros/parametros_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/permiso/permiso_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/producto_datasource.dart';
 import 'package:genesis_vera_tesis/data/datasource/proveedores/proveedores_datasource.dart';
@@ -9,6 +10,7 @@ import 'package:genesis_vera_tesis/data/datasource/unidad_medida/unidad_datasour
 import 'package:genesis_vera_tesis/data/repositories/Usuarios/usuarios_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/grupo/grupo_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/kardex/kardex_imp.dart';
+import 'package:genesis_vera_tesis/data/repositories/parametros/parametrosImp.dart';
 import 'package:genesis_vera_tesis/data/repositories/permiso/permiso_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/proyecto/proyecto_imp.dart';
 import 'package:genesis_vera_tesis/data/repositories/unidad/unidad_imp.dart';
@@ -50,15 +52,18 @@ import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/providers/ingreso/ingresosProvider.dart';
 import 'domain/providers/kardex/kardex_provider.dart';
+import 'domain/providers/parametros/provider_parametros.dart';
 import 'domain/providers/registros/registrosProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
+import 'domain/repositories/parametros/Abstrac_parametros.dart';
 import 'domain/repositories/proveedores/abtract_proveedores.dart';
 import 'domain/repositories/registros/abstract_registros.dart';
 import 'domain/uses cases/grupo/delete_grupo.dart';
 import 'domain/uses cases/grupo/insert_grupos.dart';
 import 'domain/uses cases/grupo/update_grupos.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
+import 'domain/uses cases/parametros/parametros_general.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
 import 'domain/uses cases/proveedores/delete_proveedores.dart';
 import 'domain/uses cases/proveedores/getproveedores.dart';
@@ -86,6 +91,7 @@ Future<void> init() async {
   sl.registerFactory(() => RegistrosProvider(sl()));
   sl.registerFactory(() => IngresosProvider(sl(), sl()));
   sl.registerFactory(() => KardexProvider(sl()));
+  sl.registerFactory(() => ParametrosPRovider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
@@ -111,6 +117,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateMedidas(sl()));
   sl.registerLazySingleton(() => UsesCaseRegistros(sl()));
   sl.registerLazySingleton(() => KardexGeneral(sl()));
+  sl.registerLazySingleton(() => ParametrosGeneral(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -130,6 +137,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AbstractUsuarios>(() => UsuariosImp(sl()));
   sl.registerLazySingleton<AbstractRegistros>(() => RegistrosImp(sl()));
   sl.registerLazySingleton<AbstractKardex>(() => KardexImp(sl()));
+  sl.registerLazySingleton<AbstractParametros>(() => ParametrosImps(sl()));
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));
@@ -151,6 +159,7 @@ Future<void> init() async {
   sl.registerLazySingleton<UsuarioDatasource>(() => UsuarioDatasourceImp(sl()));
   sl.registerLazySingleton<RegistroDTS>(() => RegistroDTSImp(sl()));
   sl.registerLazySingleton<KardexDTS>(() => KardexDTSImp(sl()));
+  sl.registerLazySingleton<ParametrosDTS>(() => ParametrosDTSImp(sl()));
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 
