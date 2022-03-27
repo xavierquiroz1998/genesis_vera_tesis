@@ -171,15 +171,14 @@ class _DevolucionViewState extends State<DevolucionView> {
                           DataCell(
                             Expanded(
                               child: Container(
-                                width: 300,
+                                width: 180,
                                 child: DropdownButton<Productos>(
                                   items: devolucio.listado
                                       .map(
                                         (eDrop) => DropdownMenuItem<Productos>(
-                                          child: Container(
-                                            width: 300,
-                                            child: Text(eDrop.detalle),
-                                          ),
+                                          child: Text(eDrop.detalle.length > 15
+                                              ? eDrop.detalle.substring(0, 15)
+                                              : eDrop.detalle),
                                           value: eDrop,
                                         ),
                                       )
@@ -192,10 +191,10 @@ class _DevolucionViewState extends State<DevolucionView> {
                                   },
                                   hint: e.idProducto == 0
                                       ? Text("Seleccione Producto")
-                                      : Container(
-                                          width: 300,
-                                          child:
-                                              Text("${e.productos!.nombre}")),
+                                      : Text(e.productos!.detalle.length > 15
+                                          ? e.productos!.detalle
+                                              .substring(0, 15)
+                                          : e.productos!.detalle),
                                 ),
                               ),
                             ),
@@ -213,18 +212,18 @@ class _DevolucionViewState extends State<DevolucionView> {
                             ),
                           ),
                           DataCell(
-                            TextFormField(
-                              initialValue: "${e.cantidad}",
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(?:\+|-)?\d+$'))
-                              ],
-                              onChanged: (value) {
-                                e.cantidad = int.parse(value);
-                                devolucio.calcularTotal();
-                              },
-                            ),
-                          ),
+                              TextFormField(
+                                initialValue: "${e.cantidad}",
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(?:\+|-)?\d+$'))
+                                ],
+                                onChanged: (value) {
+                                  e.cantidad = int.parse(value);
+                                  devolucio.calcularTotal();
+                                },
+                              ),
+                              placeholder: true),
                           DataCell(
                             TextFormField(
                               initialValue: "${e.total}",

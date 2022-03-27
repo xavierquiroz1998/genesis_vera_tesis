@@ -39,7 +39,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                         label: Center(child: Text("Nombre")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Total")),
+                        label: Center(child: Text("Promedio")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Clasificacion")),
@@ -55,7 +55,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
-                          DataCell(Text(e.total.toString())),
+                          DataCell(Text(e.promedio.toString())),
                           DataCell(Text(e.clasificacion.toString())),
                         ],
                       );

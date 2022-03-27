@@ -185,22 +185,24 @@ class ProductosProvider extends ChangeNotifier {
         Clasificacion obj = Clasificacion();
         obj.idProducto = idPrd.key;
         for (var item in idPrd.value) {
-          obj.total += item.cantidad * item.total;
+          obj.promedio += item.cantidad * item.total;
         }
         lisCla.add(obj);
       }
 
       for (var forma in lisCla) {
-        forma.total = forma.total.roundToDouble();
+        forma.promedio = forma.promedio / 3;
+        forma.promedio = forma.promedio.roundToDouble();
       }
-      lisCla = lisCla.orderByDescending((et) => et.total).toList();
+      lisCla = lisCla.orderByDescending((et) => et.promedio).toList();
       var totalGlobal = lisCla.sum(
-        (p) => p.total,
+        (p) => p.promedio,
       );
 
       await cargarPrd();
 // ahora si a categorizar
       totalGlobal = formatting(totalGlobal);
+      double inici = 0;
       for (var cat in lisCla) {
         try {
           var prd =
@@ -210,13 +212,14 @@ class ProductosProvider extends ChangeNotifier {
           cat.detalle = "####";
         }
 
-        var valu = cat.total * 100 / totalGlobal;
-        valu = valu.roundToDouble();
-        if (valu > 60) {
+        var valu = cat.promedio / totalGlobal;
+        valu = formatting(valu);
+        inici += valu * 100;
+        if (inici <= 80) {
           cat.clasificacion = "A";
-        } else if (valu < 60 && valu > 20) {
+        } else if (inici > 80 && inici < 95) {
           cat.clasificacion = "B";
-        } else if (valu < 20) {
+        } else if (inici >= 95) {
           cat.clasificacion = "C";
         }
       }
@@ -278,7 +281,7 @@ class ProductosProvider extends ChangeNotifier {
 
 class Clasificacion {
   int idProducto = 0;
-  double total = 0;
+  double promedio = 0;
   String detalle = "";
   String clasificacion = "";
 }

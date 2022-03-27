@@ -114,7 +114,7 @@ class ProveedoresProvider extends ChangeNotifier {
       proveedor.correo = controllCorreo.text;
       proveedor.direccion = controllDireccion.text;
       proveedor.nombre = controllNombres.text;
-      proveedor.identificacion = controllCelular.text;
+      proveedor.telefono = controllCelular.text;
       proveedor.estado = true;
     } catch (e) {}
   }
@@ -135,8 +135,6 @@ class ProveedoresProvider extends ChangeNotifier {
 
       clear();
       return true;
-      //}
-      return false;
     } catch (e) {
       return false;
     }

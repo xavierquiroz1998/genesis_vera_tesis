@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
@@ -21,6 +22,8 @@ class _EgresoProductoState extends State<EgresoProducto> {
     Provider.of<EProductoProvider>(context, listen: false).cargarPrd();
     super.initState();
   }
+
+  String numeros = r'^(?:\+|-)?\d+$';
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,12 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
+                        label: Center(child: Text("Stock Producto")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Cod Producto")),
+                      ),
+                      const DataColumn(
                         label: Center(child: Text("observacion")),
                       ),
                       const DataColumn(
@@ -73,26 +82,39 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            DropdownButton<Productos>(
-                              items: egreso.listado
-                                  .map(
-                                    (eDrop) => DropdownMenuItem<Productos>(
-                                      child: Text(eDrop.detalle),
-                                      value: eDrop,
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                e.idProducto = value!.id;
-                                e.productos = value;
-                                e.total = value.precio;
-                                setState(() {});
-                              },
-                              hint: e.idProducto == 0
-                                  ? Text("Seleccione Producto")
-                                  : Text("${e.productos!.detalle}"),
+                            Container(
+                              width: 180,
+                              child: DropdownButton<Productos>(
+                                items: egreso.listado
+                                    .map(
+                                      (eDrop) => DropdownMenuItem<Productos>(
+                                        child: Text(eDrop.detalle.length > 15
+                                            ? eDrop.detalle.substring(0, 15)
+                                            : eDrop.detalle),
+                                        value: eDrop,
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  e.idProducto = value!.id;
+                                  e.productos = value;
+                                  e.total = value.precio;
+                                  setState(() {});
+                                },
+                                hint: e.idProducto == 0
+                                    ? Text("Seleccione Producto")
+                                    : Text(e.productos!.detalle.length > 15
+                                        ? e.productos!.detalle.substring(0, 15)
+                                        : e.productos!.detalle),
+                              ),
                             ),
                           ),
+                          DataCell(e.productos != null
+                              ? Text("${e.productos!.cantidad}")
+                              : Text("")),
+                          DataCell(e.productos != null
+                              ? Text("${e.productos!.referencia}")
+                              : Text("")),
                           DataCell(
                             TextFormField(
                               onChanged: (value) {
@@ -102,6 +124,10 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           ),
                           DataCell(
                             TextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(numeros))
+                              ],
                               onChanged: (value) {
                                 e.cantidad = int.parse(value);
                                 egreso.calcular();
