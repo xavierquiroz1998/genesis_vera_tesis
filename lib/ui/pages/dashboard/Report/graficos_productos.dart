@@ -112,3 +112,37 @@ class _PieVentasState extends State<PieVentas> {
     );
   }
 }
+
+class ReporteAprovicionar extends StatefulWidget {
+  const ReporteAprovicionar({Key? key}) : super(key: key);
+
+  @override
+  State<ReporteAprovicionar> createState() => _ReporteAprovicionarState();
+}
+
+class _ReporteAprovicionarState extends State<ReporteAprovicionar> {
+  @override
+  void initState() {
+    Provider.of<ProductosProvider>(context, listen: false).calculos();
+    super.initState();
+  }
+
+  DateTime fechaActu = DateTime.now();
+  //DateTime ultimoDia = DateTime(fecha.year, fecha.month, 1, 0, 0);
+
+  @override
+  Widget build(BuildContext context) {
+    final prd = Provider.of<ProductosProvider>(context);
+    return WhiteCard(
+      title: 'Aprovisionar',
+      child: Column(
+        children: [
+          Text("........."),
+          Text("........."),
+          Text("........."),
+          Text("........."),
+        ],
+      ),
+    );
+  }
+}

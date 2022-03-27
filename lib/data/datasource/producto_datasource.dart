@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../domain/entities/productos.dart';
 
 abstract class ProductosDataSource {
-  Future<String> insertProducto(Productos model);
+  Future<ModelProducto> insertProducto(Productos model);
   Future<List<ModelProducto>> getProducto();
 }
 
@@ -16,16 +16,18 @@ class ProductosDataSourceImp extends ProductosDataSource {
   String urlBase = "http://localhost:8000/api/productos";
 
   @override
-  Future<String> insertProducto(Productos modelo) async {
+  Future<ModelProducto> insertProducto(Productos modelo) async {
     var prd = json.encode(modelo.toMap());
 
     try {
       final result = await cliente.post(Uri.parse(urlBase),
           body: prd, headers: {"Content-type": "application/json"});
-      if (result.statusCode == 200) {}
-      return "";
+      if (result.statusCode == 200) {
+        return ModelProducto.fromMap(json.decode(result.body));
+      }
+      return new ModelProducto();
     } catch (ex) {
-      return "";
+      return new ModelProducto();
     }
   }
 

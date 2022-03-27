@@ -25,7 +25,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
       child: ListView(
         children: [
           WhiteCard(
-            title: "Clasificacion de Prduoctos",
+            title: "Clasificacion de Productos",
             child: Column(
               children: [
                 Container(
@@ -33,13 +33,13 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                   child: DataTable(
                     columns: <DataColumn>[
                       const DataColumn(
-                        label: Center(child: Text("Id")),
+                        label: Center(child: Text("Id Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Nombre")),
+                        label: Center(child: Text("Nombre Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Promedio")),
+                        label: Center(child: Text("Total")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Clasificacion")),
@@ -57,6 +57,54 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           ),
                           DataCell(Text(e.promedio.toString())),
                           DataCell(Text(e.clasificacion.toString())),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          WhiteCard(
+            title: "Aprovisionamiento de productos",
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: DataTable(
+                    columns: <DataColumn>[
+                      const DataColumn(
+                        label: Center(child: Text("Id Producto")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Nombre Producto")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Total")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Clasificacion")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Aprovisionar")),
+                      ),
+                    ],
+                    rows: producto.aprovisionamientos.map<DataRow>((e) {
+                      return DataRow(
+                        //key: LocalKey(),
+                        cells: <DataCell>[
+                          DataCell(
+                            Text(e.idProducto.toString()),
+                          ),
+                          DataCell(
+                            Text(e.detalle.toString()),
+                          ),
+                          DataCell(Text(e.promedio.toString())),
+                          DataCell(Text(e.clasificacion.toString())),
+                          DataCell(Text(e.stockSeguridad.toString())),
                         ],
                       );
                     }).toList(),

@@ -6,19 +6,19 @@ import '../grupo/grupo_modelo.dart';
 
 class ModelProducto extends Productos {
   ModelProducto({
-    required this.id,
-    required this.referencia,
-    required this.nombre,
-    required this.detalle,
-    required this.precio,
-    required this.cantidad,
-    required this.idUnidad,
-    required this.idProveedor,
-    required this.idGrupo,
-    required this.estado,
-    required this.proveedor,
-    required this.unidad,
-    required this.grupo,
+    this.id = 0,
+    this.referencia = "",
+    this.nombre = "",
+    this.detalle = "",
+    this.precio = 0,
+    this.cantidad = 0,
+    this.idUnidad = 0,
+    this.idProveedor = 0,
+    this.idGrupo = 0,
+    this.estado = false,
+    this.proveedor,
+    this.unidad,
+    this.grupo,
   }) : super(
             id: id,
             referencia: referencia,
@@ -41,9 +41,9 @@ class ModelProducto extends Productos {
   final int idProveedor;
   final int idGrupo;
   final bool estado;
-  final Proveedor proveedor;
-  final Unidad unidad;
-  final GruposModelo grupo;
+  final Proveedor? proveedor;
+  final Unidad? unidad;
+  final GruposModelo? grupo;
 
   factory ModelProducto.fromJson(String str) =>
       ModelProducto.fromMap(json.decode(str));
@@ -77,9 +77,9 @@ class ModelProducto extends Productos {
         "idProveedor": idProveedor,
         "idGrupo": idGrupo,
         "estado": estado,
-        "Proveedor": proveedor.toMap(),
-        "Unidad": unidad.toMap(),
-        "Grupo": grupo.toMap(),
+        "Proveedor": proveedor!.toMap(),
+        "Unidad": unidad!.toMap(),
+        "Grupo": grupo!.toMap(),
       };
 }
 

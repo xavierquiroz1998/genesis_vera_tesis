@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
+
+import '../../../domain/providers/productosProvider.dart';
 
 class EgresoProducto extends StatefulWidget {
   const EgresoProducto({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
   @override
   Widget build(BuildContext context) {
     final egreso = Provider.of<EProductoProvider>(context);
+    final producto = Provider.of<ProductosProvider>(context);
     final kardex = Provider.of<KardexProvider>(context);
     return Container(
       child: ListView(
@@ -158,20 +160,23 @@ class _EgresoProductoState extends State<EgresoProducto> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () {
-                        egreso.guardarEgreso();
-                        // for (var item in egreso.listaProducto.detalle!) {
-                        //   var result = Estaticas.listProductos
-                        //       .firstWhere((e) => e.id == item.idProducto);
-                        //   if (result.id > 0) {
-                        //     kardex.salidas(
-                        //         double.parse(item.cantidad.toString()), result);
-                        //     /*   result.stock =
-                        //         double.parse(item.cantidad.toString()); */
-                        //     /*     kardex.existencias(result, false, false); */
-                        //     kardex.impresion();
-                        //   }
-                        // }
+                      onPressed: () async {
+                        await egreso.guardarEgreso();
+                        if (producto.listado.length == 0) {
+                          await producto.getProductos();
+                        }
+                        for (var item in egreso.detalles) {
+                          var result = producto.listado
+                              .firstWhere((e) => e.id == item.idProducto);
+                          if (result.id > 0) {
+                            kardex.salidas(
+                                double.parse(item.cantidad.toString()), result);
+                            /*   result.stock =
+                                double.parse(item.cantidad.toString()); */
+                            /*     kardex.existencias(result, false, false); */
+                            kardex.impresion();
+                          }
+                        }
                         NavigationService.replaceTo("/egresos");
                       },
                       child: Text("Guardar"),

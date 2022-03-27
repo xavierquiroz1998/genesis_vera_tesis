@@ -15,7 +15,8 @@ class Inicio extends StatelessWidget {
           PieDefault(),
           if (Estaticas.listProductosEgreso.length > 0) ...{
             PieVentas(),
-          }
+          },
+          ReporteAprovicionar(),
         ],
       ),
     );

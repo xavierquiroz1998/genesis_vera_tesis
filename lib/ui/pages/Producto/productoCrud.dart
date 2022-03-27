@@ -252,7 +252,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    final otra = Estaticas.listProductos
+                    final otra = producto.listado
                         .where((element) =>
                             element.referencia ==
                             producto.controllerCodigo.text)

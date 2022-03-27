@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
-
-import '../../../domain/entities/tipo/grupo.dart';
 
 class ModelKardex extends Kardex {
   ModelKardex({
+    this.id = 0,
+    this.idProducto = 0,
     this.codMov = "",
     this.codPro = "",
     this.nomPro = "",
@@ -21,6 +19,8 @@ class ModelKardex extends Kardex {
     this.fecPro,
     this.stsPro = "",
   }) : super(
+          id: id,
+          idProducto: idProducto,
           codMov: codMov,
           codPro: codPro,
           nomPro: nomPro,
@@ -37,6 +37,8 @@ class ModelKardex extends Kardex {
           stsPro: stsPro,
         );
 
+  int id;
+  int idProducto;
   String codMov;
   String codPro;
   String nomPro;
@@ -57,6 +59,8 @@ class ModelKardex extends Kardex {
 
   factory ModelKardex.fromMap(Map<String, dynamic>? json) {
     return ModelKardex(
+      id: json?["id"],
+      idProducto: json?["idProducto"],
       codMov: json?["codMov"],
       codPro: json?["codPro"],
       nomPro: json?["nomPro"],
@@ -75,6 +79,8 @@ class ModelKardex extends Kardex {
   }
 
   Map<String, dynamic> toMap() => {
+        "id": id,
+        "idProducto": idProducto,
         "codMov": codMov,
         "codPro": codPro,
         "nomPro": nomPro,

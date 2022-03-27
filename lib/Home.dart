@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => sl<DevolucionProvider>()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(lazy: false, create: (_) => SideMenuProvider()),
-        ChangeNotifierProvider(create: (_) => KardexProvider()),
+        ChangeNotifierProvider(create: (_) => sl<KardexProvider>()),
         ChangeNotifierProvider(create: (_) => sl<GrupoProvider>()),
         ChangeNotifierProvider(create: (_) => sl<PermisoProvider>()),
         ChangeNotifierProvider(create: (_) => sl<ProyectoProvider>()),

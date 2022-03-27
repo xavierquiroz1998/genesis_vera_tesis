@@ -26,6 +26,7 @@ class ProductosProvider extends ChangeNotifier {
   TextEditingController _controllerHolgura = new TextEditingController();
   int pedid = 0;
   List<Clasificacion> lisCla = [];
+  List<Aprovisionar> aprovisionamientos = [];
 
   TextEditingController get controllerHolgura => _controllerHolgura;
 
@@ -223,6 +224,28 @@ class ProductosProvider extends ChangeNotifier {
           cat.clasificacion = "C";
         }
       }
+// stock seguridad
+
+      for (var item in lisCla) {
+        Aprovisionar ap = new Aprovisionar();
+        ap.idProducto = item.idProducto;
+        ap.detalle = item.detalle;
+        ap.promedio = formatting(item.promedio / 3);
+        ap.clasificacion = item.clasificacion;
+
+// calculos
+        double ventaXdia = ap.promedio / 30;
+        if (ap.clasificacion == "A") {
+          ap.stockSeguridad = formatting(ventaXdia * 7);
+        } else if (ap.clasificacion == "B") {
+          ap.stockSeguridad = formatting(ventaXdia * 30);
+        } else if (ap.clasificacion == "C") {
+          ap.stockSeguridad = formatting(ventaXdia * 45);
+        }
+
+        aprovisionamientos.add(ap);
+      }
+
       notifyListeners();
     } catch (ex) {}
   }
@@ -247,32 +270,29 @@ class ProductosProvider extends ChangeNotifier {
       product.precio = double.tryParse(controllerPrecio.text) ?? 0;
       product.estado = true;
       var tem = await insertarProducto.insert(p);
+      product = tem.getOrElse(() => new Productos());
+      // if (keyProducto.currentState!.validate()) {
+      //   product.id = Estaticas.listProductos.length + 1;
+      //   product.detalle = controllerDescripcion.text;
+      //   product.referencia = controllerCodigo.text;
+      //   product.cantidad = double.tryParse(controllerStock.text) ?? 0;
+      //   product.precio = double.parse(controllerPrecio.text);
+      //   product.estado = true;
+      //   Estaticas.listProductos.forEach((element) {
+      //     if (element.referencia == controllerCodigo.text) {
+      //       element.detalle = controllerDescripcion.text;
+      //       // element.stock =
+      //       //     element.stock! + double.tryParse(controllerStock.text)!;
+      //       element.precio = double.parse(controllerPrecio.text);
+      //       opt = true;
+      //     }
+      //   });
+      //   if (!opt) {
+      //     Estaticas.listProductos.add(product);
+      //   }
+      /* product = new Productos(precio: 0); */
 
-      if (keyProducto.currentState!.validate()) {
-        product.id = Estaticas.listProductos.length + 1;
-        product.detalle = controllerDescripcion.text;
-        product.referencia = controllerCodigo.text;
-        product.cantidad = double.tryParse(controllerStock.text) ?? 0;
-        product.precio = double.parse(controllerPrecio.text);
-        product.estado = true;
-        Estaticas.listProductos.forEach((element) {
-          if (element.referencia == controllerCodigo.text) {
-            element.detalle = controllerDescripcion.text;
-            // element.stock =
-            //     element.stock! + double.tryParse(controllerStock.text)!;
-            element.precio = double.parse(controllerPrecio.text);
-            opt = true;
-          }
-        });
-        if (!opt) {
-          Estaticas.listProductos.add(product);
-        }
-        /* product = new Productos(precio: 0); */
-
-        return product;
-      } else {
-        return null;
-      }
+      return product;
     } catch (e) {
       return null;
     }
@@ -282,6 +302,14 @@ class ProductosProvider extends ChangeNotifier {
 class Clasificacion {
   int idProducto = 0;
   double promedio = 0;
+  String detalle = "";
+  String clasificacion = "";
+}
+
+class Aprovisionar {
+  int idProducto = 0;
+  double promedio = 0;
+  double stockSeguridad = 0;
   String detalle = "";
   String clasificacion = "";
 }

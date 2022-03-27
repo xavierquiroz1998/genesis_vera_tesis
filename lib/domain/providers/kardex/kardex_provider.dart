@@ -2,12 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
+import '../../uses cases/Kardex/kardex_general.dart';
+
 class KardexProvider extends ChangeNotifier {
+  final KardexGeneral kardex;
+
   List<Kardex> kardexRegistro = [];
 
-  void entradas(Productos producto, bool isExiste, bool isTipo) {
-    var kardexUltimo;
+  KardexProvider(this.kardex);
 
+  Future getKardex() async {
+    try {
+      var result = await kardex.getAll();
+      kardexRegistro = result.getOrElse(() => []);
+    } catch (ex) {}
+  }
+
+  Future<void> entradas(Productos producto, bool isExiste, bool isTipo) async {
+    var kardexUltimo;
+    await getKardex();
     if (isExiste) {
       kardexUltimo = kardexRegistro
           .where((element) => element.codPro == producto.referencia)
@@ -16,44 +29,45 @@ class KardexProvider extends ChangeNotifier {
           .first;
     }
 
-    // kardexRegistro.add(
-    //   Kardex(
-    //       codMov: isTipo
-    //           ? 'I-${kardexRegistro.length}'
-    //           : "DEV-${kardexRegistro.length}",
-    //       codPro: producto.referencia!,
-    //       nomPro: producto.detalle!,
-    //       //proCanI: producto.stock!,
-    //       proUntI: producto.precio!,
-    //       //proTtlI: (producto.stock! * producto.precio!),
-    //       proCanS: 0,
-    //       proUntS: 0,
-    //       proTtlS: 0,
-    //       proCanE: isExiste
-    //           ? isTipo
-    //               ? kardexUltimo.proCanE + producto.stock!
-    //               : kardexUltimo.proCanE - producto.stock!
-    //           : producto.stock!,
-    //       proUntE: isExiste
-    //           ? isTipo
-    //               ? ((producto.stock! * producto.precio!) +
-    //                       kardexUltimo.proTtlE) /
-    //                   (kardexUltimo.proCanE + producto.stock!)
-    //               : (((producto.stock! * producto.precio!) -
-    //                           kardexUltimo.proTtlE) /
-    //                       (kardexUltimo.proCanE - producto.stock!)) *
-    //                   -1
-    //           : (producto.stock! * producto.precio!) / producto.stock!,
-    //       proTtlE: isExiste
-    //           ? isTipo
-    //               ? (producto.stock! * producto.precio!) + kardexUltimo.proTtlE
-    //               : ((producto.stock! * producto.precio!) -
-    //                       kardexUltimo.proTtlE) *
-    //                   -1
-    //           : (producto.stock! * producto.precio!),
-    //       fecPro: DateTime.now(),
-    //       stsPro: 'I'), //pendiente
-    //);
+    Kardex k = new Kardex(
+        codMov: isTipo
+            ? 'I-${kardexRegistro.length}'
+            : "DEV-${kardexRegistro.length}",
+        idProducto: producto.id,
+        codPro: producto.referencia,
+        nomPro: producto.detalle,
+        //proCanI: producto.stock,
+        proUntI: producto.precio,
+        //proTtlI: (producto.stock * producto.precio),
+        proCanS: 0,
+        proUntS: 0,
+        proTtlS: 0,
+        proCanE: isExiste
+            ? isTipo
+                ? kardexUltimo.proCanE + producto.cantidad
+                : kardexUltimo.proCanE - producto.cantidad
+            : producto.cantidad,
+        proUntE: isExiste
+            ? isTipo
+                ? ((producto.cantidad * producto.precio) +
+                        kardexUltimo.proTtlE) /
+                    (kardexUltimo.proCanE + producto.cantidad)
+                : (((producto.cantidad * producto.precio) -
+                            kardexUltimo.proTtlE) /
+                        (kardexUltimo.proCanE - producto.cantidad)) *
+                    -1
+            : (producto.cantidad * producto.precio) / producto.cantidad,
+        proTtlE: isExiste
+            ? isTipo
+                ? (producto.cantidad * producto.precio) + kardexUltimo.proTtlE
+                : ((producto.cantidad * producto.precio) -
+                        kardexUltimo.proTtlE) *
+                    -1
+            : (producto.cantidad * producto.precio),
+        fecPro: DateTime.now(),
+        stsPro: 'I'); //pendiente
+
+    await kardex.inserteKardex(k);
   }
 
 /*  ojo dev compras s
@@ -62,32 +76,32 @@ class KardexProvider extends ChangeNotifier {
                       (kardexUltimo.proCanE - producto.stock!)
  */
   void salidas(double cantidad, Productos producto) {
-//     final kardexUltimo = kardexRegistro
-//         .where((element) => element.codPro == producto.codigo)
-//         .toList()
-//         .reversed
-//         .first;
-// /* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL
-// CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
-//     var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
+    final kardexUltimo = kardexRegistro
+        .where((element) => element.codPro == producto.referencia)
+        .toList()
+        .reversed
+        .first;
+/* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL
+CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
+    var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
 
-//     kardexRegistro.add(
-//       Kardex(
-//           codMov: 'S-00${kardexRegistro.length}',
-//           codPro: producto.codigo!, //1
-//           nomPro: producto.descripcion!, //martillo
-//           proCanI: 0,
-//           proUntI: 0,
-//           proTtlI: 0,
-//           proCanS: cantidad,
-//           proUntS: kardexUltimo.proUntE,
-//           proTtlS: (cantidad * kardexUltimo.proUntE), //
-//           proCanE: producto.stock!,
-//           proUntE: total / producto.stock!,
-//           proTtlE: total,
-//           fecPro: DateTime.now(),
-//           stsPro: 'P'),
-//     );
+    kardexRegistro.add(
+      Kardex(
+          codMov: 'S-00${kardexRegistro.length}',
+          codPro: producto.referencia, //1
+          nomPro: producto.detalle, //martillo
+          proCanI: 0,
+          proUntI: 0,
+          proTtlI: 0,
+          proCanS: cantidad,
+          proUntS: kardexUltimo.proUntE,
+          proTtlS: (cantidad * kardexUltimo.proUntE), //
+          proCanE: producto.cantidad,
+          proUntE: total / producto.cantidad,
+          proTtlE: total,
+          fecPro: DateTime.now(),
+          stsPro: 'P'),
+    );
   }
 
   void devoluciones(Productos producto, bool isTipo) {

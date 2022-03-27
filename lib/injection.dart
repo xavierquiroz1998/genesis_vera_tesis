@@ -49,6 +49,7 @@ import 'domain/providers/Proveedores/proveedoresProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/providers/ingreso/ingresosProvider.dart';
+import 'domain/providers/kardex/kardex_provider.dart';
 import 'domain/providers/registros/registrosProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
@@ -84,6 +85,7 @@ Future<void> init() async {
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => RegistrosProvider(sl()));
   sl.registerFactory(() => IngresosProvider(sl(), sl()));
+  sl.registerFactory(() => KardexProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso

@@ -21,7 +21,11 @@ class ProductoImp implements AbstractProducto {
   }
 
   @override
-  Future<String> insertProducto(Productos model) async {
-    return await dataSource.insertProducto(model);
+  Future<Either<Failure, Productos>> insertProducto(Productos model) async {
+    try {
+      return right(await dataSource.insertProducto(model));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener datos"));
+    }
   }
 }

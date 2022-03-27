@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Kardex extends Equatable {
+  int id;
+  int idProducto;
   final String codMov;
   final String codPro;
   final String nomPro;
@@ -21,6 +23,8 @@ class Kardex extends Equatable {
   final String stsPro;
 
   Kardex({
+    this.id = 0,
+    this.idProducto = 0,
     this.codMov = "",
     this.codPro = "",
     this.nomPro = "",
@@ -49,6 +53,8 @@ class Kardex extends Equatable {
   }
 
   Map<String, dynamic> toMap() => {
+        "id": id,
+        "idProducto": idProducto,
         "codMov": codMov,
         "codPro": codPro,
         "nomPro": nomPro,
@@ -68,6 +74,8 @@ class Kardex extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [
+        id,
+        idProducto,
         codMov,
         codPro,
         nomPro,
