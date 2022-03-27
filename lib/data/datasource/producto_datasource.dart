@@ -23,6 +23,7 @@ class ProductosDataSourceImp extends ProductosDataSource {
       final result = await cliente.post(Uri.parse(urlBase),
           body: prd, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
+        var respuesta = result.body;
         return ModelProducto.fromMap(json.decode(result.body));
       }
       return new ModelProducto();

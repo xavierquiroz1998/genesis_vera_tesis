@@ -266,6 +266,7 @@ class ProductosProvider extends ChangeNotifier {
       product.referencia = controllerCodigo.text;
       p.nombre = controllerDescripcion.text;
       p.detalle = controllerDescripcion.text;
+
       p.cantidad = double.tryParse(controllerStock.text) ?? 0;
       product.precio = double.tryParse(controllerPrecio.text) ?? 0;
       product.estado = true;
