@@ -67,6 +67,9 @@ class _ProductosTableState extends State<ProductosTable> {
                         label: Center(child: Text("Stock")),
                       ),
                       const DataColumn(
+                        label: Center(child: Text("Pedido")),
+                      ),
+                      const DataColumn(
                         label: Center(child: Text("Precio")),
                       ),
                       const DataColumn(
@@ -102,6 +105,9 @@ class _ProductosTableState extends State<ProductosTable> {
                           ),
                           DataCell(
                             Text(e.cantidad.toString()),
+                          ),
+                          DataCell(
+                            Text(e.pedido.toString()),
                           ),
                           DataCell(
                             Text(e.precio.toString()),

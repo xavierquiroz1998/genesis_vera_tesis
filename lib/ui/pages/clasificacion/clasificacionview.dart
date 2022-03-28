@@ -56,8 +56,9 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
-                          DataCell(Text(NumberFormat.currency(locale: 'en_US', symbol: r'$')
-            .format(e.promedio))),
+                          DataCell(Text(NumberFormat.currency(
+                                  locale: 'en_US', symbol: r'$')
+                              .format(e.promedio))),
                           DataCell(Text(e.clasificacion.toString())),
                         ],
                       );
@@ -91,7 +92,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                         label: Center(child: Text("Clasificacion")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Aprovisionar")),
+                        label: Center(child: Text("Stock de Seguridad")),
                       ),
                     ],
                     rows: producto.aprovisionamientos.map<DataRow>((e) {
@@ -104,7 +105,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
-                         // DataCell(Text(e.promedio.toString())),
+                          // DataCell(Text(e.promedio.toString())),
                           DataCell(Text(e.clasificacion.toString())),
                           DataCell(Text(e.stockSeguridad.toString())),
                         ],

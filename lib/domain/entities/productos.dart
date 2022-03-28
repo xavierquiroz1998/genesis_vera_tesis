@@ -7,6 +7,7 @@ class Productos extends Equatable {
   String detalle;
   double precio;
   double cantidad;
+  int pedido;
   int idUnidad;
   int idProveedor;
   int idGrupo;
@@ -17,6 +18,7 @@ class Productos extends Equatable {
     this.referencia = "",
     this.nombre = "",
     this.detalle = "",
+    this.pedido = 0,
     this.precio = 0,
     this.cantidad = 0,
     this.idUnidad = 0,

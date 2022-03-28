@@ -105,6 +105,9 @@ class ProductosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listado = result as List<Productos>;
+      for (var item in listado) {
+        item.pedido = 1020;
+      }
     } catch (ex) {
       print("error${result.toString()}");
     }
