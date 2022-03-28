@@ -31,7 +31,7 @@ class ModelRegistro extends EntityRegistro {
         idTipo: json["idTipo"],
         detalle: json["detalle"],
         estado: json["estado"],
-        createdAt: json["createdAt"],
+        createdAt: json["createdAt"] ?? "",
       );
 
   Map<String, dynamic> toMap() => {

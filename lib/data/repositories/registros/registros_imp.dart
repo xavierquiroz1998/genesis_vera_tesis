@@ -93,4 +93,14 @@ class RegistrosImp extends AbstractRegistros {
       return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
     }
   }
+
+  @override
+  Future<Either<Failure, List<EntityRegistroDetalle>>> getDetalle(
+      int idRegistro) async {
+    try {
+      return right(await dataSource.getDetalle(idRegistro));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de unidades"));
+    }
+  }
 }

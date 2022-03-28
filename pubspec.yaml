@@ -14,7 +14,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   darq: ^1.1.1
-  dartz: ^0.10.1
+  dartz: ^0.10.1 
   email_validator: ^2.0.1
   equatable: ^2.0.3
   excel: 2.0.0-null-safety-3

@@ -38,7 +38,9 @@ class _PieDefaultState extends State<PieDefault> {
                   tooltipBehavior: TooltipBehavior(enable: true),
                   series: <CircularSeries>[
                     PieSeries<Productos, String>(
-                        dataSource: producto.listado,
+                        dataSource: producto.listado.length > 5
+                            ? producto.listado.sublist(0, 5)
+                            : producto.listado,
                         xValueMapper: (Productos data, _) =>
                             data.detalle.length > 10
                                 ? data.detalle.substring(0, 9)
@@ -135,13 +137,28 @@ class _ReporteAprovicionarState extends State<ReporteAprovicionar> {
     final prd = Provider.of<ProductosProvider>(context);
     return WhiteCard(
       title: 'Aprovisionar',
-      child: Column(
-        children: [
-          Text("........."),
-          Text("........."),
-          Text("........."),
-          Text("........."),
-        ],
+      child: Container(
+        color: Colors.blue,
+        width: 250,
+        height: 250,
+        child: Column(
+          children: [
+            for (var item in prd.aprovisionamientos
+                .where((e) => e.clasificacion == "A")) ...{
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    item.detalle.length > 15
+                        ? Text("${item.detalle.substring(0, 15)}")
+                        : Text("${item.detalle}"),
+                    Text("${item.stockSeguridad.toString()}"),
+                  ],
+                ),
+              ),
+            }
+          ],
+        ),
       ),
     );
   }

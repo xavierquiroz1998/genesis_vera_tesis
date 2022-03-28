@@ -4,6 +4,7 @@ import 'package:genesis_vera_tesis/core/Errors/failure.dart';
 
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/parametros/parametros_general.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
@@ -46,13 +47,15 @@ class ProductosProvider extends ChangeNotifier {
   final GetGrupos grupos;
   final GetProveedores useCaseProveedores;
   final UsesCaseRegistros registro;
+  final ParametrosGeneral parametros;
   ProductosProvider(
       this.insertarProducto,
       this.getProductos,
       this.unidadesMedidas,
       this.grupos,
       this.useCaseProveedores,
-      this.registro);
+      this.registro,
+      this.parametros);
 
   final _keyProducto = GlobalKey<FormState>();
 
@@ -157,19 +160,20 @@ class ProductosProvider extends ChangeNotifier {
 // // cosulto el proveedor por producto y veo el tiempo de holgura que sea mayor
 // // como envaluar los los dias trasncurridos
 //       double mesaActual = p.cantidad + pedid;
-
+      var param = await parametros.getAllParametros();
+      var listadoParam = param.getOrElse(() => []);
       // categorizacion  de todos los productos
       List<EntityRegistroDetalle> temporal = [];
-      double stockSeguridad = 0;
       // obtengo las ventas de ese producto los ultimos 3 meses y lo sumo el total
       var tem = await registro.getAllDetalle(1);
       var cab = await registro.getAll(2);
       var lisDet = tem.getOrElse(() => []);
       var lisCab = cab.getOrElse(() => []);
       var fechaActual = DateTime.now();
+      var fechaAnterior = DateTime(fechaActual.year, fechaActual.month, 1 - 1);
       var fechaFinal = DateTime.now().add(Duration(days: -90));
       for (var item in lisCab) {
-        var dife = DateTime.parse(item.createdAt).difference(fechaActual);
+        var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
         if (dife.inDays <= 30) {
           var total =
               lisDet.where((element) => element.idRegistro == item.id).toList();
@@ -225,7 +229,7 @@ class ProductosProvider extends ChangeNotifier {
         }
       }
 // stock seguridad
-
+      aprovisionamientos = [];
       for (var item in lisCla) {
         Aprovisionar ap = new Aprovisionar();
         ap.idProducto = item.idProducto;
@@ -236,12 +240,28 @@ class ProductosProvider extends ChangeNotifier {
 // calculos
         double ventaXdia = ap.promedio / 30;
         if (ap.clasificacion == "A") {
-          ap.stockSeguridad = formatting(ventaXdia * 7);
+          var paramTemp = listadoParam.where((e) => e.detalle == "A").first;
+          if (paramTemp != null) {
+            ap.stockSeguridad = formatting(ventaXdia * paramTemp.holgura);
+          } else {
+            ap.stockSeguridad = formatting(ventaXdia * 7);
+          }
         } else if (ap.clasificacion == "B") {
-          ap.stockSeguridad = formatting(ventaXdia * 30);
+          var paramTemp = listadoParam.where((e) => e.detalle == "B").first;
+          if (paramTemp != null) {
+            ap.stockSeguridad = formatting(ventaXdia * paramTemp.holgura);
+          } else {
+            ap.stockSeguridad = formatting(ventaXdia * 7);
+          }
         } else if (ap.clasificacion == "C") {
-          ap.stockSeguridad = formatting(ventaXdia * 45);
+          var paramTemp = listadoParam.where((e) => e.detalle == "C").first;
+          if (paramTemp != null) {
+            ap.stockSeguridad = formatting(ventaXdia * paramTemp.holgura);
+          } else {
+            ap.stockSeguridad = formatting(ventaXdia * 7);
+          }
         }
+        ap.stockSeguridad = double.parse(ap.stockSeguridad.round().toString());
 
         aprovisionamientos.add(ap);
       }

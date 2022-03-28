@@ -14,6 +14,7 @@ abstract class RegistroDTS {
   Future<ModelRegistro> deleteRegistro(EntityRegistro registro);
 
   Future<List<ModelRegistroDetalle>> getDetalleXregistro(int idRegistro);
+  Future<List<ModelRegistroDetalle>> getDetalle(int idRegistro);
   Future<ModelRegistroDetalle> insertRegistroDetalle(
       EntityRegistroDetalle registro);
   Future<ModelRegistroDetalle> updateRegistroDetalle(
@@ -107,8 +108,10 @@ class RegistroDTSImp extends RegistroDTS {
     try {
       var p = json.encode(registro.toMap());
 
-      final result = await cliente.delete(Uri.parse(urlBase),
-          body: p, headers: {"Content-type": "application/json"});
+      final result = await cliente.delete(
+          Uri.parse(urlBase + "/${registro.id}"),
+          body: p,
+          headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelRegistroDetalle.fromMap(json.decode(result.body));
       }
@@ -173,6 +176,22 @@ class RegistroDTSImp extends RegistroDTS {
       return new ModelRegistroDetalle();
     } catch (e) {
       return new ModelRegistroDetalle();
+    }
+  }
+
+  @override
+  Future<List<ModelRegistroDetalle>> getDetalle(int idRegistro) async {
+    try {
+      List<ModelRegistroDetalle> tem = [];
+      final result = await cliente
+          .get(Uri.parse(urlBaseDetalle + "/getdetalles/$idRegistro"));
+      if (result.statusCode == 200) {
+        tem = decodeRegistroDetalle(result.body);
+      }
+
+      return tem;
+    } catch (e) {
+      return [];
     }
   }
 }

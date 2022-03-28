@@ -18,6 +18,8 @@ abstract class AbstractRegistros {
   ///
   ///
   Future<Either<Failure, List<EntityRegistroDetalle>>> getAll_x_id(int id);
+  Future<Either<Failure, List<EntityRegistroDetalle>>> getDetalle(
+      int idRegistro);
   Future<Either<Failure, EntityRegistroDetalle>> insertRegistrosDetalles(
       EntityRegistroDetalle registro);
   Future<Either<Failure, EntityRegistroDetalle>> updateRegistrosDetalles(

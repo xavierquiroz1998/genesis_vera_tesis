@@ -234,7 +234,7 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     Provider.of<SideMenuProvider>(context, listen: false)
-        .setCurrentPageUrl(Flurorouter.parametros);
+        .setCurrentPageUrl(Flurorouter.ingresoss);
     if (logeo.authStatus == AuthStatus.authenticated) {
       return IngresosView();
     } else {
@@ -246,7 +246,7 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     Provider.of<SideMenuProvider>(context, listen: false)
-        .setCurrentPageUrl(Flurorouter.parametros);
+        .setCurrentPageUrl(Flurorouter.ingresossCrud);
     if (logeo.authStatus == AuthStatus.authenticated) {
       return IngresoView();
     } else {
@@ -257,7 +257,7 @@ class Handlers {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
     Provider.of<SideMenuProvider>(context, listen: false)
-        .setCurrentPageUrl(Flurorouter.parametros);
+        .setCurrentPageUrl(Flurorouter.calsificacion);
     if (logeo.authStatus == AuthStatus.authenticated) {
       return ClasificacionView();
     } else {

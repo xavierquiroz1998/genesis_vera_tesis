@@ -30,7 +30,7 @@ class _IngresosViewState extends State<IngresosView> {
       child: ListView(
         children: [
           WhiteCard(
-            title: "Salida de Productos",
+            title: "Nota de Ingreso",
             child: Column(
               children: [
                 Row(
@@ -89,11 +89,18 @@ class _IngresosViewState extends State<IngresosView> {
                           )),
                           DataCell(
                             Icon(Icons.edit),
-                            onTap: () {},
+                            onTap: () async {
+                              ingreso.cab = e;
+                              ingreso.detalles = [];
+                              NavigationService.navigateTo(
+                                  Flurorouter.ingresossCrud);
+                            },
                           ),
                           DataCell(
                             Icon(Icons.delete),
-                            onTap: () {},
+                            onTap: () async {
+                              await ingreso.anular(e);
+                            },
                           ),
                         ],
                       );

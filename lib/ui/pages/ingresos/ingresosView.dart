@@ -18,7 +18,11 @@ class IngresoView extends StatefulWidget {
 class _IngresoViewState extends State<IngresoView> {
   @override
   void initState() {
-    Provider.of<IngresosProvider>(context, listen: false).cargarPrd();
+    var temProvider = Provider.of<IngresosProvider>(context, listen: false);
+    temProvider.cargarPrd();
+    if (temProvider.cab.id != 0) {
+      temProvider.cargarDetalle(temProvider.cab.id);
+    }
     super.initState();
   }
 
@@ -72,26 +76,44 @@ class _IngresoViewState extends State<IngresoView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          DataCell(DropdownButton<Productos>(
-                            items: ingreso.listado
-                                .map(
-                                  (eDrop) => DropdownMenuItem<Productos>(
-                                    child: Text(eDrop.detalle),
-                                    value: eDrop,
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              e.idProducto = value!.id;
-                              e.productos = value;
-                              setState(() {});
-                            },
-                            hint: e.idProducto == 0
-                                ? Text("Seleccione Producto")
-                                : Text("${e.productos!.detalle}"),
-                          )),
+                          DataCell(
+                            DropdownButton<Productos>(
+                              items: ingreso.listado
+                                  .map(
+                                    (eDrop) => DropdownMenuItem<Productos>(
+                                      child: Container(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 150),
+                                        child: Text(
+                                          eDrop.nombre,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      /*   child: Text(
+                                          e.productos!.detalle.length > 15
+                                              ? e.productos!.detalle
+                                                  .substring(0, 15)
+                                              : e.productos!.detalle), */
+                                      value: eDrop,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                e.idProducto = value!.id;
+                                e.productos = value;
+                                setState(() {});
+                              },
+                              hint: e.idProducto == 0
+                                  ? Text("Seleccione Producto")
+                                  : Text(e.productos!.detalle.length > 15
+                                      ? e.productos!.detalle.substring(0, 15)
+                                      : e.productos!.detalle),
+                            ),
+                          ),
                           DataCell(
                             TextFormField(
+                              initialValue: e.observacion,
                               onChanged: (value) {
                                 e.observacion = value;
                               },
@@ -99,6 +121,7 @@ class _IngresoViewState extends State<IngresoView> {
                           ),
                           DataCell(
                             TextFormField(
+                              initialValue: e.cantidad.toString(),
                               onChanged: (value) {
                                 e.cantidad = int.parse(value);
                                 ingreso.calcular();
@@ -107,6 +130,7 @@ class _IngresoViewState extends State<IngresoView> {
                           ),
                           DataCell(
                             TextFormField(
+                              initialValue: e.total.toString(),
                               onChanged: (value) {
                                 e.to = double.parse(value);
                                 ingreso.calcular();
@@ -129,8 +153,13 @@ class _IngresoViewState extends State<IngresoView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () {
-                        ingreso.guardarIngresos();
+                      onPressed: () async {
+                        if (ingreso.cab.id == 0) {
+                          await ingreso.guardarIngresos();
+                        } else {
+                          await ingreso.actualizar();
+                        }
+
                         // for (var item in egreso.listaProducto.detalle!) {
                         //   var result = Estaticas.listProductos
                         //       .firstWhere((e) => e.id == item.idProducto);

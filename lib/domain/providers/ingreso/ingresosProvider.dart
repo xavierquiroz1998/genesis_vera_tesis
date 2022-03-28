@@ -10,7 +10,16 @@ import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class IngresosProvider extends ChangeNotifier {
   //EgresoCabecera _listPRoduct = new EgresoCabecera();
-  EntityRegistro cab = new EntityRegistro();
+  EntityRegistro _cab = new EntityRegistro();
+
+  EntityRegistro get cab => _cab;
+
+  set cab(EntityRegistro cab) {
+    _cab = cab;
+    ctrObservacion.text = cab.detalle;
+    notifyListeners();
+  }
+
   List<EntityRegistro> listTableRegistrosDev = [];
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
@@ -18,7 +27,7 @@ class IngresosProvider extends ChangeNotifier {
   double to = 0;
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
-
+  var isSelectProduct;
   IngresosProvider(this.getProductos, this.usesCases);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
@@ -51,8 +60,22 @@ class IngresosProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
+  Future cargarDetalle(int idRegistro) async {
+    try {
+      var transaction = await usesCases.getADetalle(idRegistro);
+      detalles = transaction.getOrElse(() => []);
+      for (var item in detalles) {
+        item.productos = listado.where((e) => e.id == item.idProducto).first;
+      }
+      notifyListeners();
+    } catch (ex) {}
+  }
+
   void agregar() {
-    detalles.add(new EntityRegistroDetalle());
+    EntityRegistroDetalle det = new EntityRegistroDetalle();
+    det.productos = new Productos();
+
+    detalles.add(det);
 
     notifyListeners();
   }
@@ -123,5 +146,33 @@ class IngresosProvider extends ChangeNotifier {
     } catch (e) {
       print("Error en guardar ${e.toString()}");
     }
+  }
+
+  Future anular(EntityRegistro cab) async {
+    try {
+      cab.estado = false;
+      var tem = await usesCases.updateRegistros(cab);
+      var result = tem.getOrElse(() => new EntityRegistro());
+    } catch (ex) {}
+
+    notifyListeners();
+  }
+
+  Future actualizar() async {
+    print(listado.toString());
+    try {
+      if (cab.id != 0) {
+        cab.detalle = ctrObservacion.text;
+        var tem = await usesCases.updateRegistros(cab);
+        var result = tem.getOrElse(() => new EntityRegistro());
+        //detalle
+
+        for (var item in detalles) {
+          var tem1 = await usesCases.updateRegistrosDetalles(item);
+        }
+      }
+    } catch (ex) {}
+
+    notifyListeners();
   }
 }

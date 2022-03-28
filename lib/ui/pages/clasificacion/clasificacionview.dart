@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/providers/productosProvider.dart';
@@ -55,7 +56,8 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
-                          DataCell(Text(e.promedio.toString())),
+                          DataCell(Text(NumberFormat.currency(locale: 'en_US', symbol: r'$')
+            .format(e.promedio))),
                           DataCell(Text(e.clasificacion.toString())),
                         ],
                       );
@@ -82,9 +84,9 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                       const DataColumn(
                         label: Center(child: Text("Nombre Producto")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Total")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Total")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("Clasificacion")),
                       ),
@@ -102,7 +104,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
-                          DataCell(Text(e.promedio.toString())),
+                         // DataCell(Text(e.promedio.toString())),
                           DataCell(Text(e.clasificacion.toString())),
                           DataCell(Text(e.stockSeguridad.toString())),
                         ],

@@ -62,7 +62,7 @@ class ParametrosDTSImp extends ParametrosDTS {
     try {
       var grp = json.encode(grupo.toMap());
 
-      final result = await cliente.post(Uri.parse(urlBase),
+      final result = await cliente.put(Uri.parse(urlBase + "/${grupo.id}"),
           body: grp, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelParametros.fromMap(json.decode(result.body));

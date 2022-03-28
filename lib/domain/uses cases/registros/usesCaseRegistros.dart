@@ -34,6 +34,11 @@ class UsesCaseRegistros {
     return await regi.getAll_x_id(idTipo);
   }
 
+  Future<Either<Failure, List<EntityRegistroDetalle>>> getADetalle(
+      int idRegistro) async {
+    return await regi.getDetalle(idRegistro);
+  }
+
   Future<Either<Failure, EntityRegistroDetalle>> insertRegistrosDetalles(
       EntityRegistroDetalle registro) async {
     return await regi.insertRegistrosDetalles(registro);

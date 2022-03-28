@@ -16,6 +16,7 @@ class ParametrosPRovider extends ChangeNotifier {
     try {
       var result = await usesCases.getAllParametros();
       listadoParametros = result.getOrElse(() => []);
+      notifyListeners();
     } catch (ex) {}
   }
 
@@ -34,14 +35,11 @@ class ParametrosPRovider extends ChangeNotifier {
 
   Future<void> updateParametros() async {
     try {
-      var result1 = await usesCases.updateParametro(parametro1);
+for (var item in listadoParametros) {
+    var result1 = await usesCases.updateParametro(item);
       var obj1 = result1.getOrElse(() => new EntityParametros());
+}
 
-      var result2 = await usesCases.updateParametro(parametro1);
-      var obj2 = result2.getOrElse(() => new EntityParametros());
-
-      var result3 = await usesCases.updateParametro(parametro1);
-      var obj3 = result3.getOrElse(() => new EntityParametros());
     } catch (ex) {}
   }
 }
