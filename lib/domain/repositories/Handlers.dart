@@ -25,6 +25,7 @@ import '../../ui/pages/dashboard/dashboardXproducto.dart';
 import '../../ui/pages/ingresos/ingresos.dart';
 import '../../ui/pages/ingresos/ingresosView.dart';
 import '../../ui/pages/parametros/parameter.dart';
+import '../../ui/pages/pedido/pedidoMes.dart';
 import '../providers/Home/sideMenuProvider.dart';
 
 class Handlers {
@@ -260,6 +261,18 @@ class Handlers {
         .setCurrentPageUrl(Flurorouter.calsificacion);
     if (logeo.authStatus == AuthStatus.authenticated) {
       return ClasificacionView();
+    } else {
+      return Login();
+    }
+  });
+
+  static Handler pedidos = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.pedido);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return PedidoMes();
     } else {
       return Login();
     }

@@ -4,6 +4,7 @@ import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGeneral.dart';
 
 import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
@@ -20,8 +21,9 @@ class EProductoProvider extends ChangeNotifier {
   double to = 0;
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
+  final GeneralProducto generalProducto;
 
-  EProductoProvider(this.getProductos, this.usesCases);
+  EProductoProvider(this.getProductos, this.usesCases, this.generalProducto);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 

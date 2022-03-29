@@ -28,4 +28,22 @@ class ProductoImp implements AbstractProducto {
       return left(ServerFailure(mensaje: "Error al obtener datos"));
     }
   }
+
+  @override
+  Future<Either<Failure, Productos>> deleteProducto(Productos model) async {
+    try {
+      return right(await dataSource.deleteProducto(model));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener datos"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Productos>> updateProducto(Productos model) async {
+    try {
+      return right(await dataSource.updateProducto(model));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener datos"));
+    }
+  }
 }

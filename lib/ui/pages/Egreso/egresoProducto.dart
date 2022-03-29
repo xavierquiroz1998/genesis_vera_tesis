@@ -5,6 +5,7 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGeneral.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
@@ -163,17 +164,34 @@ class _EgresoProductoState extends State<EgresoProducto> {
                       onPressed: () async {
                         await egreso.guardarEgreso();
                         if (producto.listado.length == 0) {
-                          await producto.getProductos();
+                          await producto.cargarPrd();
                         }
                         for (var item in egreso.detalles) {
                           var result = producto.listado
                               .firstWhere((e) => e.id == item.idProducto);
                           if (result.id > 0) {
-                            kardex.salidas(
+                            await kardex.salidas(
                                 double.parse(item.cantidad.toString()), result);
                             /*   result.stock =
                                 double.parse(item.cantidad.toString()); */
                             /*     kardex.existencias(result, false, false); */
+
+                            // actualizo Stock Prd
+                            Productos prd = new Productos();
+                            prd.id = result.id;
+                            prd.detalle = result.detalle;
+                            prd.estado = result.estado;
+                            prd.idGrupo = result.idGrupo;
+                            prd.idUnidad = result.idUnidad;
+                            prd.idProveedor = result.idProveedor;
+                            prd.nombre = result.nombre;
+                            prd.pedido = result.pedido;
+                            prd.precio = result.precio;
+                            prd.referencia = result.referencia;
+
+                            prd.cantidad = result.cantidad - item.cantidad;
+
+                            await egreso.generalProducto.update(prd);
                             kardex.impresion();
                           }
                         }

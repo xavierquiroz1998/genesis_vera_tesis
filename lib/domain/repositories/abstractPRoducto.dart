@@ -7,4 +7,6 @@ abstract class AbstractProducto {
   Future<Either<Failure, List<Productos>>> getAllProductos();
 
   Future<Either<Failure, Productos>> insertProducto(Productos model);
+  Future<Either<Failure, Productos>> updateProducto(Productos model);
+  Future<Either<Failure, Productos>> deleteProducto(Productos model);
 }

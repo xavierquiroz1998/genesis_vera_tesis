@@ -14,6 +14,7 @@ import '../entities/registro/entityRegistroDetaller.dart';
 import '../entities/tipo/grupo.dart';
 import '../entities/unidad_medida/unidadMedida.dart';
 import '../uses cases/grupo/get_grupos.dart';
+import '../uses cases/productos/productosGeneral.dart';
 import '../uses cases/registros/usesCaseRegistros.dart';
 import '../uses cases/unidad_medida/get_medidas.dart';
 import 'package:collection/collection.dart';
@@ -48,6 +49,7 @@ class ProductosProvider extends ChangeNotifier {
   final GetProveedores useCaseProveedores;
   final UsesCaseRegistros registro;
   final ParametrosGeneral parametros;
+  final GeneralProducto productoGeneral;
   ProductosProvider(
       this.insertarProducto,
       this.getProductos,
@@ -55,6 +57,7 @@ class ProductosProvider extends ChangeNotifier {
       this.grupos,
       this.useCaseProveedores,
       this.registro,
+      this.productoGeneral,
       this.parametros);
 
   final _keyProducto = GlobalKey<FormState>();
@@ -105,9 +108,6 @@ class ProductosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listado = result as List<Productos>;
-      for (var item in listado) {
-        item.pedido = 1020;
-      }
     } catch (ex) {
       print("error${result.toString()}");
     }
@@ -216,6 +216,12 @@ class ProductosProvider extends ChangeNotifier {
           var prd =
               listado.firstWhere((element) => element.id == cat.idProducto);
           cat.detalle = prd.nombre;
+
+          if (prd.pedido != 0) {
+            cat.cobertura = (prd.cantidad / prd.pedido) * 30;
+          } else {
+            cat.cobertura = 0;
+          }
         } catch (ex) {
           cat.detalle = "####";
         }
@@ -237,6 +243,7 @@ class ProductosProvider extends ChangeNotifier {
         Aprovisionar ap = new Aprovisionar();
         ap.idProducto = item.idProducto;
         ap.detalle = item.detalle;
+        ap.cobertura = item.cobertura.round();
         ap.promedio = formatting(item.promedio / 3);
         ap.clasificacion = item.clasificacion;
 
@@ -270,7 +277,9 @@ class ProductosProvider extends ChangeNotifier {
       }
 
       notifyListeners();
-    } catch (ex) {}
+    } catch (ex) {
+      print("Proeducto Provider Error $ex");
+    }
   }
 
   double formatting(double valor) {
@@ -321,11 +330,36 @@ class ProductosProvider extends ChangeNotifier {
       return null;
     }
   }
+
+  Future<bool> pedidosMes() async {
+    try {
+      var asd = listado as List<Productos>;
+      for (var item in asd) {
+        Productos p = new Productos();
+        p.id = item.id;
+        p.cantidad = item.cantidad;
+        p.detalle = item.detalle;
+        p.estado = item.estado;
+        p.idGrupo = item.idGrupo;
+        p.idProveedor = item.idProveedor;
+        p.idUnidad = item.idUnidad;
+        p.nombre = item.nombre;
+        p.pedido = item.pedido;
+        p.precio = item.precio;
+        p.referencia = item.referencia;
+        await productoGeneral.update(p);
+      }
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
 }
 
 class Clasificacion {
   int idProducto = 0;
   double promedio = 0;
+  double cobertura = 0;
   String detalle = "";
   String clasificacion = "";
 }
@@ -334,6 +368,7 @@ class Aprovisionar {
   int idProducto = 0;
   double promedio = 0;
   double stockSeguridad = 0;
+  int cobertura = 0;
   String detalle = "";
   String clasificacion = "";
 }

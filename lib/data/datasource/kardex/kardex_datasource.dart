@@ -40,7 +40,7 @@ class KardexDTSImp extends KardexDTS {
       List<ModelKardex> tem = [];
       final result = await cliente.get(Uri.parse(urlBase));
       if (result.statusCode == 200) {
-        tem = _decodeProducts(utf8.decode(result.bodyBytes));
+        tem = _decodeProducts(json.decode(result.body));
       }
       return tem;
     } catch (e) {

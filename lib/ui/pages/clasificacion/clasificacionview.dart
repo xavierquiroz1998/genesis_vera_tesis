@@ -92,6 +92,9 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                         label: Center(child: Text("Clasificacion")),
                       ),
                       const DataColumn(
+                        label: Center(child: Text("Cobertura x día")),
+                      ),
+                      const DataColumn(
                         label: Center(child: Text("Stock de Seguridad")),
                       ),
                     ],
@@ -107,6 +110,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           ),
                           // DataCell(Text(e.promedio.toString())),
                           DataCell(Text(e.clasificacion.toString())),
+                          DataCell(Text(e.cobertura.toString())),
                           DataCell(Text(e.stockSeguridad.toString())),
                         ],
                       );

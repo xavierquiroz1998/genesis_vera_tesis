@@ -65,6 +65,7 @@ import 'domain/uses cases/grupo/update_grupos.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
 import 'domain/uses cases/parametros/parametros_general.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
+import 'domain/uses cases/productos/productosGeneral.dart';
 import 'domain/uses cases/proveedores/delete_proveedores.dart';
 import 'domain/uses cases/proveedores/getproveedores.dart';
 import 'domain/uses cases/proveedores/update_proveedores.dart';
@@ -78,14 +79,14 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   sl.registerFactory(() => ProductosProvider(
-      sl(), sl(), sl(), sl(), sl(), sl(), sl())); //injectar provider
+      sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl(), sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => GrupoProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => ProveedoresProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
   sl.registerFactory(() => ProyectoProvider(sl(), sl()));
-  sl.registerFactory(() => EProductoProvider(sl(), sl()));
+  sl.registerFactory(() => EProductoProvider(sl(), sl(), sl()));
   sl.registerFactory(() => DevolucionProvider(sl(), sl()));
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => RegistrosProvider(sl()));
@@ -118,6 +119,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UsesCaseRegistros(sl()));
   sl.registerLazySingleton(() => KardexGeneral(sl()));
   sl.registerLazySingleton(() => ParametrosGeneral(sl()));
+  sl.registerLazySingleton(() => GeneralProducto(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository

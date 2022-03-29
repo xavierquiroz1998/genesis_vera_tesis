@@ -7,6 +7,8 @@ import '../../domain/entities/productos.dart';
 
 abstract class ProductosDataSource {
   Future<ModelProducto> insertProducto(Productos model);
+  Future<ModelProducto> updateProducto(Productos model);
+  Future<ModelProducto> deleteProducto(Productos model);
   Future<List<ModelProducto>> getProducto();
 }
 
@@ -53,5 +55,38 @@ class ProductosDataSourceImp extends ProductosDataSource {
     return parseo
         .map<ModelProducto>((json) => ModelProducto.fromMap(json))
         .toList();
+  }
+
+  @override
+  Future<ModelProducto> deleteProducto(Productos model) async {
+    var prd = json.encode(model.toMap());
+
+    try {
+      final result = await cliente.delete(Uri.parse(urlBase + "/${model.id}"),
+          body: prd, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        var respuesta = result.body;
+        return ModelProducto.fromMap(json.decode(result.body));
+      }
+      return new ModelProducto();
+    } catch (ex) {
+      return new ModelProducto();
+    }
+  }
+
+  @override
+  Future<ModelProducto> updateProducto(Productos model) async {
+    try {
+      var prd = json.encode(model.toMap());
+      final result = await cliente.put(Uri.parse(urlBase + "/${model.id}"),
+          body: prd, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        var respuesta = result.body;
+        return ModelProducto.fromMap(json.decode(result.body));
+      }
+      return new ModelProducto();
+    } catch (ex) {
+      return new ModelProducto();
+    }
   }
 }

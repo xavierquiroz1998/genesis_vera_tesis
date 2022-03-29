@@ -20,6 +20,7 @@ class Flurorouter {
   static String ingresoss = "/ingresoss";
   static String ingresossCrud = "/ingresossCrud";
   static String calsificacion = "/clasificacion";
+  static String pedido = "/pedido";
 
   static String devoluciones = "/devoluciones";
   static String devolucion = "/devolucion";
@@ -71,8 +72,12 @@ class Flurorouter {
 
     router.define(ingresossCrud,
         handler: Handlers.ingresossCrud, transitionType: TransitionType.fadeIn);
+
     router.define(calsificacion,
         handler: Handlers.clasificacion, transitionType: TransitionType.fadeIn);
+
+    router.define(pedido,
+        handler: Handlers.pedidos, transitionType: TransitionType.fadeIn);
 
     router.define(dashboarPorTipo,
         handler: Handlers.dashboardPorTipo,

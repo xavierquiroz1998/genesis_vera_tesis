@@ -75,18 +75,19 @@ class KardexProvider extends ChangeNotifier {
                           kardexUltimo.proTtlE) /
                       (kardexUltimo.proCanE - producto.stock!)
  */
-  void salidas(double cantidad, Productos producto) {
-    final kardexUltimo = kardexRegistro
-        .where((element) => element.codPro == producto.referencia)
-        .toList()
-        .reversed
-        .first;
+  Future salidas(double cantidad, Productos producto) async {
+    try {
+      await getKardex();
+      final kardexUltimo = kardexRegistro
+          .where((element) => element.idProducto == producto.id)
+          .toList()
+          .reversed
+          .first;
 /* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL
 CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
-    var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
+      var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
 
-    kardexRegistro.add(
-      Kardex(
+      Kardex k = new Kardex(
           codMov: 'S-00${kardexRegistro.length}',
           codPro: producto.referencia, //1
           nomPro: producto.detalle, //martillo
@@ -100,8 +101,12 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           proUntE: total / producto.cantidad,
           proTtlE: total,
           fecPro: DateTime.now(),
-          stsPro: 'P'),
-    );
+          stsPro: 'P');
+
+      await kardex.inserteKardex(k);
+    } catch (ex) {
+      print("Errr en salida ${ex.toString()}");
+    }
   }
 
   void devoluciones(Productos producto, bool isTipo) {
