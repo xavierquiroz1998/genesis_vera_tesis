@@ -40,7 +40,7 @@ class KardexDTSImp extends KardexDTS {
       List<ModelKardex> tem = [];
       final result = await cliente.get(Uri.parse(urlBase));
       if (result.statusCode == 200) {
-        tem = _decodeProducts(json.decode(result.body));
+        tem = _decodeProducts(utf8.decode(result.bodyBytes));
       }
       return tem;
     } catch (e) {
@@ -64,10 +64,14 @@ class KardexDTSImp extends KardexDTS {
   }
 
   List<ModelKardex> _decodeProducts(String respuesta) {
-    var parseo = jsonDecode(respuesta);
-    return parseo
-        .map<ModelKardex>((json) => ModelKardex.fromMap(json))
-        .toList();
+    try {
+      var parseo = jsonDecode(respuesta);
+      return parseo
+          .map<ModelKardex>((json) => ModelKardex.fromMap(json))
+          .toList();
+    } catch (ex) {
+      return [];
+    }
   }
 
   @override

@@ -17,16 +17,28 @@ class ItemsDataSource extends DataGridSource {
     dataGridRows = listProducts.map<DataGridRow>((Kardex product) {
       return DataGridRow(cells: <DataGridCell>[
         DataGridCell<String>(columnName: 'codigo', value: product.codPro),
-        DataGridCell<String>(columnName: 'producto', value: product.nomPro),
-        DataGridCell<double>(columnName: 'cantidadI', value: product.proCanI),
-        DataGridCell<double>(columnName: 'costoI', value: product.proUntI),
-        DataGridCell<double>(columnName: 'totalI', value: product.proTtlI),
-        DataGridCell<double>(columnName: 'cantidadS', value: product.proCanS),
-        DataGridCell<double>(columnName: 'costoS', value: product.proUntS),
-        DataGridCell<double>(columnName: 'totalS', value: product.proTtlS),
-        DataGridCell<double>(columnName: 'cantidadE', value: product.proCanE),
-        DataGridCell<double>(columnName: 'costoE', value: product.proUntE),
-        DataGridCell<double>(columnName: 'totalE', value: product.proTtlE)
+        //DataGridCell<String>(columnName: 'producto', value: product.nomPro),
+        DataGridCell<double>(
+            columnName: 'cantidadI',
+            value: double.parse(product.proCanI.toString())),
+        DataGridCell<double>(
+            columnName: 'costoI', value: double.parse(product.proUntI)),
+        DataGridCell<double>(
+            columnName: 'totalI', value: double.parse(product.proTtlI)),
+        DataGridCell<double>(
+            columnName: 'cantidadS',
+            value: double.parse(product.proCanS.toString())),
+        DataGridCell<double>(
+            columnName: 'costoS', value: double.parse(product.proUntS)),
+        DataGridCell<double>(
+            columnName: 'totalS', value: double.parse(product.proTtlS)),
+        DataGridCell<double>(
+            columnName: 'cantidadE',
+            value: double.parse(product.proCanE.toString())),
+        DataGridCell<double>(
+            columnName: 'costoE', value: double.parse(product.proUntE)),
+        DataGridCell<double>(
+            columnName: 'totalE', value: double.parse(product.proTtlE))
       ]);
     }).toList(growable: false);
   }

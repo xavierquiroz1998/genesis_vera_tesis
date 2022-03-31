@@ -15,6 +15,7 @@ class KardexProvider extends ChangeNotifier {
     try {
       var result = await kardex.getAll();
       kardexRegistro = result.getOrElse(() => []);
+      notifyListeners();
     } catch (ex) {}
   }
 
@@ -35,13 +36,13 @@ class KardexProvider extends ChangeNotifier {
             : "DEV-${kardexRegistro.length}",
         idProducto: producto.id,
         codPro: producto.referencia,
-        nomPro: producto.detalle,
+        //nomPro: producto.detalle,
         //proCanI: producto.stock,
-        proUntI: producto.precio,
+        proUntI: producto.precio.toString(),
         //proTtlI: (producto.stock * producto.precio),
         proCanS: 0,
-        proUntS: 0,
-        proTtlS: 0,
+        proUntS: "0",
+        proTtlS: "0",
         proCanE: isExiste
             ? isTipo
                 ? kardexUltimo.proCanE + producto.cantidad
@@ -49,23 +50,28 @@ class KardexProvider extends ChangeNotifier {
             : producto.cantidad,
         proUntE: isExiste
             ? isTipo
-                ? ((producto.cantidad * producto.precio) +
-                        kardexUltimo.proTtlE) /
-                    (kardexUltimo.proCanE + producto.cantidad)
-                : (((producto.cantidad * producto.precio) -
+                ? (((producto.cantidad * producto.precio) +
                             kardexUltimo.proTtlE) /
-                        (kardexUltimo.proCanE - producto.cantidad)) *
-                    -1
-            : (producto.cantidad * producto.precio) / producto.cantidad,
+                        (kardexUltimo.proCanE + producto.cantidad))
+                    .toString()
+                : ((((producto.cantidad * producto.precio) -
+                                kardexUltimo.proTtlE) /
+                            (kardexUltimo.proCanE - producto.cantidad)) *
+                        -1)
+                    .toString()
+            : ((producto.cantidad * producto.precio) / producto.cantidad)
+                .toString(),
         proTtlE: isExiste
             ? isTipo
-                ? (producto.cantidad * producto.precio) + kardexUltimo.proTtlE
-                : ((producto.cantidad * producto.precio) -
-                        kardexUltimo.proTtlE) *
-                    -1
-            : (producto.cantidad * producto.precio),
+                ? ((producto.cantidad * producto.precio) + kardexUltimo.proTtlE)
+                    .toString()
+                : (((producto.cantidad * producto.precio) -
+                            kardexUltimo.proTtlE) *
+                        -1)
+                    .toString()
+            : (producto.cantidad * producto.precio).toString(),
         fecPro: DateTime.now(),
-        stsPro: 'I'); //pendiente
+        stsPro: true); //pendiente
 
     await kardex.inserteKardex(k);
   }
@@ -85,23 +91,25 @@ class KardexProvider extends ChangeNotifier {
           .first;
 /* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL
 CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
-      var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
+      var total = double.parse(kardexUltimo.proTtlE) -
+          (cantidad * double.parse(kardexUltimo.proUntE));
 
       Kardex k = new Kardex(
           codMov: 'S-00${kardexRegistro.length}',
           codPro: producto.referencia, //1
-          nomPro: producto.detalle, //martillo
+          //nomPro: producto.detalle, //martillo
           proCanI: 0,
-          proUntI: 0,
-          proTtlI: 0,
-          proCanS: cantidad,
+          proUntI: "0",
+          proTtlI: "0",
+          proCanS: cantidad.toInt(),
           proUntS: kardexUltimo.proUntE,
-          proTtlS: (cantidad * kardexUltimo.proUntE), //
-          proCanE: producto.cantidad,
-          proUntE: total / producto.cantidad,
-          proTtlE: total,
+          proTtlS:
+              (cantidad * double.parse(kardexUltimo.proUntE)).toString(), //
+          proCanE: producto.cantidad.toInt(),
+          proUntE: (total / producto.cantidad).toString(),
+          proTtlE: total.toString(),
           fecPro: DateTime.now(),
-          stsPro: 'P');
+          stsPro: true);
 
       await kardex.inserteKardex(k);
     } catch (ex) {

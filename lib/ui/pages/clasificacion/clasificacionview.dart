@@ -79,9 +79,9 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
-                      const DataColumn(
-                        label: Center(child: Text("Id Producto")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Id Producto")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("Nombre Producto")),
                       ),
@@ -97,14 +97,17 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                       const DataColumn(
                         label: Center(child: Text("Stock de Seguridad")),
                       ),
+                      const DataColumn(
+                        label: Center(child: Text("Aprovisionar")),
+                      ),
                     ],
                     rows: producto.aprovisionamientos.map<DataRow>((e) {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          DataCell(
-                            Text(e.idProducto.toString()),
-                          ),
+                          // DataCell(
+                          //   Text(e.idProducto.toString()),
+                          // ),
                           DataCell(
                             Text(e.detalle.toString()),
                           ),
@@ -112,6 +115,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                           DataCell(Text(e.clasificacion.toString())),
                           DataCell(Text(e.cobertura.toString())),
                           DataCell(Text(e.stockSeguridad.toString())),
+                          DataCell(Text(e.aprovisionar.toString())),
                         ],
                       );
                     }).toList(),

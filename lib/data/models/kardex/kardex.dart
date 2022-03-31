@@ -8,22 +8,21 @@ class ModelKardex extends Kardex {
     this.codPro = "",
     this.nomPro = "",
     this.proCanI = 0,
-    this.proUntI = 0,
-    this.proTtlI = 0,
+    this.proUntI = "",
+    this.proTtlI = "",
     this.proCanS = 0,
-    this.proUntS = 0,
-    this.proTtlS = 0,
+    this.proUntS = "",
+    this.proTtlS = "",
     this.proCanE = 0,
-    this.proUntE = 0,
-    this.proTtlE = 0,
+    this.proUntE = "",
+    this.proTtlE = "",
     this.fecPro,
-    this.stsPro = "",
+    this.stsPro = false,
   }) : super(
           id: id,
           idProducto: idProducto,
           codMov: codMov,
           codPro: codPro,
-          nomPro: nomPro,
           proCanI: proCanI,
           proUntI: proUntI,
           proTtlI: proTtlI,
@@ -42,39 +41,35 @@ class ModelKardex extends Kardex {
   String codMov;
   String codPro;
   String nomPro;
-  double proCanI;
-  double proUntI;
-  double proTtlI;
-
-  double proCanS;
-  double proUntS;
-  double proTtlS;
-
-  double proCanE;
-  double proUntE;
-  double proTtlE;
-
+  int proCanI;
+  String proUntI;
+  String proTtlI;
+  int proCanS;
+  String proUntS;
+  String proTtlS;
+  int proCanE;
+  String proUntE;
+  String proTtlE;
   DateTime? fecPro;
-  String stsPro;
+  bool stsPro;
 
-  factory ModelKardex.fromMap(Map<String, dynamic>? json) {
+  factory ModelKardex.fromMap(Map<String, dynamic> json) {
     return ModelKardex(
-      id: json?["id"],
-      idProducto: json?["idProducto"],
-      codMov: json?["codMov"],
-      codPro: json?["codPro"],
-      nomPro: json?["nomPro"],
-      proCanI: json?["proCanI"],
-      proUntI: json?["proUntI"],
-      proTtlI: json?["proTtlI"],
-      proCanS: json?["proCanS"],
-      proUntS: json?["proUntS"],
-      proTtlS: json?["proTtlS"],
-      proCanE: json?["proCanE"],
-      proUntE: json?["proUntE"],
-      proTtlE: json?["proTtlE"],
-      fecPro: json?["fecPro"] == null ? null : DateTime.parse(json?["fecPro"]),
-      stsPro: json?["stsPro"],
+      id: json["id"],
+      codMov: json["codMov"],
+      idProducto: json["idProducto"],
+      proCanI: json["proCanI"],
+      proUntI: json["proUntI"],
+      proTtlI: json["proTtlI"],
+      proCanS: json["proCanS"],
+      proUntS: json["proUntS"],
+      proTtlS: json["proTtlS"],
+      proCanE: json["proCanE"],
+      proUntE: json["proUntE"],
+      proTtlE: json["proTtlE"],
+      fecPro:
+          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      stsPro: json["estado"],
     );
   }
 

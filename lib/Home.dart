@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => sl<RegistrosProvider>()),
         ChangeNotifierProvider(create: (_) => sl<IngresosProvider>()),
         ChangeNotifierProvider(create: (_) => sl<ParametrosPRovider>()),
+        ChangeNotifierProvider(create: (_) => sl<KardexProvider>()),
       ],
       child: MaterialApp(
         title: 'Kiarita',

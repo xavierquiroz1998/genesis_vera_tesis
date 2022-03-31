@@ -3,42 +3,39 @@ import 'package:equatable/equatable.dart';
 class Kardex extends Equatable {
   int id;
   int idProducto;
-  final String codMov;
-  final String codPro;
-  final String nomPro;
+  String codMov;
+  String codPro;
+  int proCanI;
+  String proUntI;
+  String proTtlI;
 
-  final double proCanI;
-  final double proUntI;
-  final double proTtlI;
+  int proCanS;
+  String proUntS;
+  String proTtlS;
 
-  final double proCanS;
-  final double proUntS;
-  final double proTtlS;
+  int proCanE;
+  String proUntE;
+  String proTtlE;
 
-  final double proCanE;
-  final double proUntE;
-  final double proTtlE;
-
-  final DateTime? fecPro;
-  final String stsPro;
+  DateTime? fecPro;
+  bool stsPro;
 
   Kardex({
     this.id = 0,
     this.idProducto = 0,
     this.codMov = "",
     this.codPro = "",
-    this.nomPro = "",
     this.proCanI = 0,
-    this.proUntI = 0,
-    this.proTtlI = 0,
+    this.proUntI = "",
+    this.proTtlI = "",
     this.proCanS = 0,
-    this.proUntS = 0,
-    this.proTtlS = 0,
+    this.proUntS = "",
+    this.proTtlS = "",
     this.proCanE = 0,
-    this.proUntE = 0,
-    this.proTtlE = 0,
+    this.proUntE = "",
+    this.proTtlE = "",
     this.fecPro,
-    this.stsPro = "",
+    this.stsPro = false,
   });
 
   @override
@@ -47,7 +44,6 @@ class Kardex extends Equatable {
         " / " +
         codPro +
         " / " +
-        nomPro +
         " / " +
         "Entradas : $proCanI / $proUntI / $proTtlI Salidas: $proCanS / $proUntS / $proTtlS Existencias: $proCanE / $proUntE / $proTtlE";
   }
@@ -57,7 +53,6 @@ class Kardex extends Equatable {
         "idProducto": idProducto,
         "codMov": codMov,
         "codPro": codPro,
-        "nomPro": nomPro,
         "proCanI": proCanI,
         "proUntI": proUntI,
         "proTtlI": proTtlI,
@@ -78,7 +73,6 @@ class Kardex extends Equatable {
         idProducto,
         codMov,
         codPro,
-        nomPro,
         proCanI,
         proUntI,
         proTtlI,

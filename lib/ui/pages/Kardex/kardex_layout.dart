@@ -186,6 +186,12 @@ class _KardexLayoutState extends State<KardexLayout> {
   }
 
   @override
+  void initState() {
+    Provider.of<KardexProvider>(context, listen: false).getKardex();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final kardex = Provider.of<KardexProvider>(context);
     return Container(

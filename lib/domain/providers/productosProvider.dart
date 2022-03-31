@@ -216,7 +216,8 @@ class ProductosProvider extends ChangeNotifier {
           var prd =
               listado.firstWhere((element) => element.id == cat.idProducto);
           cat.detalle = prd.nombre;
-
+          cat.stock = prd.cantidad;
+          cat.pedido = prd.pedido;
           if (prd.pedido != 0) {
             cat.cobertura = (prd.cantidad / prd.pedido) * 30;
           } else {
@@ -246,6 +247,7 @@ class ProductosProvider extends ChangeNotifier {
         ap.cobertura = item.cobertura.round();
         ap.promedio = formatting(item.promedio / 3);
         ap.clasificacion = item.clasificacion;
+        ap.stock = item.stock;
 
 // calculos
         double ventaXdia = ap.promedio / 30;
@@ -272,6 +274,7 @@ class ProductosProvider extends ChangeNotifier {
           }
         }
         ap.stockSeguridad = double.parse(ap.stockSeguridad.round().toString());
+        ap.aprovisionar = (item.stock - item.pedido) + ap.stockSeguridad;
 
         aprovisionamientos.add(ap);
       }
@@ -333,8 +336,7 @@ class ProductosProvider extends ChangeNotifier {
 
   Future<bool> pedidosMes() async {
     try {
-      var asd = listado as List<Productos>;
-      for (var item in asd) {
+      for (var item in listado) {
         Productos p = new Productos();
         p.id = item.id;
         p.cantidad = item.cantidad;
@@ -359,7 +361,9 @@ class ProductosProvider extends ChangeNotifier {
 class Clasificacion {
   int idProducto = 0;
   double promedio = 0;
+  int pedido = 0;
   double cobertura = 0;
+  double stock = 0;
   String detalle = "";
   String clasificacion = "";
 }
@@ -367,7 +371,10 @@ class Clasificacion {
 class Aprovisionar {
   int idProducto = 0;
   double promedio = 0;
+  int pedido = 0;
+  double stock = 0;
   double stockSeguridad = 0;
+  double aprovisionar = 0;
   int cobertura = 0;
   String detalle = "";
   String clasificacion = "";
