@@ -21,7 +21,11 @@ class EgresoProducto extends StatefulWidget {
 class _EgresoProductoState extends State<EgresoProducto> {
   @override
   void initState() {
-    Provider.of<EProductoProvider>(context, listen: false).cargarPrd();
+    var temProvider = Provider.of<EProductoProvider>(context, listen: false);
+    temProvider.cargarPrd();
+    if (temProvider.cab.id != 0) {
+      temProvider.cargarDetalle(temProvider.cab.id);
+    }
     super.initState();
   }
 
@@ -85,31 +89,33 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            Container(
-                              width: 180,
-                              child: DropdownButton<Productos>(
-                                items: egreso.listado
-                                    .map(
-                                      (eDrop) => DropdownMenuItem<Productos>(
-                                        child: Text(eDrop.detalle.length > 15
-                                            ? eDrop.detalle.substring(0, 15)
-                                            : eDrop.detalle),
-                                        value: eDrop,
+                            DropdownButton<Productos>(
+                              items: egreso.listado
+                                  .map(
+                                    (eDrop) => DropdownMenuItem<Productos>(
+                                      child: Container(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 150),
+                                        child: Text(
+                                          eDrop.nombre,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    )
-                                    .toList(),
-                                onChanged: (value) {
-                                  e.idProducto = value!.id;
-                                  e.productos = value;
-                                  e.total = value.precio;
-                                  setState(() {});
-                                },
-                                hint: e.idProducto == 0
-                                    ? Text("Seleccione Producto")
-                                    : Text(e.productos!.detalle.length > 15
-                                        ? e.productos!.detalle.substring(0, 15)
-                                        : e.productos!.detalle),
-                              ),
+                                      value: eDrop,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                e.idProducto = value!.id;
+                                e.productos = value;
+                                setState(() {});
+                              },
+                              hint: e.idProducto == 0
+                                  ? Text("Seleccione Producto")
+                                  : Text(e.productos!.detalle.length > 15
+                                      ? e.productos!.detalle.substring(0, 15)
+                                      : e.productos!.detalle),
                             ),
                           ),
                           DataCell(e.productos != null
@@ -162,7 +168,12 @@ class _EgresoProductoState extends State<EgresoProducto> {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await egreso.guardarEgreso();
+                        if (egreso.cab.id == 0) {
+                          await egreso.guardarEgreso();
+                        } else {
+                          await egreso.actualizar();
+                        }
+
                         if (producto.listado.length == 0) {
                           await producto.cargarPrd();
                         }

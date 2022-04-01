@@ -128,4 +128,43 @@ class EProductoProvider extends ChangeNotifier {
       print("Error en guardar ${e.toString()}");
     }
   }
+
+  Future anular(EntityRegistro cab) async {
+    try {
+      cab.estado = false;
+      var tem = await usesCases.updateRegistros(cab);
+      var result = tem.getOrElse(() => new EntityRegistro());
+    } catch (ex) {}
+
+    notifyListeners();
+  }
+
+  Future actualizar() async {
+    print(listado.toString());
+    try {
+      if (cab.id != 0) {
+        cab.detalle = ctrObservacion.text;
+        var tem = await usesCases.updateRegistros(cab);
+        var result = tem.getOrElse(() => new EntityRegistro());
+        //detalle
+
+        for (var item in detalles) {
+          var tem1 = await usesCases.updateRegistrosDetalles(item);
+        }
+      }
+    } catch (ex) {}
+
+    notifyListeners();
+  }
+
+  Future cargarDetalle(int idRegistro) async {
+    try {
+      var transaction = await usesCases.getADetalle(idRegistro);
+      detalles = transaction.getOrElse(() => []);
+      for (var item in detalles) {
+        item.productos = listado.where((e) => e.id == item.idProducto).first;
+      }
+      notifyListeners();
+    } catch (ex) {}
+  }
 }

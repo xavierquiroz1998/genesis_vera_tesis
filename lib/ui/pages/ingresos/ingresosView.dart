@@ -90,11 +90,6 @@ class _IngresoViewState extends State<IngresoView> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      /*   child: Text(
-                                          e.productos!.detalle.length > 15
-                                              ? e.productos!.detalle
-                                                  .substring(0, 15)
-                                              : e.productos!.detalle), */
                                       value: eDrop,
                                     ),
                                   )

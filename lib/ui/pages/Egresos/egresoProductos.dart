@@ -88,11 +88,18 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                           )),
                           DataCell(
                             Icon(Icons.edit),
-                            onTap: () {},
+                            onTap: () async {
+                              egreso.cab = e;
+                              egreso.detalles = [];
+                              NavigationService.navigateTo(
+                                  Flurorouter.ingresossCrud);
+                            },
                           ),
                           DataCell(
                             Icon(Icons.delete),
-                            onTap: () {},
+                            onTap: () async {
+                              await egreso.anular(e);
+                            },
                           ),
                         ],
                       );

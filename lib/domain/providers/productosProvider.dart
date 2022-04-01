@@ -250,6 +250,7 @@ class ProductosProvider extends ChangeNotifier {
         ap.stock = item.stock;
 
 // calculos
+
         double ventaXdia = ap.promedio / 30;
         if (ap.clasificacion == "A") {
           var paramTemp = listadoParam.where((e) => e.detalle == "A").first;
@@ -274,7 +275,18 @@ class ProductosProvider extends ChangeNotifier {
           }
         }
         ap.stockSeguridad = double.parse(ap.stockSeguridad.round().toString());
-        ap.aprovisionar = (item.stock - item.pedido) + ap.stockSeguridad;
+        if (item.pedido == item.stock) {
+          ap.aprovisionar = ap.stockSeguridad;
+        } else if (item.stock > item.pedido) {
+          if (item.stock >= ap.stockSeguridad) {
+            ap.aprovisionar = 0;
+          } else {
+            double st = item.stock - item.pedido;
+            ap.aprovisionar = ap.stockSeguridad - st;
+          }
+        } else {
+          ap.aprovisionar = (item.pedido - item.stock) + ap.stockSeguridad;
+        }
 
         aprovisionamientos.add(ap);
       }
