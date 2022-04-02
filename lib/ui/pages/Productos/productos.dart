@@ -144,14 +144,8 @@ class _ProductosTableState extends State<ProductosTable> {
                                               ),
                                               actions: [
                                                 TextButton(
-                                                  onPressed: () {
-                                                    e.estado = false;
-                                                    Estaticas.listProductos
-                                                        .remove(e);
-                                                    Estaticas.listProductos
-                                                        .add(e);
-                                                    producto.notificar();
-                                                    Navigator.pop(context);
+                                                  onPressed: () async {
+                                                    await producto.anular(e);
                                                   },
                                                   child: Text("Aceptar"),
                                                 ),
@@ -239,10 +233,7 @@ Future<void> dialogProductos(BuildContext context, List<Productos> temp,
                 actions: [
                   TextButton(
                       onPressed: () {
-                        for (var value in temp) {
-                          value.id = Estaticas.listProductos.length + 1;
-                          Estaticas.listProductos.add(value);
-                        }
+                        for (var value in temp) {}
                         Navigator.pop(context);
                       },
                       child: Text("Guardar")),

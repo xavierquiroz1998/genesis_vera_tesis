@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 
@@ -155,6 +156,13 @@ class _IngresoViewState extends State<IngresoView> {
                           await ingreso.actualizar();
                         }
 
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.SUCCES,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Guardado Correctamente',
+                          desc: '',
+                        )..show();
                         // for (var item in egreso.listaProducto.detalle!) {
                         //   var result = Estaticas.listProductos
                         //       .firstWhere((e) => e.id == item.idProducto);

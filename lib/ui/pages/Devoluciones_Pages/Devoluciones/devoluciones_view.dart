@@ -81,13 +81,16 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                             Icon(Icons.edit),
                             onTap: () {
                               devolucio.cab = e;
+                              devolucio.detalles = [];
                               NavigationService.navigateTo(
                                   Flurorouter.devolucion);
                             },
                           ),
                           DataCell(
                             Icon(Icons.delete),
-                            onTap: () {},
+                            onTap: () async {
+                              await devolucio.anular(e);
+                            },
                           ),
                         ],
                       );

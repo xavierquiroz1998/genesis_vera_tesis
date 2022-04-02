@@ -13,7 +13,16 @@ import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class EProductoProvider extends ChangeNotifier {
   //EgresoCabecera _listPRoduct = new EgresoCabecera();
-  EntityRegistro cab = new EntityRegistro();
+  EntityRegistro _cab = new EntityRegistro();
+
+  EntityRegistro get cab => _cab;
+
+  set cab(EntityRegistro cab) {
+    _cab = cab;
+    ctrObservacion.text = cab.detalle;
+    notifyListeners();
+  }
+
   List<EntityRegistro> listTableRegistrosDev = [];
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
@@ -126,6 +135,7 @@ class EProductoProvider extends ChangeNotifier {
       // Estaticas.listProductosEgreso.add(listaProducto);
     } catch (e) {
       print("Error en guardar ${e.toString()}");
+      throw ("Error ${e.toString()}");
     }
   }
 
@@ -140,7 +150,6 @@ class EProductoProvider extends ChangeNotifier {
   }
 
   Future actualizar() async {
-    print(listado.toString());
     try {
       if (cab.id != 0) {
         cab.detalle = ctrObservacion.text;
@@ -152,7 +161,9 @@ class EProductoProvider extends ChangeNotifier {
           var tem1 = await usesCases.updateRegistrosDetalles(item);
         }
       }
-    } catch (ex) {}
+    } catch (ex) {
+      print("Error en actualizar egreso ${ex.toString()}");
+    }
 
     notifyListeners();
   }
@@ -164,7 +175,10 @@ class EProductoProvider extends ChangeNotifier {
       for (var item in detalles) {
         item.productos = listado.where((e) => e.id == item.idProducto).first;
       }
+      calcular();
       notifyListeners();
-    } catch (ex) {}
+    } catch (ex) {
+      print("Error en cargar detalle egreso ${ex.toString()}");
+    }
   }
 }

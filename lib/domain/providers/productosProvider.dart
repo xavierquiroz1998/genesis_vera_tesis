@@ -95,7 +95,7 @@ class ProductosProvider extends ChangeNotifier {
     controllerDescripcion.text = p.detalle;
     controllerCodigo.text = p.referencia;
     controllerStock.text = p.cantidad.toString();
-    controllerPrecio.text = p.precio == null ? "" : p.precio.toString();
+    controllerPrecio.text = p.precio.toString();
     notifyListeners();
   }
 
@@ -361,12 +361,38 @@ class ProductosProvider extends ChangeNotifier {
         p.pedido = item.pedido;
         p.precio = item.precio;
         p.referencia = item.referencia;
-        await productoGeneral.update(p);
+        if (p.pedido != 0) {
+          await productoGeneral.update(p);
+        }
       }
       return true;
     } catch (ex) {
       return false;
     }
+  }
+
+  Future anular(Productos p) async {
+    try {
+      product.estado = false;
+      var tem = await productoGeneral.update(p);
+      product = tem.getOrElse(() => new Productos());
+    } catch (ex) {}
+    notifyListeners();
+  }
+
+  Future actualizar(Productos p) async {
+    try {
+      product.referencia = controllerCodigo.text;
+      p.nombre = controllerDescripcion.text;
+      p.detalle = controllerDescripcion.text;
+
+      p.cantidad = double.tryParse(controllerStock.text) ?? 0;
+      product.precio = double.tryParse(controllerPrecio.text) ?? 0;
+      product.estado = true;
+      var tem = await productoGeneral.update(p);
+      product = tem.getOrElse(() => new Productos());
+    } catch (ex) {}
+    notifyListeners();
   }
 }
 

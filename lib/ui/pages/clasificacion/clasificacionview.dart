@@ -26,7 +26,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
       child: ListView(
         children: [
           WhiteCard(
-            title: "Clasificacion de Productos",
+            title: "Clasificaciòn de Productos",
             child: Column(
               children: [
                 Container(
@@ -43,7 +43,7 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                         label: Center(child: Text("Total")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Clasificacion")),
+                        label: Center(child: Text("Clasificación")),
                       ),
                     ],
                     rows: producto.lisCla.map<DataRow>((e) {
@@ -79,20 +79,14 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
-                      // const DataColumn(
-                      //   label: Center(child: Text("Id Producto")),
-                      // ),
                       const DataColumn(
                         label: Center(child: Text("Nombre Producto")),
                       ),
-                      // const DataColumn(
-                      //   label: Center(child: Text("Total")),
-                      // ),
                       const DataColumn(
                         label: Center(child: Text("Clasificacion")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Cobertura x día")),
+                        label: Center(child: Text("Cobertura / día")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Stock de Seguridad")),
@@ -103,15 +97,8 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                     ],
                     rows: producto.aprovisionamientos.map<DataRow>((e) {
                       return DataRow(
-                        //key: LocalKey(),
                         cells: <DataCell>[
-                          // DataCell(
-                          //   Text(e.idProducto.toString()),
-                          // ),
-                          DataCell(
-                            Text(e.detalle.toString()),
-                          ),
-                          // DataCell(Text(e.promedio.toString())),
+                          DataCell(Text(e.detalle.toString())),
                           DataCell(Text(e.clasificacion.toString())),
                           DataCell(Text(e.cobertura.toString())),
                           DataCell(Text(e.stockSeguridad.toString())),

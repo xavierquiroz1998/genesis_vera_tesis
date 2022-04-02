@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
@@ -126,6 +127,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               : Text("")),
                           DataCell(
                             TextFormField(
+                              initialValue: e.observacion,
                               onChanged: (value) {
                                 e.observacion = value;
                               },
@@ -137,6 +139,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(numeros))
                               ],
+                              initialValue: e.cantidad.toString(),
                               onChanged: (value) {
                                 e.cantidad = int.parse(value);
                                 egreso.calcular();
@@ -145,6 +148,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           ),
                           DataCell(
                             TextFormField(
+                              initialValue: e.total.toString(),
                               onChanged: (value) {
                                 e.total = double.parse(value);
                                 egreso.calcular();
@@ -173,7 +177,13 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         } else {
                           await egreso.actualizar();
                         }
-
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.SUCCES,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Guardado Correctamente',
+                          desc: '',
+                        )..show();
                         if (producto.listado.length == 0) {
                           await producto.cargarPrd();
                         }

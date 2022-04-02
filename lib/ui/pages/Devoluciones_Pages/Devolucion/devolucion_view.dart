@@ -28,6 +28,9 @@ class _DevolucionViewState extends State<DevolucionView> {
   void initState() {
     var provi = Provider.of<DevolucionProvider>(context, listen: false);
     provi.cargarPrd();
+    if (provi.cab.id != 0) {
+      provi.cargarDetalle(provi.cab.id);
+    }
     super.initState();
   }
 
@@ -169,34 +172,33 @@ class _DevolucionViewState extends State<DevolucionView> {
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            Expanded(
-                              child: Container(
-                                width: 180,
-                                child: DropdownButton<Productos>(
-                                  items: devolucio.listado
-                                      .map(
-                                        (eDrop) => DropdownMenuItem<Productos>(
-                                          child: Text(eDrop.detalle.length > 15
-                                              ? eDrop.detalle.substring(0, 15)
-                                              : eDrop.detalle),
-                                          value: eDrop,
+                            DropdownButton<Productos>(
+                              items: devolucio.listado
+                                  .map(
+                                    (eDrop) => DropdownMenuItem<Productos>(
+                                      child: Container(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 150),
+                                        child: Text(
+                                          eDrop.nombre,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      )
-                                      .toList(),
-                                  onChanged: (value) {
-                                    e.idProducto = value!.id;
-                                    e.productos = value;
-                                    // prdSelect = value!;
-                                    setState(() {});
-                                  },
-                                  hint: e.idProducto == 0
-                                      ? Text("Seleccione Producto")
-                                      : Text(e.productos!.detalle.length > 15
-                                          ? e.productos!.detalle
-                                              .substring(0, 15)
-                                          : e.productos!.detalle),
-                                ),
-                              ),
+                                      ),
+                                      value: eDrop,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                e.idProducto = value!.id;
+                                e.productos = value;
+                                setState(() {});
+                              },
+                              hint: e.idProducto == 0
+                                  ? Text("Seleccione Producto")
+                                  : Text(e.productos!.detalle.length > 15
+                                      ? e.productos!.detalle.substring(0, 15)
+                                      : e.productos!.detalle),
                             ),
                             // Combo(
                             //   provider: devolucio,

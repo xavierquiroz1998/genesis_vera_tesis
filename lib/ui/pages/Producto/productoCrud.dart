@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
@@ -11,6 +12,7 @@ import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/Proveedores/Proveedores.dart';
+import '../../../domain/entities/productos.dart';
 
 class ProductoCrud extends StatefulWidget {
   ProductoCrud({Key? key}) : super(key: key);
@@ -28,6 +30,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
     cargaPRd.cargarUnidades();
     cargaPRd.cargarGrupo();
     cargaPRd.cargarProveedores();
+    if (cargaPRd.product.id != 0) {}
     super.initState();
   }
 
@@ -209,16 +212,17 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               producto.product.idProveedor = value!.id;
                             },
                             items: producto.listaProveedores.map((item) {
-                              return DropdownMenuItem(
+                              return DropdownMenuItem<ProveedoresEntity>(
                                 value: item,
                                 child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      item.nombre,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400),
-                                    )),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.nombre,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                               );
                             }).toList(),
                             decoration: CustomInputs.formInputDecoration(
@@ -260,10 +264,23 @@ class _ProductoCrudState extends State<ProductoCrud> {
 
                     // final opt = await producto
                     //     .guardar(otra.isNotEmpty ? otra.first : null);
-
-                    final opt = await producto.guardar(producto.product);
+                    Productos? opt;
+                    if (producto.product.id == 0) {
+                      opt = await producto.guardar(producto.product);
+                    } else {
+                      opt = await producto.actualizar(producto.product);
+                    }
 
                     if (opt != null) {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.SUCCES,
+                        animType: AnimType.BOTTOMSLIDE,
+                        title: 'Guardado Correctamente',
+                        desc: '',
+                        btnOkOnPress: () {},
+                      )..show();
+
                       await kardex.entradas(opt, otra.isNotEmpty, true);
                       /* kardex.existencias(opt, true, otra.isEmpty); */
                       kardex.impresion();

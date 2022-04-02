@@ -91,8 +91,7 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                             onTap: () async {
                               egreso.cab = e;
                               egreso.detalles = [];
-                              NavigationService.navigateTo(
-                                  Flurorouter.ingresossCrud);
+                              NavigationService.navigateTo(Flurorouter.egreso);
                             },
                           ),
                           DataCell(

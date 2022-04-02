@@ -67,8 +67,11 @@ class IngresosProvider extends ChangeNotifier {
       for (var item in detalles) {
         item.productos = listado.where((e) => e.id == item.idProducto).first;
       }
+      calcular();
       notifyListeners();
-    } catch (ex) {}
+    } catch (ex) {
+      print("error cargar detalle ingreso${ex.toString()}");
+    }
   }
 
   void agregar() {

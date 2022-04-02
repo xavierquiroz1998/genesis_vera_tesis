@@ -9,7 +9,7 @@ import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
 
 class Estaticas {
-  static List<Productos> listProductos = [];
+  //static List<Productos> listProductos = [];
   static List<EgresoCabecera> listProductosEgreso = [];
   static List<DevolucionCab> listDevoluciones = [];
   static List<RegistUser> listUsuarios = [];

@@ -13,7 +13,16 @@ import '../../uses cases/registros/usesCaseRegistros.dart';
 class DevolucionProvider extends ChangeNotifier {
   // DevolucionCab _cab = new DevolucionCab();
   // List<DevolucionDet> _detalleDevolucion = [];
-  EntityRegistro cab = new EntityRegistro();
+  EntityRegistro _cab = new EntityRegistro();
+
+  EntityRegistro get cab => _cab;
+
+  set cab(EntityRegistro cab) {
+    _cab = cab;
+    ctrObservacion.text = cab.detalle;
+    notifyListeners();
+  }
+
   List<EntityRegistro> listTableRegistrosDev = [];
   EntityRegistro pedidoSelec = new EntityRegistro();
   List<EntityRegistroDetalle> detalles = [];
@@ -56,10 +65,14 @@ class DevolucionProvider extends ChangeNotifier {
 
   Future<void> anular(EntityRegistro reg) async {
     try {
-      var result = await usesCases.deleteRegistros(reg);
+      reg.estado = false;
+      var result = await usesCases.updateRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
-    } catch (ex) {}
+    } catch (ex) {
+      print("Erro en anular registro de devolucion ${ex.toString()}");
+    }
+    notifyListeners();
   }
 
   TextEditingController get ctrObservacion => _ctrObservacion;
@@ -125,6 +138,21 @@ class DevolucionProvider extends ChangeNotifier {
       msgError = "";
     } catch (e) {
       msgError = "Error ${e.toString()}";
+    }
+  }
+
+  Future cargarDetalle(int idRegistro) async {
+    try {
+      var transaction = await usesCases.getADetalle(idRegistro);
+      detalles = transaction.getOrElse(() => []);
+      for (var item in detalles) {
+        item.productos = listado.where((e) => e.id == item.idProducto).first;
+      }
+      calcularTotal();
+      notifyListeners();
+    } catch (ex) {
+      print("Error en cargar detalle devolucion ${ex.toString()}");
+      throw ("This is an Error");
     }
   }
 }

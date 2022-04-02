@@ -12,6 +12,9 @@ class Productos extends Equatable {
   int idProveedor;
   int idGrupo;
   bool estado;
+  //  Proveedor? proveedor;
+  //  Unidad? unidad;
+  //  GruposModelo? grupo;
 
   Productos({
     this.id = 0,

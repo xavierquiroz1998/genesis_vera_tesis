@@ -40,11 +40,11 @@ class EgresoProductosWidgets {
                 total: double.parse(total.toString()),
               );
 
-              var result = Estaticas.listProductos
-                  .firstWhere((e) => e.id == p.idProducto);
-              if (result.id > 0) {
-                listEgresoTemp.add(p);
-              }
+              // var result = Estaticas.listProductos
+              //     .firstWhere((e) => e.id == p.idProducto);
+              // if (result.id > 0) {
+              //   listEgresoTemp.add(p);
+              // }
             }
           }
         }
@@ -119,15 +119,7 @@ class EgresoProductosWidgets {
               TextButton(
                   onPressed: () {
                     int sec = 0;
-                    for (var value in temp.detalle!) {
-                      var result = Estaticas.listProductos
-                          .firstWhere((e) => e.id == value.idProducto);
-                      //double totalStock = result.stock! - value.cantidad;
-                      Estaticas.listProductos.remove(result);
-                      //result.stock = totalStock;
-                      Estaticas.listProductos.add(result);
-                      value.idEgresoDetalle = value.secuencia = sec++;
-                    }
+                    for (var value in temp.detalle!) {}
                     temp.idEgreso = Estaticas.listProductosEgreso.length + 1;
                     Estaticas.listProductosEgreso.add(temp);
                     Navigator.pop(context);

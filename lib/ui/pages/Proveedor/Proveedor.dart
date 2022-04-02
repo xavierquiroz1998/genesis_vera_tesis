@@ -4,8 +4,21 @@ import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvi
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
-class Proveedor extends StatelessWidget {
+class Proveedor extends StatefulWidget {
   const Proveedor({Key? key}) : super(key: key);
+
+  @override
+  State<Proveedor> createState() => _ProveedorState();
+}
+
+class _ProveedorState extends State<Proveedor> {
+  @override
+  void initState() {
+    var provee = Provider.of<ProveedoresProvider>(context, listen: false);
+    if (provee.proveedor.id != 0) {}
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

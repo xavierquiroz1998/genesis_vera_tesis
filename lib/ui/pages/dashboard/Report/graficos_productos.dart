@@ -84,11 +84,6 @@ class _PieVentasState extends State<PieVentas> {
       }
       temp.add(t);
     }
-
-    for (var item in temp) {
-      item.prd =
-          Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
-    }
   }
 
   @override
