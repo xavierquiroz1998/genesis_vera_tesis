@@ -16,8 +16,9 @@ class ItemsDataSource extends DataGridSource {
   void buildDataGridRow() {
     dataGridRows = listProducts.map<DataGridRow>((Kardex product) {
       return DataGridRow(cells: <DataGridCell>[
-        DataGridCell<String>(columnName: 'codigo', value: product.codPro),
-        //DataGridCell<String>(columnName: 'producto', value: product.nomPro),
+        DataGridCell<String>(columnName: 'codigo', value: product.codMov),
+        DataGridCell<String>(
+            columnName: 'producto', value: "${product.idProducto}"),
         DataGridCell<double>(
             columnName: 'cantidadI',
             value: double.parse(product.proCanI.toString())),

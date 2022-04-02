@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
@@ -18,13 +20,13 @@ class _KardexLayoutState extends State<KardexLayout> {
     List<GridColumn> columns;
     columns = <GridColumn>[
       GridColumn(
-          columnName: 'fecha',
+          columnName: 'codigo',
           width: 90,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Fecha',
+              'cod-mov',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -169,7 +171,7 @@ class _KardexLayoutState extends State<KardexLayout> {
     _stackedHeaderRows = <StackedHeaderRow>[
       StackedHeaderRow(cells: <StackedHeaderCell>[
         StackedHeaderCell(
-            columnNames: <String>['fecha', 'producto'],
+            columnNames: <String>['codigo', 'producto'],
             child: _getWidgetForStackedHeaderCell('PRODUCTO')),
         StackedHeaderCell(
             columnNames: <String>['cantidadI', 'costoI', 'totalI'],
