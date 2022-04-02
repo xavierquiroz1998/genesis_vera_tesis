@@ -42,7 +42,7 @@ class _UsuarioViewState extends State<UsuarioView> {
                         DataColumn(label: Text("Id")),
                         DataColumn(label: Text("Nombres")),
                         DataColumn(label: Text("Correo")),
-                        DataColumn(label: Text("Expiracion")),
+                        DataColumn(label: Text("Expiración")),
                         DataColumn(label: Text("Estado")),
                         DataColumn(label: Text("Acciones")),
                       ],

@@ -43,9 +43,9 @@ class _ProveedoresState extends State<Proveedores> {
                   width: double.infinity,
                   child: DataTable(
                       columns: [
-                        DataColumn(label: Text("Identificacion")),
+                        DataColumn(label: Text("Identificación")),
                         DataColumn(label: Text("Nombres")),
-                        DataColumn(label: Text("Direccion")),
+                        DataColumn(label: Text("Dirección")),
                         DataColumn(label: Text("Correo")),
                         DataColumn(label: Text("Estado")),
                         DataColumn(label: Text("Editar")),

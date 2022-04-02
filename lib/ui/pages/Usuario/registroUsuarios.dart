@@ -51,8 +51,8 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                               child: TextFormField(
                                 controller: usuarios.controlCedula,
                                 decoration: CustomInputs.formInputDecoration(
-                                    hint: 'Cedula',
-                                    label: 'Cedula',
+                                    hint: 'Cédula',
+                                    label: 'Cédula',
                                     icon: Icons.person),
                                 validator: (value) {
                                   if (value!.isEmpty) {

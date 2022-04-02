@@ -61,7 +61,7 @@ class _IngresosViewState extends State<IngresosView> {
                         label: Center(child: Text("Id")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Observacion")),
+                        label: Center(child: Text("Observación")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Estado")),

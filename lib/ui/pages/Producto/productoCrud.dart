@@ -61,12 +61,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               controller: producto.controllerCodigo,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Ingrese Codigo";
+                                  return "Ingrese Código";
                                 }
                               },
                               decoration: CustomInputs.formInputDecoration(
-                                  hint: 'Codigo',
-                                  label: 'Codigo',
+                                  hint: 'Código',
+                                  label: 'Código',
                                   icon: Icons.delete_outline),
                             ),
                           ),
@@ -79,13 +79,13 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Ingrese Codigo";
+                                  return "Ingrese Cantidad";
                                 }
                               },
                               controller: producto.controllerStock,
                               decoration: CustomInputs.formInputDecoration(
-                                  hint: 'Stock',
-                                  label: 'Stock',
+                                  hint: 'Cantidad a ingresar',
+                                  label: 'Cantidad a ingresar',
                                   icon: Icons.delete_outline),
                             ),
                           ),
@@ -119,7 +119,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Ingrese Codigo";
+                                  return "Ingrese Precio";
                                 }
                               },
                               controller: producto.controllerPrecio,
@@ -141,12 +141,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             controller: producto.controllerDescripcion,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Ingrese Codigo";
+                                return "Ingrese Descripción";
                               }
                             },
                             decoration: CustomInputs.formInputDecoration(
-                                hint: 'Descripcion',
-                                label: 'Descripcion',
+                                hint: 'Descripción',
+                                label: 'Descripción',
                                 icon: Icons.delete_outline),
                           ),
                         ),
@@ -172,7 +172,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                             }).toList(),
                             decoration: CustomInputs.formInputDecoration(
                                 hint: '',
-                                label: 'Seleccion unidad Medida',
+                                label: 'Seleccione unidad de Medida',
                                 icon: Icons.delete_outline),
                           ),
                         ),
@@ -229,22 +229,6 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 hint: '',
                                 label: 'Seleccione Proveedor',
                                 icon: Icons.delete_outline),
-                          ),
-                        ),
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, minWidth: 100),
-                          child: TextFormField(
-                            controller: producto.controllerHolgura,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Ingrese Holgura";
-                              }
-                            },
-                            decoration: CustomInputs.formInputDecoration(
-                                hint: 'Holgura',
-                                label: 'Tiempo de Holgura',
-                                icon: Icons.info),
                           ),
                         ),
                       ],

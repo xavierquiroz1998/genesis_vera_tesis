@@ -30,6 +30,14 @@ class ProveedoresProvider extends ChangeNotifier {
   TextEditingController _controllDireccion = new TextEditingController();
 
   TextEditingController _controllCorreo = new TextEditingController();
+  TextEditingController _controllTiempoHolgura = new TextEditingController();
+
+  TextEditingController get controllTiempoHolgura => _controllTiempoHolgura;
+
+  set controllTiempoHolgura(TextEditingController controllTiempoHolgura) {
+    _controllTiempoHolgura = controllTiempoHolgura;
+    notifyListeners();
+  }
 
   TextEditingController get controllCorreo => _controllCorreo;
 
@@ -41,10 +49,12 @@ class ProveedoresProvider extends ChangeNotifier {
 
   set titulo(String titulo) {
     _titulo = titulo;
+    notifyListeners();
   }
 
   set controllCelular(TextEditingController controllCelular) {
     _controllCelular = controllCelular;
+    notifyListeners();
   }
   //TextEditingController controllIdentificacion = new TextEditingController();
 
@@ -61,16 +71,19 @@ class ProveedoresProvider extends ChangeNotifier {
 
   set controllNombres(TextEditingController controllNombres) {
     _controllNombres = controllNombres;
+    notifyListeners();
   }
 
   TextEditingController get controllDireccion => _controllDireccion;
 
   set controllDireccion(TextEditingController controllDireccion) {
     _controllDireccion = controllDireccion;
+    notifyListeners();
   }
 
   set controllCorreo(TextEditingController controllCorreo) {
     _controllCorreo = controllCorreo;
+    notifyListeners();
   }
 
   ProveedoresEntity get proveedor => _proveedores;

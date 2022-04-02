@@ -45,7 +45,14 @@ class _EgresoProductoState extends State<EgresoProducto> {
               children: [
                 TextFormField(
                   initialValue: egreso.ctrObservacion.text,
-                  decoration: InputDecoration(labelText: "Observacion"),
+                  decoration: InputDecoration(labelText: "Nombre del Cliente"),
+                  onChanged: (value) {
+                    egreso.ctrObservacion.text = value;
+                  },
+                ),
+                TextFormField(
+                  initialValue: egreso.ctrObservacion.text,
+                  decoration: InputDecoration(labelText: "Observación"),
                   onChanged: (value) {
                     egreso.ctrObservacion.text = value;
                   },
@@ -64,10 +71,10 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Stock Producto")),
+                        label: Center(child: Text("Cod Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Cod Producto")),
+                        label: Center(child: Text("Stock Producto")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("observacion")),
@@ -120,10 +127,10 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             ),
                           ),
                           DataCell(e.productos != null
-                              ? Text("${e.productos!.cantidad}")
+                              ? Text("${e.productos!.referencia}")
                               : Text("")),
                           DataCell(e.productos != null
-                              ? Text("${e.productos!.referencia}")
+                              ? Text("${e.productos!.cantidad}")
                               : Text("")),
                           DataCell(
                             TextFormField(

@@ -51,13 +51,13 @@ class _TipoProductoState extends State<TipoProducto> {
                         child: DataTable(
                             columns: [
                               DataColumn(
-                                  label: Text("Codigo",
+                                  label: Text("Código",
                                       style: buildCustomStyle())),
                               DataColumn(
                                   label: Text("Nombre",
                                       style: buildCustomStyle())),
                               DataColumn(
-                                  label: Text("Descripcion",
+                                  label: Text("Descripción",
                                       style: buildCustomStyle())),
                               DataColumn(
                                   label: Text("Estado",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
@@ -12,6 +13,7 @@ class Proveedor extends StatefulWidget {
 }
 
 class _ProveedorState extends State<Proveedor> {
+  String numeros = r'^(?:\+|-)?\d+$';
   @override
   void initState() {
     var provee = Provider.of<ProveedoresProvider>(context, listen: false);
@@ -33,12 +35,12 @@ class _ProveedorState extends State<Proveedor> {
                 TextFormField(
                   validator: (value) {
                     if (value == null) {
-                      return "Ingrese Numero de Identificacion";
+                      return "Ingrese Numero de Identificación";
                     }
                   },
                   enabled: provee.proveedor.id != 0 ? false : true,
                   controller: provee.controllIdentificacion,
-                  decoration: InputDecoration(labelText: "Identificacion"),
+                  decoration: InputDecoration(labelText: "Identificación"),
                 ),
                 TextFormField(
                   validator: (value) {
@@ -52,11 +54,11 @@ class _ProveedorState extends State<Proveedor> {
                 TextFormField(
                   validator: (value) {
                     if (value == null) {
-                      return "Ingrese Direccion";
+                      return "Ingrese Dirección";
                     }
                   },
                   controller: provee.controllDireccion,
-                  decoration: InputDecoration(labelText: "Direccion"),
+                  decoration: InputDecoration(labelText: "Dirección"),
                 ),
                 TextFormField(
                   validator: (value) {
@@ -76,15 +78,18 @@ class _ProveedorState extends State<Proveedor> {
                   controller: provee.controllCelular,
                   decoration: InputDecoration(labelText: "Celular"),
                 ),
-                // TextFormField(
-                //   validator: (value) {
-                //     if (value == null) {
-                //       return "Ingrese Holgura";
-                //     }
-                //   },
-                //   controller: provee.controllCelular,
-                //   decoration: InputDecoration(labelText: "Holgura"),
-                // ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null) {
+                      return "Ingrese Tiempo de Holgura";
+                    }
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(numeros))
+                  ],
+                  controller: provee.controllTiempoHolgura,
+                  decoration: InputDecoration(labelText: "Tiempo de Holgura"),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

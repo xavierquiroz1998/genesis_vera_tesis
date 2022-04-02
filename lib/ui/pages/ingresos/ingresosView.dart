@@ -5,6 +5,7 @@ import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.da
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/providers/ingreso/ingresosProvider.dart';
@@ -39,7 +40,7 @@ class _IngresoViewState extends State<IngresoView> {
               children: [
                 TextFormField(
                   initialValue: ingreso.ctrObservacion.text,
-                  decoration: InputDecoration(labelText: "Observacion"),
+                  decoration: InputDecoration(labelText: "Observación"),
                   onChanged: (value) {
                     ingreso.ctrObservacion.text = value;
                   },
@@ -58,7 +59,7 @@ class _IngresoViewState extends State<IngresoView> {
                         label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("observacion")),
+                        label: Center(child: Text("observación")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),
@@ -135,7 +136,9 @@ class _IngresoViewState extends State<IngresoView> {
                             ),
                           ),
                           DataCell(
-                            Text(e.to.toString()),
+                            Text(NumberFormat.currency(
+                                    locale: 'en_US', symbol: r'$')
+                                .format(e.to)),
                           ),
                           DataCell(Icon(Icons.delete), onTap: () {
                             ingreso.remover(e);

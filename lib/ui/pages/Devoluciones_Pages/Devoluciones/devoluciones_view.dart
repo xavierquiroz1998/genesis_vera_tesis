@@ -42,7 +42,7 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                       devolucio.detalles = [];
                       NavigationService.navigateTo(Flurorouter.devolucion);
                     },
-                    child: Text("Nueva Devolucion")),
+                    child: Text("Nueva Devolución")),
                 Container(
                   width: double.infinity,
                   child: DataTable(
@@ -51,7 +51,7 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                         label: Center(child: Text("Id")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Observacion")),
+                        label: Center(child: Text("Observación")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Estado")),

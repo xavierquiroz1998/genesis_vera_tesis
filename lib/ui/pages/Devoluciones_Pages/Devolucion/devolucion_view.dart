@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
@@ -43,13 +44,13 @@ class _DevolucionViewState extends State<DevolucionView> {
         children: [
           WhiteCard(
             title: devolucio.cab.id == 0
-                ? "Nueva Devolucion"
-                : "Modificar Devolucion",
+                ? "Nueva Devolución"
+                : "Modificar Devolución",
             child: Column(
               children: [
                 TextFormField(
                   controller: devolucio.ctrObservacion,
-                  decoration: InputDecoration(labelText: "Observacion"),
+                  decoration: InputDecoration(labelText: "Observación"),
                 ),
                 SizedBox(
                   height: 20,
@@ -240,7 +241,9 @@ class _DevolucionViewState extends State<DevolucionView> {
                             ),
                           ),
                           DataCell(
-                            Text(e.to.toString()),
+                            Text(NumberFormat.currency(
+                                    locale: 'en_US', symbol: r'$')
+                                .format(e.to)),
                           ),
                           DataCell(Icon(Icons.delete), onTap: () {
                             devolucio.removerDevolucion(e);

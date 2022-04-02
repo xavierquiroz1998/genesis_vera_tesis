@@ -8,6 +8,7 @@ import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProductosTable extends StatefulWidget {
@@ -58,10 +59,10 @@ class _ProductosTableState extends State<ProductosTable> {
                         label: Center(child: Text("Id")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Codigo")),
+                        label: Center(child: Text("Código")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Descripcion")),
+                        label: Center(child: Text("Descripción")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Stock")),
@@ -110,7 +111,9 @@ class _ProductosTableState extends State<ProductosTable> {
                             Text(e.pedido.toString()),
                           ),
                           DataCell(
-                            Text(e.precio.toString()),
+                            Text(NumberFormat.currency(
+                                    locale: 'en_US', symbol: r'$')
+                                .format(e.precio)),
                           ),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,

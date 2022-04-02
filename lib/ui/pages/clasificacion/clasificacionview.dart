@@ -83,10 +83,10 @@ class _ClasificacionViewState extends State<ClasificacionView> {
                         label: Center(child: Text("Nombre Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Clasificacion")),
+                        label: Center(child: Text("Clasificación")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Cobertura / día")),
+                        label: Center(child: Text("Cobertura/día")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Stock de Seguridad")),

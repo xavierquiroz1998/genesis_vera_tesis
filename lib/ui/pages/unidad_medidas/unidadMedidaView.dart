@@ -43,8 +43,8 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                     child: DataTable(
                         columns: [
                           DataColumn(label: Text("Id")),
-                          DataColumn(label: Text("Codigo")),
-                          DataColumn(label: Text("Descripcion")),
+                          DataColumn(label: Text("Código")),
+                          DataColumn(label: Text("Descripción")),
                           DataColumn(label: Text("Estado")),
                           DataColumn(label: Text("Editar")),
                           DataColumn(label: Text("Anular")),
@@ -64,7 +64,7 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                                   unidadP.unidad = e;
                                   UnidadWidget.dialogoUnidad(context);
                                 },
-                                child: Text("Editar"),
+                                child: Icon(Icons.edit),
                               ),
                             ),
                             DataCell(
@@ -73,7 +73,7 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                                   unidadP.unidad = e;
                                   await unidadP.anular();
                                 },
-                                child: Text("Anular"),
+                                child: Icon(Icons.delete),
                               ),
                             ),
                           ]);
