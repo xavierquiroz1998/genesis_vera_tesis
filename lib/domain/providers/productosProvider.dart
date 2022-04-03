@@ -4,11 +4,13 @@ import 'package:genesis_vera_tesis/core/Errors/failure.dart';
 
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:genesis_vera_tesis/domain/uses%20cases/movimientos/movimientosGeneral.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/parametros/parametros_general.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
 
+import '../../data/models/movimiento/modelMovimiento.dart';
 import '../entities/Proveedores/Proveedores.dart';
 import '../entities/registro/entityRegistroDetaller.dart';
 import '../entities/tipo/grupo.dart';
@@ -29,6 +31,7 @@ class ProductosProvider extends ChangeNotifier {
   int pedid = 0;
   List<Clasificacion> lisCla = [];
   List<Aprovisionar> aprovisionamientos = [];
+  List<Aprovisionar> mostrarItems = [];
 
   TextEditingController get controllerHolgura => _controllerHolgura;
 
@@ -50,6 +53,7 @@ class ProductosProvider extends ChangeNotifier {
   final UsesCaseRegistros registro;
   final ParametrosGeneral parametros;
   final GeneralProducto productoGeneral;
+
   ProductosProvider(
       this.insertarProducto,
       this.getProductos,
@@ -68,24 +72,28 @@ class ProductosProvider extends ChangeNotifier {
 
   set controllerPrecio(TextEditingController controllerPrecio) {
     _controllerPrecio = controllerPrecio;
+    notifyListeners();
   }
 
   TextEditingController get controllerStock => _controllerStock;
 
   set controllerStock(TextEditingController controllerStock) {
     _controllerStock = controllerStock;
+    notifyListeners();
   }
 
   TextEditingController get controllerCodigo => _controllerCodigo;
 
   set controllerCodigo(TextEditingController controllerCodigo) {
     _controllerCodigo = controllerCodigo;
+    notifyListeners();
   }
 
   TextEditingController get controllerDescripcion => _controllerDescripcion;
 
   set controllerDescripcion(TextEditingController controllerDescripcion) {
     _controllerDescripcion = controllerDescripcion;
+    notifyListeners();
   }
 
   Productos get product => _productos;
@@ -100,6 +108,21 @@ class ProductosProvider extends ChangeNotifier {
   }
 
   void notificar() {
+    notifyListeners();
+  }
+
+  Future cargarDetalle() async {
+    try {
+      product.grupo = listGrupos.where((e) => e.id == product.idGrupo).first;
+
+      product.proveedor =
+          listaProveedores.where((e) => e.id == product.idProveedor).first;
+
+      product.unidad =
+          listUnidades.where((e) => e.id == product.idUnidad).first;
+    } catch (ex) {
+      print("Error en cargar detalle de grupo");
+    }
     notifyListeners();
   }
 
@@ -159,10 +182,6 @@ class ProductosProvider extends ChangeNotifier {
 
   Future<void> calculos() async {
     try {
-//       double converturaDias = (p.cantidad * pedid) / 30; // 7,5
-// // cosulto el proveedor por producto y veo el tiempo de holgura que sea mayor
-// // como envaluar los los dias trasncurridos
-//       double mesaActual = p.cantidad + pedid;
       var param = await parametros.getAllParametros();
       var listadoParam = param.getOrElse(() => []);
       // categorizacion  de todos los productos
@@ -174,7 +193,7 @@ class ProductosProvider extends ChangeNotifier {
       var lisCab = cab.getOrElse(() => []);
       var fechaActual = DateTime.now();
       var fechaAnterior = DateTime(fechaActual.year, fechaActual.month, 1 - 1);
-      var fechaFinal = DateTime.now().add(Duration(days: -90));
+      //var fechaFinal = DateTime.now().add(Duration(days: -90));
       for (var item in lisCab) {
         var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
         if (dife.inDays <= 30) {
@@ -294,6 +313,32 @@ class ProductosProvider extends ChangeNotifier {
       notifyListeners();
     } catch (ex) {
       print("Proeducto Provider Error $ex");
+    }
+  }
+
+  Future listAprovisionar() async {
+    try {
+      mostrarItems = [];
+      await cargarProveedores();
+      var pedidos = aprovisionamientos.where((e) => e.cobertura != 0);
+      for (var item in pedidos) {
+        try {
+          var prdTemporales =
+              listado.where((e) => e.id == item.idProducto).first;
+
+          var proveedoresTemp = listaProveedores
+              .where((e) => e.id == prdTemporales.idProveedor)
+              .first;
+
+          if (item.cobertura <= proveedoresTemp.holgura) {
+            mostrarItems.add(item);
+          }
+        } catch (e) {}
+      }
+      for (var item in mostrarItems) {}
+      notifyListeners();
+    } catch (ex) {
+      print("Error en list aprovicionar ${ex.toString()}");
     }
   }
 

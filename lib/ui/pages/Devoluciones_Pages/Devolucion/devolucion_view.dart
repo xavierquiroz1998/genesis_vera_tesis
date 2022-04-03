@@ -23,7 +23,7 @@ class _DevolucionViewState extends State<DevolucionView> {
   List<String> tipoDev = ["CLIENTE", "PROVEEDOR"];
   List<String> tipoFlujo = ["+", "-"];
   String tipoDevSelect = "";
-  String flujoSelect = "";
+  String flujoSelect = "-";
 
   @override
   void initState() {
@@ -56,15 +56,18 @@ class _DevolucionViewState extends State<DevolucionView> {
                   height: 20,
                 ),
                 DropdownButtonFormField<String>(
+                  onTap: () {
+                    devolucio.pedidoSelec = new EntityRegistro();
+                  },
                   onChanged: (value) async {
                     tipoDevSelect = value!;
-                    devolucio.pedidoSelec = new EntityRegistro();
+
                     if (tipoDevSelect == "PROVEEDOR") {
                       await devolucio.getRegistrosDev(1);
                     } else if (tipoDevSelect == "CLIENTE") {
                       await devolucio.getRegistrosDev(2);
                     }
-
+                    setState(() {});
                     //producto.product.tipoProdcuto = value!.codRef;
                   },
                   items: tipoDev.map((item) {
@@ -89,62 +92,90 @@ class _DevolucionViewState extends State<DevolucionView> {
                 ),
                 DropdownButtonFormField<EntityRegistro>(
                   onChanged: (value) {
-                    devolucio.pedidoSelec = value!;
+                    if (value != null) {
+                      devolucio.cab.idSecundario = value.id;
+                      devolucio.pedidoSelec = value;
+                      devolucio.cargarDetalle(devolucio.pedidoSelec.id);
+                    }
                   },
-                  items: devolucio.listTableRegistrosDev.map((item) {
-                    return DropdownMenuItem<EntityRegistro>(
-                      value: item,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          item.detalle,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400),
+                  items: devolucio.listTableRegistrosDev
+                      .where((e) => e.estado)
+                      .map(
+                        (item) => DropdownMenuItem<EntityRegistro>(
+                          value: item,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              item.detalle,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w400),
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      )
+                      .toList(),
                   decoration: CustomInputs.formInputDecoration(
                       hint: '', label: 'Seleccione Pedido', icon: Icons.info),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                DropdownButtonFormField<String>(
-                  onChanged: (value) async {
-                    flujoSelect = value!;
-                  },
-                  items: tipoFlujo.map((item) {
-                    return DropdownMenuItem(
-                      value: item,
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            item,
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w400),
-                          )),
-                    );
-                  }).toList(),
-                  decoration: CustomInputs.formInputDecoration(
-                      hint: '',
-                      label: 'Seleccione Tipo Flujo',
-                      icon: Icons.info),
+
+                Row(
+                  children: [
+                    Text("Tipo de Flujo : "),
+                    SizedBox(width: 20),
+                    for (var item in tipoFlujo) ...{
+                      Radio(
+                        value: item,
+                        groupValue: flujoSelect,
+                        onChanged: (value) {
+                          flujoSelect = value.toString();
+                          setState(() {});
+                        },
+                      ),
+                      Text("$item"),
+                      SizedBox(width: 20),
+                    },
+                  ],
                 ),
+
+                // DropdownButtonFormField<String>(
+                //   onChanged: (value) async {
+                //     flujoSelect = value!;
+                //   },
+                //   items: tipoFlujo.map((item) {
+                //     return DropdownMenuItem(
+                //       value: item,
+                //       child: Align(
+                //           alignment: Alignment.centerLeft,
+                //           child: Text(
+                //             item,
+                //             style: TextStyle(
+                //                 fontSize: 15, fontWeight: FontWeight.w400),
+                //           )),
+                //     );
+                //   }).toList(),
+                //   decoration: CustomInputs.formInputDecoration(
+                //       hint: '',
+                //       label: 'Seleccione Tipo Flujo',
+                //       icon: Icons.info),
+                // ),
+
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        devolucio.agregarDevolucion();
-                      },
-                      child: Text("Agregar"),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     TextButton(
+                //       onPressed: () {
+                //         devolucio.agregarDevolucion();
+                //       },
+                //       child: Text("Agregar"),
+                //     ),
+                //   ],
+                // ),
                 Container(
                   width: double.infinity,
                   child: DataTable(
@@ -253,6 +284,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                     }).toList(),
                   ),
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

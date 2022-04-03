@@ -10,6 +10,7 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGenera
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../../../domain/providers/productosProvider.dart';
 
 class EgresoProducto extends StatefulWidget {
@@ -24,6 +25,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
   void initState() {
     var temProvider = Provider.of<EProductoProvider>(context, listen: false);
     temProvider.cargarPrd();
+    temProvider.cargarMovimientos();
     if (temProvider.cab.id != 0) {
       temProvider.cargarDetalle(temProvider.cab.id);
     }
@@ -71,10 +73,13 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Cod Producto")),
+                        label: Center(child: Text("Cod Prod.")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Stock Producto")),
+                        label: Center(child: Text("Lote")),
+                      ),
+                      const DataColumn(
+                        label: Center(child: Text("Stock ")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("observacion")),
@@ -99,6 +104,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           DataCell(
                             DropdownButton<Productos>(
                               items: egreso.listado
+                                  .where((e) => e.estado)
                                   .map(
                                     (eDrop) => DropdownMenuItem<Productos>(
                                       child: Container(
@@ -129,6 +135,35 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           DataCell(e.productos != null
                               ? Text("${e.productos!.referencia}")
                               : Text("")),
+                          DataCell(
+                            DropdownButton<ModelMovimiento>(
+                              items: egreso.listaMovimientos
+                                  .map(
+                                    (eDrop) =>
+                                        DropdownMenuItem<ModelMovimiento>(
+                                      child: Container(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 100),
+                                        child: Text(
+                                          eDrop.codigo,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      value: eDrop,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                e.lote = value!.codigo;
+                                e.mov = value;
+                                setState(() {});
+                              },
+                              hint: e.lote == ""
+                                  ? Text("Lote")
+                                  : Text(e.mov!.codigo),
+                            ),
+                          ),
                           DataCell(e.productos != null
                               ? Text("${e.productos!.cantidad}")
                               : Text("")),

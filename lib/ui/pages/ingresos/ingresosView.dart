@@ -81,6 +81,7 @@ class _IngresoViewState extends State<IngresoView> {
                           DataCell(
                             DropdownButton<Productos>(
                               items: ingreso.listado
+                                  .where((e) => e.estado)
                                   .map(
                                     (eDrop) => DropdownMenuItem<Productos>(
                                       child: Container(

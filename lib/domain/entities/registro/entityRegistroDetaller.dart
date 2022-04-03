@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../productos.dart';
 
 class EntityRegistroDetalle extends Equatable {
@@ -10,6 +11,7 @@ class EntityRegistroDetalle extends Equatable {
     this.idProducto = 0,
     this.idRegistro = 0,
     this.observacion = "",
+    this.lote = "",
     this.to = 0,
   });
 
@@ -20,7 +22,9 @@ class EntityRegistroDetalle extends Equatable {
   int idRegistro;
   String observacion;
   double to;
+  String lote;
   Productos? productos;
+  ModelMovimiento? mov;
 
   Map<String, dynamic> toMap() => {
         "id": id,

@@ -30,7 +30,9 @@ class _ProductoCrudState extends State<ProductoCrud> {
     cargaPRd.cargarUnidades();
     cargaPRd.cargarGrupo();
     cargaPRd.cargarProveedores();
-    if (cargaPRd.product.id != 0) {}
+    if (cargaPRd.product.id != 0) {
+      cargaPRd.cargarDetalle();
+    }
     super.initState();
   }
 
@@ -171,8 +173,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               );
                             }).toList(),
                             decoration: CustomInputs.formInputDecoration(
-                                hint: '',
-                                label: 'Seleccione unidad de Medida',
+                                hint: producto.product.unidad != null
+                                    ? "${producto.product.unidad!.detalle}"
+                                    : '',
+                                label: producto.product.unidad != null
+                                    ? "${producto.product.unidad!.detalle}"
+                                    : 'Seleccione unidad de Medida',
                                 icon: Icons.delete_outline),
                           ),
                         ),
@@ -182,6 +188,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                           child: DropdownButtonFormField<GrupoEntity>(
                             onChanged: (value) {
                               producto.product.idGrupo = value!.id;
+                              producto.product.grupo = value;
                             },
                             items: producto.listGrupos.map((item) {
                               return DropdownMenuItem(
@@ -197,8 +204,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               );
                             }).toList(),
                             decoration: CustomInputs.formInputDecoration(
-                                hint: '',
-                                label: 'Seleccione Tipo Producto',
+                                hint: producto.product.grupo != null
+                                    ? "${producto.product.grupo!.nombre}"
+                                    : "",
+                                label: producto.product.grupo != null
+                                    ? "${producto.product.grupo!.nombre}"
+                                    : 'Seleccione Tipo Producto',
                                 icon: Icons.delete_outline),
                           ),
                         ),
@@ -226,8 +237,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               );
                             }).toList(),
                             decoration: CustomInputs.formInputDecoration(
-                                hint: '',
-                                label: 'Seleccione Proveedor',
+                                hint: producto.product.proveedor != null
+                                    ? "${producto.product.proveedor!.nombre}"
+                                    : '',
+                                label: producto.product.proveedor != null
+                                    ? "${producto.product.proveedor!.nombre}"
+                                    : 'Seleccione Proveedor',
                                 icon: Icons.delete_outline),
                           ),
                         ),

@@ -95,6 +95,7 @@ class ProveedoresProvider extends ChangeNotifier {
     controllDireccion.text = proveedor.direccion;
     controllNombres.text = proveedor.nombre;
     controllCelular.text = proveedor.identificacion;
+    controllTiempoHolgura.text = proveedor.holgura.toString();
     notifyListeners();
   }
 
@@ -129,6 +130,7 @@ class ProveedoresProvider extends ChangeNotifier {
       proveedor.nombre = controllNombres.text;
       proveedor.telefono = controllCelular.text;
       proveedor.estado = true;
+      proveedor.holgura = int.parse(controllTiempoHolgura.text);
     } catch (e) {}
   }
 

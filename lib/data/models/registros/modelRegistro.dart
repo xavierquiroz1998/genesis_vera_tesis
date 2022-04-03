@@ -9,17 +9,20 @@ class ModelRegistro extends EntityRegistro {
     this.detalle = "",
     this.estado = false,
     this.createdAt = "",
+    this.idSecundario = 0,
   }) : super(
             id: id,
             idTipo: idTipo,
             detalle: detalle,
             estado: estado,
-            createdAt: createdAt);
+            createdAt: createdAt,
+            idSecundario: idSecundario);
   int id;
   int idTipo;
   String detalle;
   bool estado;
   String createdAt;
+  int idSecundario;
 
   factory ModelRegistro.fromJson(String str) =>
       ModelRegistro.fromMap(json.decode(str));
@@ -31,6 +34,7 @@ class ModelRegistro extends EntityRegistro {
         idTipo: json["idTipo"],
         detalle: json["detalle"],
         estado: json["estado"],
+        idSecundario: json["idSecundario"],
         createdAt: json["createdAt"] ?? "",
       );
 
@@ -39,6 +43,7 @@ class ModelRegistro extends EntityRegistro {
         "idTipo": idTipo,
         "detalle": detalle,
         "estado": estado,
+        "idSecundario": idSecundario,
         "createdAt": createdAt,
       };
 }

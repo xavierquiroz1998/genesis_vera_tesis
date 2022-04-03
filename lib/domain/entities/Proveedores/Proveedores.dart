@@ -7,6 +7,7 @@ class ProveedoresEntity extends Equatable {
   String correo;
   String telefono;
   String direccion;
+  int holgura;
   bool estado;
 
   ProveedoresEntity({
@@ -16,12 +17,21 @@ class ProveedoresEntity extends Equatable {
     this.correo = "",
     this.telefono = "",
     this.direccion = "",
+    this.holgura = 0,
     this.estado = false,
   });
 
   @override
-  List<Object?> get props =>
-      [id, identificacion, nombre, correo, telefono, direccion, estado];
+  List<Object?> get props => [
+        id,
+        identificacion,
+        nombre,
+        correo,
+        telefono,
+        holgura,
+        direccion,
+        estado
+      ];
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -30,6 +40,7 @@ class ProveedoresEntity extends Equatable {
         "correo": correo,
         "telefono": telefono,
         "direccion": direccion,
+        "holgura": holgura,
         "estado": estado,
       };
 }

@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 
+import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
+import '../../uses cases/movimientos/movimientosGeneral.dart';
+import '../../uses cases/productos/productosGeneral.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class IngresosProvider extends ChangeNotifier {
@@ -27,8 +32,11 @@ class IngresosProvider extends ChangeNotifier {
   double to = 0;
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
+  final MovimientosGeneral mov;
+  final GeneralProducto prdGeneral;
   var isSelectProduct;
-  IngresosProvider(this.getProductos, this.usesCases);
+  IngresosProvider(
+      this.getProductos, this.usesCases, this.mov, this.prdGeneral);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 
@@ -123,6 +131,15 @@ class IngresosProvider extends ChangeNotifier {
       for (var item in detalles) {
         item.idRegistro = tem.id;
         var detResultv = await usesCases.insertRegistrosDetalles(item);
+// regista ingreso de producto;
+        item.productos!.cantidad += item.cantidad;
+        await prdGeneral.update(item.productos!);
+
+// registra movimiento
+        ModelMovimiento md = new ModelMovimiento();
+        md.idProducto = item.idProducto;
+        md.codigo = Random().nextInt(10000000).toString();
+        await mov.insertMov(md);
       }
 
 //--------------------------------------------
@@ -156,7 +173,15 @@ class IngresosProvider extends ChangeNotifier {
       cab.estado = false;
       var tem = await usesCases.updateRegistros(cab);
       var result = tem.getOrElse(() => new EntityRegistro());
-    } catch (ex) {}
+      await cargarPrd();
+      await cargarDetalle(cab.id);
+      for (var item in detalles) {
+        item.productos!.cantidad -= item.cantidad;
+        await prdGeneral.update(item.productos!);
+      }
+    } catch (ex) {
+      print("Erro al Anular ingreso ${ex.toString()}");
+    }
 
     notifyListeners();
   }

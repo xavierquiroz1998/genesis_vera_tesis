@@ -53,6 +53,8 @@ class DevolucionProvider extends ChangeNotifier {
 
   Future<void> getRegistrosDev(int idTipo) async {
     try {
+      pedidoSelec = new EntityRegistro();
+      listTableRegistrosDev = [];
       var tem = await usesCases.getAll(idTipo);
 
       listTableRegistrosDev = tem.getOrElse(() => []);
@@ -60,6 +62,7 @@ class DevolucionProvider extends ChangeNotifier {
       notifyListeners();
     } catch (ex) {
       listTableRegistrosDev = [];
+      print("erro en obtener lista ${ex.toString()}");
     }
   }
 
@@ -127,6 +130,7 @@ class DevolucionProvider extends ChangeNotifier {
       reg.idTipo = 3;
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
+      reg.idSecundario = cab.idSecundario;
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;

@@ -6,9 +6,11 @@ import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGeneral.dart';
 
+import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
+import '../../uses cases/movimientos/movimientosGeneral.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class EProductoProvider extends ChangeNotifier {
@@ -27,12 +29,15 @@ class EProductoProvider extends ChangeNotifier {
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
   List<Productos> listado = [];
+  List<ModelMovimiento> listaMovimientos = [];
   double to = 0;
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
   final GeneralProducto generalProducto;
+  final MovimientosGeneral movimientosGeneral;
 
-  EProductoProvider(this.getProductos, this.usesCases, this.generalProducto);
+  EProductoProvider(this.getProductos, this.usesCases, this.generalProducto,
+      this.movimientosGeneral);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 
@@ -84,6 +89,17 @@ class EProductoProvider extends ChangeNotifier {
       print("error${result.toString()}");
     }
     notifyListeners();
+  }
+
+  Future cargarMovimientos() async {
+    try {
+      var temp = await movimientosGeneral.getMovientos();
+      listaMovimientos = temp.getOrElse(() => []);
+
+      notifyListeners();
+    } catch (ex) {
+      print("Erro en obtener movimientos ${ex.toString()}");
+    }
   }
 
   Future<void> getRegistrosDev() async {
@@ -144,6 +160,13 @@ class EProductoProvider extends ChangeNotifier {
       cab.estado = false;
       var tem = await usesCases.updateRegistros(cab);
       var result = tem.getOrElse(() => new EntityRegistro());
+
+      await cargarPrd();
+      await cargarDetalle(cab.id);
+      for (var item in detalles) {
+        item.productos!.cantidad += item.cantidad;
+        await generalProducto.update(item.productos!);
+      }
     } catch (ex) {}
 
     notifyListeners();

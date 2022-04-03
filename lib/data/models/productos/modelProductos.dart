@@ -96,6 +96,7 @@ class Proveedor extends ProveedoresEntity {
     this.correo = "",
     this.telefono = "",
     this.direccion = "",
+    this.holgura = 0,
     this.estado = false,
   });
 
@@ -105,6 +106,7 @@ class Proveedor extends ProveedoresEntity {
   String correo;
   String telefono;
   String direccion;
+  int holgura;
   bool estado;
 
   factory Proveedor.fromJson(String str) => Proveedor.fromMap(json.decode(str));
@@ -117,6 +119,7 @@ class Proveedor extends ProveedoresEntity {
         nombre: json["nombre"],
         correo: json["correo"],
         telefono: json["telefono"],
+        holgura: json["holgura"],
         direccion: json["direccion"],
         estado: json["estado"],
       );
@@ -127,6 +130,7 @@ class Proveedor extends ProveedoresEntity {
         "nombre": nombre,
         "correo": correo,
         "telefono": telefono,
+        "holgura": holgura,
         "direccion": direccion,
         "estado": estado,
       };

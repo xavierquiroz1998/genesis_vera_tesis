@@ -120,7 +120,9 @@ class ReporteAprovicionar extends StatefulWidget {
 class _ReporteAprovicionarState extends State<ReporteAprovicionar> {
   @override
   void initState() {
-    Provider.of<ProductosProvider>(context, listen: false).calculos();
+    var asd = Provider.of<ProductosProvider>(context, listen: false);
+    asd.calculos();
+    asd.listAprovisionar();
     super.initState();
   }
 
@@ -138,19 +140,19 @@ class _ReporteAprovicionarState extends State<ReporteAprovicionar> {
         height: 250,
         child: Column(
           children: [
-            for (var item in prd.aprovisionamientos
-                .where((e) => e.clasificacion == "A")) ...{
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    item.detalle.length > 15
-                        ? Text("${item.detalle.substring(0, 15)}")
-                        : Text("${item.detalle}"),
-                    Text("${item.stockSeguridad.toString()}"),
-                  ],
-                ),
+            for (var item in prd.mostrarItems) ...{
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  item.detalle.length > 15
+                      ? Text("${item.detalle.substring(0, 15)}")
+                      : Text("${item.detalle}"),
+                  Text("${item.stockSeguridad.toString()}"),
+                ],
               ),
+              SizedBox(
+                height: 10,
+              )
             }
           ],
         ),

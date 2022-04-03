@@ -39,9 +39,11 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/usuarios/insert_usuario.d
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'data/datasource/movimiento/movimientoDS.dart';
 import 'data/datasource/registros/registroDataSource.dart';
 import 'data/datasource/usuarios/usuarios_datasource.dart';
 import 'data/repositories/logeo/sesion_Imp.dart';
+import 'data/repositories/movimiento/movimientoImp.dart';
 import 'data/repositories/producto_Imp.dart';
 import 'data/repositories/proveedores/proveedor_imp.dart';
 import 'data/repositories/registros/registros_imp.dart';
@@ -52,10 +54,12 @@ import 'domain/providers/Usuarios/UsuariosProvider.dart';
 import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/providers/ingreso/ingresosProvider.dart';
 import 'domain/providers/kardex/kardex_provider.dart';
+import 'domain/providers/movimientos/movimientoProvider.dart';
 import 'domain/providers/parametros/provider_parametros.dart';
 import 'domain/providers/registros/registrosProvider.dart';
 import 'domain/repositories/abstractPRoducto.dart';
 import 'domain/repositories/logeo/abstract_sesion.dart';
+import 'domain/repositories/movimiento/abstractMovimiento.dart';
 import 'domain/repositories/parametros/Abstrac_parametros.dart';
 import 'domain/repositories/proveedores/abtract_proveedores.dart';
 import 'domain/repositories/registros/abstract_registros.dart';
@@ -63,6 +67,7 @@ import 'domain/uses cases/grupo/delete_grupo.dart';
 import 'domain/uses cases/grupo/insert_grupos.dart';
 import 'domain/uses cases/grupo/update_grupos.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
+import 'domain/uses cases/movimientos/movimientosGeneral.dart';
 import 'domain/uses cases/parametros/parametros_general.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
 import 'domain/uses cases/productos/productosGeneral.dart';
@@ -86,13 +91,14 @@ Future<void> init() async {
   sl.registerFactory(() => ProveedoresProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
   sl.registerFactory(() => ProyectoProvider(sl(), sl()));
-  sl.registerFactory(() => EProductoProvider(sl(), sl(), sl()));
+  sl.registerFactory(() => EProductoProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => DevolucionProvider(sl(), sl()));
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => RegistrosProvider(sl()));
-  sl.registerFactory(() => IngresosProvider(sl(), sl()));
+  sl.registerFactory(() => IngresosProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => KardexProvider(sl()));
   sl.registerFactory(() => ParametrosPRovider(sl()));
+  sl.registerFactory(() => MovimientoProvider(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso
@@ -120,6 +126,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => KardexGeneral(sl()));
   sl.registerLazySingleton(() => ParametrosGeneral(sl()));
   sl.registerLazySingleton(() => GeneralProducto(sl()));
+  sl.registerLazySingleton(() => MovimientosGeneral(sl()));
 
   sl.registerLazySingleton<AbstractMedidaUnidad>(
       () => UnidadImp(sl())); // injeccion de repository
@@ -140,6 +147,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AbstractRegistros>(() => RegistrosImp(sl()));
   sl.registerLazySingleton<AbstractKardex>(() => KardexImp(sl()));
   sl.registerLazySingleton<AbstractParametros>(() => ParametrosImps(sl()));
+  sl.registerLazySingleton<AbstractMovimiento>(() => MovimientoImp(sl()));
 
   // sl.registerLazySingleton<UsuarioRepository>(
   //     () => FailureUsuarioRepositoryImp(sl()));
@@ -162,6 +170,7 @@ Future<void> init() async {
   sl.registerLazySingleton<RegistroDTS>(() => RegistroDTSImp(sl()));
   sl.registerLazySingleton<KardexDTS>(() => KardexDTSImp(sl()));
   sl.registerLazySingleton<ParametrosDTS>(() => ParametrosDTSImp(sl()));
+  sl.registerLazySingleton<MovimientoDTS>(() => MovimientoDTSImp(sl()));
 
   sl.registerLazySingleton(() => http.Client()); // injeccion de http
 

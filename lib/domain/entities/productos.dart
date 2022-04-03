@@ -1,4 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
+import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
+
+import 'Proveedores/Proveedores.dart';
 
 class Productos extends Equatable {
   int id;
@@ -12,9 +16,9 @@ class Productos extends Equatable {
   int idProveedor;
   int idGrupo;
   bool estado;
-  //  Proveedor? proveedor;
-  //  Unidad? unidad;
-  //  GruposModelo? grupo;
+  ProveedoresEntity? proveedor;
+  UnidadMedidaEntity? unidad;
+  GrupoEntity? grupo;
 
   Productos({
     this.id = 0,
