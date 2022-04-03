@@ -45,8 +45,14 @@ class _EgresoProductoState extends State<EgresoProducto> {
           WhiteCard(
             child: Column(
               children: [
+                Row(
+                  children: [
+                    Text("Codigo Ref"),
+                    Text(""),
+                  ],
+                ),
                 TextFormField(
-                  initialValue: egreso.ctrObservacion.text,
+                  initialValue: egreso.ctrCliente.text,
                   decoration: InputDecoration(labelText: "Nombre del Cliente"),
                   onChanged: (value) {
                     egreso.ctrObservacion.text = value;

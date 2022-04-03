@@ -8,6 +8,8 @@ class ModelRegistro extends EntityRegistro {
     this.idTipo = 0,
     this.detalle = "",
     this.estado = false,
+    this.referencia = 0,
+    this.cliente = "",
     this.createdAt = "",
     this.idSecundario = 0,
   }) : super(
@@ -16,10 +18,14 @@ class ModelRegistro extends EntityRegistro {
             detalle: detalle,
             estado: estado,
             createdAt: createdAt,
-            idSecundario: idSecundario);
+            idSecundario: idSecundario,
+            cliente: cliente,
+            referencia: referencia);
   int id;
   int idTipo;
   String detalle;
+  String cliente;
+  int referencia;
   bool estado;
   String createdAt;
   int idSecundario;
@@ -34,6 +40,8 @@ class ModelRegistro extends EntityRegistro {
         idTipo: json["idTipo"],
         detalle: json["detalle"],
         estado: json["estado"],
+        cliente: json["cliente"],
+        referencia: json["referencia"],
         idSecundario: json["idSecundario"],
         createdAt: json["createdAt"] ?? "",
       );
@@ -43,6 +51,8 @@ class ModelRegistro extends EntityRegistro {
         "idTipo": idTipo,
         "detalle": detalle,
         "estado": estado,
+        "cliente": cliente,
+        "referencia": referencia,
         "idSecundario": idSecundario,
         "createdAt": createdAt,
       };

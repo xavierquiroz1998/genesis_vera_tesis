@@ -59,7 +59,7 @@ class _IngresoViewState extends State<IngresoView> {
                         label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("observación")),
+                        label: Center(child: Text("Lote")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),
@@ -109,14 +109,7 @@ class _IngresoViewState extends State<IngresoView> {
                                       : e.productos!.detalle),
                             ),
                           ),
-                          DataCell(
-                            TextFormField(
-                              initialValue: e.observacion,
-                              onChanged: (value) {
-                                e.observacion = value;
-                              },
-                            ),
-                          ),
+                          DataCell(Text(e.lote)),
                           DataCell(
                             TextFormField(
                               initialValue: e.cantidad.toString(),

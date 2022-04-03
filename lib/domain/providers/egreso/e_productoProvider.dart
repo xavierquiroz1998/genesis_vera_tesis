@@ -5,6 +5,7 @@ import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGeneral.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../../entities/registro/entityRegistor.dart';
@@ -22,12 +23,25 @@ class EProductoProvider extends ChangeNotifier {
   set cab(EntityRegistro cab) {
     _cab = cab;
     ctrObservacion.text = cab.detalle;
+    ctrCliente.text = cab.cliente;
+    if (cab.id == 0) {
+      var asd = generar();
+    }
     notifyListeners();
   }
 
   List<EntityRegistro> listTableRegistrosDev = [];
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
+  TextEditingController _ctrCliente = new TextEditingController();
+
+  TextEditingController get ctrCliente => _ctrCliente;
+
+  set ctrCliente(TextEditingController ctrCliente) {
+    _ctrCliente = ctrCliente;
+    notifyListeners();
+  }
+
   List<Productos> listado = [];
   List<ModelMovimiento> listaMovimientos = [];
   double to = 0;
@@ -43,6 +57,7 @@ class EProductoProvider extends ChangeNotifier {
 
   set ctrObservacion(TextEditingController ctrObservacion) {
     _ctrObservacion = ctrObservacion;
+    notifyListeners();
   }
 
   Productos _prd = new Productos();
@@ -202,6 +217,16 @@ class EProductoProvider extends ChangeNotifier {
       notifyListeners();
     } catch (ex) {
       print("Error en cargar detalle egreso ${ex.toString()}");
+    }
+  }
+
+  String generar() {
+    final formato = new NumberFormat("{0:0000}");
+    try {
+      int total = listTableRegistrosDev.length;
+      return formato.format(total);
+    } catch (ex) {
+      return "0000";
     }
   }
 }

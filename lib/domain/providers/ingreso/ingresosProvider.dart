@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
@@ -85,7 +86,7 @@ class IngresosProvider extends ChangeNotifier {
   void agregar() {
     EntityRegistroDetalle det = new EntityRegistroDetalle();
     det.productos = new Productos();
-
+    det.lote = Random().nextInt(10000000).toString();
     detalles.add(det);
 
     notifyListeners();
@@ -138,7 +139,7 @@ class IngresosProvider extends ChangeNotifier {
 // registra movimiento
         ModelMovimiento md = new ModelMovimiento();
         md.idProducto = item.idProducto;
-        md.codigo = Random().nextInt(10000000).toString();
+        md.codigo = item.lote;
         await mov.insertMov(md);
       }
 

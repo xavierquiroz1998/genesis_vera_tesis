@@ -59,6 +59,7 @@ class RegistroDTSImp extends RegistroDTS {
 
       return tem;
     } catch (e) {
+      print("Erro en obtener registro ${e.toString()}");
       return [];
     }
   }
