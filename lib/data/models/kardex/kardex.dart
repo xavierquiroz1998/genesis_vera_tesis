@@ -1,5 +1,6 @@
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 
+// ignore: must_be_immutable
 class ModelKardex extends Kardex {
   ModelKardex({
     this.id = 0,
@@ -8,14 +9,14 @@ class ModelKardex extends Kardex {
     this.codPro = "",
     this.nomPro = "",
     this.proCanI = 0,
-    this.proUntI = "",
-    this.proTtlI = "",
+    this.proUntI = 0,
+    this.proTtlI = 0,
     this.proCanS = 0,
-    this.proUntS = "",
-    this.proTtlS = "",
+    this.proUntS = 0,
+    this.proTtlS = 0,
     this.proCanE = 0,
-    this.proUntE = "",
-    this.proTtlE = "",
+    this.proUntE = 0,
+    this.proTtlE = 0,
     this.fecPro,
     this.stsPro = false,
   }) : super(
@@ -41,15 +42,15 @@ class ModelKardex extends Kardex {
   String codMov;
   String codPro;
   String nomPro;
-  int proCanI;
-  String proUntI;
-  String proTtlI;
-  int proCanS;
-  String proUntS;
-  String proTtlS;
-  int proCanE;
-  String proUntE;
-  String proTtlE;
+  double proCanI;
+  double proUntI;
+  double proTtlI;
+  double proCanS;
+  double proUntS;
+  double proTtlS;
+  double proCanE;
+  double proUntE;
+  double proTtlE;
   DateTime? fecPro;
   bool stsPro;
 

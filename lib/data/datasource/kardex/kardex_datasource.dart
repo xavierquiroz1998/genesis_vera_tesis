@@ -21,7 +21,7 @@ class KardexDTSImp extends KardexDTS {
   Future<ModelKardex> deleteKardex(Kardex k) async {
     try {
       var grp = json.encode(k.toMap());
-
+      print(grp);
       final result = await cliente.delete(Uri.parse(urlBase),
           body: grp, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {

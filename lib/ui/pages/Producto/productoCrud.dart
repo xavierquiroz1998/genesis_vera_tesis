@@ -280,7 +280,6 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         btnOkOnPress: () {},
                       )..show();
 
-                      await kardex.entradas(opt, otra.isNotEmpty, true);
                       /* kardex.existencias(opt, true, otra.isEmpty); */
                       kardex.impresion();
 

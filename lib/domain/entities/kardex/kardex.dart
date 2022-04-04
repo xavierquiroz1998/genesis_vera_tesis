@@ -5,17 +5,18 @@ class Kardex extends Equatable {
   int idProducto;
   String codMov;
   String codPro;
-  int proCanI;
-  String proUntI;
-  String proTtlI;
 
-  int proCanS;
-  String proUntS;
-  String proTtlS;
+  double proCanI;
+  double proUntI;
+  double proTtlI;
 
-  int proCanE;
-  String proUntE;
-  String proTtlE;
+  double proCanS;
+  double proUntS;
+  double proTtlS;
+
+  double proCanE;
+  double proUntE;
+  double proTtlE;
 
   DateTime? fecPro;
   bool stsPro;
@@ -26,14 +27,14 @@ class Kardex extends Equatable {
     this.codMov = "",
     this.codPro = "",
     this.proCanI = 0,
-    this.proUntI = "",
-    this.proTtlI = "",
+    this.proUntI = 0.0,
+    this.proTtlI = 0.0,
     this.proCanS = 0,
-    this.proUntS = "",
-    this.proTtlS = "",
+    this.proUntS = 0.0,
+    this.proTtlS = 0.0,
     this.proCanE = 0,
-    this.proUntE = "",
-    this.proTtlE = "",
+    this.proUntE = 0.0,
+    this.proTtlE = 0.0,
     this.fecPro,
     this.stsPro = false,
   });

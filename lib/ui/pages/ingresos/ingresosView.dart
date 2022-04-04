@@ -153,6 +153,9 @@ class _IngresoViewState extends State<IngresoView> {
                           await ingreso.actualizar();
                         }
 
+                        for (var item in ingreso.detalles) {
+                          await kardex.entradas(item.productos!, true, true);
+                        }
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.SUCCES,

@@ -24,12 +24,12 @@ class KardexProvider extends ChangeNotifier {
     await getKardex();
     if (isExiste) {
       kardexUltimo = kardexRegistro
-          .where((element) => element.codPro == producto.referencia)
+          .where((element) => element.idProducto == producto.id)
           .toList()
           .reversed
           .first;
     }
-
+    print(kardexUltimo.proCanE + producto.cantidad);
     Kardex k = new Kardex(
         codMov: isTipo
             ? 'I-${kardexRegistro.length}'
@@ -38,11 +38,11 @@ class KardexProvider extends ChangeNotifier {
         codPro: producto.referencia,
         //nomPro: producto.detalle,
         //proCanI: producto.stock,
-        proUntI: producto.precio.toString(),
+        proUntI: producto.precio,
         //proTtlI: (producto.stock * producto.precio),
         proCanS: 0,
-        proUntS: "0",
-        proTtlS: "0",
+        proUntS: 0,
+        proTtlS: 0,
         proCanE: isExiste
             ? isTipo
                 ? kardexUltimo.proCanE + producto.cantidad
@@ -51,25 +51,20 @@ class KardexProvider extends ChangeNotifier {
         proUntE: isExiste
             ? isTipo
                 ? (((producto.cantidad * producto.precio) +
-                            kardexUltimo.proTtlE) /
-                        (kardexUltimo.proCanE + producto.cantidad))
-                    .toString()
+                        kardexUltimo.proTtlE) /
+                    (kardexUltimo.proCanE + producto.cantidad))
                 : ((((producto.cantidad * producto.precio) -
-                                kardexUltimo.proTtlE) /
-                            (kardexUltimo.proCanE - producto.cantidad)) *
-                        -1)
-                    .toString()
-            : ((producto.cantidad * producto.precio) / producto.cantidad)
-                .toString(),
+                            kardexUltimo.proTtlE) /
+                        (kardexUltimo.proCanE - producto.cantidad)) *
+                    -1)
+            : ((producto.cantidad * producto.precio) / producto.cantidad),
         proTtlE: isExiste
             ? isTipo
                 ? ((producto.cantidad * producto.precio) + kardexUltimo.proTtlE)
-                    .toString()
                 : (((producto.cantidad * producto.precio) -
-                            kardexUltimo.proTtlE) *
-                        -1)
-                    .toString()
-            : (producto.cantidad * producto.precio).toString(),
+                        kardexUltimo.proTtlE) *
+                    -1)
+            : (producto.cantidad * producto.precio),
         fecPro: DateTime.now(),
         stsPro: true); //pendiente
 
@@ -91,23 +86,21 @@ class KardexProvider extends ChangeNotifier {
           .first;
 /* VARIABLE ADICIONAL POR QUE ABAJO NO HACE BIEN EL
 CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
-      var total = double.parse(kardexUltimo.proTtlE) -
-          (cantidad * double.parse(kardexUltimo.proUntE));
+      var total = kardexUltimo.proTtlE - (cantidad * kardexUltimo.proUntE);
 
       Kardex k = new Kardex(
           codMov: 'S-00${kardexRegistro.length}',
           codPro: producto.referencia, //1
           //nomPro: producto.detalle, //martillo
           proCanI: 0,
-          proUntI: "0",
-          proTtlI: "0",
-          proCanS: cantidad.toInt(),
+          proUntI: 0,
+          proTtlI: 0,
+          proCanS: cantidad,
           proUntS: kardexUltimo.proUntE,
-          proTtlS:
-              (cantidad * double.parse(kardexUltimo.proUntE)).toString(), //
-          proCanE: producto.cantidad.toInt(),
-          proUntE: (total / producto.cantidad).toString(),
-          proTtlE: total.toString(),
+          proTtlS: cantidad * kardexUltimo.proUntE, //
+          proCanE: producto.cantidad,
+          proUntE: total / producto.cantidad,
+          proTtlE: total,
           fecPro: DateTime.now(),
           stsPro: true);
 
