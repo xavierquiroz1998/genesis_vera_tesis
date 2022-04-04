@@ -28,6 +28,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
     temProvider.cargarMovimientos();
     if (temProvider.cab.id != 0) {
       temProvider.cargarDetalle(temProvider.cab.id);
+      temProvider.generar(temProvider.cab.referencia);
+    } else {
+      temProvider.generar();
     }
     super.initState();
   }
@@ -48,14 +51,17 @@ class _EgresoProductoState extends State<EgresoProducto> {
                 Row(
                   children: [
                     Text("Codigo Ref"),
-                    Text(""),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text("NV-${egreso.codRef}-${DateTime.now().year}"),
                   ],
                 ),
                 TextFormField(
                   initialValue: egreso.ctrCliente.text,
                   decoration: InputDecoration(labelText: "Nombre del Cliente"),
                   onChanged: (value) {
-                    egreso.ctrObservacion.text = value;
+                    egreso.ctrCliente.text = value;
                   },
                 ),
                 TextFormField(
@@ -87,9 +93,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                       const DataColumn(
                         label: Center(child: Text("Stock ")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("observacion")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("observacion")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),
                       ),
@@ -173,14 +179,14 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           DataCell(e.productos != null
                               ? Text("${e.productos!.cantidad}")
                               : Text("")),
-                          DataCell(
-                            TextFormField(
-                              initialValue: e.observacion,
-                              onChanged: (value) {
-                                e.observacion = value;
-                              },
-                            ),
-                          ),
+                          // DataCell(
+                          //   TextFormField(
+                          //     initialValue: e.observacion,
+                          //     onChanged: (value) {
+                          //       e.observacion = value;
+                          //     },
+                          //   ),
+                          // ),
                           DataCell(
                             TextFormField(
                               inputFormatters: [

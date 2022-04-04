@@ -3,6 +3,7 @@ import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.d
 import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_det.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:intl/intl.dart';
 
 import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
@@ -53,17 +54,14 @@ class DevolucionProvider extends ChangeNotifier {
 
   Future<void> getRegistrosDev(int idTipo) async {
     try {
-      pedidoSelec = new EntityRegistro();
-      listTableRegistrosDev = [];
       var tem = await usesCases.getAll(idTipo);
 
       listTableRegistrosDev = tem.getOrElse(() => []);
-
-      notifyListeners();
     } catch (ex) {
       listTableRegistrosDev = [];
       print("erro en obtener lista ${ex.toString()}");
     }
+    notifyListeners();
   }
 
   Future<void> anular(EntityRegistro reg) async {
@@ -157,6 +155,16 @@ class DevolucionProvider extends ChangeNotifier {
     } catch (ex) {
       print("Error en cargar detalle devolucion ${ex.toString()}");
       throw ("This is an Error");
+    }
+  }
+
+  String generar(int value) {
+    final formato = new NumberFormat("0000.##");
+    try {
+      return formato.format(value);
+    } catch (ex) {
+      print("Error en generar codRef ${ex.toString()}");
+      return "0000";
     }
   }
 }

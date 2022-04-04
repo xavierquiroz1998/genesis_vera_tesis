@@ -19,14 +19,12 @@ class EProductoProvider extends ChangeNotifier {
   EntityRegistro _cab = new EntityRegistro();
 
   EntityRegistro get cab => _cab;
+  String codRef = "";
 
   set cab(EntityRegistro cab) {
     _cab = cab;
     ctrObservacion.text = cab.detalle;
     ctrCliente.text = cab.cliente;
-    if (cab.id == 0) {
-      var asd = generar();
-    }
     notifyListeners();
   }
 
@@ -135,6 +133,8 @@ class EProductoProvider extends ChangeNotifier {
       reg.idTipo = 2;
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
+      reg.cliente = ctrCliente.text;
+      reg.referencia = int.parse(codRef);
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
@@ -142,28 +142,6 @@ class EProductoProvider extends ChangeNotifier {
         item.idRegistro = tem.id;
         var detResultv = await usesCases.insertRegistrosDetalles(item);
       }
-
-//--------------------------------------------
-      // int sec = 0;
-      // for (var item in listaProducto.detalle!) {
-      //   var result =
-      //       Estaticas.listProductos.firstWhere((e) => e.id == item.idProducto);
-      //   if (result.id > 0) {
-      //     //double totalStock = result.stock! - item.cantidad;
-      //     Estaticas.listProductos.remove(result);
-      //     //result.stock = totalStock;
-      //     Estaticas.listProductos.add(result);
-      //     item.idEgresoDetalle = item.secuencia = sec++;
-      //     item.total = item.cantidad * item.precio!;
-      //   }
-      // }
-      // listaProducto.observacion = ctrObservacion.text;
-      // listaProducto.estado = "A";
-      // listaProducto.detalle!.forEach((e) {
-      //   listaProducto.total += e.total!;
-      // });
-      // listaProducto.idEgreso = Estaticas.listProductosEgreso.length + 1;
-      // Estaticas.listProductosEgreso.add(listaProducto);
     } catch (e) {
       print("Error en guardar ${e.toString()}");
       throw ("Error ${e.toString()}");
@@ -191,6 +169,7 @@ class EProductoProvider extends ChangeNotifier {
     try {
       if (cab.id != 0) {
         cab.detalle = ctrObservacion.text;
+        cab.cliente = ctrCliente.text;
         var tem = await usesCases.updateRegistros(cab);
         var result = tem.getOrElse(() => new EntityRegistro());
         //detalle
@@ -220,13 +199,15 @@ class EProductoProvider extends ChangeNotifier {
     }
   }
 
-  String generar() {
-    final formato = new NumberFormat("{0:0000}");
+  void generar([int exis = 0]) {
+    final formato = new NumberFormat("0000.##");
     try {
-      int total = listTableRegistrosDev.length;
-      return formato.format(total);
+      int total = exis == 0 ? listTableRegistrosDev.length + 1 : exis;
+      codRef = formato.format(total);
     } catch (ex) {
-      return "0000";
+      print("Error en generar codRef ${ex.toString()}");
+      codRef = "0000";
     }
+    notifyListeners();
   }
 }

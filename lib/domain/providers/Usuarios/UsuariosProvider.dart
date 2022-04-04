@@ -11,6 +11,14 @@ import '../../uses cases/usuarios/update_usuarios.dart';
 class UsuariosProvider extends ChangeNotifier {
   String isShowUpdate = "1";
   bool blockCedula = true;
+  RegistUser _usuario = new RegistUser();
+
+  RegistUser get usuario => _usuario;
+
+  set usuario(RegistUser usuario) {
+    _usuario = usuario;
+    notifyListeners();
+  }
 
   final GetUsuarios usuarios;
   final InsertUsuarios insertUser;
@@ -92,12 +100,12 @@ class UsuariosProvider extends ChangeNotifier {
   void fillText(RegistUser usuario) {
     try {
       // controlCedula.text = usuario.cedula;
-      // controlNombre.text = usuario.nombres;
+      controlNombre.text = usuario.nombre;
       // controlDireccion.text = usuario.direccion;
-      // controlEmail.text = usuario.correo;
-      // controlCelular.text = usuario.celular;
-      controlpassword.text = "";
-      controlpassword2.text = "";
+      controlEmail.text = usuario.email;
+      //controlCelular.text = usuario.;
+      controlpassword.text = usuario.clave;
+      controlpassword2.text = usuario.clave;
       blockCedula = false;
       isShowUpdate = "0";
       notifyListeners();

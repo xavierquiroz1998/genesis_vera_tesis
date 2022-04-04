@@ -56,18 +56,17 @@ class _DevolucionViewState extends State<DevolucionView> {
                   height: 20,
                 ),
                 DropdownButtonFormField<String>(
-                  onTap: () {
-                    devolucio.pedidoSelec = new EntityRegistro();
-                  },
+                  onTap: () {},
                   onChanged: (value) async {
                     tipoDevSelect = value!;
-
+                    devolucio.pedidoSelec = new EntityRegistro();
+                    devolucio.detalles = [];
                     if (tipoDevSelect == "PROVEEDOR") {
                       await devolucio.getRegistrosDev(1);
                     } else if (tipoDevSelect == "CLIENTE") {
                       await devolucio.getRegistrosDev(2);
                     }
-                    setState(() {});
+                    //setState(() {});
                     //producto.product.tipoProdcuto = value!.codRef;
                   },
                   items: tipoDev.map((item) {
@@ -106,7 +105,9 @@ class _DevolucionViewState extends State<DevolucionView> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              item.detalle,
+                              tipoDevSelect == "CLIENTE"
+                                  ? "NV-${devolucio.generar(item.referencia)}-${DateTime.now().year} ${item.cliente}"
+                                  : item.detalle,
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.w400),
                             ),
@@ -115,30 +116,34 @@ class _DevolucionViewState extends State<DevolucionView> {
                       )
                       .toList(),
                   decoration: CustomInputs.formInputDecoration(
-                      hint: '', label: 'Seleccione Pedido', icon: Icons.info),
+                      hint: '',
+                      label: tipoDevSelect == "CLIENTE"
+                          ? 'Seleccione Nota Venta'
+                          : 'Seleccione Nota Pedido',
+                      icon: Icons.info),
                 ),
                 SizedBox(
                   height: 10,
                 ),
 
-                Row(
-                  children: [
-                    Text("Tipo de Flujo : "),
-                    SizedBox(width: 20),
-                    for (var item in tipoFlujo) ...{
-                      Radio(
-                        value: item,
-                        groupValue: flujoSelect,
-                        onChanged: (value) {
-                          flujoSelect = value.toString();
-                          setState(() {});
-                        },
-                      ),
-                      Text("$item"),
-                      SizedBox(width: 20),
-                    },
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Text("Tipo de Flujo : "),
+                //     SizedBox(width: 20),
+                //     for (var item in tipoFlujo) ...{
+                //       Radio(
+                //         value: item,
+                //         groupValue: flujoSelect,
+                //         onChanged: (value) {
+                //           flujoSelect = value.toString();
+                //           setState(() {});
+                //         },
+                //       ),
+                //       Text("$item"),
+                //       SizedBox(width: 20),
+                //     },
+                //   ],
+                // ),
 
                 // DropdownButtonFormField<String>(
                 //   onChanged: (value) async {
@@ -184,7 +189,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("observacion")),
+                        label: Center(child: Text("Flujo")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),
@@ -204,33 +209,37 @@ class _DevolucionViewState extends State<DevolucionView> {
                         //key: LocalKey(),
                         cells: <DataCell>[
                           DataCell(
-                            DropdownButton<Productos>(
-                              items: devolucio.listado
-                                  .map(
-                                    (eDrop) => DropdownMenuItem<Productos>(
-                                      child: Container(
-                                        constraints:
-                                            BoxConstraints(maxWidth: 150),
-                                        child: Text(
-                                          eDrop.nombre,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
+                            IgnorePointer(
+                              ignoring: true,
+                              child: DropdownButton<Productos>(
+                                items: devolucio.listado
+                                    .map(
+                                      (eDrop) => DropdownMenuItem<Productos>(
+                                        enabled: false,
+                                        child: Container(
+                                          constraints:
+                                              BoxConstraints(maxWidth: 150),
+                                          child: Text(
+                                            eDrop.nombre,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
+                                        value: eDrop,
                                       ),
-                                      value: eDrop,
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                e.idProducto = value!.id;
-                                e.productos = value;
-                                setState(() {});
-                              },
-                              hint: e.idProducto == 0
-                                  ? Text("Seleccione Producto")
-                                  : Text(e.productos!.detalle.length > 15
-                                      ? e.productos!.detalle.substring(0, 15)
-                                      : e.productos!.detalle),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  e.idProducto = value!.id;
+                                  e.productos = value;
+                                  setState(() {});
+                                },
+                                hint: e.idProducto == 0
+                                    ? Text("Seleccione Producto")
+                                    : Text(e.productos!.detalle.length > 15
+                                        ? e.productos!.detalle.substring(0, 15)
+                                        : e.productos!.detalle),
+                              ),
                             ),
                             // Combo(
                             //   provider: devolucio,
@@ -238,11 +247,27 @@ class _DevolucionViewState extends State<DevolucionView> {
                             // ),
                           ),
                           DataCell(
-                            TextFormField(
-                              initialValue: e.observacion,
-                              onChanged: (value) {
-                                e.observacion = value;
+                            DropdownButtonFormField<String>(
+                              onChanged: (value) async {
+                                flujoSelect = value!;
                               },
+                              items: tipoFlujo.map((item) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400),
+                                      )),
+                                );
+                              }).toList(),
+                              decoration: CustomInputs.formInputDecoration(
+                                  hint: '',
+                                  label: 'Seleccione Flujo',
+                                  icon: Icons.info),
                             ),
                           ),
                           DataCell(
