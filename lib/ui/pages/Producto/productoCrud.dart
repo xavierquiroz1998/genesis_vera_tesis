@@ -23,7 +23,7 @@ class ProductoCrud extends StatefulWidget {
 
 class _ProductoCrudState extends State<ProductoCrud> {
   List<String> tipoDev = ["A", "B", "C"];
-
+  final keyProducto = GlobalKey<FormState>();
   @override
   void initState() {
     final cargaPRd = Provider.of<ProductosProvider>(context, listen: false);
@@ -53,7 +53,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Form(
-                      key: producto.keyProducto,
+                      key: keyProducto,
                       child: Wrap(
                         children: [
                           Container(
@@ -128,7 +128,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               decoration: CustomInputs.formInputDecoration(
                                   hint: 'Precio',
                                   label: 'Precio',
-                                  icon: Icons.delete_outline),
+                                  icon: Icons.monetization_on),
                             ),
                           ),
                         ],

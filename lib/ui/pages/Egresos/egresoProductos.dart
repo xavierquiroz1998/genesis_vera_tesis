@@ -56,11 +56,11 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
+                      // const DataColumn(
+                      //   label: Center(child: Text("Id")),
+                      // ),
                       const DataColumn(
-                        label: Center(child: Text("Id")),
-                      ),
-                      const DataColumn(
-                        label: Center(child: Text("Observación")),
+                        label: Center(child: Text("Cod Ref.")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Estado")),
@@ -76,11 +76,12 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
+                          // DataCell(
+                          //   Text(e.id.toString()),
+                          // ),
                           DataCell(
-                            Text(e.id.toString()),
-                          ),
-                          DataCell(
-                            Text(e.detalle.toString()),
+                            Text(
+                                "NV-${egreso.generarTitulo(e.referencia)}-${DateTime.now().year} ${e.cliente}"),
                           ),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,

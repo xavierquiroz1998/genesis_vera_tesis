@@ -199,6 +199,16 @@ class EProductoProvider extends ChangeNotifier {
     }
   }
 
+  String generarTitulo(int exis) {
+    final formato = new NumberFormat("0000.##");
+    try {
+      return formato.format(exis);
+    } catch (ex) {
+      print("Error en generar codRef ${ex.toString()}");
+      return "0000";
+    }
+  }
+
   void generar([int exis = 0]) {
     final formato = new NumberFormat("0000.##");
     try {

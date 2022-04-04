@@ -136,6 +136,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               onChanged: (value) {
                                 e.idProducto = value!.id;
                                 e.productos = value;
+                                e.total = value.precio;
                                 setState(() {});
                               },
                               hint: e.idProducto == 0
@@ -203,7 +204,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           ),
                           DataCell(
                             TextFormField(
-                              initialValue: e.total.toString(),
+                              initialValue: NumberFormat.currency(
+                                      locale: 'en_US', symbol: r'$')
+                                  .format(e.total),
                               onChanged: (value) {
                                 e.total = double.parse(value);
                                 egreso.calcular();
