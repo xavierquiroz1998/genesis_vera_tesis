@@ -64,9 +64,7 @@ class ProductosProvider extends ChangeNotifier {
       this.productoGeneral,
       this.parametros);
 
-  final _keyProducto = GlobalKey<FormState>();
-
-  GlobalKey<FormState> get keyProducto => _keyProducto;
+  //GlobalKey<FormState> get keyProducto => _keyProducto;
 
   TextEditingController get controllerPrecio => _controllerPrecio;
 

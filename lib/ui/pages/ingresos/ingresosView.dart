@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/providers/ingreso/ingresosProvider.dart';
+import '../../style/custom_inputs.dart';
 
 class IngresoView extends StatefulWidget {
   const IngresoView({Key? key}) : super(key: key);
@@ -121,7 +122,9 @@ class _IngresoViewState extends State<IngresoView> {
                           ),
                           DataCell(
                             TextFormField(
-                              initialValue: e.total.toString(),
+                              initialValue: NumberFormat.currency(
+                                      locale: 'en_US', symbol: r'$')
+                                  .format(e.total),
                               onChanged: (value) {
                                 e.to = double.parse(value);
                                 ingreso.calcular();

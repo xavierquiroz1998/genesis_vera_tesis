@@ -285,6 +285,8 @@ class _DevolucionViewState extends State<DevolucionView> {
                               placeholder: true),
                           DataCell(
                             TextFormField(
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.monetization_on)),
                               initialValue: "${e.total}",
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
