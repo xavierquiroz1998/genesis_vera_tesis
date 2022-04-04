@@ -8,6 +8,7 @@ import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.da
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGeneral.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/movimiento/modelMovimiento.dart';
@@ -211,7 +212,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             ),
                           ),
                           DataCell(
-                            Text(e.to.toString()),
+                            Text(NumberFormat.currency(
+                                    locale: 'en_US', symbol: r'$')
+                                .format(e.to)),
                           ),
                           DataCell(Icon(Icons.delete), onTap: () {
                             egreso.remover(e);
