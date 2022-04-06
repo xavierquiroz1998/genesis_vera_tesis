@@ -32,6 +32,8 @@ class _ProductoCrudState extends State<ProductoCrud> {
     cargaPRd.cargarProveedores();
     if (cargaPRd.product.id != 0) {
       cargaPRd.cargarDetalle();
+    } else {
+      cargaPRd.generar();
     }
     super.initState();
   }
@@ -52,26 +54,44 @@ class _ProductoCrudState extends State<ProductoCrud> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Row(
+                      children: [
+                        Text("Codigo Ref"),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text("INP-${producto.codRef}"),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text("Lote"),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text("${producto.product.lote}"),
+                      ],
+                    ),
                     Form(
                       key: keyProducto,
                       child: Wrap(
                         children: [
-                          Container(
-                            constraints:
-                                BoxConstraints(maxWidth: 300, minWidth: 100),
-                            child: TextFormField(
-                              controller: producto.controllerCodigo,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Ingrese Código";
-                                }
-                              },
-                              decoration: CustomInputs.formInputDecoration(
-                                  hint: 'Código',
-                                  label: 'Código',
-                                  icon: Icons.delete_outline),
-                            ),
-                          ),
+                          // Container(
+                          //   constraints:
+                          //       BoxConstraints(maxWidth: 300, minWidth: 100),
+                          //   child: TextFormField(
+                          //     controller: producto.controllerCodigo,
+                          //     validator: (value) {
+                          //       if (value!.isEmpty) {
+                          //         return "Ingrese Código";
+                          //       }
+                          //     },
+                          //     decoration: CustomInputs.formInputDecoration(
+                          //         hint: 'Código',
+                          //         label: 'Código',
+                          //         icon: Icons.delete_outline),
+                          //   ),
+                          // ),
                           Container(
                             constraints:
                                 BoxConstraints(maxWidth: 300, minWidth: 100),
@@ -279,8 +299,8 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         desc: '',
                         btnOkOnPress: () {},
                       )..show();
+                      await kardex.entradas(opt!, true, true);
 
-                      /* kardex.existencias(opt, true, otra.isEmpty); */
                       kardex.impresion();
 
                       NavigationService.replaceTo("/ingresos");

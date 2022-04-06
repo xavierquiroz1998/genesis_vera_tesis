@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
@@ -57,11 +58,11 @@ class _IngresosViewState extends State<IngresosView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
+                      // const DataColumn(
+                      //   label: Center(child: Text("Id")),
+                      // ),
                       const DataColumn(
-                        label: Center(child: Text("Id")),
-                      ),
-                      const DataColumn(
-                        label: Center(child: Text("Observación")),
+                        label: Center(child: Text("Cod Ref.")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Estado")),
@@ -77,11 +78,11 @@ class _IngresosViewState extends State<IngresosView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
+                          // DataCell(
+                          //   Text(e.id.toString()),
+                          // ),
                           DataCell(
-                            Text(e.id.toString()),
-                          ),
-                          DataCell(
-                            Text(e.detalle.toString()),
+                            Text("NV-${Helper.generarTitulo(e.referencia)} "),
                           ),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,

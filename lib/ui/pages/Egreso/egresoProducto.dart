@@ -55,7 +55,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                     SizedBox(
                       width: 20,
                     ),
-                    Text("NV-${egreso.codRef}-${DateTime.now().year}"),
+                    Text("NV-${egreso.codRef}"),
                   ],
                 ),
                 TextFormField(
@@ -101,7 +101,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("cantidad")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Precio")),
+                        label: Center(child: Text(r"$ Precio")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Total")),
@@ -204,9 +204,10 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           ),
                           DataCell(
                             TextFormField(
-                              initialValue: NumberFormat.currency(
-                                      locale: 'en_US', symbol: r'$')
-                                  .format(e.total),
+                              // initialValue: NumberFormat.currency(
+                              //         locale: 'en_US', symbol: r'$')
+                              //     .format(e.total),
+                              initialValue: e.total.toString(),
                               onChanged: (value) {
                                 e.total = double.parse(value);
                                 egreso.calcular();

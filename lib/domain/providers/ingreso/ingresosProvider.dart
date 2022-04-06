@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../../entities/registro/entityRegistor.dart';
@@ -19,6 +20,8 @@ class IngresosProvider extends ChangeNotifier {
   EntityRegistro _cab = new EntityRegistro();
 
   EntityRegistro get cab => _cab;
+
+  String codRef = "";
 
   set cab(EntityRegistro cab) {
     _cab = cab;
@@ -126,6 +129,7 @@ class IngresosProvider extends ChangeNotifier {
       reg.idTipo = 1;
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
+      reg.referencia = int.parse(codRef);
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
@@ -202,6 +206,21 @@ class IngresosProvider extends ChangeNotifier {
       }
     } catch (ex) {}
 
+    notifyListeners();
+  }
+
+  void generar([int exis = 0]) async {
+    final formato = new NumberFormat("0000.##");
+    try {
+      if (listTableRegistrosDev.length == 0) {
+        await getRegistrosDev();
+      }
+      int total = exis == 0 ? listTableRegistrosDev.length + 1 : exis;
+      codRef = formato.format(total);
+    } catch (ex) {
+      print("Error en generar codRef ${ex.toString()}");
+      codRef = "0000";
+    }
     notifyListeners();
   }
 }

@@ -195,7 +195,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         label: Center(child: Text("cantidad")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Precio")),
+                        label: Center(child: Text(r"$ Precio")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Total")),
@@ -285,8 +285,6 @@ class _DevolucionViewState extends State<DevolucionView> {
                               placeholder: true),
                           DataCell(
                             TextFormField(
-                              decoration: InputDecoration(
-                                  icon: Icon(Icons.monetization_on)),
                               initialValue: "${e.total}",
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(

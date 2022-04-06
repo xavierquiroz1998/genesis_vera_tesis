@@ -16,6 +16,7 @@ class Productos extends Equatable {
   int idProveedor;
   int idGrupo;
   bool estado;
+  String lote;
   ProveedoresEntity? proveedor;
   UnidadMedidaEntity? unidad;
   GrupoEntity? grupo;
@@ -31,6 +32,7 @@ class Productos extends Equatable {
     this.idUnidad = 0,
     this.idProveedor = 0,
     this.idGrupo = 0,
+    this.lote = "",
     this.estado = false,
   });
 

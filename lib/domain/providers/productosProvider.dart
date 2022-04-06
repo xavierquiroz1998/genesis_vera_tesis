@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:darq/darq.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/core/Errors/failure.dart';
@@ -9,6 +11,7 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/parametros/parametros_gen
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/models/movimiento/modelMovimiento.dart';
 import '../entities/Proveedores/Proveedores.dart';
@@ -32,6 +35,7 @@ class ProductosProvider extends ChangeNotifier {
   List<Clasificacion> lisCla = [];
   List<Aprovisionar> aprovisionamientos = [];
   List<Aprovisionar> mostrarItems = [];
+  String codRef = "";
 
   TextEditingController get controllerHolgura => _controllerHolgura;
 
@@ -102,6 +106,7 @@ class ProductosProvider extends ChangeNotifier {
     controllerCodigo.text = p.referencia;
     controllerStock.text = p.cantidad.toString();
     controllerPrecio.text = p.precio.toString();
+    p.lote = Random().nextInt(10000000).toString();
     notifyListeners();
   }
 
@@ -353,13 +358,14 @@ class ProductosProvider extends ChangeNotifier {
     var opt = false;
 
     try {
-      product.referencia = controllerCodigo.text;
+      product.referencia = int.parse(codRef).toString();
       p.nombre = controllerDescripcion.text;
       p.detalle = controllerDescripcion.text;
 
       p.cantidad = double.tryParse(controllerStock.text) ?? 0;
       product.precio = double.tryParse(controllerPrecio.text) ?? 0;
       product.estado = true;
+
       var tem = await insertarProducto.insert(p);
       product = tem.getOrElse(() => new Productos());
       // if (keyProducto.currentState!.validate()) {
@@ -435,6 +441,21 @@ class ProductosProvider extends ChangeNotifier {
       var tem = await productoGeneral.update(p);
       product = tem.getOrElse(() => new Productos());
     } catch (ex) {}
+    notifyListeners();
+  }
+
+  void generar([int exis = 0]) async {
+    final formato = new NumberFormat("0000.##");
+    try {
+      if (listado.length == 0) {
+        await cargarPrd();
+      }
+      int total = exis == 0 ? listado.length + 1 : exis;
+      codRef = formato.format(total);
+    } catch (ex) {
+      print("Error en generar codRef ${ex.toString()}");
+      codRef = "0000";
+    }
     notifyListeners();
   }
 }

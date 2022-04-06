@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +82,7 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                           // ),
                           DataCell(
                             Text(
-                                "NV-${egreso.generarTitulo(e.referencia)}-${DateTime.now().year} ${e.cliente}"),
+                                "NV-${Helper.generarTitulo(e.referencia)} ${e.cliente}"),
                           ),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,

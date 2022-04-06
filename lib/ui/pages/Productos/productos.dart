@@ -6,6 +6,7 @@ import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.da
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:intl/intl.dart';
@@ -55,9 +56,9 @@ class _ProductosTableState extends State<ProductosTable> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
-                      const DataColumn(
-                        label: Center(child: Text("Id")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Id")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("Código")),
                       ),
@@ -94,12 +95,13 @@ class _ProductosTableState extends State<ProductosTable> {
                         }),
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          DataCell(
-                            Text(e.id.toString()),
-                          ),
+                          // DataCell(
+                          //   Text(e.id.toString()),
+                          // ),
                           DataCell(
                             //Text(e.codigo.toString()),
-                            Text(e.referencia.toString()),
+                            Text(
+                                "INP-${Helper.generarTitulo(int.parse(e.referencia))}"),
                           ),
                           DataCell(
                             Text(e.detalle),

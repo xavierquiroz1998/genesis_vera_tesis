@@ -25,6 +25,9 @@ class _IngresoViewState extends State<IngresoView> {
     temProvider.cargarPrd();
     if (temProvider.cab.id != 0) {
       temProvider.cargarDetalle(temProvider.cab.id);
+      temProvider.generar(temProvider.cab.referencia);
+    } else {
+      temProvider.generar();
     }
     super.initState();
   }
@@ -39,6 +42,15 @@ class _IngresoViewState extends State<IngresoView> {
           WhiteCard(
             child: Column(
               children: [
+                Row(
+                  children: [
+                    Text("Codigo Ref"),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text("NI-${ingreso.codRef}"),
+                  ],
+                ),
                 TextFormField(
                   initialValue: ingreso.ctrObservacion.text,
                   decoration: InputDecoration(labelText: "Observación"),
@@ -66,7 +78,7 @@ class _IngresoViewState extends State<IngresoView> {
                         label: Center(child: Text("cantidad")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Precio")),
+                        label: Center(child: Text(r"$ Precio")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Total")),
@@ -122,11 +134,12 @@ class _IngresoViewState extends State<IngresoView> {
                           ),
                           DataCell(
                             TextFormField(
-                              initialValue: NumberFormat.currency(
+                              /*     // initialValue: NumberFormat.currency(
                                       locale: 'en_US', symbol: r'$')
-                                  .format(e.total),
+                                  .format(e.total), */
+                              initialValue: e.total.toString(),
                               onChanged: (value) {
-                                e.to = double.parse(value);
+                                e.total = double.parse(value);
                                 ingreso.calcular();
                                 //e.total = e.cantidad * e.precio!;
                               },
@@ -157,7 +170,7 @@ class _IngresoViewState extends State<IngresoView> {
                         }
 
                         for (var item in ingreso.detalles) {
-                          await kardex.entradas(item.productos!, true, true);
+                          await kardex.entradas(item.productos!, false, true);
                         }
                         AwesomeDialog(
                           context: context,

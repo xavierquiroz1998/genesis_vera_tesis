@@ -20,7 +20,6 @@ class EProductoProvider extends ChangeNotifier {
 
   EntityRegistro get cab => _cab;
   String codRef = "";
-
   set cab(EntityRegistro cab) {
     _cab = cab;
     ctrObservacion.text = cab.detalle;
@@ -196,16 +195,6 @@ class EProductoProvider extends ChangeNotifier {
       notifyListeners();
     } catch (ex) {
       print("Error en cargar detalle egreso ${ex.toString()}");
-    }
-  }
-
-  String generarTitulo(int exis) {
-    final formato = new NumberFormat("0000.##");
-    try {
-      return formato.format(exis);
-    } catch (ex) {
-      print("Error en generar codRef ${ex.toString()}");
-      return "0000";
     }
   }
 
