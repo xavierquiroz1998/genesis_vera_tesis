@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
@@ -24,6 +23,8 @@ class _DevolucionViewState extends State<DevolucionView> {
   List<String> tipoFlujo = ["+", "-"];
   String tipoDevSelect = "";
   String flujoSelect = "-";
+  DateTime selectedDate = new DateTime.now();
+  final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
   @override
   void initState() {
@@ -31,8 +32,23 @@ class _DevolucionViewState extends State<DevolucionView> {
     provi.cargarPrd();
     if (provi.cab.id != 0) {
       provi.cargarDetalle(provi.cab.id);
+      //provi.generarT(provi.cab.referencia);
     }
     super.initState();
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        //_dateController.text = DateFormat.yMd().format(selectedDate);
+      });
   }
 
   @override
@@ -48,6 +64,31 @@ class _DevolucionViewState extends State<DevolucionView> {
                 : "Modificar Devolución",
             child: Column(
               children: [
+                Row(
+                  children: [
+                    Text("Codigo Ref"),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text("${devolucio.codRef}"),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text("Fecha"),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: Container(
+                          child: Text("${formatter.format(selectedDate)}"),
+                        ))
+                  ],
+                ),
                 TextFormField(
                   controller: devolucio.ctrObservacion,
                   decoration: InputDecoration(labelText: "Observación"),
@@ -63,9 +104,14 @@ class _DevolucionViewState extends State<DevolucionView> {
                     devolucio.detalles = [];
                     if (tipoDevSelect == "PROVEEDOR") {
                       await devolucio.getRegistrosDev(1);
+
+                      devolucio.codRef = "Dev / pr-";
                     } else if (tipoDevSelect == "CLIENTE") {
                       await devolucio.getRegistrosDev(2);
+                      devolucio.codRef = "Dev / cl-";
                     }
+                    var ref = await devolucio.generarT();
+                    devolucio.codRef += ref;
                     //setState(() {});
                     //producto.product.tipoProdcuto = value!.codRef;
                   },
@@ -106,7 +152,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               tipoDevSelect == "CLIENTE"
-                                  ? "NV-${devolucio.generar(item.referencia)}-${DateTime.now().year} ${item.cliente}"
+                                  ? "NV-${devolucio.generar(item.referencia)} ${item.cliente}"
                                   : item.detalle,
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.w400),
@@ -195,7 +241,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         label: Center(child: Text("cantidad")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text(r"$ Precio")),
+                        label: Center(child: Text(r"$ Costo Uni.")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Total")),
@@ -395,6 +441,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         }
 
                         if (devolucio.msgError == "") {
+                          await devolucio.getRegistrosDev(3);
                           NavigationService.replaceTo("/devoluciones");
                         } else {
                           // mensaje alerta
@@ -403,8 +450,10 @@ class _DevolucionViewState extends State<DevolucionView> {
                       child: Text("Guardar"), // cliente
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
+                      onPressed: () async {
+                        await devolucio.getRegistrosDev(3);
+                        NavigationService.replaceTo("/devoluciones");
+                        //Navigator.pop(context);
                       },
                       child: Text("Cancelar"),
                     ),

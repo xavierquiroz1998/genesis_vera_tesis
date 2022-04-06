@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Kiarita',
         debugShowCheckedModeBanner: false,
-        initialRoute: "/login", //"/inicio",
+        initialRoute: "/login",
         onGenerateRoute: Flurorouter.router.generator,
         navigatorKey: NavigationService.navigatorKey,
         theme: ThemeData(

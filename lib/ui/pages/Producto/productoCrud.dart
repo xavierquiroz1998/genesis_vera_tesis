@@ -63,6 +63,9 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         Text("INP-${producto.codRef}"),
                       ],
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       children: [
                         Text("Lote"),
@@ -141,13 +144,13 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Ingrese Precio";
+                                  return "Ingrese Precio Unitario";
                                 }
                               },
                               controller: producto.controllerPrecio,
                               decoration: CustomInputs.formInputDecoration(
-                                  hint: 'Precio',
-                                  label: 'Precio',
+                                  hint: 'Precio Unitario',
+                                  label: 'Precio Unitario',
                                   icon: Icons.monetization_on),
                             ),
                           ),
@@ -299,7 +302,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         desc: '',
                         btnOkOnPress: () {},
                       )..show();
-                      await kardex.entradas(opt!, true, true);
+                      await kardex.entradas(opt, true, true);
 
                       kardex.impresion();
 

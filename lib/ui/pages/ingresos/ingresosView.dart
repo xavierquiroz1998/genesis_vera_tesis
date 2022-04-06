@@ -19,6 +19,9 @@ class IngresoView extends StatefulWidget {
 }
 
 class _IngresoViewState extends State<IngresoView> {
+  DateTime selectedDate = new DateTime.now();
+  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+
   @override
   void initState() {
     var temProvider = Provider.of<IngresosProvider>(context, listen: false);
@@ -30,6 +33,20 @@ class _IngresoViewState extends State<IngresoView> {
       temProvider.generar();
     }
     super.initState();
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        //_dateController.text = DateFormat.yMd().format(selectedDate);
+      });
   }
 
   @override
@@ -49,6 +66,22 @@ class _IngresoViewState extends State<IngresoView> {
                       width: 20,
                     ),
                     Text("NI-${ingreso.codRef}"),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text("Fecha"),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: Container(
+                          child: Text("${formatter.format(selectedDate)}"),
+                        ))
                   ],
                 ),
                 TextFormField(
@@ -78,7 +111,7 @@ class _IngresoViewState extends State<IngresoView> {
                         label: Center(child: Text("cantidad")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text(r"$ Precio")),
+                        label: Center(child: Text(r"$ Costo Uni.")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Total")),
