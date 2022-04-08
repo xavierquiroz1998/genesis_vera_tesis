@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/registro/entityRegistor.dart';
-import '../../../domain/providers/egreso/e_productoProvider.dart';
 import '../../../domain/providers/ingreso/ingresosProvider.dart';
 
 class IngresosView extends StatefulWidget {
