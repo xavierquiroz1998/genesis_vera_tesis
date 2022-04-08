@@ -56,9 +56,9 @@ class _IngresosViewState extends State<IngresosView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
-                      // const DataColumn(
-                      //   label: Center(child: Text("Id")),
-                      // ),
+                      const DataColumn(
+                        label: Center(child: Text("Fecha")),
+                      ),
                       const DataColumn(
                         label: Center(child: Text("Cod Ref.")),
                       ),
@@ -76,9 +76,9 @@ class _IngresosViewState extends State<IngresosView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          // DataCell(
-                          //   Text(e.id.toString()),
-                          // ),
+                          DataCell(
+                            Text(e.fecha),
+                          ),
                           DataCell(
                             Text("NI-${Helper.generarTitulo(e.referencia)} "),
                           ),

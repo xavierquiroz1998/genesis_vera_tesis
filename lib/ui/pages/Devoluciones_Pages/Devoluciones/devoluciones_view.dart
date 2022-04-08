@@ -49,9 +49,9 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
-                      // const DataColumn(
-                      //   label: Center(child: Text("Id")),
-                      // ),
+                      const DataColumn(
+                        label: Center(child: Text("Fecha")),
+                      ),
                       const DataColumn(
                         label: Center(child: Text("Codido Ref")),
                       ),
@@ -69,9 +69,9 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          // DataCell(
-                          //   Text(e.id.toString()),
-                          // ),
+                          DataCell(
+                            Text(e.fecha),
+                          ),
                           DataCell(Text(e.cliente == "P"
                               ? "Dev / pr-${Helper.generarTitulo(e.referencia).toString()}"
                               : "Dev / cl-${Helper.generarTitulo(e.referencia).toString()}")),

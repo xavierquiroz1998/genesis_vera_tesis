@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
@@ -57,9 +56,9 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
-                      // const DataColumn(
-                      //   label: Center(child: Text("Id")),
-                      // ),
+                      const DataColumn(
+                        label: Center(child: Text("Fecha")),
+                      ),
                       const DataColumn(
                         label: Center(child: Text("Cod Ref.")),
                       ),
@@ -77,9 +76,9 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          // DataCell(
-                          //   Text(e.id.toString()),
-                          // ),
+                          DataCell(
+                            Text(e.fecha),
+                          ),
                           DataCell(
                             Text(
                                 "NV-${Helper.generarTitulo(e.referencia)} ${e.cliente}"),
