@@ -2,11 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
-import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGeneral.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +20,9 @@ class EgresoProducto extends StatefulWidget {
 }
 
 class _EgresoProductoState extends State<EgresoProducto> {
+  DateTime selectedDate = new DateTime.now();
+  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+
   @override
   void initState() {
     var temProvider = Provider.of<EProductoProvider>(context, listen: false);
@@ -34,6 +35,20 @@ class _EgresoProductoState extends State<EgresoProducto> {
       temProvider.generar();
     }
     super.initState();
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        //_dateController.text = DateFormat.yMd().format(selectedDate);
+      });
   }
 
   String numeros = r'^(?:\+|-)?\d+$';
@@ -56,6 +71,22 @@ class _EgresoProductoState extends State<EgresoProducto> {
                       width: 20,
                     ),
                     Text("NV-${egreso.codRef}"),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text("Fecha"),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                        onTap: () async {
+                          await _selectDate(context);
+                        },
+                        child: Container(
+                          child: Text("${formatter.format(selectedDate)}"),
+                        ))
                   ],
                 ),
                 TextFormField(
@@ -233,27 +264,34 @@ class _EgresoProductoState extends State<EgresoProducto> {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        egreso.cab.fecha = selectedDate.toIso8601String();
                         if (egreso.cab.id == 0) {
                           await egreso.guardarEgreso();
                         } else {
                           await egreso.actualizar();
                         }
-                        AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.SUCCES,
-                          animType: AnimType.BOTTOMSLIDE,
-                          title: 'Guardado Correctamente',
-                          desc: '',
-                        )..show();
+                        // AwesomeDialog(
+                        //   context: context,
+                        //   dialogType: DialogType.SUCCES,
+                        //   animType: AnimType.BOTTOMSLIDE,
+                        //   title: 'Guardado Correctamente',
+                        //   desc: '',
+                        // )..show();
                         if (producto.listado.length == 0) {
                           await producto.cargarPrd();
                         }
                         for (var item in egreso.detalles) {
                           var result = producto.listado
                               .firstWhere((e) => e.id == item.idProducto);
+                          print("---------${result.id}");
                           if (result.id > 0) {
-                            await kardex.salidas(
-                                double.parse(item.cantidad.toString()), result);
+                            try {
+                              await kardex.salidas(
+                                  item.cantidad.toDouble(), result);
+                            } catch (ex) {
+                              print("#rror kardex de egreso ${ex.toString()}");
+                            }
+
                             /*   result.stock =
                                 double.parse(item.cantidad.toString()); */
                             /*     kardex.existencias(result, false, false); */

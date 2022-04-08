@@ -10,6 +10,7 @@ class ModelRegistro extends EntityRegistro {
     this.estado = false,
     this.referencia = 0,
     this.cliente = "",
+    this.fecha = "",
     this.createdAt = "",
     this.idSecundario = 0,
   }) : super(
@@ -20,6 +21,7 @@ class ModelRegistro extends EntityRegistro {
             createdAt: createdAt,
             idSecundario: idSecundario,
             cliente: cliente,
+            fecha: fecha,
             referencia: referencia);
   int id;
   int idTipo;
@@ -27,6 +29,7 @@ class ModelRegistro extends EntityRegistro {
   String cliente;
   int referencia;
   bool estado;
+  String fecha;
   String createdAt;
   int idSecundario;
 
@@ -44,6 +47,7 @@ class ModelRegistro extends EntityRegistro {
         referencia: json["referencia"],
         idSecundario: json["idSecundario"],
         createdAt: json["createdAt"] ?? "",
+        fecha: json["fecha"] ?? "",
       );
 
   Map<String, dynamic> toMap() => {

@@ -3,22 +3,20 @@ import 'dart:math';
 import 'package:darq/darq.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/core/Errors/failure.dart';
+import 'package:genesis_vera_tesis/data/models/movimiento/modelMovimiento.dart';
 
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
-import 'package:genesis_vera_tesis/domain/uses%20cases/movimientos/movimientosGeneral.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/parametros/parametros_general.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/getproductos.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
 import 'package:intl/intl.dart';
-
-import '../../data/models/movimiento/modelMovimiento.dart';
 import '../entities/Proveedores/Proveedores.dart';
 import '../entities/registro/entityRegistroDetaller.dart';
 import '../entities/tipo/grupo.dart';
 import '../entities/unidad_medida/unidadMedida.dart';
 import '../uses cases/grupo/get_grupos.dart';
+import '../uses cases/movimientos/movimientosGeneral.dart';
 import '../uses cases/productos/productosGeneral.dart';
 import '../uses cases/registros/usesCaseRegistros.dart';
 import '../uses cases/unidad_medida/get_medidas.dart';
@@ -57,6 +55,7 @@ class ProductosProvider extends ChangeNotifier {
   final UsesCaseRegistros registro;
   final ParametrosGeneral parametros;
   final GeneralProducto productoGeneral;
+  final MovimientosGeneral mov;
 
   ProductosProvider(
       this.insertarProducto,
@@ -66,6 +65,7 @@ class ProductosProvider extends ChangeNotifier {
       this.useCaseProveedores,
       this.registro,
       this.productoGeneral,
+      this.mov,
       this.parametros);
 
   //GlobalKey<FormState> get keyProducto => _keyProducto;
@@ -106,7 +106,7 @@ class ProductosProvider extends ChangeNotifier {
     controllerCodigo.text = p.referencia;
     controllerStock.text = p.cantidad.toString();
     controllerPrecio.text = p.precio.toString();
-    p.lote = Random().nextInt(10000000).toString();
+    p.lote = p.id == 0 ? Random().nextInt(10000000).toString() : p.lote;
     notifyListeners();
   }
 
@@ -389,8 +389,15 @@ class ProductosProvider extends ChangeNotifier {
       //   }
       /* product = new Productos(precio: 0); */
 
+      ModelMovimiento md = new ModelMovimiento();
+      md.idProducto = product.id;
+      md.codigo = p.lote;
+      md.total = md.actual = p.cantidad.toInt();
+      await mov.insertMov(md);
+
       return product;
     } catch (e) {
+      print("Erro al ingresar producto ${e.toString()}");
       return null;
     }
   }
@@ -456,7 +463,7 @@ class ProductosProvider extends ChangeNotifier {
       print("Error en generar codRef ${ex.toString()}");
       codRef = "0000";
     }
-    notifyListeners();
+    //notifyListeners();
   }
 }
 

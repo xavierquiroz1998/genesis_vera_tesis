@@ -5,22 +5,25 @@ import '../../../domain/entities/Proveedores/Proveedores.dart';
 import '../grupo/grupo_modelo.dart';
 
 class ModelProducto extends Productos {
-  ModelProducto({
-    this.id = 0,
-    this.referencia = "",
-    this.nombre = "",
-    this.detalle = "",
-    this.precio = 0,
-    this.cantidad = 0,
-    this.idUnidad = 0,
-    this.pedido = 0,
-    this.idProveedor = 0,
-    this.idGrupo = 0,
-    this.estado = false,
-    // this.proveedor,
-    // this.unidad,
-    // this.grupo,
-  }) : super(
+  ModelProducto(
+      {this.id = 0,
+      this.referencia = "",
+      this.nombre = "",
+      this.detalle = "",
+      this.precio = 0,
+      this.cantidad = 0,
+      this.idUnidad = 0,
+      this.pedido = 0,
+      this.idProveedor = 0,
+      this.idGrupo = 0,
+      this.estado = false,
+      this.lote = "",
+      this.fecha = ""
+      // this.proveedor,
+      // this.unidad,
+      // this.grupo,
+      })
+      : super(
             id: id,
             referencia: referencia,
             nombre: nombre,
@@ -31,6 +34,8 @@ class ModelProducto extends Productos {
             idUnidad: idUnidad,
             idProveedor: idProveedor,
             idGrupo: idGrupo,
+            lote: lote,
+            fecha: fecha,
             estado: estado);
 
   int id;
@@ -44,6 +49,8 @@ class ModelProducto extends Productos {
   int idProveedor;
   int idGrupo;
   bool estado;
+  String lote;
+  String fecha;
   //final Proveedor? proveedor;
   //final Unidad? unidad;
   //final GruposModelo? grupo;
@@ -64,6 +71,7 @@ class ModelProducto extends Productos {
         pedido: json["pedido"],
         idProveedor: json["idProveedor"],
         idGrupo: json["idGrupo"],
+        lote: json["lote"] ?? "",
         estado: json["estado"],
         // proveedor: Proveedor.fromMap(json["Proveedor"]),
         // unidad: Unidad.fromMap(json["Unidad"]),
@@ -82,6 +90,7 @@ class ModelProducto extends Productos {
         "idProveedor": idProveedor,
         "idGrupo": idGrupo,
         "estado": estado,
+        "lote": lote,
         // "Proveedor": proveedor!.toMap(),
         // "Unidad": unidad!.toMap(),
         // "Grupo": grupo!.toMap(),

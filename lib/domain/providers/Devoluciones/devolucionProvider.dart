@@ -1,7 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
-import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_det.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:intl/intl.dart';
 
@@ -15,12 +12,14 @@ class DevolucionProvider extends ChangeNotifier {
   // DevolucionCab _cab = new DevolucionCab();
   // List<DevolucionDet> _detalleDevolucion = [];
   EntityRegistro _cab = new EntityRegistro();
-
+  String codRef = "";
   EntityRegistro get cab => _cab;
 
   set cab(EntityRegistro cab) {
     _cab = cab;
     ctrObservacion.text = cab.detalle;
+
+    print("-------------${cab.idSecundario}");
     notifyListeners();
   }
 
@@ -150,6 +149,21 @@ class DevolucionProvider extends ChangeNotifier {
       for (var item in detalles) {
         item.productos = listado.where((e) => e.id == item.idProducto).first;
       }
+
+      if (cab.id != 0 && cab.idSecundario != 0) {
+        await getRegistrosDev(2);
+        try {
+          var temp = listTableRegistrosDev
+              .where((e) => e.id == cab.idSecundario)
+              .first;
+          if (temp != null) {
+            codRef = "Dev / cl-";
+          }
+        } catch (ex) {
+          codRef = "Dev / pr-";
+        }
+        codRef += await generarT(cab.referencia);
+      }
       calcularTotal();
       notifyListeners();
     } catch (ex) {
@@ -165,6 +179,20 @@ class DevolucionProvider extends ChangeNotifier {
     } catch (ex) {
       print("Error en generar codRef ${ex.toString()}");
       return "0000";
+    }
+  }
+
+  Future<String> generarT([int exis = 0]) async {
+    final formato = new NumberFormat("0000.##");
+    try {
+      if (listTableRegistrosDev.length == 0) {
+        await getRegistrosDev(3);
+      }
+      int total = exis == 0 ? listTableRegistrosDev.length + 1 : exis;
+      return formato.format(total);
+    } catch (ex) {
+      print("Error en generar codRef ${ex.toString()}");
+      return "0001";
     }
   }
 }

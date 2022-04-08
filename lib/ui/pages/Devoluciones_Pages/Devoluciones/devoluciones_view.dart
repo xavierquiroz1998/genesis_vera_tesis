@@ -4,6 +4,7 @@ import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.da
 import 'package:genesis_vera_tesis/domain/entities/Devoluciones/devolucion_cab.dart';
 import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/Devoluciones/devolucionProvider.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
@@ -47,11 +48,11 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                   width: double.infinity,
                   child: DataTable(
                     columns: <DataColumn>[
+                      // const DataColumn(
+                      //   label: Center(child: Text("Id")),
+                      // ),
                       const DataColumn(
-                        label: Center(child: Text("Id")),
-                      ),
-                      const DataColumn(
-                        label: Center(child: Text("Observación")),
+                        label: Center(child: Text("Codido Ref")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Estado")),
@@ -67,12 +68,11 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                       return DataRow(
                         //key: LocalKey(),
                         cells: <DataCell>[
-                          DataCell(
-                            Text(e.id.toString()),
-                          ),
-                          DataCell(
-                            Text(e.detalle.toString()),
-                          ),
+                          // DataCell(
+                          //   Text(e.id.toString()),
+                          // ),
+                          DataCell(Text(
+                              Helper.generarTitulo(e.referencia).toString())),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,
                             color: e.estado ? Colors.green : Colors.red,

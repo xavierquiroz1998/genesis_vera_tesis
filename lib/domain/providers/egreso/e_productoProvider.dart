@@ -134,6 +134,7 @@ class EProductoProvider extends ChangeNotifier {
       reg.estado = true;
       reg.cliente = ctrCliente.text;
       reg.referencia = int.parse(codRef);
+      reg.fecha = cab.fecha;
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
@@ -207,6 +208,6 @@ class EProductoProvider extends ChangeNotifier {
       print("Error en generar codRef ${ex.toString()}");
       codRef = "0000";
     }
-    notifyListeners();
+    //notifyListeners();
   }
 }

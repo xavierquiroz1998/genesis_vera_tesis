@@ -2,73 +2,107 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 
+import '../../services/fail.dart';
 import '../../uses cases/Kardex/kardex_general.dart';
+import '../../uses cases/productos/getproductos.dart';
 
 class KardexProvider extends ChangeNotifier {
   final KardexGeneral kardex;
+  List<Productos> listado = [];
+  Productos _prdSelect = new Productos();
+
+  Productos get prdSelect => _prdSelect;
+
+  set prdSelect(Productos prdSelect) {
+    _prdSelect = prdSelect;
+    notifyListeners();
+  }
 
   List<Kardex> kardexRegistro = [];
+  final GetProductos getProductos;
+  KardexProvider(this.kardex, this.getProductos);
 
-  KardexProvider(this.kardex);
+  Future<void> cargarPrd() async {
+    var temporal = await getProductos.call();
+    var result = temporal.fold((fail) => Extras.failure(fail), (prd) => prd);
+    try {
+      listado = result as List<Productos>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
+    notifyListeners();
+  }
 
   Future getKardex() async {
     try {
       var result = await kardex.getAll();
       kardexRegistro = result.getOrElse(() => []);
       notifyListeners();
-    } catch (ex) {}
+    } catch (ex) {
+      print("Error en obtener kardex General ${ex.toString()}");
+    }
   }
 
   Future<void> entradas(Productos producto, bool isExiste, bool isTipo) async {
-    var kardexUltimo;
-    await getKardex();
-    if (isExiste) {
-      kardexUltimo = kardexRegistro
-          .where((element) => element.idProducto == producto.id)
-          .toList()
-          .reversed
-          .first;
-    }
-    print(kardexUltimo.proCanE + producto.cantidad);
-    Kardex k = new Kardex(
-        codMov: isTipo
-            ? 'I-${kardexRegistro.length}'
-            : "DEV-${kardexRegistro.length}",
-        idProducto: producto.id,
-        codPro: producto.referencia,
-        //nomPro: producto.detalle,
-        //proCanI: producto.stock,
-        proUntI: producto.precio,
-        //proTtlI: (producto.stock * producto.precio),
-        proCanS: 0,
-        proUntS: 0,
-        proTtlS: 0,
-        proCanE: isExiste
-            ? isTipo
-                ? kardexUltimo.proCanE + producto.cantidad
-                : kardexUltimo.proCanE - producto.cantidad
-            : producto.cantidad,
-        proUntE: isExiste
-            ? isTipo
-                ? (((producto.cantidad * producto.precio) +
-                        kardexUltimo.proTtlE) /
-                    (kardexUltimo.proCanE + producto.cantidad))
-                : ((((producto.cantidad * producto.precio) -
-                            kardexUltimo.proTtlE) /
-                        (kardexUltimo.proCanE - producto.cantidad)) *
-                    -1)
-            : ((producto.cantidad * producto.precio) / producto.cantidad),
-        proTtlE: isExiste
-            ? isTipo
-                ? ((producto.cantidad * producto.precio) + kardexUltimo.proTtlE)
-                : (((producto.cantidad * producto.precio) -
-                        kardexUltimo.proTtlE) *
-                    -1)
-            : (producto.cantidad * producto.precio),
-        fecPro: DateTime.now(),
-        stsPro: true); //pendiente
+    try {
+      var kardexUltimo;
 
-    await kardex.inserteKardex(k);
+      if (isExiste) {
+        await getKardex();
+        print("---${kardexRegistro.length}");
+        kardexUltimo = kardexRegistro
+            .where((element) => element.idProducto == producto.id)
+            .toList()
+            .reversed
+            .first;
+      }
+      print(".....................");
+      //print(kardexUltimo.proCanE + producto.cantidad);
+      Kardex k = new Kardex();
+      k.codMov = isTipo
+          ? 'I-${kardexRegistro.length}'
+          : "DEV-${kardexRegistro.length}";
+      k.idProducto = producto.id;
+      k.codPro = producto.referencia;
+      //nomPro: producto.detalle,
+      //proCanI: producto.stock,
+      k.proUntI = producto.precio;
+      //proTtlI: (producto.stock * producto.precio),
+      k.proCanS = 0;
+      k.proUntS = 0;
+      k.proTtlS = 0;
+
+      k.proCanE = isExiste
+          ? isTipo
+              ? kardexUltimo.proCanE + producto.cantidad
+              : kardexUltimo.proCanE - producto.cantidad
+          : producto.cantidad;
+      k.proUntE = isExiste
+          ? isTipo
+              ? (((producto.cantidad * producto.precio) +
+                      kardexUltimo.proTtlE) /
+                  (kardexUltimo.proCanE + producto.cantidad))
+              : ((((producto.cantidad * producto.precio) -
+                          kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.cantidad)) *
+                  -1)
+          : ((producto.cantidad * producto.precio) / producto.cantidad);
+      k.proTtlE = isExiste
+          ? isTipo
+              ? ((producto.cantidad * producto.precio) + kardexUltimo.proTtlE)
+              : (((producto.cantidad * producto.precio) -
+                      kardexUltimo.proTtlE) *
+                  -1)
+          : (producto.cantidad * producto.precio);
+      k.fecPro = DateTime.now();
+      k.stsPro = true; //pendiente
+
+      await kardex.inserteKardex(k);
+
+      print("Guardado OK");
+    } catch (ex) {
+      print("Error en grabar entrad de kardex ${ex.toString()}");
+    }
   }
 
 /*  ojo dev compras s
@@ -91,6 +125,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
       Kardex k = new Kardex(
           codMov: 'S-00${kardexRegistro.length}',
           codPro: producto.referencia, //1
+          idProducto: producto.id,
           //nomPro: producto.detalle, //martillo
           proCanI: 0,
           proUntI: 0,
@@ -105,6 +140,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           stsPro: true);
 
       await kardex.inserteKardex(k);
+      print("Giardado salida OK");
     } catch (ex) {
       print("Errr en salida ${ex.toString()}");
     }

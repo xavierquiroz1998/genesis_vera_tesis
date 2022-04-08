@@ -8,6 +8,7 @@ class EntityRegistro extends Equatable {
     this.estado = false,
     this.referencia = 0,
     this.cliente = "",
+    this.fecha = "",
     this.createdAt = "",
     this.idSecundario = 0,
   });
@@ -17,6 +18,7 @@ class EntityRegistro extends Equatable {
   String cliente;
   int referencia;
   bool estado;
+  String fecha;
   String createdAt;
   int idSecundario;
 
@@ -30,6 +32,7 @@ class EntityRegistro extends Equatable {
         createdAt,
         idSecundario,
         cliente,
+        fecha,
         referencia
       ];
 
@@ -39,6 +42,7 @@ class EntityRegistro extends Equatable {
         "detalle": detalle,
         "cliente": cliente,
         "referencia": referencia,
+        "fecha": fecha,
         "idSecundario": idSecundario,
         "estado": estado,
       };

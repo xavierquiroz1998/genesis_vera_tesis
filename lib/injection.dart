@@ -83,8 +83,8 @@ import 'domain/uses cases/usuarios/update_usuarios.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(() => ProductosProvider(
-      sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl())); //injectar provider
+  sl.registerFactory(() => ProductosProvider(sl(), sl(), sl(), sl(), sl(), sl(),
+      sl(), sl(), sl())); //injectar provider
   sl.registerFactory(() => LoginProvider(sl(), sl())); //injectar provider
   sl.registerFactory(() => UnidadMedidaProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => GrupoProvider(sl(), sl(), sl(), sl()));
@@ -96,7 +96,7 @@ Future<void> init() async {
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => RegistrosProvider(sl()));
   sl.registerFactory(() => IngresosProvider(sl(), sl(), sl(), sl()));
-  sl.registerFactory(() => KardexProvider(sl()));
+  sl.registerFactory(() => KardexProvider(sl(), sl()));
   sl.registerFactory(() => ParametrosPRovider(sl()));
   sl.registerFactory(() => MovimientoProvider(sl()));
 

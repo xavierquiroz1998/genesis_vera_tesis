@@ -80,7 +80,7 @@ class _IngresosViewState extends State<IngresosView> {
                           //   Text(e.id.toString()),
                           // ),
                           DataCell(
-                            Text("NV-${Helper.generarTitulo(e.referencia)} "),
+                            Text("NI-${Helper.generarTitulo(e.referencia)} "),
                           ),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,

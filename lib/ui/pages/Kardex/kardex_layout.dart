@@ -1,12 +1,13 @@
 // ignore_for_file: unused_element
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/pages/items_source.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../../../domain/entities/productos.dart';
 
 class KardexLayout extends StatefulWidget {
   const KardexLayout({Key? key}) : super(key: key);
@@ -20,8 +21,20 @@ class _KardexLayoutState extends State<KardexLayout> {
     List<GridColumn> columns;
     columns = <GridColumn>[
       GridColumn(
-          columnName: 'codigo',
-          width: 90,
+          columnName: 'Fecha',
+          width: 85,
+          label: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(8.0),
+            child: const Text(
+              'Fecha',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )),
+      GridColumn(
+          columnName: 'Codigo',
+          width: 85,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
@@ -32,13 +45,13 @@ class _KardexLayoutState extends State<KardexLayout> {
             ),
           )),
       GridColumn(
-          columnName: 'producto',
-          width: 185,
+          columnName: 'Promedio',
+          width: 85,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Producto',
+              'Promedio',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -171,7 +184,7 @@ class _KardexLayoutState extends State<KardexLayout> {
     _stackedHeaderRows = <StackedHeaderRow>[
       StackedHeaderRow(cells: <StackedHeaderCell>[
         StackedHeaderCell(
-            columnNames: <String>['codigo', 'producto'],
+            columnNames: <String>['Fecha', 'codigo', 'Promedio'],
             child: _getWidgetForStackedHeaderCell('PRODUCTO')),
         StackedHeaderCell(
             columnNames: <String>['cantidadI', 'costoI', 'totalI'],
@@ -203,6 +216,39 @@ class _KardexLayoutState extends State<KardexLayout> {
             title: "Kardex",
             child: Column(
               children: [
+                Row(
+                  children: [
+                    DropdownButton<Productos>(
+                      items: kardex.listado
+                          .where((e) => e.estado)
+                          .map(
+                            (eDrop) => DropdownMenuItem<Productos>(
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 150),
+                                child: Text(
+                                  eDrop.nombre,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              value: eDrop,
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        kardex.prdSelect = value!;
+                        // e.productos = value;
+                        // e.total = value.precio;
+                        setState(() {});
+                      },
+                      hint: kardex.prdSelect.id == 0
+                          ? Text("Seleccione Producto")
+                          : Text(kardex.prdSelect.detalle.length > 15
+                              ? kardex.prdSelect.detalle.substring(0, 15)
+                              : kardex.prdSelect.detalle),
+                    ),
+                  ],
+                ),
                 SfDataGrid(
                   gridLinesVisibility: GridLinesVisibility.both,
                   headerGridLinesVisibility: GridLinesVisibility.both,

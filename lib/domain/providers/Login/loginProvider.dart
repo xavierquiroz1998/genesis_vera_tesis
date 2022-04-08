@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/uses%20cases/logeo/inicio_sesion.dart';
 import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import '../../../data/datasource/reference/local_storage.dart';

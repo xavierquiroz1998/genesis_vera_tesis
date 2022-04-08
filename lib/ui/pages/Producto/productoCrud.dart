@@ -1,7 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
@@ -9,6 +8,7 @@ import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:genesis_vera_tesis/ui/widgets/toast_notification.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/Proveedores/Proveedores.dart';
@@ -23,6 +23,9 @@ class ProductoCrud extends StatefulWidget {
 
 class _ProductoCrudState extends State<ProductoCrud> {
   List<String> tipoDev = ["A", "B", "C"];
+  DateTime selectedDate = new DateTime.now();
+  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+
   final keyProducto = GlobalKey<FormState>();
   @override
   void initState() {
@@ -31,11 +34,30 @@ class _ProductoCrudState extends State<ProductoCrud> {
     cargaPRd.cargarGrupo();
     cargaPRd.cargarProveedores();
     if (cargaPRd.product.id != 0) {
+      var asd = DateTime.tryParse(cargaPRd.product.fecha);
+      if (asd != null) {
+        selectedDate = asd;
+      }
       cargaPRd.cargarDetalle();
+      cargaPRd.generar(int.parse(cargaPRd.product.referencia));
     } else {
       cargaPRd.generar();
     }
     super.initState();
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        //_dateController.text = DateFormat.yMd().format(selectedDate);
+      });
   }
 
   @override
@@ -62,6 +84,26 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         ),
                         Text("INP-${producto.codRef}"),
                       ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text("Fecha"),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            await _selectDate(context);
+                          },
+                          child: Container(
+                            child: Text("${formatter.format(selectedDate)}"),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Row(
                       children: [
@@ -141,13 +183,13 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Ingrese Precio";
+                                  return "Ingrese Precio Unitario";
                                 }
                               },
                               controller: producto.controllerPrecio,
                               decoration: CustomInputs.formInputDecoration(
-                                  hint: 'Precio',
-                                  label: 'Precio',
+                                  hint: 'Costo',
+                                  label: 'Costo',
                                   icon: Icons.monetization_on),
                             ),
                           ),
@@ -275,15 +317,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    final otra = producto.listado
-                        .where((element) =>
-                            element.referencia ==
-                            producto.controllerCodigo.text)
-                        .toList();
-
                     // final opt = await producto
                     //     .guardar(otra.isNotEmpty ? otra.first : null);
                     Productos? opt;
+                    print("...........${producto.product.lote}");
+
+                    producto.product.fecha = formatter.format(selectedDate);
                     if (producto.product.id == 0) {
                       opt = await producto.guardar(producto.product);
                     } else {
@@ -291,17 +330,22 @@ class _ProductoCrudState extends State<ProductoCrud> {
                     }
 
                     if (opt != null) {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.SUCCES,
-                        animType: AnimType.BOTTOMSLIDE,
-                        title: 'Guardado Correctamente',
-                        desc: '',
-                        btnOkOnPress: () {},
-                      )..show();
-                      await kardex.entradas(opt!, true, true);
+                      // AwesomeDialog(
+                      //   context: context,
+                      //   dialogType: DialogType.SUCCES,
+                      //   animType: AnimType.BOTTOMSLIDE,
+                      //   title: 'Guardado Correctamente',
+                      //   desc: '',
+                      //   btnOkOnPress: () {},
+                      // )..show();
+                      try {
+                        await kardex.entradas(opt, false, true);
 
-                      kardex.impresion();
+                        kardex.impresion();
+                      } catch (ex) {
+                        print(
+                            "Erro en guardar entrada kardex ${ex.toString()}");
+                      }
 
                       NavigationService.replaceTo("/ingresos");
                     } else {

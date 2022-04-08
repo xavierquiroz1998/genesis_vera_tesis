@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
@@ -130,6 +128,7 @@ class IngresosProvider extends ChangeNotifier {
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
       reg.referencia = int.parse(codRef);
+      reg.fecha = cab.fecha;
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
@@ -137,6 +136,7 @@ class IngresosProvider extends ChangeNotifier {
         item.idRegistro = tem.id;
         var detResultv = await usesCases.insertRegistrosDetalles(item);
 // regista ingreso de producto;
+
         item.productos!.cantidad += item.cantidad;
         await prdGeneral.update(item.productos!);
 
@@ -144,6 +144,7 @@ class IngresosProvider extends ChangeNotifier {
         ModelMovimiento md = new ModelMovimiento();
         md.idProducto = item.idProducto;
         md.codigo = item.lote;
+        md.total = md.actual = item.cantidad;
         await mov.insertMov(md);
       }
 
@@ -221,6 +222,5 @@ class IngresosProvider extends ChangeNotifier {
       print("Error en generar codRef ${ex.toString()}");
       codRef = "0000";
     }
-    notifyListeners();
   }
 }

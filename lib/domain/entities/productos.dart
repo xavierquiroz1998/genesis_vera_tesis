@@ -17,24 +17,25 @@ class Productos extends Equatable {
   int idGrupo;
   bool estado;
   String lote;
+  String fecha;
   ProveedoresEntity? proveedor;
   UnidadMedidaEntity? unidad;
   GrupoEntity? grupo;
 
-  Productos({
-    this.id = 0,
-    this.referencia = "",
-    this.nombre = "",
-    this.detalle = "",
-    this.pedido = 0,
-    this.precio = 0,
-    this.cantidad = 0,
-    this.idUnidad = 0,
-    this.idProveedor = 0,
-    this.idGrupo = 0,
-    this.lote = "",
-    this.estado = false,
-  });
+  Productos(
+      {this.id = 0,
+      this.referencia = "",
+      this.nombre = "",
+      this.detalle = "",
+      this.pedido = 0,
+      this.precio = 0,
+      this.cantidad = 0,
+      this.idUnidad = 0,
+      this.idProveedor = 0,
+      this.idGrupo = 0,
+      this.lote = "",
+      this.estado = false,
+      this.fecha = ""});
 
   List<Object?> get props => [
         id,
@@ -45,6 +46,7 @@ class Productos extends Equatable {
         pedido,
         idUnidad,
         idProveedor,
+        fecha,
         estado
       ];
 
@@ -59,6 +61,8 @@ class Productos extends Equatable {
         "idUnidad": idUnidad,
         "idProveedor": idProveedor,
         "idGrupo": idGrupo,
+        "lote": lote,
+        "fecha": fecha,
         "estado": estado,
       };
 }

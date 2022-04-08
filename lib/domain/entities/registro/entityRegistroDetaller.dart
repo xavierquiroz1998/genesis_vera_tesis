@@ -32,6 +32,7 @@ class EntityRegistroDetalle extends Equatable {
         "total": total,
         "idProducto": idProducto,
         "idRegistro": idRegistro,
+        "lote": lote,
         "observacion": observacion,
       };
 

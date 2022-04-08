@@ -1,9 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/productosProvider.dart';
 import 'package:genesis_vera_tesis/domain/services/codRef.dart';
@@ -60,10 +58,10 @@ class _ProductosTableState extends State<ProductosTable> {
                       //   label: Center(child: Text("Id")),
                       // ),
                       const DataColumn(
-                        label: Center(child: Text("Código")),
+                        label: Center(child: Text("Cod. Ref")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Descripción")),
+                        label: Center(child: Text("Producto")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Stock")),
@@ -72,7 +70,7 @@ class _ProductosTableState extends State<ProductosTable> {
                         label: Center(child: Text("Pedido")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Precio")),
+                        label: Center(child: Text("Costo Unit.")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Estado")),
