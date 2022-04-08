@@ -17,7 +17,7 @@ class ModelKardex extends Kardex {
     this.proCanE = 0,
     this.proUntE = 0,
     this.proTtlE = 0,
-    this.fecPro,
+    this.createdAt,
     this.stsPro = false,
   }) : super(
           id: id,
@@ -33,7 +33,7 @@ class ModelKardex extends Kardex {
           proCanE: proCanE,
           proUntE: proUntE,
           proTtlE: proTtlE,
-          fecPro: fecPro,
+          createdAt: createdAt,
           stsPro: stsPro,
         );
 
@@ -51,7 +51,7 @@ class ModelKardex extends Kardex {
   double proCanE;
   double proUntE;
   double proTtlE;
-  DateTime? fecPro;
+  DateTime? createdAt;
   bool stsPro;
 
   factory ModelKardex.fromMap(Map<String, dynamic> json) {
@@ -68,8 +68,7 @@ class ModelKardex extends Kardex {
       proCanE: json["proCanE"],
       proUntE: json["proUntE"],
       proTtlE: json["proTtlE"],
-      fecPro:
-          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      createdAt: DateTime.parse(json["createdAt"]),
       stsPro: json["estado"],
     );
   }
@@ -89,7 +88,7 @@ class ModelKardex extends Kardex {
         "proCanE": proCanE,
         "proUntE": proUntE,
         "proTtlE": proTtlE,
-        "fecPro": fecPro?.toIso8601String(),
+        "createdAt": createdAt!.toIso8601String(),
         "stsPro": stsPro,
       };
 }

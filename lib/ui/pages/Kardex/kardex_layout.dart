@@ -21,7 +21,7 @@ class _KardexLayoutState extends State<KardexLayout> {
     List<GridColumn> columns;
     columns = <GridColumn>[
       GridColumn(
-          columnName: 'Fecha',
+          columnName: 'fecha',
           width: 85,
           label: Container(
             alignment: Alignment.centerLeft,
@@ -33,7 +33,7 @@ class _KardexLayoutState extends State<KardexLayout> {
             ),
           )),
       GridColumn(
-          columnName: 'Codigo',
+          columnName: 'codigo',
           width: 85,
           label: Container(
             alignment: Alignment.centerLeft,
@@ -175,8 +175,11 @@ class _KardexLayoutState extends State<KardexLayout> {
   Widget _getWidgetForStackedHeaderCell(String title) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        alignment: Alignment.centerLeft,
-        child: Text(title));
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ));
   }
 
   List<StackedHeaderRow> _getStackedHeaderRows() {
@@ -184,7 +187,7 @@ class _KardexLayoutState extends State<KardexLayout> {
     _stackedHeaderRows = <StackedHeaderRow>[
       StackedHeaderRow(cells: <StackedHeaderCell>[
         StackedHeaderCell(
-            columnNames: <String>['codigo', 'Promedio'],
+            columnNames: <String>['fecha', 'codigo', 'Promedio'],
             child: _getWidgetForStackedHeaderCell('PRODUCTO')),
         StackedHeaderCell(
             columnNames: <String>['cantidadI', 'costoI', 'totalI'],
@@ -215,6 +218,7 @@ class _KardexLayoutState extends State<KardexLayout> {
           WhiteCard(
             title: "Kardex",
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [
@@ -224,7 +228,6 @@ class _KardexLayoutState extends State<KardexLayout> {
                     ),
                     DropdownButton<Productos>(
                       items: kardex.listado
-                          .where((e) => e.estado)
                           .map(
                             (eDrop) => DropdownMenuItem<Productos>(
                               child: Container(
@@ -241,7 +244,8 @@ class _KardexLayoutState extends State<KardexLayout> {
                           .toList(),
                       onChanged: (value) async {
                         kardex.prdSelect = value!;
-                        await kardex.getKardexProducto(value.id);
+
+                        await kardex.getKardexProducto(kardex.prdSelect.id);
                         // e.productos = value;
                         // e.total = value.precio;
                         setState(() {});

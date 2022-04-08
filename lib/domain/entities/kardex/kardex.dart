@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 
 class Kardex extends Equatable {
@@ -18,7 +20,7 @@ class Kardex extends Equatable {
   double proUntE;
   double proTtlE;
 
-  DateTime? fecPro;
+  DateTime? createdAt;
   bool stsPro;
 
   Kardex({
@@ -35,7 +37,7 @@ class Kardex extends Equatable {
     this.proCanE = 0,
     this.proUntE = 0.0,
     this.proTtlE = 0.0,
-    this.fecPro,
+    this.createdAt,
     this.stsPro = false,
   });
 
@@ -63,7 +65,7 @@ class Kardex extends Equatable {
         "proCanE": proCanE,
         "proUntE": proUntE,
         "proTtlE": proTtlE,
-        "fecPro": fecPro!.toIso8601String(),
+        "createdAt": createdAt!.toIso8601String(),
         "stsPro": stsPro,
       };
 
@@ -83,7 +85,7 @@ class Kardex extends Equatable {
         proCanE,
         proUntE,
         proTtlE,
-        fecPro,
+        createdAt,
         stsPro
       ];
 }
@@ -96,4 +98,4 @@ class Kardex extends Equatable {
 /// I pero en negativo -0003 XXXXYYY IMPRESORAS 2   20.0  200.00 (15/01/2021) D
 /// E pero en negativo -0004 XXXXYYY IMPRESORAS 2   20.0  200.00 (19/01/2021) D
 /// METODOS INGRESOS - EGRESOS  - DEVOLUCIONES V - DEVOLUCIONES C
-/// SELECT * FROM REGISTROS WHERE CODPRO = "XXXXYYY" ORDY BY FECPRO ASC;
+/// SELECT * FROM REGISTROS WHERE CODPRO = "XXXXYYY" ORDY BY createdAt ASC;

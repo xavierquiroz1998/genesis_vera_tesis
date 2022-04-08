@@ -16,6 +16,9 @@ class ItemsDataSource extends DataGridSource {
   void buildDataGridRow() {
     dataGridRows = listProducts.map<DataGridRow>((Kardex product) {
       return DataGridRow(cells: <DataGridCell>[
+        DataGridCell<String>(
+            columnName: 'fecha',
+            value: DateFormat('MM/dd/yyyy').format(product.createdAt!)),
         DataGridCell<String>(columnName: 'codigo', value: product.codMov),
         DataGridCell<String>(
             columnName: 'producto', value: "${product.idProducto}"),
@@ -71,12 +74,16 @@ class ItemsDataSource extends DataGridSource {
         ),
       ),
       Container(
-        padding: const EdgeInsets.all(8.0),
-        alignment: Alignment.centerRight,
-        child: Text(
-          NumberFormat.currency(locale: 'en_US', symbol: r'$', decimalDigits: 2)
-              .format(row.getCells()[2].value),
-          style: TextStyle(fontSize: 12),
+        constraints: BoxConstraints(maxWidth: 100, minWidth: 70),
+        alignment: Alignment.centerLeft,
+        child: Tooltip(
+          message: row.getCells()[2].value.toString(),
+          child: Text(
+            row.getCells()[2].value.toString(),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            style: TextStyle(fontSize: 12),
+          ),
         ),
       ),
       Container(
@@ -148,6 +155,15 @@ class ItemsDataSource extends DataGridSource {
         child: Text(
           NumberFormat.currency(locale: 'en_US', symbol: r'$', decimalDigits: 2)
               .format(row.getCells()[10].value),
+          style: TextStyle(fontSize: 12),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(8.0),
+        alignment: Alignment.centerRight,
+        child: Text(
+          NumberFormat.currency(locale: 'en_US', symbol: r'$', decimalDigits: 2)
+              .format(row.getCells()[11].value),
           style: TextStyle(fontSize: 12),
         ),
       ),

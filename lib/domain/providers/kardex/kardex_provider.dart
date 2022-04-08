@@ -47,10 +47,11 @@ class KardexProvider extends ChangeNotifier {
     try {
       var result = await kardex.getAllProducto(idProducto);
       kardexRegistro = result.getOrElse(() => []);
+      //print(result.map((r) => r));
       for (var item in kardexRegistro) {
         print("------------${item.proCanE}");
       }
-      notifyListeners();
+      //notifyListeners();
     } catch (ex) {
       print("Error en obtener kardex General ${ex.toString()}");
     }
@@ -107,7 +108,7 @@ class KardexProvider extends ChangeNotifier {
                       kardexUltimo.proTtlE) *
                   -1)
           : (producto.cantidad * producto.precio);
-      k.fecPro = DateTime.now();
+      k.createdAt = DateTime.now();
       k.stsPro = true; //pendiente
 
       await kardex.inserteKardex(k);
@@ -149,7 +150,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           proCanE: producto.cantidad,
           proUntE: total / producto.cantidad,
           proTtlE: total,
-          fecPro: DateTime.now(),
+          createdAt: DateTime.now(),
           stsPro: true);
 
       await kardex.inserteKardex(k);
