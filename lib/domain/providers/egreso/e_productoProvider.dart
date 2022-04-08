@@ -103,9 +103,9 @@ class EProductoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future cargarMovimientos() async {
+  Future cargarMovimientos(int idProducto) async {
     try {
-      var temp = await movimientosGeneral.getMovientos();
+      var temp = await movimientosGeneral.getMovientosPrd(idProducto);
       listaMovimientos = temp.getOrElse(() => []);
 
       notifyListeners();

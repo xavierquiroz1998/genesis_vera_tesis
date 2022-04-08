@@ -27,7 +27,6 @@ class _EgresoProductoState extends State<EgresoProducto> {
   void initState() {
     var temProvider = Provider.of<EProductoProvider>(context, listen: false);
     temProvider.cargarPrd();
-    temProvider.cargarMovimientos();
     if (temProvider.cab.id != 0) {
       temProvider.cargarDetalle(temProvider.cab.id);
       temProvider.generar(temProvider.cab.referencia);
@@ -116,18 +115,18 @@ class _EgresoProductoState extends State<EgresoProducto> {
                       const DataColumn(
                         label: Center(child: Text("Producto")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Cod Prod.")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Cod Prod.")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("Lote")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("Stock ")),
                       ),
-                      // const DataColumn(
-                      //   label: Center(child: Text("observacion")),
-                      // ),
+                      const DataColumn(
+                        label: Center(child: Text("Costo Uni.")),
+                      ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),
                       ),
@@ -164,10 +163,12 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (value) {
+                              onChanged: (value) async {
                                 e.idProducto = value!.id;
                                 e.productos = value;
+                                e.productos!.cantidad = 0;
                                 e.total = value.precio;
+                                await egreso.cargarMovimientos(e.idProducto);
                                 setState(() {});
                               },
                               hint: e.idProducto == 0
@@ -177,9 +178,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                       : e.productos!.detalle),
                             ),
                           ),
-                          DataCell(e.productos != null
-                              ? Text("${e.productos!.referencia}")
-                              : Text("")),
+                          // DataCell(e.productos != null
+                          //     ? Text("${e.productos!.referencia}")
+                          //     : Text("")),
                           DataCell(
                             DropdownButton<ModelMovimiento>(
                               items: egreso.listaMovimientos
@@ -202,6 +203,8 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               onChanged: (value) {
                                 e.lote = value!.codigo;
                                 e.mov = value;
+                                e.productos!.cantidad = value.actual.toDouble();
+
                                 setState(() {});
                               },
                               hint: e.lote == ""
@@ -212,14 +215,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           DataCell(e.productos != null
                               ? Text("${e.productos!.cantidad}")
                               : Text("")),
-                          // DataCell(
-                          //   TextFormField(
-                          //     initialValue: e.observacion,
-                          //     onChanged: (value) {
-                          //       e.observacion = value;
-                          //     },
-                          //   ),
-                          // ),
+                          DataCell(e.productos != null
+                              ? Text("${e.productos!.precio}")
+                              : Text("")),
                           DataCell(
                             TextFormField(
                               inputFormatters: [

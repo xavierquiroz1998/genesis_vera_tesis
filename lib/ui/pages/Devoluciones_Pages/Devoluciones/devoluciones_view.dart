@@ -21,7 +21,8 @@ class DevolucionesView extends StatefulWidget {
 class _DevolucionesViewState extends State<DevolucionesView> {
   @override
   void initState() {
-    Provider.of<DevolucionProvider>(context, listen: false).getRegistrosDev(3);
+    Provider.of<DevolucionProvider>(context, listen: false)
+        .getRegistrosDevPRes(3);
     super.initState();
   }
 
@@ -71,8 +72,9 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                           // DataCell(
                           //   Text(e.id.toString()),
                           // ),
-                          DataCell(Text(
-                              Helper.generarTitulo(e.referencia).toString())),
+                          DataCell(Text(e.cliente == "P"
+                              ? "Dev / pr-${Helper.generarTitulo(e.referencia).toString()}"
+                              : "Dev / cl-${Helper.generarTitulo(e.referencia).toString()}")),
                           DataCell(Icon(
                             e.estado ? Icons.check : Icons.dangerous,
                             color: e.estado ? Colors.green : Colors.red,

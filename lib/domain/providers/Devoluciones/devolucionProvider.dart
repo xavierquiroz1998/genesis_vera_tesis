@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:intl/intl.dart';
 
+import '../../entities/Proveedores/Proveedores.dart';
 import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
+import '../../uses cases/movimientos/movimientosGeneral.dart';
 import '../../uses cases/productos/getproductos.dart';
+import '../../uses cases/proveedores/getproveedores.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
 class DevolucionProvider extends ChangeNotifier {
@@ -24,6 +27,7 @@ class DevolucionProvider extends ChangeNotifier {
   }
 
   List<EntityRegistro> listTableRegistrosDev = [];
+  List<ProveedoresEntity> listaProveedores = [];
   EntityRegistro pedidoSelec = new EntityRegistro();
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
@@ -31,8 +35,11 @@ class DevolucionProvider extends ChangeNotifier {
   List<Productos> listado = [];
   final GetProductos getProductos;
   final UsesCaseRegistros usesCases;
+  final MovimientosGeneral movimientos;
+  final GetProveedores useCaseProveedores;
 
-  DevolucionProvider(this.getProductos, this.usesCases);
+  DevolucionProvider(this.getProductos, this.usesCases, this.movimientos,
+      this.useCaseProveedores);
 
   // prueba devoluciones
 
@@ -50,12 +57,38 @@ class DevolucionProvider extends ChangeNotifier {
   // set detalleDevolucion(List<DevolucionDet> detalleDevolucion) {
   //   _detalleDevolucion = detalleDevolucion;
   // }
-
-  Future<void> getRegistrosDev(int idTipo) async {
+  Future<void> getRegistrosDevPRes(int idTipo) async {
     try {
       var tem = await usesCases.getAll(idTipo);
 
       listTableRegistrosDev = tem.getOrElse(() => []);
+    } catch (ex) {
+      listTableRegistrosDev = [];
+      print("erro en obtener lista ${ex.toString()}");
+    }
+    notifyListeners();
+  }
+
+  Future<void> getRegistrosDev(int idTipo) async {
+    try {
+      if (idTipo == 2) {
+        var tem = await usesCases.getAll(idTipo);
+
+        listTableRegistrosDev = tem.getOrElse(() => []);
+      } else {
+        listTableRegistrosDev = [];
+        var tempMovi = await movimientos.getMovientos();
+        var resultMovi = tempMovi.getOrElse(() => []);
+
+        for (var item in resultMovi) {
+          EntityRegistro r = new EntityRegistro();
+          r.id = item.idProducto;
+          r.detalle = item.codigo;
+          r.cliente = item.total.toString();
+          r.estado = true;
+          listTableRegistrosDev.add(r);
+        }
+      }
     } catch (ex) {
       listTableRegistrosDev = [];
       print("erro en obtener lista ${ex.toString()}");
@@ -128,6 +161,9 @@ class DevolucionProvider extends ChangeNotifier {
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
       reg.idSecundario = cab.idSecundario;
+      reg.cliente = cab.cliente;
+
+      reg.referencia = int.parse(await generarT(cab.cliente));
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
       tem as EntityRegistro;
@@ -142,12 +178,36 @@ class DevolucionProvider extends ChangeNotifier {
     }
   }
 
-  Future cargarDetalle(int idRegistro) async {
+  Future<void> cargarProveedores() async {
+    var temporal = await useCaseProveedores.call();
+    var result = temporal.fold((fail) => Extras.failure(fail), (prd) => prd);
     try {
-      var transaction = await usesCases.getADetalle(idRegistro);
-      detalles = transaction.getOrElse(() => []);
-      for (var item in detalles) {
-        item.productos = listado.where((e) => e.id == item.idProducto).first;
+      listaProveedores = result as List<ProveedoresEntity>;
+    } catch (ex) {
+      print("error${result.toString()}");
+    }
+    notifyListeners();
+  }
+
+  Future cargarDetalle(int idRegistro, [bool lote = false]) async {
+    try {
+      if (lote) {
+        detalles = [];
+        await cargarProveedores();
+        EntityRegistroDetalle det = new EntityRegistroDetalle();
+        det.productos = listado.where((e) => e.id == pedidoSelec.id).first;
+        det.productos!.proveedor = listaProveedores
+            .where((e) => e.id == det.productos!.idProveedor)
+            .first;
+        det.idProducto = pedidoSelec.id;
+        det.cantidad = int.parse(pedidoSelec.cliente);
+        detalles.add(det);
+      } else {
+        var transaction = await usesCases.getADetalle(idRegistro);
+        detalles = transaction.getOrElse(() => []);
+        for (var item in detalles) {
+          item.productos = listado.where((e) => e.id == item.idProducto).first;
+        }
       }
 
       if (cab.id != 0 && cab.idSecundario != 0) {
@@ -162,13 +222,13 @@ class DevolucionProvider extends ChangeNotifier {
         } catch (ex) {
           codRef = "Dev / pr-";
         }
-        codRef += await generarT(cab.referencia);
+        codRef += await generarT(cab.cliente, cab.referencia);
       }
       calcularTotal();
       notifyListeners();
     } catch (ex) {
       print("Error en cargar detalle devolucion ${ex.toString()}");
-      throw ("This is an Error");
+      //throw ("This is an Error");
     }
   }
 
@@ -182,13 +242,21 @@ class DevolucionProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> generarT([int exis = 0]) async {
+  Future<String> generarT(String tipo, [int exis = 0]) async {
     final formato = new NumberFormat("0000.##");
+    List<EntityRegistro> listDev = [];
     try {
-      if (listTableRegistrosDev.length == 0) {
-        await getRegistrosDev(3);
+      try {
+        var tem = await usesCases.getAll(3);
+
+        listDev = tem.getOrElse(() => []);
+      } catch (ex) {
+        listDev = [];
+        print("erro en obtener lista ${ex.toString()}");
       }
-      int total = exis == 0 ? listTableRegistrosDev.length + 1 : exis;
+
+      var tem = listDev.where((e) => e.cliente == tipo).toList();
+      int total = exis == 0 ? tem.length + 1 : exis;
       return formato.format(total);
     } catch (ex) {
       print("Error en generar codRef ${ex.toString()}");

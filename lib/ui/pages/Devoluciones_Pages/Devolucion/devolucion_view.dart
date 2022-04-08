@@ -102,17 +102,23 @@ class _DevolucionViewState extends State<DevolucionView> {
                     tipoDevSelect = value!;
                     devolucio.pedidoSelec = new EntityRegistro();
                     devolucio.detalles = [];
+                    String ref = "";
                     if (tipoDevSelect == "PROVEEDOR") {
+                      devolucio.cab.cliente = "P";
                       await devolucio.getRegistrosDev(1);
+                      ref = await devolucio.generarT("P");
 
                       devolucio.codRef = "Dev / pr-";
                     } else if (tipoDevSelect == "CLIENTE") {
+                      devolucio.cab.cliente = "C";
+
                       await devolucio.getRegistrosDev(2);
+                      ref = await devolucio.generarT("C");
                       devolucio.codRef = "Dev / cl-";
                     }
-                    var ref = await devolucio.generarT();
+
                     devolucio.codRef += ref;
-                    //setState(() {});
+                    setState(() {});
                     //producto.product.tipoProdcuto = value!.codRef;
                   },
                   items: tipoDev.map((item) {
@@ -136,15 +142,16 @@ class _DevolucionViewState extends State<DevolucionView> {
                   height: 10,
                 ),
                 DropdownButtonFormField<EntityRegistro>(
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     if (value != null) {
                       devolucio.cab.idSecundario = value.id;
                       devolucio.pedidoSelec = value;
-                      devolucio.cargarDetalle(devolucio.pedidoSelec.id);
+                      bool lote = tipoDevSelect == "CLIENTE" ? false : true;
+                      await devolucio.cargarDetalle(
+                          devolucio.pedidoSelec.id, lote);
                     }
                   },
                   items: devolucio.listTableRegistrosDev
-                      .where((e) => e.estado)
                       .map(
                         (item) => DropdownMenuItem<EntityRegistro>(
                           value: item,
@@ -234,6 +241,11 @@ class _DevolucionViewState extends State<DevolucionView> {
                       const DataColumn(
                         label: Center(child: Text("Producto")),
                       ),
+                      if (tipoDevSelect != "CLIENTE") ...{
+                        const DataColumn(
+                          label: Center(child: Text("Proveedor")),
+                        ),
+                      },
                       const DataColumn(
                         label: Center(child: Text("Flujo")),
                       ),
@@ -246,9 +258,9 @@ class _DevolucionViewState extends State<DevolucionView> {
                       const DataColumn(
                         label: Center(child: Text("Total")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("")),
+                      // ),
                     ],
                     rows: devolucio.detalles.map<DataRow>((e) {
                       return DataRow(
@@ -261,7 +273,6 @@ class _DevolucionViewState extends State<DevolucionView> {
                                 items: devolucio.listado
                                     .map(
                                       (eDrop) => DropdownMenuItem<Productos>(
-                                        enabled: false,
                                         child: Container(
                                           constraints:
                                               BoxConstraints(maxWidth: 150),
@@ -278,7 +289,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                                 onChanged: (value) {
                                   e.idProducto = value!.id;
                                   e.productos = value;
-                                  setState(() {});
+                                  //setState(() {});
                                 },
                                 hint: e.idProducto == 0
                                     ? Text("Seleccione Producto")
@@ -292,6 +303,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                             //   devolucionProd: e,
                             // ),
                           ),
+                          DataCell(Text("${e.productos!.proveedor!.nombre}")),
                           DataCell(
                             DropdownButtonFormField<String>(
                               onChanged: (value) async {
@@ -347,9 +359,9 @@ class _DevolucionViewState extends State<DevolucionView> {
                                     locale: 'en_US', symbol: r'$')
                                 .format(e.to)),
                           ),
-                          DataCell(Icon(Icons.delete), onTap: () {
-                            devolucio.removerDevolucion(e);
-                          }),
+                          // DataCell(Icon(Icons.delete), onTap: () {
+                          //   devolucio.removerDevolucion(e);
+                          // }),
                         ],
                       );
                     }).toList(),

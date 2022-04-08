@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 abstract class MovimientoDTS {
   Future<List<ModelMovimiento>> getAllMovimiento();
+  Future<List<ModelMovimiento>> getAllMovimientoProducto(int idProducto);
   Future<ModelMovimiento> insertMovimiento(ModelMovimiento grupo);
   Future<ModelMovimiento> updateMovimiento(ModelMovimiento grupo);
   // Future<GruposModelo> deleteGrupos(GrupoEntity grupo);
@@ -68,6 +69,22 @@ class MovimientoDTSImp extends MovimientoDTS {
       return new ModelMovimiento();
     } catch (e) {
       return new ModelMovimiento();
+    }
+  }
+
+  @override
+  Future<List<ModelMovimiento>> getAllMovimientoProducto(int idProducto) async {
+    try {
+      List<ModelMovimiento> tem = [];
+      final result = await cliente
+          .get(Uri.parse(urlBase + "/getMovimientosIdPro/$idProducto"));
+      if (result.statusCode == 200) {
+        tem = decodeProducts(utf8.decode(result.bodyBytes));
+      }
+
+      return tem;
+    } catch (e) {
+      return [];
     }
   }
 }

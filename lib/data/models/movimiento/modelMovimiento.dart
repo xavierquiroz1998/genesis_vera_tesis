@@ -23,6 +23,8 @@ class ModelMovimiento {
   factory ModelMovimiento.fromMap(Map<String, dynamic> json) => ModelMovimiento(
         id: json["id"],
         idProducto: json["idProducto"],
+        total: json["total"],
+        actual: json["actual"],
         codigo: json["codigo"],
       );
 

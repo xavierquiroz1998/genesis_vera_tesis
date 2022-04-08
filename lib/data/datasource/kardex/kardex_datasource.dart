@@ -52,7 +52,8 @@ class KardexDTSImp extends KardexDTS {
   Future<List<ModelKardex>> getKardex(int idProducto) async {
     try {
       List<ModelKardex> tem = [];
-      final result = await cliente.get(Uri.parse(urlBase));
+      final result =
+          await cliente.get(Uri.parse(urlBase + "/getproducto/$idProducto"));
       if (result.statusCode == 200) {
         tem = _decodeProducts(utf8.decode(result.bodyBytes));
       }

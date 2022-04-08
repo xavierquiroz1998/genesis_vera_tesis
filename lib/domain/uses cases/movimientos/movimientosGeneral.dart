@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:dartz/dartz.dart';
 
 import '../../../core/Errors/failure.dart';
@@ -13,6 +11,11 @@ class MovimientosGeneral {
 
   Future<Either<Failure, List<ModelMovimiento>>> getMovientos() async {
     return repository.getAllMov();
+  }
+
+  Future<Either<Failure, List<ModelMovimiento>>> getMovientosPrd(
+      int idProducto) async {
+    return repository.getAllMovProducto(idProducto);
   }
 
   Future<Either<Failure, ModelMovimiento>> insertMov(

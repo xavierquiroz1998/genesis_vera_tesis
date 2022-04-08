@@ -45,6 +45,7 @@ class KardexProvider extends ChangeNotifier {
 
   Future getKardexProducto(int idProducto) async {
     try {
+      kardexRegistro = [];
       var result = await kardex.getAllProducto(idProducto);
       kardexRegistro = result.getOrElse(() => []);
       //print(result.map((r) => r));

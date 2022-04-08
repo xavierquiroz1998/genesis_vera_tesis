@@ -40,4 +40,14 @@ class MovimientoImp implements AbstractMovimiento {
       return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ModelMovimiento>>> getAllMovProducto(
+      int idProducto) async {
+    try {
+      return right(await datasource.getAllMovimientoProducto(idProducto));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
+    }
+  }
 }
