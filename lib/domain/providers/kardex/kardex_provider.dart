@@ -43,6 +43,19 @@ class KardexProvider extends ChangeNotifier {
     }
   }
 
+  Future getKardexProducto(int idProducto) async {
+    try {
+      var result = await kardex.getAllProducto(idProducto);
+      kardexRegistro = result.getOrElse(() => []);
+      for (var item in kardexRegistro) {
+        print("------------${item.proCanE}");
+      }
+      notifyListeners();
+    } catch (ex) {
+      print("Error en obtener kardex General ${ex.toString()}");
+    }
+  }
+
   Future<void> entradas(Productos producto, bool isExiste, bool isTipo) async {
     try {
       var kardexUltimo;

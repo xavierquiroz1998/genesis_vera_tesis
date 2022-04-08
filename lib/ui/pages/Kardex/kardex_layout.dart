@@ -184,7 +184,7 @@ class _KardexLayoutState extends State<KardexLayout> {
     _stackedHeaderRows = <StackedHeaderRow>[
       StackedHeaderRow(cells: <StackedHeaderCell>[
         StackedHeaderCell(
-            columnNames: <String>['Fecha', 'codigo', 'Promedio'],
+            columnNames: <String>['codigo', 'Promedio'],
             child: _getWidgetForStackedHeaderCell('PRODUCTO')),
         StackedHeaderCell(
             columnNames: <String>['cantidadI', 'costoI', 'totalI'],
@@ -202,7 +202,7 @@ class _KardexLayoutState extends State<KardexLayout> {
 
   @override
   void initState() {
-    Provider.of<KardexProvider>(context, listen: false).getKardex();
+    Provider.of<KardexProvider>(context, listen: false).cargarPrd();
     super.initState();
   }
 
@@ -218,6 +218,10 @@ class _KardexLayoutState extends State<KardexLayout> {
               children: [
                 Row(
                   children: [
+                    Text("Producto: "),
+                    SizedBox(
+                      width: 20,
+                    ),
                     DropdownButton<Productos>(
                       items: kardex.listado
                           .where((e) => e.estado)
@@ -235,8 +239,9 @@ class _KardexLayoutState extends State<KardexLayout> {
                             ),
                           )
                           .toList(),
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         kardex.prdSelect = value!;
+                        await kardex.getKardexProducto(value.id);
                         // e.productos = value;
                         // e.total = value.precio;
                         setState(() {});
@@ -248,6 +253,9 @@ class _KardexLayoutState extends State<KardexLayout> {
                               : kardex.prdSelect.detalle),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 SfDataGrid(
                   gridLinesVisibility: GridLinesVisibility.both,
