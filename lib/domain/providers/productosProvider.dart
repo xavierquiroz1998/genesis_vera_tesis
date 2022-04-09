@@ -126,7 +126,7 @@ class ProductosProvider extends ChangeNotifier {
     } catch (ex) {
       print("Error en cargar detalle de grupo");
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   Future<void> cargarPrd() async {
@@ -429,26 +429,32 @@ class ProductosProvider extends ChangeNotifier {
 
   Future anular(Productos p) async {
     try {
-      product.estado = false;
+      p.estado = false;
       var tem = await productoGeneral.update(p);
       product = tem.getOrElse(() => new Productos());
-    } catch (ex) {}
+    } catch (ex) {
+      print("Erro al anular prd ${ex.toString()}");
+    }
     notifyListeners();
   }
 
-  Future actualizar(Productos p) async {
+  Future<Productos?> actualizar(Productos p) async {
     try {
-      product.referencia = controllerCodigo.text;
+      p.referencia = controllerCodigo.text;
       p.nombre = controllerDescripcion.text;
       p.detalle = controllerDescripcion.text;
 
       p.cantidad = double.tryParse(controllerStock.text) ?? 0;
-      product.precio = double.tryParse(controllerPrecio.text) ?? 0;
-      product.estado = true;
+      p.precio = double.tryParse(controllerPrecio.text) ?? 0;
+      p.estado = true;
+      print("valor enviado  ${p.toString()}");
       var tem = await productoGeneral.update(p);
       product = tem.getOrElse(() => new Productos());
-    } catch (ex) {}
-    notifyListeners();
+      return product;
+    } catch (ex) {
+      print("No se modifica ${ex.toString()}");
+      return null;
+    }
   }
 
   void generar([int exis = 0]) async {

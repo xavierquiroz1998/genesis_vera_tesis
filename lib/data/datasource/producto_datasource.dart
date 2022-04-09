@@ -60,7 +60,8 @@ class ProductosDataSourceImp extends ProductosDataSource {
   @override
   Future<ModelProducto> deleteProducto(Productos model) async {
     var prd = json.encode(model.toMap());
-
+    print("valor a enviar ${prd.toString()}");
+    print("tomap  ${model.toMap()}");
     try {
       final result = await cliente.delete(Uri.parse(urlBase + "/${model.id}"),
           body: prd, headers: {"Content-type": "application/json"});
@@ -81,7 +82,6 @@ class ProductosDataSourceImp extends ProductosDataSource {
       final result = await cliente.put(Uri.parse(urlBase + "/${model.id}"),
           body: prd, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
-        var respuesta = result.body;
         return ModelProducto.fromMap(json.decode(result.body));
       }
       return new ModelProducto();

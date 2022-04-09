@@ -24,7 +24,7 @@ class ProductoCrud extends StatefulWidget {
 class _ProductoCrudState extends State<ProductoCrud> {
   List<String> tipoDev = ["A", "B", "C"];
   DateTime selectedDate = new DateTime.now();
-  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   final keyProducto = GlobalKey<FormState>();
   @override
@@ -323,9 +323,11 @@ class _ProductoCrudState extends State<ProductoCrud> {
                     print("...........${producto.product.lote}");
 
                     producto.product.fecha = formatter.format(selectedDate);
+                    print("Fecha ${producto.product.fecha}");
                     if (producto.product.id == 0) {
                       opt = await producto.guardar(producto.product);
                     } else {
+                      print("----------ipdate ");
                       opt = await producto.actualizar(producto.product);
                     }
 

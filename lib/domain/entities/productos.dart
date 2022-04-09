@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
 
@@ -65,4 +66,9 @@ class Productos extends Equatable {
         "fecha": fecha,
         "estado": estado,
       };
+
+  @override
+  String toString() {
+    return 'Productos(id: $id, referencia: $referencia, nombre: $nombre, detalle: $detalle, precio: $precio, cantidad: $cantidad, pedido: $pedido, idUnidad: $idUnidad, idProveedor: $idProveedor, idGrupo: $idGrupo, estado: $estado, lote: $lote, fecha: ${fecha.toString()}, proveedor: $proveedor, unidad: $unidad, grupo: $grupo)';
+  }
 }

@@ -148,7 +148,9 @@ class _ProductosTableState extends State<ProductosTable> {
                                               actions: [
                                                 TextButton(
                                                   onPressed: () async {
+                                                    print("Opt anular??");
                                                     await producto.anular(e);
+                                                    Navigator.pop(context);
                                                   },
                                                   child: Text("Aceptar"),
                                                 ),
