@@ -39,19 +39,19 @@ class _KardexLayoutState extends State<KardexLayout> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'cod-mov',
+              'Cod-Mov',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )),
       GridColumn(
-          columnName: 'Promedio',
+          columnName: 'C. P. P.',
           width: 85,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: const Text(
-              'Promedio',
+              'C. P. P.',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -187,7 +187,7 @@ class _KardexLayoutState extends State<KardexLayout> {
     _stackedHeaderRows = <StackedHeaderRow>[
       StackedHeaderRow(cells: <StackedHeaderCell>[
         StackedHeaderCell(
-            columnNames: <String>['fecha', 'codigo', 'Promedio'],
+            columnNames: <String>['fecha', 'codigo', 'C. P. P.'],
             child: _getWidgetForStackedHeaderCell('PRODUCTO')),
         StackedHeaderCell(
             columnNames: <String>['cantidadI', 'costoI', 'totalI'],

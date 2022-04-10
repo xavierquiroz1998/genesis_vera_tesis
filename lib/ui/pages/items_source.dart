@@ -20,7 +20,7 @@ class ItemsDataSource extends DataGridSource {
             value: DateFormat('MM/dd/yyyy').format(product.createdAt!)),
         DataGridCell<String>(columnName: 'codigo', value: product.codMov),
         DataGridCell<String>(
-            columnName: 'producto', value: "${product.idProducto}"),
+            columnName: 'C. P. P.', value: product.proUntE.toString()),
         DataGridCell<double>(
             columnName: 'cantidadI',
             value: double.parse(product.proCanI.toString())),
@@ -78,7 +78,9 @@ class ItemsDataSource extends DataGridSource {
         child: Tooltip(
           message: row.getCells()[2].value.toString(),
           child: Text(
-            row.getCells()[2].value.toString(),
+            NumberFormat.currency(
+                    locale: 'en_US', symbol: r'$', decimalDigits: 2)
+                .format(row.getCells()[10].value),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             style: TextStyle(fontSize: 12),
