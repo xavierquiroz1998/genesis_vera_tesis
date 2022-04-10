@@ -26,7 +26,7 @@ class _ParametrosViewState extends State<ParametrosView> {
     final provi = Provider.of<ParametrosPRovider>(context);
     return Container(
       child: WhiteCard(
-          title: "Parametros",
+          title: "Categorizaciòn en dìas",
           child: Expanded(
             child: Column(
               children: [
@@ -38,7 +38,7 @@ class _ParametrosViewState extends State<ParametrosView> {
                           children: [
                             Expanded(
                                 child: Center(
-                                    child: Text("Estado ${item.detalle}"))),
+                                    child: Text("Tipo ${item.detalle}"))),
                             Expanded(
                               flex: 3,
                               child: TextFormField(
@@ -52,7 +52,7 @@ class _ParametrosViewState extends State<ParametrosView> {
                                 },
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                    hintText: 'Tiempo de clasificacion'),
+                                    hintText: 'Tiempo de clasificaciòn (dìas)'),
                               ),
                             ),
                           ],
