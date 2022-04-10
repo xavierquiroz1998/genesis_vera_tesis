@@ -210,7 +210,8 @@ class _IngresoViewState extends State<IngresoView> {
                           for (var item in ingreso.detalles) {
                             item.productos!.cantidad = item.cantidad.toDouble();
                             item.productos!.precio = item.total;
-                            await kardex.entradas(item.productos!, true, true);
+                            await kardex.entradas(
+                                item.productos!, true, true, selectedDate);
                           }
                         } catch (ex) {
                           print("Erro en ingresar kardex ${ex.toString()}");

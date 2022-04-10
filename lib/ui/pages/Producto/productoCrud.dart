@@ -341,7 +341,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                       //   btnOkOnPress: () {},
                       // )..show();
                       try {
-                        await kardex.entradas(opt, false, true);
+                        await kardex.entradas(opt, false, true, selectedDate);
 
                         kardex.impresion();
                       } catch (ex) {

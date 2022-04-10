@@ -60,7 +60,8 @@ class KardexProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> entradas(Productos producto, bool isExiste, bool isTipo) async {
+  Future<void> entradas(
+      Productos producto, bool isExiste, bool isTipo, DateTime date) async {
     try {
       var kardexUltimo;
 
@@ -111,7 +112,8 @@ class KardexProvider extends ChangeNotifier {
                       kardexUltimo.proTtlE) *
                   -1)
           : (producto.cantidad * producto.precio);
-      k.createdAt = DateTime.now();
+      k.createdAt = date;
+      //k.createdAt = DateTime.now();
       k.stsPro = true; //pendiente
 
       await kardex.inserteKardex(k);
@@ -127,7 +129,7 @@ class KardexProvider extends ChangeNotifier {
                           kardexUltimo.proTtlE) /
                       (kardexUltimo.proCanE - producto.stock!)
  */
-  Future salidas(double cantidad, Productos producto) async {
+  Future salidas(double cantidad, Productos producto, DateTime date) async {
     try {
       await getKardex();
       final kardexUltimo = kardexRegistro
@@ -156,7 +158,8 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           // proUntE: total / producto.cantidad,
           proUntE: kardexUltimo.proUntE,
           proTtlE: total,
-          createdAt: DateTime.now(),
+          // createdAt: DateTime.now(),
+          createdAt: date,
           stsPro: true);
 
       await kardex.inserteKardex(k);

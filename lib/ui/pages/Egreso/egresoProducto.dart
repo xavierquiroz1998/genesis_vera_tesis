@@ -307,8 +307,8 @@ class _EgresoProductoState extends State<EgresoProducto> {
 
                           if (result.id > 0) {
                             try {
-                              await kardex.salidas(
-                                  item.cantidad.toDouble(), result);
+                              await kardex.salidas(item.cantidad.toDouble(),
+                                  result, selectedDate);
                             } catch (ex) {
                               print("#rror kardex de egreso ${ex.toString()}");
                             }
