@@ -74,7 +74,7 @@ class UsuarioDatasourceImp extends UsuarioDatasource {
   Future<ModelUsuarios> updateUsuarios(RegistUser usuario) async {
     try {
       var uss = json.encode(usuario.toMap());
-      final result = await cliente.put(Uri.parse(urlBase),
+      final result = await cliente.put(Uri.parse(urlBase + "/${usuario.id}"),
           body: uss, headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelUsuarios.fromMap(json.decode(result.body));

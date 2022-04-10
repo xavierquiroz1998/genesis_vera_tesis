@@ -63,7 +63,7 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
                                 ],
-                                enabled: usuarios.blockCedula,
+                                //enabled: usuarios.blockCedula,
                               ),
                             ),
                           ),

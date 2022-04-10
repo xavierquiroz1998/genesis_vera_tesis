@@ -71,7 +71,9 @@ class _UsuarioViewState extends State<UsuarioView> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () => userProvider.anularUsuario(e),
+                                  onTap: () async {
+                                    await userProvider.anularUsuario(e);
+                                  },
                                   child: Icon(
                                     Icons.delete,
                                     color: Colors.red,

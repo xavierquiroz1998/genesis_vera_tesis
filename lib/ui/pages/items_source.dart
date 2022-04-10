@@ -17,7 +17,7 @@ class ItemsDataSource extends DataGridSource {
       return DataGridRow(cells: <DataGridCell>[
         DataGridCell<String>(
             columnName: 'fecha',
-            value: DateFormat('MM/dd/yyyy').format(product.createdAt!)),
+            value: DateFormat('yyyy-MM-dd').format(product.createdAt!)),
         DataGridCell<String>(columnName: 'codigo', value: product.codMov),
         DataGridCell<String>(
             columnName: 'C. P. P.', value: product.proUntE.toString()),

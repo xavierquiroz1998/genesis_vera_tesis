@@ -89,7 +89,7 @@ class _ProveedorState extends State<Proveedor> {
                   ],
                   controller: provee.controllTiempoHolgura,
                   decoration:
-                      InputDecoration(labelText: "Tiempo de Holgura (Dias)"),
+                      InputDecoration(labelText: "Tiempo de Holgura (Días)"),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

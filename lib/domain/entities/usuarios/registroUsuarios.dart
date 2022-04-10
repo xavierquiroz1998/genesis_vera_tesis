@@ -51,4 +51,9 @@ class RegistUser extends Equatable {
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
+
+  @override
+  String toString() {
+    return 'RegistUser(id: $id, nombre: $nombre, email: $email, clave: $clave, estado: $estado, expiracion: $expiracion, createdAt: $createdAt, updatedAt: $updatedAt)';
+  }
 }

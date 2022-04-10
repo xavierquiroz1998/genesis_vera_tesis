@@ -116,11 +116,6 @@ class ProductosProvider extends ChangeNotifier {
 
   Future cargarDetalle() async {
     try {
-      print("------grupo-------${listGrupos.length}-----${product.idGrupo}");
-      print(
-          "------proveedo-------${listaProveedores.length}-----${product.idProveedor}");
-      print(
-          "------unidade-------${listUnidades.length}-----${product.idUnidad}");
       product.grupo = listGrupos.where((e) => e.id == product.idGrupo).first;
 
       product.proveedor =
@@ -150,6 +145,7 @@ class ProductosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listUnidades = result as List<UnidadMedidaEntity>;
+      listUnidades = listUnidades.where((element) => element.estado).toList();
     } catch (ex) {
       print("error${result.toString()}");
     }
@@ -161,6 +157,7 @@ class ProductosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listGrupos = result as List<GrupoEntity>;
+      listGrupos = listGrupos.where((e) => e.estado).toList();
     } catch (ex) {
       print("error${result.toString()}");
     }
@@ -172,6 +169,7 @@ class ProductosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
     try {
       listaProveedores = result as List<ProveedoresEntity>;
+      listaProveedores = listaProveedores.where((e) => e.estado).toList();
     } catch (ex) {
       print("error${result.toString()}");
     }

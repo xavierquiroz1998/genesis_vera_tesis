@@ -53,7 +53,7 @@ class LoginProvider extends ChangeNotifier {
     try {
       var temp = await usuarios.call();
       var listaUsuarios = temp.getOrElse(() => []);
-      for (var item in listaUsuarios) {
+      for (var item in listaUsuarios.where((e) => e.estado).toList()) {
         if (item.email == cedula && item.clave == contrasenia) {
           authStatus = AuthStatus.authenticated;
           LocalStorage.prefs.setString('token', "asdddsswwee");

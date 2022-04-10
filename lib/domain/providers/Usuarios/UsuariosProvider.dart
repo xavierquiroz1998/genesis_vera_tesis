@@ -73,7 +73,7 @@ class UsuariosProvider extends ChangeNotifier {
         }
       } else {
         var user = RegistUser(
-            //cedula: controlCedula.text,
+            id: usuario.id,
             nombre: controlNombre.text,
             //direccion: controlDireccion.text,
             email: controlEmail.text,
@@ -84,6 +84,7 @@ class UsuariosProvider extends ChangeNotifier {
         var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
         try {
           var obj = tem as RegistUser;
+          print("recibo usuario ${obj.toString()}");
           clearText();
           return obj;
         } catch (ex) {
@@ -97,15 +98,15 @@ class UsuariosProvider extends ChangeNotifier {
     }
   }
 
-  void fillText(RegistUser usuario) {
+  void fillText(RegistUser user) {
     try {
-      // controlCedula.text = usuario.cedula;
-      controlNombre.text = usuario.nombre;
+      usuario = user;
+      controlNombre.text = user.nombre;
       // controlDireccion.text = usuario.direccion;
-      controlEmail.text = usuario.email;
+      controlEmail.text = user.email;
       //controlCelular.text = usuario.;
-      controlpassword.text = usuario.clave;
-      controlpassword2.text = usuario.clave;
+      controlpassword.text = user.clave;
+      controlpassword2.text = user.clave;
       blockCedula = false;
       isShowUpdate = "0";
       notifyListeners();
@@ -126,14 +127,16 @@ class UsuariosProvider extends ChangeNotifier {
     isShowUpdate = '1';
   }
 
-  void anularUsuario(RegistUser e) async {
+  Future<void> anularUsuario(RegistUser e) async {
     try {
-      var temp = await deleteUser.delete(e);
+      e.estado = false;
+      var temp = await updateUser.update(e);
       var tem = temp.fold((fail) => Extras.failure(fail), (prd) => prd);
-      try {
-        var obj = tem as RegistUser;
-        clearText();
-      } catch (ex) {}
+
+      var obj = tem as RegistUser;
+      print("usuario a ${obj.toString()}");
+      clearText();
+
       notifyListeners();
     } catch (e) {
       print("Error usuario ${e.toString()}");

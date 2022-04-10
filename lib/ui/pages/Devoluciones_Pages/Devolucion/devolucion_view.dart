@@ -176,7 +176,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                       hint: '',
                       label: tipoDevSelect == "CLIENTE"
                           ? 'Seleccione Nota Venta'
-                          : 'Seleccione Nota Pedido',
+                          : 'Seleccione Lote',
                       icon: Icons.info),
                 ),
                 SizedBox(
