@@ -8,9 +8,11 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/productos/productosGenera
 import 'package:intl/intl.dart';
 
 import '../../../data/models/movimiento/modelMovimiento.dart';
+import '../../entities/kardex/kardex.dart';
 import '../../entities/registro/entityRegistor.dart';
 import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
+import '../../uses cases/Kardex/kardex_general.dart';
 import '../../uses cases/movimientos/movimientosGeneral.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
@@ -31,6 +33,8 @@ class EProductoProvider extends ChangeNotifier {
   List<EntityRegistroDetalle> detalles = [];
   TextEditingController _ctrObservacion = new TextEditingController();
   TextEditingController _ctrCliente = new TextEditingController();
+  List<Kardex> kardexRegistro = [];
+  Kardex promedioKardex = new Kardex();
 
   TextEditingController get ctrCliente => _ctrCliente;
 
@@ -46,9 +50,10 @@ class EProductoProvider extends ChangeNotifier {
   final UsesCaseRegistros usesCases;
   final GeneralProducto generalProducto;
   final MovimientosGeneral movimientosGeneral;
+  final KardexGeneral kardex;
 
   EProductoProvider(this.getProductos, this.usesCases, this.generalProducto,
-      this.movimientosGeneral);
+      this.movimientosGeneral, this.kardex);
 
   TextEditingController get ctrObservacion => _ctrObservacion;
 
@@ -109,9 +114,25 @@ class EProductoProvider extends ChangeNotifier {
       var temp = await movimientosGeneral.getMovientosPrd(idProducto);
       listaMovimientos = temp.getOrElse(() => []);
 
+      // carga de kardex
+      var result = await kardex.getAllProducto(idProducto);
+      kardexRegistro = result.getOrElse(() => []);
+      promedioKardex = kardexRegistro.reversed.first;
+
       notifyListeners();
     } catch (ex) {
       print("Erro en obtener movimientos ${ex.toString()}");
+    }
+  }
+
+  Future<double> cargarPromedio(int idProducto) async {
+    try {
+      var result = await kardex.getAllProducto(idProducto);
+      kardexRegistro = result.getOrElse(() => []);
+      return kardexRegistro.reversed.first.proUntE;
+    } catch (ex) {
+      print("Erro en obtener promedio ${ex.toString()}");
+      return 0;
     }
   }
 

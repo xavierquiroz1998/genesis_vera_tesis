@@ -59,11 +59,11 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                         label: Center(child: Text("Estado")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Editar")),
+                        label: Center(child: Text("Acciones")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Anular")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Anular")),
+                      // ),
                     ],
                     rows: devolucio.listTableRegistrosDev.map<DataRow>((e) {
                       return DataRow(
@@ -80,19 +80,27 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                             color: e.estado ? Colors.green : Colors.red,
                           )),
                           DataCell(
-                            Icon(Icons.edit),
-                            onTap: () {
-                              devolucio.cab = e;
-                              devolucio.detalles = [];
-                              NavigationService.navigateTo(
-                                  Flurorouter.devolucion);
-                            },
-                          ),
-                          DataCell(
-                            Icon(Icons.delete),
-                            onTap: () async {
-                              await devolucio.anular(e);
-                            },
+                            Row(
+                              children: [
+                                TextButton.icon(
+                                  label: Text(""),
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    devolucio.cab = e;
+                                    devolucio.detalles = [];
+                                    NavigationService.navigateTo(
+                                        Flurorouter.devolucion);
+                                  },
+                                ),
+                                TextButton.icon(
+                                  label: Text(""),
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () async {
+                                    await devolucio.anular(e);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       );

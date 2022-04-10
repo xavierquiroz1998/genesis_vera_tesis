@@ -73,6 +73,7 @@ class ModelProducto extends Productos {
         idGrupo: json["idGrupo"],
         lote: json["lote"] ?? "",
         estado: json["estado"],
+        fecha: json["fecha"] ?? "",
         // proveedor: Proveedor.fromMap(json["Proveedor"]),
         // unidad: Unidad.fromMap(json["Unidad"]),
         // grupo: GruposModelo.fromMap(json["Grupo"]),

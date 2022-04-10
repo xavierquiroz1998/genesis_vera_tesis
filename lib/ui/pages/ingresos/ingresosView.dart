@@ -20,7 +20,7 @@ class IngresoView extends StatefulWidget {
 
 class _IngresoViewState extends State<IngresoView> {
   DateTime selectedDate = new DateTime.now();
-  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {

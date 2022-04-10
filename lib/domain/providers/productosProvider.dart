@@ -116,6 +116,11 @@ class ProductosProvider extends ChangeNotifier {
 
   Future cargarDetalle() async {
     try {
+      print("------grupo-------${listGrupos.length}-----${product.idGrupo}");
+      print(
+          "------proveedo-------${listaProveedores.length}-----${product.idProveedor}");
+      print(
+          "------unidade-------${listUnidades.length}-----${product.idUnidad}");
       product.grupo = listGrupos.where((e) => e.id == product.idGrupo).first;
 
       product.proveedor =

@@ -66,11 +66,11 @@ class _IngresosViewState extends State<IngresosView> {
                         label: Center(child: Text("Estado")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Editar")),
+                        label: Center(child: Text("Acciones")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Anular")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Anular")),
+                      // ),
                     ],
                     rows: ingreso.listTableRegistrosDev.map<DataRow>((e) {
                       return DataRow(
@@ -87,19 +87,27 @@ class _IngresosViewState extends State<IngresosView> {
                             color: e.estado ? Colors.green : Colors.red,
                           )),
                           DataCell(
-                            Icon(Icons.edit),
-                            onTap: () async {
-                              ingreso.cab = e;
-                              ingreso.detalles = [];
-                              NavigationService.navigateTo(
-                                  Flurorouter.ingresossCrud);
-                            },
-                          ),
-                          DataCell(
-                            Icon(Icons.delete),
-                            onTap: () async {
-                              await ingreso.anular(e);
-                            },
+                            Row(
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () async {
+                                    ingreso.cab = e;
+                                    ingreso.detalles = [];
+                                    NavigationService.navigateTo(
+                                        Flurorouter.ingresossCrud);
+                                  },
+                                  icon: Icon(Icons.edit),
+                                  label: Text(""),
+                                ),
+                                TextButton.icon(
+                                  onPressed: () async {
+                                    await ingreso.anular(e);
+                                  },
+                                  icon: Icon(Icons.delete),
+                                  label: Text(""),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       );

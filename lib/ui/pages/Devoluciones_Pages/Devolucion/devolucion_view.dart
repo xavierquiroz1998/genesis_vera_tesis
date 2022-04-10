@@ -24,13 +24,17 @@ class _DevolucionViewState extends State<DevolucionView> {
   String tipoDevSelect = "";
   String flujoSelect = "-";
   DateTime selectedDate = new DateTime.now();
-  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
     var provi = Provider.of<DevolucionProvider>(context, listen: false);
     provi.cargarPrd();
     if (provi.cab.id != 0) {
+      var asd = DateTime.tryParse(provi.cab.fecha);
+      if (asd != null) {
+        selectedDate = asd;
+      }
       provi.cargarDetalle(provi.cab.id);
       //provi.generarT(provi.cab.referencia);
     }

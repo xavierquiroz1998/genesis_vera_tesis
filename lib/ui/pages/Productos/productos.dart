@@ -76,11 +76,11 @@ class _ProductosTableState extends State<ProductosTable> {
                         label: Center(child: Text("Estado")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Editar")),
+                        label: Center(child: Text("Acciones")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Anular")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Anular")),
+                      // ),
                     ],
                     rows: producto.listado.map<DataRow>((e) {
                       return DataRow(
@@ -120,53 +120,56 @@ class _ProductosTableState extends State<ProductosTable> {
                             color: e.estado ? Colors.green : Colors.red,
                           )),
                           DataCell(
-                            e.estado
-                                ? TextButton.icon(
-                                    onPressed: () {
-                                      producto.product = e;
-                                      NavigationService.navigateTo(
-                                          Flurorouter.ingreso);
-                                    },
-                                    icon: Icon(Icons.edit),
-                                    label: Text(""))
-                                : Container(),
-                          ),
-                          DataCell(
-                            e.estado
-                                ? TextButton.icon(
-                                    onPressed: () async {
-                                      await showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text("Anular"),
-                                              content: Container(
-                                                child: Text(
-                                                    "Seguro desea anular el item " +
-                                                        e.detalle),
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    print("Opt anular??");
-                                                    await producto.anular(e);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Aceptar"),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Cancelar"),
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                    },
-                                    icon: Icon(Icons.delete),
-                                    label: Text(""))
-                                : Container(),
+                            Row(
+                              children: [
+                                e.estado
+                                    ? TextButton.icon(
+                                        onPressed: () {
+                                          producto.product = e;
+                                          NavigationService.navigateTo(
+                                              Flurorouter.ingreso);
+                                        },
+                                        icon: Icon(Icons.edit),
+                                        label: Text(""))
+                                    : Container(),
+                                e.estado
+                                    ? TextButton.icon(
+                                        onPressed: () async {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("Anular"),
+                                                  content: Container(
+                                                    child: Text(
+                                                        "Seguro desea anular el item " +
+                                                            e.detalle),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        print("Opt anular??");
+                                                        await producto
+                                                            .anular(e);
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Aceptar"),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Cancelar"),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        icon: Icon(Icons.delete),
+                                        label: Text(""))
+                                    : Container(),
+                              ],
+                            ),
                           ),
                         ],
                       );

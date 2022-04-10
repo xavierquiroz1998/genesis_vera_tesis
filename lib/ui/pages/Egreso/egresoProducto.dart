@@ -21,14 +21,18 @@ class EgresoProducto extends StatefulWidget {
 
 class _EgresoProductoState extends State<EgresoProducto> {
   DateTime selectedDate = new DateTime.now();
-  final DateFormat formatter = DateFormat('dd/MM/yyyy');
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
     var temProvider = Provider.of<EProductoProvider>(context, listen: false);
     temProvider.cargarPrd();
     if (temProvider.cab.id != 0) {
-      selectedDate = DateTime.parse(temProvider.cab.fecha);
+      var asd = DateTime.tryParse(temProvider.cab.fecha);
+      if (asd != null) {
+        selectedDate = asd;
+      }
+
       temProvider.cargarDetalle(temProvider.cab.id);
       temProvider.generar(temProvider.cab.referencia);
     } else {
@@ -129,6 +133,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("Costo Uni.")),
                       ),
                       const DataColumn(
+                        label: Center(child: Text("Promedio")),
+                      ),
+                      const DataColumn(
                         label: Center(child: Text("cantidad")),
                       ),
                       const DataColumn(
@@ -219,6 +226,21 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           DataCell(e.productos != null
                               ? Text("${e.productos!.precio}")
                               : Text("")),
+                          DataCell(e.idProducto != 0
+                              ? FutureBuilder(
+                                  future: egreso.cargarPromedio(e.idProducto),
+                                  builder: ((context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(NumberFormat.currency(
+                                              locale: 'en_US',
+                                              symbol: r'$',
+                                              decimalDigits: 2)
+                                          .format(snapshot.data));
+                                    } else {
+                                      return Text("");
+                                    }
+                                  }))
+                              : Text("")),
                           DataCell(
                             TextFormField(
                               inputFormatters: [
@@ -282,7 +304,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         for (var item in egreso.detalles) {
                           var result = producto.listado
                               .firstWhere((e) => e.id == item.idProducto);
-                          print("---------${result.id}");
+
                           if (result.id > 0) {
                             try {
                               await kardex.salidas(
@@ -294,6 +316,10 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             /*   result.stock =
                                 double.parse(item.cantidad.toString()); */
                             /*     kardex.existencias(result, false, false); */
+// actualiza Lote
+                            item.mov!.actual -= item.cantidad;
+                            await egreso.movimientosGeneral
+                                .updateMov(item.mov!);
 
                             // actualizo Stock Prd
                             Productos prd = new Productos();
