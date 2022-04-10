@@ -5,6 +5,9 @@ class RegistUser extends Equatable {
   String nombre;
   String email;
   String clave;
+  String cedula;
+  String direccion;
+  String celular;
   bool estado;
   DateTime? expiracion;
   DateTime? createdAt;
@@ -15,6 +18,9 @@ class RegistUser extends Equatable {
     this.nombre = "",
     this.email = "",
     this.clave = "",
+    this.cedula = "",
+    this.direccion = "",
+    this.celular = "",
     this.estado = false,
     this.expiracion,
     this.createdAt,
@@ -30,6 +36,9 @@ class RegistUser extends Equatable {
         "email": email,
         "clave": clave,
         "estado": estado,
+        "cedula": cedula,
+        "direccion": direccion,
+        "celular": celular,
         "expiracion": expiracion == null
             ? DateTime.now().toIso8601String()
             : expiracion!.toIso8601String(),
@@ -46,6 +55,9 @@ class RegistUser extends Equatable {
         nombre: json["nombre"],
         email: json["email"],
         clave: json["clave"],
+        cedula: json["cedula"],
+        direccion: json["direccion"],
+        celular: json["celular"],
         estado: json["estado"],
         expiracion: DateTime.parse(json["expiracion"]),
         createdAt: DateTime.parse(json["createdAt"]),

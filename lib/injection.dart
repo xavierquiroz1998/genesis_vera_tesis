@@ -90,7 +90,7 @@ Future<void> init() async {
   sl.registerFactory(() => GrupoProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => ProveedoresProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
-  sl.registerFactory(() => ProyectoProvider(sl(), sl()));
+  sl.registerFactory(() => ProyectoProvider(sl(), sl(), sl()));
   sl.registerFactory(() => EProductoProvider(sl(), sl(), sl(), sl(), sl()));
   sl.registerFactory(() => DevolucionProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));

@@ -75,7 +75,7 @@ class PermisoDTSImp extends PermisoDTS {
   @override
   Future<PermisoModelo> updatePermisosUser(PermisosEntity permisos) async {
     try {
-      String url2 = "http://localhost:8000/api/permisos";
+      String url2 = "http://localhost:8000/api/permisos/${permisos.id}";
       var per = json.encode(permisos.toMap());
       final result = await cliente.put(Uri.parse(url2),
           body: per, headers: {"Content-type": "application/json"});

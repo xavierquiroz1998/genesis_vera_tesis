@@ -55,12 +55,12 @@ class UsuariosProvider extends ChangeNotifier {
     try {
       if (isShowUpdate == "1") {
         var user = RegistUser(
-            //cedula: controlCedula.text,
+            cedula: controlCedula.text,
             nombre: controlNombre.text,
-            //direccion: controlDireccion.text,
+            direccion: controlDireccion.text,
             email: controlEmail.text,
             estado: true,
-            //celular: controlCelular.text,
+            celular: controlCelular.text,
             clave: controlpassword.text);
         var result = await insertUser.insertUsuario(user);
         var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
@@ -75,10 +75,11 @@ class UsuariosProvider extends ChangeNotifier {
         var user = RegistUser(
             id: usuario.id,
             nombre: controlNombre.text,
-            //direccion: controlDireccion.text,
+            direccion: controlDireccion.text,
+            cedula: controlCedula.text,
             email: controlEmail.text,
             estado: true,
-            //celular: controlCelular.text,
+            celular: controlCelular.text,
             clave: controlpassword.text);
         var result = await updateUser.update(user);
         var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
@@ -102,9 +103,10 @@ class UsuariosProvider extends ChangeNotifier {
     try {
       usuario = user;
       controlNombre.text = user.nombre;
-      // controlDireccion.text = usuario.direccion;
+      controlDireccion.text = usuario.direccion;
       controlEmail.text = user.email;
-      //controlCelular.text = usuario.;
+      controlCelular.text = usuario.celular;
+      controlCedula.text = usuario.cedula;
       controlpassword.text = user.clave;
       controlpassword2.text = user.clave;
       blockCedula = false;

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 class ProyectoEntity extends Equatable {
   ProyectoEntity({
     this.id = 0,
+    this.idReg = 0,
     this.referencia = "",
     this.nombre = "",
     this.detalle = "",
@@ -16,6 +17,7 @@ class ProyectoEntity extends Equatable {
   });
 
   int id;
+  int idReg;
   String referencia;
   String nombre;
   String detalle;

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:genesis_vera_tesis/domain/providers/Usuarios/UsuariosProvider.dart';
 
 import '../../../data/services/Navigation/NavigationService.dart';
+import '../../../domain/providers/permiso/permiso_provider.dart';
 import '../../../domain/providers/proyecto/proyecto_provider.dart';
 
 class RegistroUsuario extends StatefulWidget {
@@ -20,7 +21,14 @@ class RegistroUsuario extends StatefulWidget {
 class _RegistroUsuarioState extends State<RegistroUsuario> {
   @override
   void initState() {
-    Provider.of<ProyectoProvider>(context, listen: false).callgetProyecto();
+    var proye = Provider.of<ProyectoProvider>(context, listen: false);
+    proye.callgetProyecto();
+    var pUser = Provider.of<UsuariosProvider>(context, listen: false);
+    if (pUser.usuario.id != 0) {
+      print("carga permisos ");
+      proye.cargarPermisso(pUser.usuario.id);
+    }
+
     super.initState();
   }
 
@@ -256,7 +264,9 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                       if (opt) {
                         var usu = await usuarios.saveUser();
                         if (usu != null) {
-                          await permisos.guardar(usu.id);
+                          bool val =
+                              usuarios.isShowUpdate == "1" ? true : false;
+                          await permisos.guardar(usu.id, val);
                           NavigationService.replaceTo("/usuarios");
                         }
                       }

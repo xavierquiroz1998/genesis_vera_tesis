@@ -9,6 +9,9 @@ class ModelUsuarios extends RegistUser {
     this.nombre = "",
     this.email = "",
     this.clave = "",
+    this.cedula = "",
+    this.direccion = "",
+    this.celular = "",
     this.estado = false,
     this.expiracion,
     this.createdAt,
@@ -19,6 +22,9 @@ class ModelUsuarios extends RegistUser {
             email: email,
             clave: clave,
             estado: estado,
+            cedula: cedula,
+            direccion: direccion,
+            celular: celular,
             expiracion: expiracion,
             createdAt: createdAt,
             updatedAt: updatedAt);
@@ -27,6 +33,9 @@ class ModelUsuarios extends RegistUser {
   String nombre;
   String email;
   String clave;
+  String cedula;
+  String direccion;
+  String celular;
   bool estado;
   DateTime? expiracion;
   DateTime? createdAt;
@@ -42,6 +51,9 @@ class ModelUsuarios extends RegistUser {
         nombre: json["nombre"],
         email: json["email"],
         clave: json["clave"],
+        cedula: json["cedula"] ?? "",
+        direccion: json["direccion"] ?? "",
+        celular: json["celular"] ?? "",
         estado: json["estado"],
         expiracion: DateTime.parse(json["expiracion"]),
         createdAt: DateTime.parse(json["createdAt"]),
@@ -53,6 +65,9 @@ class ModelUsuarios extends RegistUser {
         "nombre": nombre,
         "email": email,
         "clave": clave,
+        "cedula": cedula,
+        "direccion": direccion,
+        "celular": celular,
         "estado": estado,
         "expiracion": expiracion!.toIso8601String(),
         "createdAt": createdAt!.toIso8601String(),

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:genesis_vera_tesis/data/datasource/reference/local_storage.dart';
-import 'package:genesis_vera_tesis/data/models/permiso/permiso.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/providers/permiso/permiso_provider.dart';
-import 'package:genesis_vera_tesis/ui/Router/FluroRouter.dart';
 import 'package:genesis_vera_tesis/ui/pages/Logo/Logo.dart';
 import 'package:genesis_vera_tesis/ui/pages/SideBar/widget/menu_item.dart';
 import 'package:genesis_vera_tesis/util/util_view.dart';
