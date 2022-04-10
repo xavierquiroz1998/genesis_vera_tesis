@@ -150,7 +150,8 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           proCanS: cantidad,
           proUntS: kardexUltimo.proUntE,
           proTtlS: cantidad * kardexUltimo.proUntE, //
-          proCanE: producto.cantidad - cantidad,
+          proCanE: kardexUltimo.proCanE - cantidad,
+          //proCanE: producto.cantidad - cantidad,
           // proCanE: producto.cantidad ,
           // proUntE: total / producto.cantidad,
           proUntE: kardexUltimo.proUntE,

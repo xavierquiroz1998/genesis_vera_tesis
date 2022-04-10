@@ -103,6 +103,7 @@ class IngresosProvider extends ChangeNotifier {
     var result = temporal.fold((fail) => Extras.failure(fail), (prd) => prd);
     try {
       listado = result as List<Productos>;
+      listado = listado.where((element) => element.estado).toList();
     } catch (ex) {
       print("error${result.toString()}");
     }
