@@ -65,9 +65,9 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                       const DataColumn(
                         label: Center(child: Text("Estado")),
                       ),
-                      const DataColumn(
-                        label: Center(child: Text("Editar")),
-                      ),
+                      // const DataColumn(
+                      //   label: Center(child: Text("Editar")),
+                      // ),
                       const DataColumn(
                         label: Center(child: Text("Anular")),
                       ),
@@ -87,14 +87,14 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                             e.estado ? Icons.check : Icons.dangerous,
                             color: e.estado ? Colors.green : Colors.red,
                           )),
-                          DataCell(
-                            Icon(Icons.edit),
-                            onTap: () async {
-                              egreso.cab = e;
-                              egreso.detalles = [];
-                              NavigationService.navigateTo(Flurorouter.egreso);
-                            },
-                          ),
+                          // DataCell(
+                          //   Icon(Icons.edit),
+                          //   onTap: () async {
+                          //     egreso.cab = e;
+                          //     egreso.detalles = [];
+                          //     NavigationService.navigateTo(Flurorouter.egreso);
+                          //   },
+                          // ),
                           DataCell(
                             Icon(Icons.delete),
                             onTap: () async {

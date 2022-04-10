@@ -213,55 +213,55 @@ class _KardexLayoutState extends State<KardexLayout> {
   Widget build(BuildContext context) {
     final kardex = Provider.of<KardexProvider>(context);
     return Container(
-      child: ListView(
-        children: [
-          WhiteCard(
-            title: "Kardex",
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Text("Producto: "),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<Productos>(
-                      items: kardex.listado
-                          .map(
-                            (eDrop) => DropdownMenuItem<Productos>(
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: 150),
-                                child: Text(
-                                  eDrop.nombre,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+      child: WhiteCard(
+        title: "Kardex",
+        child: Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Text("Producto: "),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  DropdownButton<Productos>(
+                    items: kardex.listado
+                        .map(
+                          (eDrop) => DropdownMenuItem<Productos>(
+                            child: Container(
+                              constraints: BoxConstraints(maxWidth: 150),
+                              child: Text(
+                                eDrop.nombre,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              value: eDrop,
                             ),
-                          )
-                          .toList(),
-                      onChanged: (value) async {
-                        kardex.prdSelect = value!;
+                            value: eDrop,
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) async {
+                      kardex.prdSelect = value!;
 
-                        await kardex.getKardexProducto(kardex.prdSelect.id);
-                        // e.productos = value;
-                        // e.total = value.precio;
-                        setState(() {});
-                      },
-                      hint: kardex.prdSelect.id == 0
-                          ? Text("Seleccione Producto")
-                          : Text(kardex.prdSelect.detalle.length > 15
-                              ? kardex.prdSelect.detalle.substring(0, 15)
-                              : kardex.prdSelect.detalle),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SfDataGrid(
+                      await kardex.getKardexProducto(kardex.prdSelect.id);
+                      // e.productos = value;
+                      // e.total = value.precio;
+                      setState(() {});
+                    },
+                    hint: kardex.prdSelect.id == 0
+                        ? Text("Seleccione Producto")
+                        : Text(kardex.prdSelect.detalle.length > 15
+                            ? kardex.prdSelect.detalle.substring(0, 15)
+                            : kardex.prdSelect.detalle),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: SfDataGrid(
                   gridLinesVisibility: GridLinesVisibility.both,
                   headerGridLinesVisibility: GridLinesVisibility.both,
                   columnWidthMode: ColumnWidthMode.fill,
@@ -269,11 +269,11 @@ class _KardexLayoutState extends State<KardexLayout> {
                   source: ItemsDataSource(kardex.kardexRegistro, context),
                   columns: _getColumns(),
                   stackedHeaderRows: _getStackedHeaderRows(),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

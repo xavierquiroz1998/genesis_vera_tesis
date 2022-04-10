@@ -131,9 +131,16 @@ class DevolucionProvider extends ChangeNotifier {
   }
 
   void calcularTotal() {
-    for (var item in detalles) {
-      item.to = item.cantidad * item.total;
+    try {
+      print("erroe n detalles ${detalles.length}");
+      for (var item in detalles) {
+        print("valores ${item.cantidad}------${item.total}");
+        item.to = item.cantidad * item.total;
+      }
+    } catch (ex) {
+      print("error en calcular ${ex.toString()}");
     }
+
     notifyListeners();
   }
 
@@ -205,12 +212,14 @@ class DevolucionProvider extends ChangeNotifier {
       } else {
         var transaction = await usesCases.getADetalle(idRegistro);
         detalles = transaction.getOrElse(() => []);
+        print("value de detalles ${detalles.length}");
         for (var item in detalles) {
           item.productos = listado.where((e) => e.id == item.idProducto).first;
         }
       }
-
+      print("............ ${cab.idSecundario}---------${cab.id}");
       if (cab.id != 0 && cab.idSecundario != 0) {
+        print("ingreso= valor de listado ${listTableRegistrosDev.length}");
         await getRegistrosDev(2);
         try {
           var temp = listTableRegistrosDev
@@ -225,7 +234,7 @@ class DevolucionProvider extends ChangeNotifier {
         codRef += await generarT(cab.cliente, cab.referencia);
       }
       calcularTotal();
-      notifyListeners();
+      //notifyListeners();
     } catch (ex) {
       print("Error en cargar detalle devolucion ${ex.toString()}");
       //throw ("This is an Error");

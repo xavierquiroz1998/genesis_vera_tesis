@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/providers/grupo/grupo_provider.dart';
 import 'package:genesis_vera_tesis/ui/pages/tipo_producto/modal/tipo_modal.dart';

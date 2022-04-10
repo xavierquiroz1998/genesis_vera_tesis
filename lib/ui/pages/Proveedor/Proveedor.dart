@@ -81,14 +81,15 @@ class _ProveedorState extends State<Proveedor> {
                 TextFormField(
                   validator: (value) {
                     if (value == null) {
-                      return "Ingrese Tiempo de Holgura";
+                      return "Ingrese Tiempo de Holgura (Días)";
                     }
                   },
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(numeros))
                   ],
                   controller: provee.controllTiempoHolgura,
-                  decoration: InputDecoration(labelText: "Tiempo de Holgura"),
+                  decoration:
+                      InputDecoration(labelText: "Tiempo de Holgura (Dias)"),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

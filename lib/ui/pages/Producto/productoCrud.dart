@@ -34,6 +34,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
     cargaPRd.cargarGrupo();
     cargaPRd.cargarProveedores();
     if (cargaPRd.product.id != 0) {
+      print("-------------${cargaPRd.product.fecha}");
       var asd = DateTime.tryParse(cargaPRd.product.fecha);
       if (asd != null) {
         selectedDate = asd;

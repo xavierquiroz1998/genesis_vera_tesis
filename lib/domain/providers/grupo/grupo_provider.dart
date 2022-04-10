@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/core/Errors/failure.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
@@ -44,8 +46,12 @@ class GrupoProvider extends ChangeNotifier {
   Future anular(GrupoEntity grupo) async {
     try {
       grupo.estado = false;
-      var result = await deleteGrupo.delete(grupo);
-    } catch (ex) {}
+      var result = await updateGrupo.update(grupo);
+      print("Guardado ${result}");
+    } catch (ex) {
+      print("Erro en anular tipo ${ex.toString()}");
+    }
+    notifyListeners();
   }
 
   String failure(Failure fail) {

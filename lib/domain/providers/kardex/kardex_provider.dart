@@ -23,10 +23,12 @@ class KardexProvider extends ChangeNotifier {
   KardexProvider(this.kardex, this.getProductos);
 
   Future<void> cargarPrd() async {
+    listado = [];
     var temporal = await getProductos.call();
     var result = temporal.fold((fail) => Extras.failure(fail), (prd) => prd);
     try {
       listado = result as List<Productos>;
+      listado = listado.where((e) => e.estado).toList();
     } catch (ex) {
       print("error${result.toString()}");
     }
@@ -80,9 +82,9 @@ class KardexProvider extends ChangeNotifier {
       k.idProducto = producto.id;
       k.codPro = producto.referencia;
       //nomPro: producto.detalle,
-      //proCanI: producto.stock,
+      k.proCanI = producto.cantidad;
       k.proUntI = producto.precio;
-      //proTtlI: (producto.stock * producto.precio),
+      k.proTtlI = (producto.cantidad * producto.precio);
       k.proCanS = 0;
       k.proUntS = 0;
       k.proTtlS = 0;
@@ -148,8 +150,10 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           proCanS: cantidad,
           proUntS: kardexUltimo.proUntE,
           proTtlS: cantidad * kardexUltimo.proUntE, //
-          proCanE: producto.cantidad,
-          proUntE: total / producto.cantidad,
+          proCanE: producto.cantidad - cantidad,
+          // proCanE: producto.cantidad ,
+          // proUntE: total / producto.cantidad,
+          proUntE: kardexUltimo.proUntE,
           proTtlE: total,
           createdAt: DateTime.now(),
           stsPro: true);

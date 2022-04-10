@@ -28,6 +28,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
     var temProvider = Provider.of<EProductoProvider>(context, listen: false);
     temProvider.cargarPrd();
     if (temProvider.cab.id != 0) {
+      selectedDate = DateTime.parse(temProvider.cab.fecha);
       temProvider.cargarDetalle(temProvider.cab.id);
       temProvider.generar(temProvider.cab.referencia);
     } else {
@@ -167,7 +168,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                 e.idProducto = value!.id;
                                 e.productos = value;
                                 e.productos!.cantidad = 0;
-                                e.total = value.precio;
+                                //e.total = value.precio;
                                 await egreso.cargarMovimientos(e.idProducto);
                                 setState(() {});
                               },

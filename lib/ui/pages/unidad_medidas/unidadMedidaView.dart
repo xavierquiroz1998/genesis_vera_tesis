@@ -46,8 +46,8 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                           DataColumn(label: Text("Código")),
                           DataColumn(label: Text("Descripción")),
                           DataColumn(label: Text("Estado")),
-                          DataColumn(label: Text("Editar")),
-                          DataColumn(label: Text("Anular")),
+                          DataColumn(label: Text("Acciones")),
+                          // DataColumn(label: Text("Anular")),
                         ],
                         rows: unidadP.listUnidad.map<DataRow>((e) {
                           return DataRow(cells: [
@@ -59,21 +59,24 @@ class _UnidadMedidaViewState extends State<UnidadMedidaView> {
                               color: e.estado ? Colors.green : Colors.red,
                             )),
                             DataCell(
-                              TextButton(
-                                onPressed: () {
-                                  unidadP.unidad = e;
-                                  UnidadWidget.dialogoUnidad(context);
-                                },
-                                child: Icon(Icons.edit),
-                              ),
-                            ),
-                            DataCell(
-                              TextButton(
-                                onPressed: () async {
-                                  unidadP.unidad = e;
-                                  await unidadP.anular();
-                                },
-                                child: Icon(Icons.delete),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      unidadP.unidad = e;
+                                      UnidadWidget.dialogoUnidad(context);
+                                    },
+                                    child: Icon(Icons.edit),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      unidadP.unidad = e;
+                                      await unidadP.anular();
+                                    },
+                                    child: Icon(Icons.delete),
+                                  ),
+                                ],
                               ),
                             ),
                           ]);

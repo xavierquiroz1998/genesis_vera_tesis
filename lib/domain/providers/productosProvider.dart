@@ -198,7 +198,8 @@ class ProductosProvider extends ChangeNotifier {
       var fechaAnterior = DateTime(fechaActual.year, fechaActual.month, 1 - 1);
       //var fechaFinal = DateTime.now().add(Duration(days: -90));
       for (var item in lisCab) {
-        var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
+        //var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
+        var dife = DateTime.parse(item.fecha).difference(fechaAnterior);
         if (dife.inDays <= 30) {
           var total =
               lisDet.where((element) => element.idRegistro == item.id).toList();

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:intl/intl.dart';
@@ -90,8 +89,7 @@ class ItemsDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8.0),
         alignment: Alignment.centerRight,
         child: Text(
-          NumberFormat.currency(locale: 'en_US', symbol: r'$', decimalDigits: 2)
-              .format(row.getCells()[3].value),
+          row.getCells()[3].value.toString(),
           style: TextStyle(fontSize: 12),
         ),
       ),
@@ -117,8 +115,7 @@ class ItemsDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8.0),
         alignment: Alignment.centerRight,
         child: Text(
-          NumberFormat.currency(locale: 'en_US', symbol: r'$', decimalDigits: 2)
-              .format(row.getCells()[6].value),
+          row.getCells()[6].value.toString(),
           style: TextStyle(fontSize: 12),
         ),
       ),
@@ -144,8 +141,7 @@ class ItemsDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8.0),
         alignment: Alignment.centerRight,
         child: Text(
-          NumberFormat.currency(locale: 'en_US', symbol: r'$', decimalDigits: 2)
-              .format(row.getCells()[9].value),
+          row.getCells()[9].value.toString(),
           style: TextStyle(fontSize: 12),
         ),
       ),

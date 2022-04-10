@@ -30,77 +30,81 @@ class _ParametrosViewState extends State<ParametrosView> {
           child: Expanded(
             child: Column(
               children: [
-                  Expanded(
-                child: Column(
-                  children: [
-
-                    for (var item in provi.listadoParametros)... {
-                    Row(
-                      children: [
-                        Expanded(child: Center(child: Text("Estado ${item.detalle}"))),
-                        Expanded(
-                          flex: 3,
-                          child: TextFormField(
-                            initialValue: item.holgura.toString(),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp(numeros))
-                            ],
-                            onChanged: (value){
-                              item.holgura = int.tryParse(value)??0;
-                            },
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                hintText: 'Tiempo de clasificacion'),
-                          ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      for (var item in provi.listadoParametros) ...{
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Center(
+                                    child: Text("Estado ${item.detalle}"))),
+                            Expanded(
+                              flex: 3,
+                              child: TextFormField(
+                                initialValue: item.holgura.toString(),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(numeros))
+                                ],
+                                onChanged: (value) {
+                                  item.holgura = int.tryParse(value) ?? 0;
+                                },
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    hintText: 'Tiempo de clasificacion'),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),     
-  },
-                    // Row(
-                    //   children: [
-                    //     Expanded(child: Center(child: Text("Estado B"))),
-                    //     Expanded(
-                    //       flex: 3,
-                    //       child: TextField(
-                    //         inputFormatters: [
-                    //           FilteringTextInputFormatter.allow(RegExp(numeros))
-                    //         ],
-                    //         keyboardType: TextInputType.number,
-                    //         decoration: InputDecoration(
-                    //             hintText: 'Tiempo de clasificacion'),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     Expanded(child: Center(child: Text("Estado C"))),
-                    //     Expanded(
-                    //       flex: 3,
-                    //       child: TextField(
-                    //         inputFormatters: [
-                    //           FilteringTextInputFormatter.allow(RegExp(numeros))
-                    //         ],
-                    //         decoration: InputDecoration(
-                    //             hintText: 'Tiempo de clasificacion'),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  
-                  ],
+                      },
+                      // Row(
+                      //   children: [
+                      //     Expanded(child: Center(child: Text("Estado B"))),
+                      //     Expanded(
+                      //       flex: 3,
+                      //       child: TextField(
+                      //         inputFormatters: [
+                      //           FilteringTextInputFormatter.allow(RegExp(numeros))
+                      //         ],
+                      //         keyboardType: TextInputType.number,
+                      //         decoration: InputDecoration(
+                      //             hintText: 'Tiempo de clasificacion'),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(child: Center(child: Text("Estado C"))),
+                      //     Expanded(
+                      //       flex: 3,
+                      //       child: TextField(
+                      //         inputFormatters: [
+                      //           FilteringTextInputFormatter.allow(RegExp(numeros))
+                      //         ],
+                      //         decoration: InputDecoration(
+                      //             hintText: 'Tiempo de clasificacion'),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
                 ),
-
-              ),
-            
-TextButton(onPressed: ()async{
-  await provi.updateParametros();
-}, style: TextButton.styleFrom(
-        backgroundColor: Colors.blue,
-      ), child: Text("Guardar", style: TextStyle(color: Colors.white),)),
-
+                TextButton(
+                  onPressed: () async {
+                    await provi.updateParametros();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: Text(
+                    "Guardar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
-            
             ),
           )
           //  ListView(
