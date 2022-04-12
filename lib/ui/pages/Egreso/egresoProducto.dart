@@ -176,7 +176,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                 e.productos = value;
                                 e.productos!.cantidad = 0;
                                 //e.total = value.precio;
-                                await egreso.cargarMovimientos(e.idProducto);
+
                                 setState(() {});
                               },
                               hint: e.idProducto == 0
@@ -190,35 +190,51 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           //     ? Text("${e.productos!.referencia}")
                           //     : Text("")),
                           DataCell(
-                            DropdownButton<ModelMovimiento>(
-                              items: egreso.listaMovimientos
-                                  .map(
-                                    (eDrop) =>
-                                        DropdownMenuItem<ModelMovimiento>(
-                                      child: Container(
-                                        constraints:
-                                            BoxConstraints(maxWidth: 100),
-                                        child: Text(
-                                          eDrop.codigo,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      value: eDrop,
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                e.lote = value!.codigo;
-                                e.mov = value;
-                                e.productos!.cantidad = value.actual.toDouble();
+                            e.productos != null
+                                ? FutureBuilder(
+                                    future:
+                                        egreso.cargarMovimientos(e.idProducto),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        var listado = snapshot.data
+                                            as List<ModelMovimiento>;
+                                        return DropdownButton<ModelMovimiento>(
+                                          items: listado
+                                              .map(
+                                                (eDrop) => DropdownMenuItem<
+                                                    ModelMovimiento>(
+                                                  child: Container(
+                                                    constraints: BoxConstraints(
+                                                        maxWidth: 100),
+                                                    child: Text(
+                                                      eDrop.codigo,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  value: eDrop,
+                                                ),
+                                              )
+                                              .toList(),
+                                          onChanged: (value) {
+                                            e.lote = value!.codigo;
+                                            e.mov = value;
+                                            e.productos!.cantidad =
+                                                value.actual.toDouble();
 
-                                setState(() {});
-                              },
-                              hint: e.lote == ""
-                                  ? Text("Lote")
-                                  : Text(e.mov!.codigo),
-                            ),
+                                            setState(() {});
+                                          },
+                                          hint: e.lote == ""
+                                              ? Text("Lote")
+                                              : Text(e.mov!.codigo),
+                                        );
+                                      } else {
+                                        return Text("");
+                                      }
+                                    },
+                                  )
+                                : Text(""),
                           ),
                           DataCell(e.productos != null
                               ? Text("${e.productos!.cantidad}")
@@ -298,9 +314,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         //   title: 'Guardado Correctamente',
                         //   desc: '',
                         // )..show();
-                        if (producto.listado.length == 0) {
-                          await producto.cargarPrd();
-                        }
+                        //if (producto.listado.length == 0) {
+                        await producto.cargarPrd();
+                        //}
                         for (var item in egreso.detalles) {
                           var result = producto.listado
                               .firstWhere((e) => e.id == item.idProducto);
@@ -335,9 +351,10 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             prd.referencia = result.referencia;
 
                             prd.cantidad = result.cantidad - item.cantidad;
-
+                            print(
+                                "******* ${prd.cantidad}******${result.cantidad}*********+ ${item.cantidad}");
                             await egreso.generalProducto.update(prd);
-                            kardex.impresion();
+                            //kardex.impresion();
                           }
                         }
                         NavigationService.replaceTo("/egresos");

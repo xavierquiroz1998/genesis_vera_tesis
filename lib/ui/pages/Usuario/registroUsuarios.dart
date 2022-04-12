@@ -19,6 +19,7 @@ class RegistroUsuario extends StatefulWidget {
 }
 
 class _RegistroUsuarioState extends State<RegistroUsuario> {
+  String numeros = r'^(?:\+|-)?\d+$';
   @override
   void initState() {
     var proye = Provider.of<ProyectoProvider>(context, listen: false);
@@ -57,22 +58,24 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-                                controller: usuarios.controlCedula,
-                                decoration: CustomInputs.formInputDecoration(
-                                    hint: 'Cédula',
-                                    label: 'Cédula',
-                                    icon: Icons.person),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Campo Requerido*";
-                                  }
-                                  return null;
-                                },
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
-                                //enabled: usuarios.blockCedula,
-                              ),
+                                  controller: usuarios.controlCedula,
+                                  decoration: CustomInputs.formInputDecoration(
+                                      hint: 'Cédula',
+                                      label: 'Cédula',
+                                      icon: Icons.person),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Campo Requerido*";
+                                    }
+                                    return null;
+                                  },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(numeros)),
+                                    LengthLimitingTextInputFormatter(13),
+                                  ]
+                                  //enabled: usuarios.blockCedula,
+                                  ),
                             ),
                           ),
                           Expanded(
@@ -135,6 +138,10 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(numeros)),
+                            LengthLimitingTextInputFormatter(10),
+                          ],
                           controller: usuarios.controlCelular,
                           decoration: CustomInputs.formInputDecoration(
                               hint: 'Celular',
@@ -146,9 +153,6 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                             }
                             return null;
                           },
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                          ],
                         ),
                       ),
                       Row(
@@ -271,7 +275,13 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                         }
                       }
                     },
-                    child: Text("Ingresar"),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: Text(
+                      "Guardar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
@@ -279,7 +289,13 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                       permisos.clear();
                       Navigator.pop(context);
                     },
-                    child: Text("Cancelar"),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: Text(
+                      "Cancelar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               )

@@ -109,19 +109,22 @@ class EProductoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future cargarMovimientos(int idProducto) async {
+  Future<List<ModelMovimiento>> cargarMovimientos(int idProducto) async {
     try {
-      var temp = await movimientosGeneral.getMovientosPrd(idProducto);
-      listaMovimientos = temp.getOrElse(() => []);
-
       // carga de kardex
       var result = await kardex.getAllProducto(idProducto);
       kardexRegistro = result.getOrElse(() => []);
       promedioKardex = kardexRegistro.reversed.first;
 
-      notifyListeners();
+      var temp = await movimientosGeneral.getMovientosPrd(idProducto);
+      var lista = temp.getOrElse(() => []);
+
+      return lista;
+
+      //notifyListeners();
     } catch (ex) {
       print("Erro en obtener movimientos ${ex.toString()}");
+      return [];
     }
   }
 

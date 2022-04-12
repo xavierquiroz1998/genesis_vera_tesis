@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
 import 'package:genesis_vera_tesis/domain/entities/usuarios/registroUsuarios.dart';
 
 import '../../services/fail.dart';

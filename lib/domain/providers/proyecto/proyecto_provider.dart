@@ -16,11 +16,12 @@ class ProyectoProvider extends ChangeNotifier {
   final GetProyectos getProyect;
   final InsertPermiso insertPermisos;
   final GetPermiso getGrupos;
-  //final UpdatePermiso updatePermiso;
+  final UpdatePermiso updatePermiso;
   List<ProyectoEntity> listProyectos = [];
   List<PermisosEntity> listGrupo = [];
 
-  ProyectoProvider(this.getProyect, this.insertPermisos, this.getGrupos);
+  ProyectoProvider(
+      this.getProyect, this.insertPermisos, this.getGrupos, this.updatePermiso);
 
   Future<void> callgetProyecto() async {
     var temp = await getProyect.call();
@@ -55,7 +56,7 @@ class ProyectoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future guardar(int idUsuario, bool update) async {
+  Future guardar(int idUsuario, bool insert) async {
     try {
       for (var item in listProyectos) {
         if (item.crear || item.modificar || item.consultar || item.anular) {
@@ -67,16 +68,17 @@ class ProyectoProvider extends ChangeNotifier {
           permiss.anular = item.anular ? 1 : 0;
           permiss.consulta = item.consultar ? 1 : 0;
           permiss.estado = true;
-
-          if (update) {
+          if (!insert) {
             var result = await insertPermisos.inserPermis(permiss);
             var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
             var obj = tem as PermisosEntity;
           } else {
-            // permiss.id = item.idReg;
-            // var result = await updatePermiso.update(permiss);
-            // var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
-            // var obj = tem as PermisosEntity;
+            permiss.id = item.idReg;
+
+            var result = await updatePermiso.update(permiss);
+            var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+            var obj = tem as PermisosEntity;
+            print("Envia abtualizar ${obj.toString()}");
           }
         }
       }

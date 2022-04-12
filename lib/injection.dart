@@ -69,6 +69,7 @@ import 'domain/uses cases/grupo/update_grupos.dart';
 import 'domain/uses cases/logeo/inicio_sesion.dart';
 import 'domain/uses cases/movimientos/movimientosGeneral.dart';
 import 'domain/uses cases/parametros/parametros_general.dart';
+import 'domain/uses cases/permiso/update_permiso.dart';
 import 'domain/uses cases/productos/insert_producto.dart';
 import 'domain/uses cases/productos/productosGeneral.dart';
 import 'domain/uses cases/proveedores/delete_proveedores.dart';
@@ -90,7 +91,7 @@ Future<void> init() async {
   sl.registerFactory(() => GrupoProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => ProveedoresProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => PermisoProvider(sl()));
-  sl.registerFactory(() => ProyectoProvider(sl(), sl(), sl()));
+  sl.registerFactory(() => ProyectoProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => EProductoProvider(sl(), sl(), sl(), sl(), sl()));
   sl.registerFactory(() => DevolucionProvider(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => UsuariosProvider(sl(), sl(), sl(), sl()));
@@ -99,6 +100,7 @@ Future<void> init() async {
   sl.registerFactory(() => KardexProvider(sl(), sl()));
   sl.registerFactory(() => ParametrosPRovider(sl()));
   sl.registerFactory(() => MovimientoProvider(sl()));
+  sl.registerFactory(() => UpdatePermiso(sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso

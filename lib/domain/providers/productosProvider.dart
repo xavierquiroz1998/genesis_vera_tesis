@@ -203,7 +203,8 @@ class ProductosProvider extends ChangeNotifier {
       for (var item in lisCab) {
         //var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
         var dife = DateTime.parse(item.fecha).difference(fechaAnterior);
-        if (dife.inDays <= 30) {
+
+        if (dife.inDays < 0 && dife.inDays > -90) {
           var total =
               lisDet.where((element) => element.idRegistro == item.id).toList();
           if (total.length != 0) {
@@ -220,6 +221,9 @@ class ProductosProvider extends ChangeNotifier {
         obj.idProducto = idPrd.key;
         for (var item in idPrd.value) {
           obj.promedio += item.cantidad * item.total;
+          if (item.idProducto == 65) {
+            //print("*********${obj.promedio}");
+          }
         }
         lisCla.add(obj);
       }
@@ -227,20 +231,25 @@ class ProductosProvider extends ChangeNotifier {
       for (var forma in lisCla) {
         forma.promedio = forma.promedio / 3;
         forma.promedio = forma.promedio.roundToDouble();
+        if (forma.idProducto == 65) {
+          print("**************${forma.promedio}");
+        }
       }
+      // ordenar lista
       lisCla = lisCla.orderByDescending((et) => et.promedio).toList();
+
+      // total Global por promedio
       var totalGlobal = lisCla.sum(
         (p) => p.promedio,
       );
-
+      //print("*****${totalGlobal}");
       await cargarPrd();
 // ahora si a categorizar
       totalGlobal = formatting(totalGlobal);
       double inici = 0;
       for (var cat in lisCla) {
         try {
-          var prd =
-              listado.firstWhere((element) => element.id == cat.idProducto);
+          var prd = listado.firstWhere((e) => e.id == cat.idProducto);
           cat.detalle = prd.nombre;
           cat.stock = prd.cantidad;
           cat.pedido = prd.pedido;
@@ -254,6 +263,7 @@ class ProductosProvider extends ChangeNotifier {
         }
 
         var valu = cat.promedio / totalGlobal;
+
         valu = formatting(valu);
         inici += valu * 100;
         if (inici <= 80) {
@@ -272,16 +282,25 @@ class ProductosProvider extends ChangeNotifier {
         ap.detalle = item.detalle;
         ap.cobertura = item.cobertura.round();
         ap.promedio = formatting(item.promedio / 3);
+        if (item.idProducto == 65) {
+          //  print("*********${ap.promedio} ***********${item.promedio}");
+        }
         ap.clasificacion = item.clasificacion;
         ap.stock = item.stock;
 
-// calculos
-
+        // calculos
         double ventaXdia = ap.promedio / 30;
+        if (item.idProducto == 65) {
+          print("**venta por dia****$ventaXdia");
+        }
+
         if (ap.clasificacion == "A") {
           var paramTemp = listadoParam.where((e) => e.detalle == "A").first;
           if (paramTemp != null) {
             ap.stockSeguridad = formatting(ventaXdia * paramTemp.holgura);
+            if (item.idProducto == 65) {
+              print("Stock******${ap.stockSeguridad}-ccc ${paramTemp.holgura}");
+            }
           } else {
             ap.stockSeguridad = formatting(ventaXdia * 7);
           }
@@ -312,6 +331,9 @@ class ProductosProvider extends ChangeNotifier {
           }
         } else {
           ap.aprovisionar = (item.pedido - item.stock) + ap.stockSeguridad;
+        }
+        if (item.idProducto == 65) {
+          print("***${item.stock}*********** ap ${ap.aprovisionar}");
         }
 
         aprovisionamientos.add(ap);
