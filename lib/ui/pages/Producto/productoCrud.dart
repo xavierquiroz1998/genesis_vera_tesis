@@ -329,39 +329,52 @@ class _ProductoCrudState extends State<ProductoCrud> {
                     onPressed: () async {
                       // final opt = await producto
                       //     .guardar(otra.isNotEmpty ? otra.first : null);
-                      Productos? opt;
-                      print("...........${producto.product.lote}");
 
-                      producto.product.fecha = formatter.format(selectedDate);
-                      print("Fecha ${producto.product.fecha}");
-                      if (producto.product.id == 0) {
-                        opt = await producto.guardar(producto.product);
-                      } else {
-                        print("----------ipdate ");
-                        opt = await producto.actualizar(producto.product);
-                      }
+                      if (int.parse(producto.controllerStock.text == ""
+                                  ? "0"
+                                  : producto.controllerStock.text) >
+                              0 &&
+                          int.parse(producto.controllerPrecio.text == ""
+                                  ? "0"
+                                  : producto.controllerPrecio.text) >
+                              0) {
+                        Productos? opt;
+                        print("...........${producto.product.lote}");
 
-                      if (opt != null) {
-                        // AwesomeDialog(
-                        //   context: context,
-                        //   dialogType: DialogType.SUCCES,
-                        //   animType: AnimType.BOTTOMSLIDE,
-                        //   title: 'Guardado Correctamente',
-                        //   desc: '',
-                        //   btnOkOnPress: () {},
-                        // )..show();
-                        try {
-                          await kardex.entradas(opt, false, true, selectedDate);
-
-                          kardex.impresion();
-                        } catch (ex) {
-                          print(
-                              "Erro en guardar entrada kardex ${ex.toString()}");
+                        producto.product.fecha = formatter.format(selectedDate);
+                        print("Fecha ${producto.product.fecha}");
+                        if (producto.product.id == 0) {
+                          opt = await producto.guardar(producto.product);
+                        } else {
+                          print("----------ipdate ");
+                          opt = await producto.actualizar(producto.product);
                         }
 
-                        NavigationService.replaceTo("/ingresos");
+                        if (opt != null) {
+                          // AwesomeDialog(
+                          //   context: context,
+                          //   dialogType: DialogType.SUCCES,
+                          //   animType: AnimType.BOTTOMSLIDE,
+                          //   title: 'Guardado Correctamente',
+                          //   desc: '',
+                          //   btnOkOnPress: () {},
+                          // )..show();
+                          try {
+                            await kardex.entradas(
+                                opt, false, true, selectedDate);
+
+                            kardex.impresion();
+                          } catch (ex) {
+                            print(
+                                "Erro en guardar entrada kardex ${ex.toString()}");
+                          }
+
+                          NavigationService.replaceTo("/ingresos");
+                        } else {
+                          ToastNotificationView.messageDanger('Error');
+                        }
                       } else {
-                        ToastNotificationView.messageDanger('Error');
+                        print('Cantidad o costo no pueden ser menor a 1');
                       }
                     },
                     child: Text("Guardar"),
