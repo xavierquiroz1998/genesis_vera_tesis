@@ -12,6 +12,7 @@ import 'package:genesis_vera_tesis/domain/uses%20cases/productos/insert_producto
 import 'package:genesis_vera_tesis/domain/uses%20cases/proveedores/getproveedores.dart';
 import 'package:intl/intl.dart';
 import '../entities/Proveedores/Proveedores.dart';
+import '../entities/registro/entityRegistor.dart';
 import '../entities/registro/entityRegistroDetaller.dart';
 import '../entities/tipo/grupo.dart';
 import '../entities/unidad_medida/unidadMedida.dart';
@@ -56,6 +57,7 @@ class ProductosProvider extends ChangeNotifier {
   final ParametrosGeneral parametros;
   final GeneralProducto productoGeneral;
   final MovimientosGeneral mov;
+  final UsesCaseRegistros usesCases;
 
   ProductosProvider(
       this.insertarProducto,
@@ -66,6 +68,7 @@ class ProductosProvider extends ChangeNotifier {
       this.registro,
       this.productoGeneral,
       this.mov,
+      this.usesCases,
       this.parametros);
 
   //GlobalKey<FormState> get keyProducto => _keyProducto;
@@ -140,6 +143,18 @@ class ProductosProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<EntityRegistro>> getRegistrosDev() async {
+    try {
+      var tem = await usesCases.getAll(2);
+
+      var asd = tem.getOrElse(() => []);
+
+      return asd;
+    } catch (ex) {
+      return [];
+    }
+  }
+
   Future<void> cargarUnidades() async {
     var temporal = await unidadesMedidas.call();
     var result = temporal.fold((fail) => failure(fail), (prd) => prd);
@@ -192,15 +207,32 @@ class ProductosProvider extends ChangeNotifier {
       var listadoParam = param.getOrElse(() => []);
       // categorizacion  de todos los productos
       List<EntityRegistroDetalle> temporal = [];
+      List<EntityRegistroDetalle> stockMensual = [];
       // obtengo las ventas de ese producto los ultimos 3 meses y lo sumo el total
       var tem = await registro.getAllDetalle(1);
       var cab = await registro.getAll(2);
       var lisDet = tem.getOrElse(() => []);
       var lisCab = cab.getOrElse(() => []);
       var fechaActual = DateTime.now();
+      var fechaMesActual = DateTime(fechaActual.year, fechaActual.month - 1, 1);
       var fechaAnterior = DateTime(fechaActual.year, fechaActual.month, 1 - 1);
       //var fechaFinal = DateTime.now().add(Duration(days: -90));
       for (var item in lisCab) {
+        var difee = DateTime.parse(item.fecha).difference(fechaMesActual);
+        if (difee.inDays >= 0 && difee.inDays < 30) {
+          //print("fech ${item.fecha}");
+          print("registros ${item.id}");
+          var total =
+              lisDet.where((element) => element.idRegistro == item.id).toList();
+
+          if (total.length != 0) {
+            for (var deta in total) {
+              //print("registros ${deta.idProducto}");
+              stockMensual.add(deta);
+            }
+          }
+        }
+
         //var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
         var dife = DateTime.parse(item.fecha).difference(fechaAnterior);
 
@@ -247,18 +279,37 @@ class ProductosProvider extends ChangeNotifier {
 // ahora si a categorizar
       totalGlobal = formatting(totalGlobal);
       double inici = 0;
+      for (var item in stockMensual) {
+        print("{asdasdas ${item.idProducto}");
+      }
       for (var cat in lisCla) {
         try {
           var prd = listado.firstWhere((e) => e.id == cat.idProducto);
           cat.detalle = prd.nombre;
-          cat.stock = prd.cantidad;
+          print("prd${cat.idProducto}");
+          try {
+            var stockVenta = stockMensual
+                .where((e) => e.idProducto == cat.idProducto)
+                .sum((p) => p.cantidad);
+
+            cat.stock = stockVenta - prd.cantidad - prd.pedido;
+            print(
+                "ventas ${stockVenta} cant ${prd.cantidad} ** ${prd.pedido} -- ${cat.stock}");
+          } catch (ex) {
+            cat.stock = prd.cantidad;
+          }
+
+          //cat.stock = prd.cantidad;
+
           cat.pedido = prd.pedido;
           if (prd.pedido != 0) {
+            print("1");
             cat.cobertura = (prd.cantidad / prd.pedido) * 30;
           } else {
             cat.cobertura = 0;
           }
         } catch (ex) {
+          print("-----${ex.toString()}");
           cat.detalle = "####";
         }
 

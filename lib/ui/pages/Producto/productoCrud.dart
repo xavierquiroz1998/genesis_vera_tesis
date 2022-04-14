@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/entities/tipo/grupo.dart';
 import 'package:genesis_vera_tesis/domain/entities/unidad_medida/unidadMedida.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/entities/Proveedores/Proveedores.dart';
 import '../../../domain/entities/productos.dart';
+import '../../../domain/services/codRef.dart';
 
 class ProductoCrud extends StatefulWidget {
   ProductoCrud({Key? key}) : super(key: key);
@@ -145,6 +147,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                   return "Ingrese Cantidad";
                                 }
                               },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(Helper.soloNumeros))
+                              ],
                               controller: producto.controllerStock,
                               decoration: CustomInputs.formInputDecoration(
                                   hint: 'Cantidad a ingresar',
@@ -185,6 +191,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                   return "Ingrese Precio Unitario";
                                 }
                               },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(Helper.decimales))
+                              ],
                               controller: producto.controllerPrecio,
                               decoration: CustomInputs.formInputDecoration(
                                   hint: 'Costo',
@@ -314,47 +324,49 @@ class _ProductoCrudState extends State<ProductoCrud> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextButton(
-                  onPressed: () async {
-                    // final opt = await producto
-                    //     .guardar(otra.isNotEmpty ? otra.first : null);
-                    Productos? opt;
-                    print("...........${producto.product.lote}");
+                if (producto.product.id == 0) ...{
+                  TextButton(
+                    onPressed: () async {
+                      // final opt = await producto
+                      //     .guardar(otra.isNotEmpty ? otra.first : null);
+                      Productos? opt;
+                      print("...........${producto.product.lote}");
 
-                    producto.product.fecha = formatter.format(selectedDate);
-                    print("Fecha ${producto.product.fecha}");
-                    if (producto.product.id == 0) {
-                      opt = await producto.guardar(producto.product);
-                    } else {
-                      print("----------ipdate ");
-                      opt = await producto.actualizar(producto.product);
-                    }
-
-                    if (opt != null) {
-                      // AwesomeDialog(
-                      //   context: context,
-                      //   dialogType: DialogType.SUCCES,
-                      //   animType: AnimType.BOTTOMSLIDE,
-                      //   title: 'Guardado Correctamente',
-                      //   desc: '',
-                      //   btnOkOnPress: () {},
-                      // )..show();
-                      try {
-                        await kardex.entradas(opt, false, true, selectedDate);
-
-                        kardex.impresion();
-                      } catch (ex) {
-                        print(
-                            "Erro en guardar entrada kardex ${ex.toString()}");
+                      producto.product.fecha = formatter.format(selectedDate);
+                      print("Fecha ${producto.product.fecha}");
+                      if (producto.product.id == 0) {
+                        opt = await producto.guardar(producto.product);
+                      } else {
+                        print("----------ipdate ");
+                        opt = await producto.actualizar(producto.product);
                       }
 
-                      NavigationService.replaceTo("/ingresos");
-                    } else {
-                      ToastNotificationView.messageDanger('Error');
-                    }
-                  },
-                  child: Text("Guardar"),
-                ),
+                      if (opt != null) {
+                        // AwesomeDialog(
+                        //   context: context,
+                        //   dialogType: DialogType.SUCCES,
+                        //   animType: AnimType.BOTTOMSLIDE,
+                        //   title: 'Guardado Correctamente',
+                        //   desc: '',
+                        //   btnOkOnPress: () {},
+                        // )..show();
+                        try {
+                          await kardex.entradas(opt, false, true, selectedDate);
+
+                          kardex.impresion();
+                        } catch (ex) {
+                          print(
+                              "Erro en guardar entrada kardex ${ex.toString()}");
+                        }
+
+                        NavigationService.replaceTo("/ingresos");
+                      } else {
+                        ToastNotificationView.messageDanger('Error');
+                      }
+                    },
+                    child: Text("Guardar"),
+                  ),
+                },
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 import 'package:genesis_vera_tesis/domain/providers/Proveedores/proveedoresProvider.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,12 @@ class _ProveedorState extends State<Proveedor> {
                       return "Ingrese Nombres de Proveedor";
                     }
                   },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(Helper.sololetras),
+                    ),
+                    LengthLimitingTextInputFormatter(50),
+                  ],
                   controller: provee.controllNombres,
                   decoration: InputDecoration(labelText: "Nombres"),
                 ),
@@ -75,6 +82,12 @@ class _ProveedorState extends State<Proveedor> {
                       return "Ingrese Celular";
                     }
                   },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(Helper.soloNumeros),
+                    ),
+                    LengthLimitingTextInputFormatter(10),
+                  ],
                   controller: provee.controllCelular,
                   decoration: InputDecoration(labelText: "Celular"),
                 ),

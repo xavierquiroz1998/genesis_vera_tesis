@@ -69,7 +69,7 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                       //   label: Center(child: Text("Editar")),
                       // ),
                       const DataColumn(
-                        label: Center(child: Text("Anular")),
+                        label: Center(child: Text("Acciones")),
                       ),
                     ],
                     rows: egreso.listTableRegistrosDev.map<DataRow>((e) {
@@ -96,10 +96,27 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                           //   },
                           // ),
                           DataCell(
-                            Icon(Icons.delete),
-                            onTap: () async {
-                              await egreso.anular(e);
-                            },
+                            Row(
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () async {
+                                    egreso.cab = e;
+                                    egreso.detalles = [];
+                                    NavigationService.navigateTo(
+                                        Flurorouter.egreso);
+                                  },
+                                  icon: Icon(Icons.search),
+                                  label: Text(""),
+                                ),
+                                TextButton.icon(
+                                  onPressed: () async {
+                                    await egreso.anular(e);
+                                  },
+                                  icon: Icon(Icons.delete),
+                                  label: Text(""),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       );

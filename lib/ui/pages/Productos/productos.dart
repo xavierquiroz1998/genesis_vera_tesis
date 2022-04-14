@@ -129,7 +129,7 @@ class _ProductosTableState extends State<ProductosTable> {
                                           NavigationService.navigateTo(
                                               Flurorouter.ingreso);
                                         },
-                                        icon: Icon(Icons.edit),
+                                        icon: Icon(Icons.search),
                                         label: Text(""))
                                     : Container(),
                                 e.estado

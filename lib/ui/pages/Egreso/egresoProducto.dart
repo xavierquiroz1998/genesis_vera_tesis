@@ -5,6 +5,7 @@ import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.da
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -261,7 +262,8 @@ class _EgresoProductoState extends State<EgresoProducto> {
                             TextFormField(
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp(numeros))
+                                    RegExp(numeros)),
+                                LengthLimitingTextInputFormatter(5),
                               ],
                               initialValue: e.cantidad.toString(),
                               onChanged: (value) {
@@ -272,9 +274,11 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           ),
                           DataCell(
                             TextFormField(
-                              // initialValue: NumberFormat.currency(
-                              //         locale: 'en_US', symbol: r'$')
-                              //     .format(e.total),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(Helper.decimales)),
+                                LengthLimitingTextInputFormatter(5),
+                              ],
                               initialValue: e.total.toString(),
                               onChanged: (value) {
                                 e.total = double.parse(value);
@@ -299,68 +303,71 @@ class _EgresoProductoState extends State<EgresoProducto> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () async {
-                        egreso.cab.fecha = selectedDate.toIso8601String();
-                        if (egreso.cab.id == 0) {
-                          await egreso.guardarEgreso();
-                        } else {
-                          await egreso.actualizar();
-                        }
-                        // AwesomeDialog(
-                        //   context: context,
-                        //   dialogType: DialogType.SUCCES,
-                        //   animType: AnimType.BOTTOMSLIDE,
-                        //   title: 'Guardado Correctamente',
-                        //   desc: '',
-                        // )..show();
-                        //if (producto.listado.length == 0) {
-                        await producto.cargarPrd();
-                        //}
-                        for (var item in egreso.detalles) {
-                          var result = producto.listado
-                              .firstWhere((e) => e.id == item.idProducto);
-
-                          if (result.id > 0) {
-                            try {
-                              await kardex.salidas(item.cantidad.toDouble(),
-                                  result, selectedDate);
-                            } catch (ex) {
-                              print("#rror kardex de egreso ${ex.toString()}");
-                            }
-
-                            /*   result.stock =
-                                double.parse(item.cantidad.toString()); */
-                            /*     kardex.existencias(result, false, false); */
-// actualiza Lote
-                            item.mov!.actual -= item.cantidad;
-                            await egreso.movimientosGeneral
-                                .updateMov(item.mov!);
-
-                            // actualizo Stock Prd
-                            Productos prd = new Productos();
-                            prd.id = result.id;
-                            prd.detalle = result.detalle;
-                            prd.estado = result.estado;
-                            prd.idGrupo = result.idGrupo;
-                            prd.idUnidad = result.idUnidad;
-                            prd.idProveedor = result.idProveedor;
-                            prd.nombre = result.nombre;
-                            prd.pedido = result.pedido;
-                            prd.precio = result.precio;
-                            prd.referencia = result.referencia;
-
-                            prd.cantidad = result.cantidad - item.cantidad;
-                            print(
-                                "******* ${prd.cantidad}******${result.cantidad}*********+ ${item.cantidad}");
-                            await egreso.generalProducto.update(prd);
-                            //kardex.impresion();
+                    if (egreso.cab.id == 0) ...{
+                      TextButton(
+                        onPressed: () async {
+                          egreso.cab.fecha = selectedDate.toIso8601String();
+                          if (egreso.cab.id == 0) {
+                            await egreso.guardarEgreso();
+                          } else {
+                            await egreso.actualizar();
                           }
-                        }
-                        NavigationService.replaceTo("/egresos");
-                      },
-                      child: Text("Guardar"),
-                    ),
+                          // AwesomeDialog(
+                          //   context: context,
+                          //   dialogType: DialogType.SUCCES,
+                          //   animType: AnimType.BOTTOMSLIDE,
+                          //   title: 'Guardado Correctamente',
+                          //   desc: '',
+                          // )..show();
+                          //if (producto.listado.length == 0) {
+                          await producto.cargarPrd();
+                          //}
+                          for (var item in egreso.detalles) {
+                            var result = producto.listado
+                                .firstWhere((e) => e.id == item.idProducto);
+
+                            if (result.id > 0) {
+                              try {
+                                await kardex.salidas(item.cantidad.toDouble(),
+                                    result, selectedDate);
+                              } catch (ex) {
+                                print(
+                                    "#rror kardex de egreso ${ex.toString()}");
+                              }
+
+                              /*   result.stock =
+                                double.parse(item.cantidad.toString()); */
+                              /*     kardex.existencias(result, false, false); */
+// actualiza Lote
+                              item.mov!.actual -= item.cantidad;
+                              await egreso.movimientosGeneral
+                                  .updateMov(item.mov!);
+
+                              // actualizo Stock Prd
+                              Productos prd = new Productos();
+                              prd.id = result.id;
+                              prd.detalle = result.detalle;
+                              prd.estado = result.estado;
+                              prd.idGrupo = result.idGrupo;
+                              prd.idUnidad = result.idUnidad;
+                              prd.idProveedor = result.idProveedor;
+                              prd.nombre = result.nombre;
+                              prd.pedido = result.pedido;
+                              prd.precio = result.precio;
+                              prd.referencia = result.referencia;
+
+                              prd.cantidad = result.cantidad - item.cantidad;
+                              print(
+                                  "******* ${prd.cantidad}******${result.cantidad}*********+ ${item.cantidad}");
+                              await egreso.generalProducto.update(prd);
+                              //kardex.impresion();
+                            }
+                          }
+                          NavigationService.replaceTo("/egresos");
+                        },
+                        child: Text("Guardar"),
+                      ),
+                    },
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);

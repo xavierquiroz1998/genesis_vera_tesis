@@ -89,16 +89,16 @@ class _IngresosViewState extends State<IngresosView> {
                           DataCell(
                             Row(
                               children: [
-                                // TextButton.icon(
-                                //   onPressed: () async {
-                                //     ingreso.cab = e;
-                                //     ingreso.detalles = [];
-                                //     NavigationService.navigateTo(
-                                //         Flurorouter.ingresossCrud);
-                                //   },
-                                //   icon: Icon(Icons.edit),
-                                //   label: Text(""),
-                                // ),
+                                TextButton.icon(
+                                  onPressed: () async {
+                                    ingreso.cab = e;
+                                    ingreso.detalles = [];
+                                    NavigationService.navigateTo(
+                                        Flurorouter.ingresossCrud);
+                                  },
+                                  icon: Icon(Icons.search),
+                                  label: Text(""),
+                                ),
                                 TextButton.icon(
                                   onPressed: () async {
                                     await ingreso.anular(e);

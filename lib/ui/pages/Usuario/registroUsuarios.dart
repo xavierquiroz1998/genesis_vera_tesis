@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/domain/providers/Usuarios/login_form_provider.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,9 @@ class _RegistroUsuarioState extends State<RegistroUsuario> {
                                   return null;
                                 },
                                 inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(Helper.sololetras),
+                                  ),
                                   LengthLimitingTextInputFormatter(50),
                                 ],
                               ),

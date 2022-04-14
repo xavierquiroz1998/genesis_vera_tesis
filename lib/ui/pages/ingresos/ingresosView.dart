@@ -1,9 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
 
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
+import 'package:genesis_vera_tesis/domain/services/codRef.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -24,18 +26,18 @@ class _IngresoViewState extends State<IngresoView> {
 
   @override
   void initState() {
-    var temProvider = Provider.of<IngresosProvider>(context, listen: false);
-    temProvider.cargarPrd();
-    if (temProvider.cab.id != 0) {
-      var asd = DateTime.tryParse(temProvider.cab.fecha);
-      if (asd != null) {
+    try {
+      var temProvider = Provider.of<IngresosProvider>(context, listen: false);
+      temProvider.cargarPrd();
+      if (temProvider.cab.id != 0) {
+        var asd = DateTime.tryParse(temProvider.cab.fecha) ?? DateTime.now();
         selectedDate = asd;
+        temProvider.cargarDetalle(temProvider.cab.id);
+        temProvider.generar(temProvider.cab.referencia);
+      } else {
+        temProvider.generar();
       }
-      temProvider.cargarDetalle(temProvider.cab.id);
-      temProvider.generar(temProvider.cab.referencia);
-    } else {
-      temProvider.generar();
-    }
+    } catch (ex) {}
     super.initState();
   }
 
@@ -162,21 +164,33 @@ class _IngresoViewState extends State<IngresoView> {
                           DataCell(Text(e.lote)),
                           DataCell(
                             TextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(Helper.soloNumeros),
+                                ),
+                                LengthLimitingTextInputFormatter(5),
+                              ],
                               initialValue: e.cantidad.toString(),
                               onChanged: (value) {
-                                e.cantidad = int.parse(value);
+                                e.cantidad = int.tryParse(value) ?? 0;
                                 ingreso.calcular();
                               },
                             ),
                           ),
                           DataCell(
                             TextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(Helper.decimales),
+                                ),
+                                LengthLimitingTextInputFormatter(5),
+                              ],
                               /*     // initialValue: NumberFormat.currency(
                                       locale: 'en_US', symbol: r'$')
                                   .format(e.total), */
                               initialValue: e.total.toString(),
                               onChanged: (value) {
-                                e.total = double.parse(value);
+                                e.total = double.tryParse(value) ?? 0;
                                 ingreso.calcular();
                                 //e.total = e.cantidad * e.precio!;
                               },
@@ -198,48 +212,51 @@ class _IngresoViewState extends State<IngresoView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () async {
-                        ingreso.cab.fecha = selectedDate.toIso8601String();
-                        if (ingreso.cab.id == 0) {
-                          await ingreso.guardarIngresos();
-                        } else {
-                          await ingreso.actualizar();
-                        }
-                        try {
-                          for (var item in ingreso.detalles) {
-                            item.productos!.cantidad = item.cantidad.toDouble();
-                            item.productos!.precio = item.total;
-                            await kardex.entradas(
-                                item.productos!, true, true, selectedDate);
+                    if (ingreso.cab.id == 0) ...{
+                      TextButton(
+                        onPressed: () async {
+                          ingreso.cab.fecha = selectedDate.toIso8601String();
+                          if (ingreso.cab.id == 0) {
+                            await ingreso.guardarIngresos();
+                          } else {
+                            await ingreso.actualizar();
                           }
-                        } catch (ex) {
-                          print("Erro en ingresar kardex ${ex.toString()}");
-                        }
+                          try {
+                            for (var item in ingreso.detalles) {
+                              item.productos!.cantidad =
+                                  item.cantidad.toDouble();
+                              item.productos!.precio = item.total;
+                              await kardex.entradas(
+                                  item.productos!, true, true, selectedDate);
+                            }
+                          } catch (ex) {
+                            print("Erro en ingresar kardex ${ex.toString()}");
+                          }
 
-                        // AwesomeDialog(
-                        //   context: context,
-                        //   dialogType: DialogType.SUCCES,
-                        //   animType: AnimType.BOTTOMSLIDE,
-                        //   title: 'Guardado Correctamente',
-                        //   desc: '',
-                        // )..show();
-                        // for (var item in egreso.listaProducto.detalle!) {
-                        //   var result = Estaticas.listProductos
-                        //       .firstWhere((e) => e.id == item.idProducto);
-                        //   if (result.id > 0) {
-                        //     kardex.salidas(
-                        //         double.parse(item.cantidad.toString()), result);
-                        //     /*   result.stock =
-                        //         double.parse(item.cantidad.toString()); */
-                        //     /*     kardex.existencias(result, false, false); */
-                        //     kardex.impresion();
-                        //   }
-                        // }
-                        NavigationService.replaceTo("/ingresoss");
-                      },
-                      child: Text("Guardar"),
-                    ),
+                          // AwesomeDialog(
+                          //   context: context,
+                          //   dialogType: DialogType.SUCCES,
+                          //   animType: AnimType.BOTTOMSLIDE,
+                          //   title: 'Guardado Correctamente',
+                          //   desc: '',
+                          // )..show();
+                          // for (var item in egreso.listaProducto.detalle!) {
+                          //   var result = Estaticas.listProductos
+                          //       .firstWhere((e) => e.id == item.idProducto);
+                          //   if (result.id > 0) {
+                          //     kardex.salidas(
+                          //         double.parse(item.cantidad.toString()), result);
+                          //     /*   result.stock =
+                          //         double.parse(item.cantidad.toString()); */
+                          //     /*     kardex.existencias(result, false, false); */
+                          //     kardex.impresion();
+                          //   }
+                          // }
+                          NavigationService.replaceTo("/ingresoss");
+                        },
+                        child: Text("Guardar"),
+                      ),
+                    },
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
