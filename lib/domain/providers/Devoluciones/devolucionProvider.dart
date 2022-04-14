@@ -134,14 +134,15 @@ class DevolucionProvider extends ChangeNotifier {
     try {
       print("erroe n detalles ${detalles.length}");
       for (var item in detalles) {
-        print("valores ${item.cantidad}------${item.total}");
+        print("valores ${item.cantidad}------${item.total}" +
+            item.productos!.proveedor!.nombre);
         item.to = item.cantidad * item.total;
       }
     } catch (ex) {
       print("error en calcular ${ex.toString()}");
     }
 
-    notifyListeners();
+    //notifyListeners();
   }
 
   Future<void> cargarPrd() async {
@@ -206,6 +207,8 @@ class DevolucionProvider extends ChangeNotifier {
         det.productos!.proveedor = listaProveedores
             .where((e) => e.id == det.productos!.idProveedor)
             .first;
+        print("ssssssssssssssssssssssssss");
+
         det.idProducto = pedidoSelec.id;
         det.cantidad = int.parse(pedidoSelec.cliente);
         detalles.add(det);
@@ -215,6 +218,8 @@ class DevolucionProvider extends ChangeNotifier {
         print("value de detalles ${detalles.length}");
         for (var item in detalles) {
           item.productos = listado.where((e) => e.id == item.idProducto).first;
+          item.productos!.proveedor =
+              ProveedoresEntity(nombre: "SIN ASIGNACION");
         }
       }
       print("............ ${cab.idSecundario}---------${cab.id}");
