@@ -6,6 +6,7 @@ class ModelMovimiento {
     this.idProducto = 0,
     this.total = 0,
     this.actual = 0,
+    this.precio = 0,
     this.codigo = "",
   });
 
@@ -14,6 +15,7 @@ class ModelMovimiento {
   String codigo;
   int total;
   int actual;
+  double precio;
 
   factory ModelMovimiento.fromJson(String str) =>
       ModelMovimiento.fromMap(json.decode(str));
@@ -26,6 +28,7 @@ class ModelMovimiento {
         total: json["total"],
         actual: json["actual"],
         codigo: json["codigo"],
+        precio: json["precio"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -34,5 +37,6 @@ class ModelMovimiento {
         "codigo": codigo,
         "total": total,
         "actual": actual,
+        "precio": precio,
       };
 }

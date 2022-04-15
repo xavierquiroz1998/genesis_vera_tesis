@@ -145,6 +145,7 @@ class IngresosProvider extends ChangeNotifier {
         ModelMovimiento md = new ModelMovimiento();
         md.idProducto = item.idProducto;
         md.codigo = item.lote;
+        md.precio = item.total;
         md.total = md.actual = item.cantidad;
         await mov.insertMov(md);
       }

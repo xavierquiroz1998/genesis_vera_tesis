@@ -174,7 +174,9 @@ class DevolucionProvider extends ChangeNotifier {
       reg.referencia = int.parse(await generarT(cab.cliente));
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
+
       tem as EntityRegistro;
+      print("---------${tem.toString()}");
       for (var item in detalles) {
         item.idRegistro = tem.id;
         var detResultv = await usesCases.insertRegistrosDetalles(item);

@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
@@ -223,6 +222,8 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                             e.mov = value;
                                             e.productos!.cantidad =
                                                 value.actual.toDouble();
+                                            e.productos!.precio =
+                                                value.precio.toDouble();
 
                                             setState(() {});
                                           },
@@ -241,7 +242,11 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               ? Text("${e.productos!.cantidad}")
                               : Text("")),
                           DataCell(e.productos != null
-                              ? Text("${e.productos!.precio}")
+                              ? Text(NumberFormat.currency(
+                                      locale: 'en_US',
+                                      symbol: r'$',
+                                      decimalDigits: 2)
+                                  .format(e.productos!.precio))
                               : Text("")),
                           DataCell(e.idProducto != 0
                               ? FutureBuilder(
@@ -357,8 +362,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               prd.referencia = result.referencia;
 
                               prd.cantidad = result.cantidad - item.cantidad;
-                              print(
-                                  "******* ${prd.cantidad}******${result.cantidad}*********+ ${item.cantidad}");
+
                               await egreso.generalProducto.update(prd);
                               //kardex.impresion();
                             }

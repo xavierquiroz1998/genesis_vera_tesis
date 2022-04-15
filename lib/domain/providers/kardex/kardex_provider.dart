@@ -74,7 +74,6 @@ class KardexProvider extends ChangeNotifier {
             .reversed
             .first;
       }
-      print(".....................");
       //print(kardexUltimo.proCanE + producto.cantidad);
       Kardex k = new Kardex();
       k.codMov = isTipo
@@ -169,37 +168,41 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
     }
   }
 
-  void devoluciones(Productos producto, bool isTipo) {
-    // var kardexUltimo = kardexRegistro
-    //     .where((element) => element.codPro == producto.codigo)
-    //     .toList()
-    //     .reversed
-    //     .first;
+  void devoluciones(Productos producto, bool isTipo) async {
+    try {
+      var kardexUltimo = kardexRegistro
+          .where((element) => element.idProducto == producto.id)
+          .toList()
+          .reversed
+          .first;
 
-    // kardexRegistro.add(
-    //   Kardex(
-    //       codMov: isTipo
-    //           ? 'DEV-C${kardexRegistro.length}'
-    //           : "DEV-V${kardexRegistro.length}",
-    //       codPro: producto.codigo!,
-    //       nomPro: producto.descripcion!,
-    //       proCanI: isTipo ? producto.stock! : 0,
-    //       proUntI: isTipo ? producto.precio! : 0,
-    //       proTtlI: isTipo ? (producto.stock! * producto.precio!) : 0,
-    //       proCanS: isTipo ? 0 : producto.stock!,
-    //       proUntS: isTipo ? 0 : kardexUltimo.proUntE,
-    //       proTtlS: isTipo ? 0 : producto.stock! * kardexUltimo.proUntE,
-    //       proCanE: kardexUltimo.proCanE - producto.stock!,
-    //       proUntE:
-    //           (((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) /
-    //                   (kardexUltimo.proCanE - producto.stock!)) *
-    //               -1,
-    //       proTtlE:
-    //           ((producto.stock! * producto.precio!) - kardexUltimo.proTtlE) *
-    //               -1,
-    //       fecPro: DateTime.now(),
-    //       stsPro: 'I'), //pendiente
-    // );
+      Kardex k = new Kardex(
+          codMov: isTipo
+              ? 'DEV-C${kardexRegistro.length}'
+              : "DEV-V${kardexRegistro.length}",
+          //codPro: producto.codigo!,
+          //nomPro: producto.descripcion!,
+          proCanI: isTipo ? producto.cantidad : 0,
+          proUntI: isTipo ? producto.precio : 0,
+          proTtlI: isTipo ? (producto.cantidad * producto.precio) : 0,
+          proCanS: isTipo ? 0 : producto.cantidad,
+          proUntS: isTipo ? 0 : kardexUltimo.proUntE,
+          proTtlS: isTipo ? 0 : producto.cantidad * kardexUltimo.proUntE,
+          proCanE: kardexUltimo.proCanE - producto.cantidad,
+          proUntE:
+              (((producto.cantidad * producto.precio) - kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.cantidad)) *
+                  -1,
+          proTtlE:
+              ((producto.cantidad * producto.precio) - kardexUltimo.proTtlE) *
+                  -1,
+          createdAt: DateTime.now(),
+          stsPro: true); //pendiente
+
+      await kardex.inserteKardex(k);
+    } catch (ex) {
+      print("Erro en devolucion ${ex.toString()}");
+    }
   }
 
 /* 
