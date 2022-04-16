@@ -17,13 +17,17 @@ class BackgroundRigth extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text("Distribuidora"),
                 ),
-                Text(
+                Image.asset(
+                  "Ferreteria.png",
+                  height: 100,
+                ),
+                /*   Text(
                   "KIARITA",
                   style: TextStyle(fontStyle: FontStyle.italic),
                 ),
                 Text(
                   "imagen",
-                ),
+                ), */
               ],
             ),
           ),

@@ -81,7 +81,7 @@ class DevolucionProvider extends ChangeNotifier {
         var tem = await usesCases.getAll(idTipo);
         listTableRegistrosDev = tem.getOrElse(() => []);
       } else {
-/*   porque estas asignacion? pendejo      listTableRegistrosDev = []; */
+        listTableRegistrosDev = [];
         var tempMovi = await movimientos.getMovientos();
         var resultMovi = tempMovi.getOrElse(() => []);
 
