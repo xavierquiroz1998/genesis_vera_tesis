@@ -38,6 +38,7 @@ class DevolucionProvider extends ChangeNotifier {
   final UsesCaseRegistros usesCases;
   final MovimientosGeneral movimientos;
   final GetProveedores useCaseProveedores;
+  TextEditingController cantidadController = TextEditingController();
 
   DevolucionProvider(this.getProductos, this.usesCases, this.movimientos,
       this.useCaseProveedores);
@@ -46,7 +47,6 @@ class DevolucionProvider extends ChangeNotifier {
     selectEntity = new EntityRegistro();
     pedidoSelec = new EntityRegistro();
     listTableRegistrosDev = [];
-    //notifyListeners();
   }
 
   // prueba devoluciones
@@ -229,7 +229,10 @@ class DevolucionProvider extends ChangeNotifier {
 
         det.idProducto = pedidoSelec.id;
         det.cantidad = int.parse(pedidoSelec.cliente);
+        cantidadController.text = "${det.cantidad}";
+
         det.total = listado.where((e) => e.id == pedidoSelec.id).first.precio;
+
         detalles.add(det);
       } else {
         var transaction = await usesCases.getADetalle(idRegistro);

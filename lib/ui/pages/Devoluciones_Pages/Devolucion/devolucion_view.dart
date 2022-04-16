@@ -252,7 +252,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                               SizedBox(
                                 width: 50,
                                 child: TextFormField(
-                                  initialValue: "${e.cantidad}",
+                                  controller: devolucio.cantidadController,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(
                                         RegExp(r'^(?:\+|-)?\d+$'))
