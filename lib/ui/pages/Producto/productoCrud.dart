@@ -115,9 +115,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                         Text("${producto.product.lote}"),
                       ],
                     ),
+                    SizedBox(height: 10),
                     Form(
                       key: keyProducto,
-                      child: Wrap(
+                      child: Row(
                         children: [
                           // Container(
                           //   constraints:
@@ -135,9 +136,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                           //         icon: Icons.delete_outline),
                           //   ),
                           // ),
-                          Container(
-                            constraints:
-                                BoxConstraints(maxWidth: 300, minWidth: 100),
+                          Expanded(
                             child: TextFormField(
                               onChanged: (value) {
                                 // metodo de calcular
@@ -155,9 +154,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                               decoration: CustomInputs.formInputDecoration(
                                   hint: 'Cantidad a ingresar',
                                   label: 'Cantidad a ingresar',
-                                  icon: Icons.delete_outline),
+                                  icon: Icons.assignment),
                             ),
                           ),
+
                           // Container(
                           //   constraints:
                           //       BoxConstraints(maxWidth: 300, minWidth: 100),
@@ -177,9 +177,8 @@ class _ProductoCrudState extends State<ProductoCrud> {
                           //         icon: Icons.delete_outline),
                           //   ),
                           // ),
-                          Container(
-                            constraints:
-                                BoxConstraints(maxWidth: 300, minWidth: 100),
+                          SizedBox(width: 10),
+                          Expanded(
                             child: TextFormField(
                               onChanged: (value) {
                                 try {
@@ -202,27 +201,28 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                   icon: Icons.monetization_on),
                             ),
                           ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            flex: 2,
+                            child: TextFormField(
+                              controller: producto.controllerDescripcion,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Ingrese Descripción";
+                                }
+                              },
+                              decoration: CustomInputs.formInputDecoration(
+                                  hint: 'Descripción',
+                                  label: 'Descripción',
+                                  icon: Icons.assignment),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    Wrap(
+                    SizedBox(height: 10),
+                    Row(
                       children: [
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, minWidth: 100),
-                          child: TextFormField(
-                            controller: producto.controllerDescripcion,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Ingrese Descripción";
-                              }
-                            },
-                            decoration: CustomInputs.formInputDecoration(
-                                hint: 'Descripción',
-                                label: 'Descripción',
-                                icon: Icons.delete_outline),
-                          ),
-                        ),
                         Container(
                           constraints:
                               BoxConstraints(maxWidth: 300, minWidth: 100),
@@ -250,12 +250,11 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 label: producto.product.unidad != null
                                     ? "${producto.product.unidad!.detalle}"
                                     : 'Seleccione unidad de Medida',
-                                icon: Icons.delete_outline),
+                                icon: Icons.assignment),
                           ),
                         ),
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, minWidth: 100),
+                        SizedBox(width: 10),
+                        Expanded(
                           child: DropdownButtonFormField<GrupoEntity>(
                             onChanged: (value) {
                               producto.product.idGrupo = value!.id;
@@ -281,14 +280,12 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 label: producto.product.grupo != null
                                     ? "${producto.product.grupo!.nombre}"
                                     : 'Seleccione Tipo Producto',
-                                icon: Icons.delete_outline),
+                                icon: Icons.assignment),
                           ),
                         ),
-
+                        SizedBox(width: 10),
                         // proveedor
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, minWidth: 100),
+                        Expanded(
                           child: DropdownButtonFormField<ProveedoresEntity>(
                             onChanged: (value) {
                               producto.product.idProveedor = value!.id;
@@ -314,7 +311,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 label: producto.product.proveedor != null
                                     ? "${producto.product.proveedor!.nombre}"
                                     : 'Seleccione Proveedor',
-                                icon: Icons.delete_outline),
+                                icon: Icons.assignment),
                           ),
                         ),
                       ],
@@ -382,7 +379,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                 },
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    NavigationService.replaceTo("/ingresos");
                   },
                   child: Text("Cancelar"),
                 )
