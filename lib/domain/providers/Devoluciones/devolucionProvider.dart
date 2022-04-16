@@ -8,6 +8,7 @@ import '../../entities/registro/entityRegistroDetaller.dart';
 import '../../services/fail.dart';
 import '../../uses cases/movimientos/movimientosGeneral.dart';
 import '../../uses cases/productos/getproductos.dart';
+import '../../uses cases/productos/productosGeneral.dart';
 import '../../uses cases/proveedores/getproveedores.dart';
 import '../../uses cases/registros/usesCaseRegistros.dart';
 
@@ -38,10 +39,11 @@ class DevolucionProvider extends ChangeNotifier {
   final UsesCaseRegistros usesCases;
   final MovimientosGeneral movimientos;
   final GetProveedores useCaseProveedores;
+  final GeneralProducto generalProducto;
   TextEditingController cantidadController = TextEditingController();
 
   DevolucionProvider(this.getProductos, this.usesCases, this.movimientos,
-      this.useCaseProveedores);
+      this.useCaseProveedores, this.generalProducto);
 
   void limpiarVariables() {
     selectEntity = new EntityRegistro();
@@ -95,6 +97,7 @@ class DevolucionProvider extends ChangeNotifier {
           r.estado = true;
           listTableRegistrosDev.add(r);
         }
+        selectEntity = listTableRegistrosDev.first;
       } else {
         listTableRegistrosDev = [];
         var tempMovi = await movimientos.getMovientos();
@@ -178,7 +181,7 @@ class DevolucionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> guardarDevolucion() async {
+  Future<void> guardarDevolucion(String tipo) async {
     try {
       EntityRegistro reg = new EntityRegistro();
       reg.idTipo = 3;
@@ -196,6 +199,16 @@ class DevolucionProvider extends ChangeNotifier {
       for (var item in detalles) {
         item.idRegistro = tem.id;
         await usesCases.insertRegistrosDetalles(item);
+        if (tipo == "C") {
+          item.productos!.cantidad += item.cantidad;
+          item.mov!.actual += item.cantidad;
+        } else {
+          item.productos!.cantidad -= item.cantidad;
+          item.mov!.actual -= item.cantidad;
+          print("**${item.mov!.actual}");
+        }
+        await generalProducto.update(item.productos!);
+        await movimientos.updateMov(item.mov!);
       }
 
       msgError = "";
@@ -220,8 +233,12 @@ class DevolucionProvider extends ChangeNotifier {
       await cargarProveedores();
       if (lote) {
         detalles = [];
+
+        print("**${pedidoSelec.detalle}");
         EntityRegistroDetalle det = new EntityRegistroDetalle();
         det.productos = listado.where((e) => e.id == pedidoSelec.id).first;
+
+        det.lote = pedidoSelec.detalle;
 
         det.productos!.proveedor = listaProveedores
             .where((e) => e.id == det.productos!.idProveedor)
@@ -232,6 +249,11 @@ class DevolucionProvider extends ChangeNotifier {
         cantidadController.text = "${det.cantidad}";
 
         det.total = listado.where((e) => e.id == pedidoSelec.id).first.precio;
+
+        var tempMovi = await movimientos.getMovientos();
+        var resultMovi = tempMovi.getOrElse(() => []);
+
+        det.mov = resultMovi.where((e) => e.codigo == det.lote).first;
 
         detalles.add(det);
       } else {
@@ -244,6 +266,13 @@ class DevolucionProvider extends ChangeNotifier {
           item.productos!.proveedor = listaProveedores
               .where((e) => e.id == item.productos!.idProveedor)
               .first;
+
+          var tempMovi = await movimientos.getMovientos();
+          var resultMovi = tempMovi.getOrElse(() => []);
+
+          item.mov = resultMovi.where((e) => e.codigo == item.lote).first;
+
+          //print("**${item.mov!.actual}");
         }
       }
       //print("............ ${cab.idSecundario}---------${cab.id}");

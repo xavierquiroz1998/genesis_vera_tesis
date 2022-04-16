@@ -216,7 +216,6 @@ class EProductoProvider extends ChangeNotifier {
       detalles = transaction.getOrElse(() => []);
       for (var item in detalles) {
         item.productos = listado.where((e) => e.id == item.idProducto).first;
-        print("lotes***${item.lote}");
       }
       calcular();
       notifyListeners();

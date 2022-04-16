@@ -252,7 +252,8 @@ class _DevolucionViewState extends State<DevolucionView> {
                               SizedBox(
                                 width: 50,
                                 child: TextFormField(
-                                  controller: devolucio.cantidadController,
+                                  controller: TextEditingController(
+                                      text: "${e.cantidad}"),
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(
                                         RegExp(r'^(?:\+|-)?\d+$'))
@@ -308,7 +309,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                       onPressed: () async {
                         devolucio.cab.fecha = selectedDate.toIso8601String();
                         if (tipoDevSelect == "PROVEEDOR") {
-                          await devolucio.guardarDevolucion();
+                          await devolucio.guardarDevolucion("P");
                           devolucio.detalles.forEach((element) async {
                             element.productos!.cantidad =
                                 element.cantidad.toDouble();
@@ -318,7 +319,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                                 .devolucionesProveedor(element.productos!);
                           });
                         } else if (tipoDevSelect == "CLIENTE") {
-                          await devolucio.guardarDevolucion();
+                          await devolucio.guardarDevolucion("C");
                           devolucio.detalles.forEach((element) async {
                             element.productos!.cantidad =
                                 element.cantidad.toDouble();
