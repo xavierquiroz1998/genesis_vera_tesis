@@ -41,6 +41,12 @@ class DevolucionProvider extends ChangeNotifier {
   DevolucionProvider(this.getProductos, this.usesCases, this.movimientos,
       this.useCaseProveedores);
 
+  void limpiarVariables() {
+    pedidoSelec = new EntityRegistro();
+    listTableRegistrosDev = [];
+    notifyListeners();
+  }
+
   // prueba devoluciones
 
   // DevolucionCab get cab => _cab;
@@ -73,10 +79,9 @@ class DevolucionProvider extends ChangeNotifier {
     try {
       if (idTipo == 2) {
         var tem = await usesCases.getAll(idTipo);
-
         listTableRegistrosDev = tem.getOrElse(() => []);
       } else {
-        listTableRegistrosDev = [];
+/*   porque estas asignacion? pendejo      listTableRegistrosDev = []; */
         var tempMovi = await movimientos.getMovientos();
         var resultMovi = tempMovi.getOrElse(() => []);
 
@@ -176,10 +181,10 @@ class DevolucionProvider extends ChangeNotifier {
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
 
       tem as EntityRegistro;
-      print("---------${tem.toString()}");
+
       for (var item in detalles) {
         item.idRegistro = tem.id;
-        var detResultv = await usesCases.insertRegistrosDetalles(item);
+        await usesCases.insertRegistrosDetalles(item);
       }
 
       msgError = "";
@@ -206,13 +211,14 @@ class DevolucionProvider extends ChangeNotifier {
         await cargarProveedores();
         EntityRegistroDetalle det = new EntityRegistroDetalle();
         det.productos = listado.where((e) => e.id == pedidoSelec.id).first;
+
         det.productos!.proveedor = listaProveedores
             .where((e) => e.id == det.productos!.idProveedor)
             .first;
-        print("ssssssssssssssssssssssssss");
 
         det.idProducto = pedidoSelec.id;
         det.cantidad = int.parse(pedidoSelec.cliente);
+        det.total = listado.where((e) => e.id == pedidoSelec.id).first.precio;
         detalles.add(det);
       } else {
         var transaction = await usesCases.getADetalle(idRegistro);
@@ -226,12 +232,12 @@ class DevolucionProvider extends ChangeNotifier {
       }
       print("............ ${cab.idSecundario}---------${cab.id}");
       if (cab.id != 0 && cab.idSecundario != 0) {
-        print("ingreso= valor de listado ${listTableRegistrosDev.length}");
         await getRegistrosDev(2);
         try {
           var temp = listTableRegistrosDev
               .where((e) => e.id == cab.idSecundario)
               .first;
+
           if (temp != null) {
             codRef = "Dev / cl-";
           }

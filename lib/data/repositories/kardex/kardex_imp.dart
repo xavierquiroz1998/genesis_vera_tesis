@@ -55,4 +55,13 @@ class KardexImp extends AbstractKardex {
       return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
     }
   }
+
+  @override
+  Future<Either<Failure, Kardex>> getKardexUltimo(String prod) async {
+    try {
+      return right(await datasource.getKardexUltimo(prod));
+    } on ServerException {
+      return left(ServerFailure(mensaje: "Error al obtener lista de grupos"));
+    }
+  }
 }

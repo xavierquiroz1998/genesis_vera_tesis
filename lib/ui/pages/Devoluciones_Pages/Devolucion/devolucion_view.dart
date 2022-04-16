@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.dart';
@@ -20,7 +21,6 @@ class DevolucionView extends StatefulWidget {
 
 class _DevolucionViewState extends State<DevolucionView> {
   List<String> tipoDev = ["CLIENTE", "PROVEEDOR"];
-  List<String> tipoFlujo = ["+", "-"];
   String tipoDevSelect = "";
   String flujoSelect = "-";
   DateTime selectedDate = new DateTime.now();
@@ -151,6 +151,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                       devolucio.cab.idSecundario = value.id;
                       devolucio.pedidoSelec = value;
                       bool lote = tipoDevSelect == "CLIENTE" ? false : true;
+
                       await devolucio.cargarDetalle(
                           devolucio.pedidoSelec.id, lote);
                     }
@@ -192,9 +193,6 @@ class _DevolucionViewState extends State<DevolucionView> {
                       ),
                       const DataColumn(
                         label: Center(child: Text("Proveedor")),
-                      ),
-                      const DataColumn(
-                        label: Center(child: Text("Flujo")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),
@@ -244,43 +242,36 @@ class _DevolucionViewState extends State<DevolucionView> {
                           ),
                           DataCell(Text(e.productos!.proveedor!.nombre)),
                           DataCell(
-                            DropdownButtonFormField<String>(
-                              onChanged: (value) async {
-                                flujoSelect = value!;
-                              },
-                              items: tipoFlujo.map((item) {
-                                return DropdownMenuItem(
-                                  value: item,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w400),
-                                      )),
-                                );
-                              }).toList(),
-                              decoration: CustomInputs.formInputDecoration(
-                                  hint: '',
-                                  label: 'Seleccione Flujo',
-                                  icon: Icons.info),
-                            ),
-                          ),
-                          DataCell(
-                              TextFormField(
-                                initialValue: "${e.cantidad}",
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'^(?:\+|-)?\d+$'))
-                                ],
-                                onChanged: (value) {
-                                  e.cantidad = int.parse(value);
-                                  devolucio.calcularTotal();
-                                },
+                              SizedBox(
+                                width: 50,
+                                child: TextFormField(
+                                  initialValue: "${e.cantidad}",
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'^(?:\+|-)?\d+$'))
+                                  ],
+                                  onChanged: (value) {
+                                    e.cantidad = int.parse(value);
+                                    devolucio.calcularTotal();
+                                  },
+                                  decoration: CustomInputs.cantInputDecoration(
+                                      hint: ""),
+                                ),
                               ),
                               placeholder: true),
                           DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                        locale: 'en_US',
+                                        symbol: r'$',
+                                        decimalDigits: 2)
+                                    .format(e.total),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              placeholder: true),
+
+                          /* DataCell(
                             TextFormField(
                               initialValue: "${e.total}",
                               inputFormatters: [
@@ -292,7 +283,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                                 devolucio.calcularTotal();
                               },
                             ),
-                          ),
+                          ), */
                           DataCell(
                             Text(NumberFormat.currency(
                                     locale: 'en_US', symbol: r'$')
@@ -310,8 +301,22 @@ class _DevolucionViewState extends State<DevolucionView> {
                       onPressed: () async {
                         if (tipoDevSelect == "PROVEEDOR") {
                           await devolucio.guardarDevolucion();
+                          devolucio.detalles.forEach((element) async {
+                            element.productos!.cantidad =
+                                element.cantidad.toDouble();
+                            element.productos!.precio =
+                                element.total.toDouble();
+                            await kardex
+                                .devolucionesProveedor(element.productos!);
+                          });
                         } else if (tipoDevSelect == "CLIENTE") {
                           await devolucio.guardarDevolucion();
+                          devolucio.detalles.forEach((element) async {
+                            element.productos!.cantidad =
+                                element.cantidad.toDouble();
+                            await kardex
+                                .devolucionesCliente(element.productos!);
+                          });
                         } else {
                           devolucio.msgError = "Seleccione Tipo de Devolución";
                         }

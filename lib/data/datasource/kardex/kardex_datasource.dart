@@ -10,6 +10,7 @@ abstract class KardexDTS {
   Future<ModelKardex> insertKardex(Kardex k);
   Future<ModelKardex> updateKardex(Kardex k);
   Future<ModelKardex> deleteKardex(Kardex k);
+  Future<ModelKardex> getKardexUltimo(String k);
 }
 
 class KardexDTSImp extends KardexDTS {
@@ -80,8 +81,12 @@ class KardexDTSImp extends KardexDTS {
     try {
       var grp = json.encode(k.toMap());
 
+      print(grp);
+
       final result = await cliente.post(Uri.parse(urlBase),
           body: grp, headers: {"Content-type": "application/json"});
+
+      print("RESPUESTA--->${result.statusCode}");
       if (result.statusCode == 200) {
         return ModelKardex.fromMap(json.decode(result.body));
       }
@@ -98,6 +103,21 @@ class KardexDTSImp extends KardexDTS {
       var grp = json.encode(k.toMap());
       final result = await cliente.put(Uri.parse(urlBase),
           body: grp, headers: {"Content-type": "application/json"});
+      if (result.statusCode == 200) {
+        return ModelKardex.fromMap(json.decode(result.body));
+      }
+      return new ModelKardex();
+    } catch (e) {
+      return new ModelKardex();
+    }
+  }
+
+  @override
+  Future<ModelKardex> getKardexUltimo(String id) async {
+    try {
+      final result = await cliente.get(
+          Uri.parse(urlBase + "/getproducto/ultimo/$id"),
+          headers: {"Content-type": "application/json"});
       if (result.statusCode == 200) {
         return ModelKardex.fromMap(json.decode(result.body));
       }

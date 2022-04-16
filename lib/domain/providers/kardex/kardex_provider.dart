@@ -60,14 +60,26 @@ class KardexProvider extends ChangeNotifier {
     }
   }
 
+  Future<Kardex> getKardexProductoUltimo(String idProducto) async {
+    var opt;
+    try {
+      var result = await kardex.getKardexUltimo(idProducto);
+      opt = result.getOrElse(() => new Kardex());
+    } catch (ex) {
+      print("Error en obtener kardex General ${ex.toString()}");
+    }
+    return opt;
+  }
+
   Future<void> entradas(
       Productos producto, bool isExiste, bool isTipo, DateTime date) async {
     try {
+      print("Entre al kardex");
       var kardexUltimo;
 
       if (isExiste) {
         await getKardex();
-        print("---${kardexRegistro.length}");
+        print(" punto lenth del kardex ${kardexRegistro.length}");
         kardexUltimo = kardexRegistro
             .where((element) => element.idProducto == producto.id)
             .toList()
@@ -115,6 +127,7 @@ class KardexProvider extends ChangeNotifier {
       //k.createdAt = DateTime.now();
       k.stsPro = true; //pendiente
 
+      print(k.toString());
       await kardex.inserteKardex(k);
 
       print("Guardado OK");
@@ -162,7 +175,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           stsPro: true);
 
       await kardex.inserteKardex(k);
-      print("Giardado salida OK");
+      print("Guardado salida OK");
     } catch (ex) {
       print("Errr en salida ${ex.toString()}");
     }
@@ -198,7 +211,68 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
                   -1,
           createdAt: DateTime.now(),
           stsPro: true); //pendiente
+      print(k.toString());
+      await kardex.inserteKardex(k);
+    } catch (ex) {
+      print("Erro en devolucion ${ex.toString()}");
+    }
+  }
 
+  Future devolucionesCliente(Productos producto) async {
+    try {
+      var kardexUltimo = await getKardexProductoUltimo("${producto.id}");
+
+      Kardex k = new Kardex(
+          codMov: 'DEV-C${kardexRegistro.length}',
+          idProducto: producto.id,
+          codPro: producto.nombre,
+          proCanI: 0,
+          proUntI: 0,
+          proTtlI: 0,
+          proCanS: (producto.cantidad * -1),
+          proUntS: producto.precio,
+          proTtlS: (producto.cantidad * kardexUltimo.proUntE) * -1,
+          proCanE: producto.cantidad + kardexUltimo.proCanE,
+          proUntE:
+              (((producto.cantidad * producto.precio) - kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.cantidad)) *
+                  -1,
+          proTtlE:
+              (((producto.cantidad * producto.precio)) + kardexUltimo.proTtlE),
+          createdAt: DateTime.now(),
+          stsPro: true); //pendiente
+
+      await kardex.inserteKardex(k);
+    } catch (ex) {
+      print("Erro en devolucion ${ex.toString()}");
+    }
+  }
+
+  Future devolucionesProveedor(Productos producto) async {
+    try {
+      var kardexUltimo = await getKardexProductoUltimo("${producto.id}");
+
+      Kardex k = new Kardex(
+          codMov: 'DEV-P${kardexRegistro.length}',
+          idProducto: producto.id,
+          codPro: producto.nombre,
+          proCanI: (producto.cantidad * -1),
+          proUntI: producto.precio,
+          proTtlI: (producto.cantidad * producto.precio) * -1,
+          proCanS: 0,
+          proUntS: 0,
+          proTtlS: 0,
+          proCanE: (producto.cantidad - kardexUltimo.proCanE) * -1,
+          proUntE:
+              (((producto.cantidad * producto.precio) - kardexUltimo.proTtlE) /
+                      (kardexUltimo.proCanE - producto.cantidad)) *
+                  -1,
+          proTtlE:
+              ((producto.cantidad * producto.precio) - kardexUltimo.proTtlE) *
+                  -1,
+          createdAt: DateTime.now(),
+          stsPro: true); //pendiente
+      print(k.toString());
       await kardex.inserteKardex(k);
     } catch (ex) {
       print("Erro en devolucion ${ex.toString()}");

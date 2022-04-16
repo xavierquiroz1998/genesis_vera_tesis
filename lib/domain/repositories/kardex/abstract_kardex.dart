@@ -9,4 +9,5 @@ abstract class AbstractKardex {
   Future<Either<Failure, Kardex>> insertKardex(Kardex prod);
   Future<Either<Failure, Kardex>> updateKardex(Kardex prod);
   Future<Either<Failure, Kardex>> deleteKardex(Kardex prod);
+  Future<Either<Failure, Kardex>> getKardexUltimo(String prod);
 }

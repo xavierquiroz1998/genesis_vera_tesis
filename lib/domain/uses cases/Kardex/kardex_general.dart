@@ -28,4 +28,8 @@ class KardexGeneral {
   Future<Either<Failure, Kardex>> deleteKardex(Kardex k) async {
     return kardex.deleteKardex(k);
   }
+
+  Future<Either<Failure, Kardex>> getKardexUltimo(String k) async {
+    return kardex.getKardexUltimo(k);
+  }
 }
