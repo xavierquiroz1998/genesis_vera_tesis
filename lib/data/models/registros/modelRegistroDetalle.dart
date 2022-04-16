@@ -19,11 +19,13 @@ class ModelRegistroDetalle extends EntityRegistroDetalle {
     this.total = 0,
     this.idProducto = 0,
     this.idRegistro = 0,
+    this.lote = "",
     this.observacion = "",
   }) : super(
             id: id,
             cantidad: cantidad,
             total: total,
+            lote: lote,
             idProducto: idProducto,
             idRegistro: idRegistro,
             observacion: observacion);
@@ -33,6 +35,7 @@ class ModelRegistroDetalle extends EntityRegistroDetalle {
   double total;
   int idProducto;
   int idRegistro;
+  String lote;
   String observacion;
 
   factory ModelRegistroDetalle.fromMap(Map<String, dynamic> json) =>
@@ -43,6 +46,7 @@ class ModelRegistroDetalle extends EntityRegistroDetalle {
         idProducto: json["idProducto"],
         idRegistro: json["idRegistro"],
         observacion: json["observacion"],
+        lote: json["lote"],
       );
 
   Map<String, dynamic> toMap() => {

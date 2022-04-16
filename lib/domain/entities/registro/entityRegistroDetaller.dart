@@ -39,5 +39,5 @@ class EntityRegistroDetalle extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props =>
-      [cantidad, total, idProducto, idRegistro, observacion, id];
+      [cantidad, total, idProducto, idRegistro, lote, observacion, id];
 }

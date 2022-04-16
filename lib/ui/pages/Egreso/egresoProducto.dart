@@ -194,51 +194,55 @@ class _EgresoProductoState extends State<EgresoProducto> {
                           //     : Text("")),
                           DataCell(
                             e.productos != null
-                                ? FutureBuilder(
-                                    future:
-                                        egreso.cargarMovimientos(e.idProducto),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        var listado = snapshot.data
-                                            as List<ModelMovimiento>;
-                                        return DropdownButton<ModelMovimiento>(
-                                          items: listado
-                                              .map(
-                                                (eDrop) => DropdownMenuItem<
-                                                    ModelMovimiento>(
-                                                  child: Container(
-                                                    constraints: BoxConstraints(
-                                                        maxWidth: 100),
-                                                    child: Text(
-                                                      eDrop.codigo,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                ? e.id == 0
+                                    ? FutureBuilder(
+                                        future: egreso
+                                            .cargarMovimientos(e.idProducto),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            var listado = snapshot.data
+                                                as List<ModelMovimiento>;
+                                            return DropdownButton<
+                                                ModelMovimiento>(
+                                              items: listado
+                                                  .map(
+                                                    (eDrop) => DropdownMenuItem<
+                                                        ModelMovimiento>(
+                                                      child: Container(
+                                                        constraints:
+                                                            BoxConstraints(
+                                                                maxWidth: 100),
+                                                        child: Text(
+                                                          eDrop.codigo,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      ),
+                                                      value: eDrop,
                                                     ),
-                                                  ),
-                                                  value: eDrop,
-                                                ),
-                                              )
-                                              .toList(),
-                                          onChanged: (value) {
-                                            e.lote = value!.codigo;
-                                            e.mov = value;
-                                            e.productos!.cantidad =
-                                                value.actual.toDouble();
-                                            e.productos!.precio =
-                                                value.precio.toDouble();
+                                                  )
+                                                  .toList(),
+                                              onChanged: (value) {
+                                                e.lote = value!.codigo;
+                                                e.mov = value;
+                                                e.productos!.cantidad =
+                                                    value.actual.toDouble();
+                                                e.productos!.precio =
+                                                    value.precio.toDouble();
 
-                                            setState(() {});
-                                          },
-                                          hint: e.lote == ""
-                                              ? Text("Lote")
-                                              : Text(e.mov!.codigo),
-                                        );
-                                      } else {
-                                        return Text("");
-                                      }
-                                    },
-                                  )
+                                                setState(() {});
+                                              },
+                                              hint: e.lote == ""
+                                                  ? Text("Lote")
+                                                  : Text(e.mov!.codigo),
+                                            );
+                                          } else {
+                                            return Text("");
+                                          }
+                                        },
+                                      )
+                                    : Text("${e.lote}")
                                 : Text(""),
                           ),
                           DataCell(e.productos != null
