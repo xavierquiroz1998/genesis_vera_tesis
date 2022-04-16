@@ -222,7 +222,6 @@ class ProductosProvider extends ChangeNotifier {
 
         var difee = DateTime.parse(item.fecha).difference(fechaMesActual);
         if (difee.inDays >= 0 && difee.inDays < 30) {
-          print("fech ${item.id}");
           // falta revisar mes actual
           var total =
               lisDet.where((element) => element.idRegistro == item.id).toList();
@@ -406,9 +405,11 @@ class ProductosProvider extends ChangeNotifier {
           if (item.cobertura <= proveedoresTemp.holgura) {
             mostrarItems.add(item);
           }
-        } catch (e) {}
+        } catch (e) {
+          print("----${e.toString()}");
+        }
       }
-      for (var item in mostrarItems) {}
+
       notifyListeners();
     } catch (ex) {
       print("Error en list aprovicionar ${ex.toString()}");
@@ -431,7 +432,7 @@ class ProductosProvider extends ChangeNotifier {
       product.referencia = int.parse(codRef).toString();
       p.nombre = controllerDescripcion.text;
       p.detalle = controllerDescripcion.text;
-
+      print("-------");
       p.cantidad = double.tryParse(controllerStock.text) ?? 0;
       product.precio = double.tryParse(controllerPrecio.text) ?? 0;
       product.estado = true;

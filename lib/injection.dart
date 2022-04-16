@@ -51,6 +51,7 @@ import 'domain/providers/Devoluciones/devolucionProvider.dart';
 import 'domain/providers/Login/loginProvider.dart';
 import 'domain/providers/Proveedores/proveedoresProvider.dart';
 import 'domain/providers/Usuarios/UsuariosProvider.dart';
+import 'domain/providers/dashboard/dashboard_provider.dart';
 import 'domain/providers/egreso/e_productoProvider.dart';
 import 'domain/providers/ingreso/ingresosProvider.dart';
 import 'domain/providers/kardex/kardex_provider.dart';
@@ -101,6 +102,7 @@ Future<void> init() async {
   sl.registerFactory(() => ParametrosPRovider(sl()));
   sl.registerFactory(() => MovimientoProvider(sl()));
   sl.registerFactory(() => UpdatePermiso(sl()));
+  sl.registerFactory(() => DashboardProvider(sl(), sl()));
 
   sl.registerLazySingleton(() => InsertarProducto(sl()));
   sl.registerLazySingleton(() => GetProductos(sl())); //injeccion casos de uso

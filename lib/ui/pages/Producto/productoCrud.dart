@@ -334,7 +334,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                   ? "0"
                                   : producto.controllerStock.text) >
                               0 &&
-                          int.parse(producto.controllerPrecio.text == ""
+                          double.parse(producto.controllerPrecio.text == ""
                                   ? "0"
                                   : producto.controllerPrecio.text) >
                               0) {
