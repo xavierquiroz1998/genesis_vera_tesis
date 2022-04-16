@@ -29,6 +29,7 @@ class _DevolucionViewState extends State<DevolucionView> {
   @override
   void initState() {
     var provi = Provider.of<DevolucionProvider>(context, listen: false);
+    provi.limpiarVariables();
     provi.cargarPrd();
     if (provi.cab.id != 0) {
       var asd = DateTime.tryParse(provi.cab.fecha);
@@ -59,6 +60,7 @@ class _DevolucionViewState extends State<DevolucionView> {
   Widget build(BuildContext context) {
     final devolucio = Provider.of<DevolucionProvider>(context);
     final kardex = Provider.of<KardexProvider>(context);
+
     return Container(
       child: ListView(
         children: [
@@ -101,12 +103,15 @@ class _DevolucionViewState extends State<DevolucionView> {
                   height: 20,
                 ),
                 DropdownButtonFormField<String>(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      devolucio.listTableRegistrosDev.clear();
+                    });
+                  },
                   onChanged: (value) async {
+                    devolucio.detalles = [];
                     tipoDevSelect = value!;
                     devolucio.pedidoSelec = new EntityRegistro();
-                    devolucio.detalles = [];
-                    //devolucio.listTableRegistrosDev = [];
                     String ref = "";
                     if (tipoDevSelect == "PROVEEDOR") {
                       devolucio.cab.cliente = "P";
@@ -116,8 +121,8 @@ class _DevolucionViewState extends State<DevolucionView> {
                       devolucio.codRef = "Dev / pr-";
                     } else if (tipoDevSelect == "CLIENTE") {
                       devolucio.cab.cliente = "C";
-
                       await devolucio.getRegistrosDev(2);
+
                       ref = await devolucio.generarT("C");
                       devolucio.codRef = "Dev / cl-";
                     }
@@ -158,6 +163,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                     }
                     setState(() {});
                   },
+                  value: devolucio.selectEntity,
                   items: devolucio.listTableRegistrosDev
                       .map(
                         (item) => DropdownMenuItem<EntityRegistro>(

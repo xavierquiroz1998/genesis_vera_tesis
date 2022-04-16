@@ -17,6 +17,7 @@ class DevolucionProvider extends ChangeNotifier {
   EntityRegistro _cab = new EntityRegistro();
   String codRef = "";
   EntityRegistro get cab => _cab;
+  EntityRegistro selectEntity = new EntityRegistro();
 
   set cab(EntityRegistro cab) {
     _cab = cab;
@@ -26,7 +27,7 @@ class DevolucionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<EntityRegistro> listTableRegistrosDev = [];
+  List<EntityRegistro> listTableRegistrosDev = [EntityRegistro()];
   List<ProveedoresEntity> listaProveedores = [];
   EntityRegistro pedidoSelec = new EntityRegistro();
   List<EntityRegistroDetalle> detalles = [];
@@ -42,6 +43,7 @@ class DevolucionProvider extends ChangeNotifier {
       this.useCaseProveedores);
 
   void limpiarVariables() {
+    selectEntity = new EntityRegistro();
     pedidoSelec = new EntityRegistro();
     listTableRegistrosDev = [];
     notifyListeners();
@@ -80,6 +82,7 @@ class DevolucionProvider extends ChangeNotifier {
       if (idTipo == 2) {
         var tem = await usesCases.getAll(idTipo);
         listTableRegistrosDev = tem.getOrElse(() => []);
+        selectEntity = listTableRegistrosDev.first;
       } else if (idTipo == 3) {
         var tempMovi = await movimientos.getMovientos();
         var resultMovi = tempMovi.getOrElse(() => []);
@@ -105,6 +108,8 @@ class DevolucionProvider extends ChangeNotifier {
           r.estado = true;
           listTableRegistrosDev.add(r);
         }
+
+        selectEntity = listTableRegistrosDev.first;
       }
     } catch (ex) {
       listTableRegistrosDev = [];
@@ -218,9 +223,9 @@ class DevolucionProvider extends ChangeNotifier {
 
   Future cargarDetalle(int idRegistro, [bool lote = false]) async {
     try {
+      await cargarProveedores();
       if (lote) {
         detalles = [];
-        await cargarProveedores();
         EntityRegistroDetalle det = new EntityRegistroDetalle();
         det.productos = listado.where((e) => e.id == pedidoSelec.id).first;
 
@@ -235,11 +240,13 @@ class DevolucionProvider extends ChangeNotifier {
       } else {
         var transaction = await usesCases.getADetalle(idRegistro);
         detalles = transaction.getOrElse(() => []);
-        print("value de detalles ${detalles.length}");
+
         for (var item in detalles) {
           item.productos = listado.where((e) => e.id == item.idProducto).first;
-          item.productos!.proveedor =
-              ProveedoresEntity(nombre: "SIN ASIGNACION");
+
+          item.productos!.proveedor = listaProveedores
+              .where((e) => e.id == item.productos!.idProveedor)
+              .first;
         }
       }
       print("............ ${cab.idSecundario}---------${cab.id}");
