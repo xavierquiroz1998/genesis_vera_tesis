@@ -106,6 +106,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                     tipoDevSelect = value!;
                     devolucio.pedidoSelec = new EntityRegistro();
                     devolucio.detalles = [];
+                    //devolucio.listTableRegistrosDev = [];
                     String ref = "";
                     if (tipoDevSelect == "PROVEEDOR") {
                       devolucio.cab.cliente = "P";
@@ -322,7 +323,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                         }
 
                         if (devolucio.msgError == "") {
-                          //  await devolucio.getRegistrosDev(3);
+                          await devolucio.getRegistrosDev(3);
                           NavigationService.replaceTo("/devoluciones");
                         } else {
                           // mensaje alerta

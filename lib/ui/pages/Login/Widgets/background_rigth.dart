@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BackgroundRigth extends StatelessWidget {
@@ -13,14 +14,30 @@ class BackgroundRigth extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Distribuidora"),
-                ),
-                Image.asset(
-                  "Ferreteria.png",
-                  height: 100,
-                ),
+                Stack(
+                  children: [
+                    Container(
+                      width: 500,
+                      height: 500,
+                      child: Image.asset(
+                        "Ferreteria.png",
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Positioned(
+                      top: 40,
+                      left: 150,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Distribuidora",
+                          style: TextStyle(
+                              fontSize: 40, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
                 /*   Text(
                   "KIARITA",
                   style: TextStyle(fontStyle: FontStyle.italic),
@@ -37,6 +54,8 @@ class BackgroundRigth extends StatelessWidget {
   }
 
   BoxDecoration buildBoxDecoration() {
-    return BoxDecoration(color: Colors.red);
+    return BoxDecoration(
+        image:
+            DecorationImage(image: AssetImage('fondo.jpg'), fit: BoxFit.cover));
   }
 }

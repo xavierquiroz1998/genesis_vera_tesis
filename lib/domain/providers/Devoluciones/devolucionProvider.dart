@@ -80,6 +80,18 @@ class DevolucionProvider extends ChangeNotifier {
       if (idTipo == 2) {
         var tem = await usesCases.getAll(idTipo);
         listTableRegistrosDev = tem.getOrElse(() => []);
+      } else if (idTipo == 3) {
+        var tempMovi = await movimientos.getMovientos();
+        var resultMovi = tempMovi.getOrElse(() => []);
+
+        for (var item in resultMovi) {
+          EntityRegistro r = new EntityRegistro();
+          r.id = item.idProducto;
+          r.detalle = item.codigo;
+          r.cliente = item.total.toString();
+          r.estado = true;
+          listTableRegistrosDev.add(r);
+        }
       } else {
         listTableRegistrosDev = [];
         var tempMovi = await movimientos.getMovientos();

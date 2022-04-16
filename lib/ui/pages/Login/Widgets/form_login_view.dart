@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/providers/Login/loginProvider.dart';
+import 'package:genesis_vera_tesis/ui/style/custom_inputs.dart';
 import 'package:provider/provider.dart';
 
 class FormLoginView extends StatefulWidget {
@@ -17,7 +18,7 @@ class _FormLoginViewState extends State<FormLoginView> {
   Widget build(BuildContext context) {
     final logeo = Provider.of<LoginProvider>(context);
     return Container(
-      color: Colors.white,
+      color: Colors.black,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Form(
@@ -25,30 +26,45 @@ class _FormLoginViewState extends State<FormLoginView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                "Iniciar Session",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 40),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 onChanged: (value) {
                   logeo.cedula = value;
                 },
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Ingrese Usuario";
                   }
                 },
-                decoration: InputDecoration(
-                  labelText: "Usuario",
-                ),
+                decoration: CustomInputs.loginInputDecoration(
+                    hint: "Usuario",
+                    label: "Usuario",
+                    icon: Icons.assignment_ind_rounded),
+              ),
+              SizedBox(
+                height: 20,
               ),
               TextFormField(
                 onChanged: (value) {
                   logeo.contrasenia = value;
                 },
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Ingrese Contraseña";
                   }
                 },
                 obscureText: true,
-                decoration: InputDecoration(labelText: "Contraseña"),
+                decoration: CustomInputs.loginInputDecoration(
+                    hint: "Contraseña", label: "Contraseña", icon: Icons.lock),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
