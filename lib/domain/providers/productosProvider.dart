@@ -214,14 +214,16 @@ class ProductosProvider extends ChangeNotifier {
       var lisDet = tem.getOrElse(() => []);
       var lisCab = cab.getOrElse(() => []);
       var fechaActual = DateTime.now();
-      var fechaMesActual = DateTime(fechaActual.year, fechaActual.month - 1, 1);
-      var fechaAnterior = DateTime(fechaActual.year, fechaActual.month, 1 - 1);
+      var fechaMesActual = DateTime(fechaActual.year, fechaActual.month, 1);
+      var fechaAnterior = DateTime(fechaActual.year, fechaActual.month - 1, 1);
       //var fechaFinal = DateTime.now().add(Duration(days: -90));
       for (var item in lisCab) {
+        //print("total items ${item.fecha.toString()}******** ${item.detalle}");
+
         var difee = DateTime.parse(item.fecha).difference(fechaMesActual);
         if (difee.inDays >= 0 && difee.inDays < 30) {
-          //print("fech ${item.fecha}");
-          print("registros ${item.id}");
+          print("fech ${item.id}");
+          // falta revisar mes actual
           var total =
               lisDet.where((element) => element.idRegistro == item.id).toList();
 
@@ -236,7 +238,7 @@ class ProductosProvider extends ChangeNotifier {
         //var dife = DateTime.parse(item.createdAt).difference(fechaAnterior);
         var dife = DateTime.parse(item.fecha).difference(fechaAnterior);
 
-        if (dife.inDays < 0 && dife.inDays > -90) {
+        if (dife.inDays >= -90 && dife.inDays < 30) {
           var total =
               lisDet.where((element) => element.idRegistro == item.id).toList();
           if (total.length != 0) {
@@ -246,16 +248,15 @@ class ProductosProvider extends ChangeNotifier {
           }
         }
       }
+
       lisCla = [];
       var grupos = temporal.groupListsBy((e) => e.idProducto);
       for (var idPrd in grupos.entries) {
         Clasificacion obj = Clasificacion();
         obj.idProducto = idPrd.key;
         for (var item in idPrd.value) {
+          obj.unidades += item.cantidad;
           obj.promedio += item.cantidad * item.total;
-          if (item.idProducto == 65) {
-            //print("*********${obj.promedio}");
-          }
         }
         lisCla.add(obj);
       }
@@ -263,9 +264,6 @@ class ProductosProvider extends ChangeNotifier {
       for (var forma in lisCla) {
         forma.promedio = forma.promedio / 3;
         forma.promedio = forma.promedio.roundToDouble();
-        if (forma.idProducto == 65) {
-          print("**************${forma.promedio}");
-        }
       }
       // ordenar lista
       lisCla = lisCla.orderByDescending((et) => et.promedio).toList();
@@ -276,12 +274,10 @@ class ProductosProvider extends ChangeNotifier {
       );
       //print("*****${totalGlobal}");
       await cargarPrd();
-// ahora si a categorizar
+      // ahora si a categorizar
       totalGlobal = formatting(totalGlobal);
       double inici = 0;
-      for (var item in stockMensual) {
-        print("{asdasdas ${item.idProducto}");
-      }
+
       for (var cat in lisCla) {
         try {
           var prd = listado.firstWhere((e) => e.id == cat.idProducto);
@@ -292,9 +288,9 @@ class ProductosProvider extends ChangeNotifier {
                 .where((e) => e.idProducto == cat.idProducto)
                 .sum((p) => p.cantidad);
 
-            cat.stock = stockVenta - prd.cantidad - prd.pedido;
-            print(
-                "ventas ${stockVenta} cant ${prd.cantidad} ** ${prd.pedido} -- ${cat.stock}");
+            cat.stock = prd.cantidad;
+            var stockMes = stockVenta + prd.cantidad;
+            cat.stockInicioMes = stockMes;
           } catch (ex) {
             cat.stock = prd.cantidad;
           }
@@ -303,7 +299,6 @@ class ProductosProvider extends ChangeNotifier {
 
           cat.pedido = prd.pedido;
           if (prd.pedido != 0) {
-            print("1");
             cat.cobertura = (prd.cantidad / prd.pedido) * 30;
           } else {
             cat.cobertura = 0;
@@ -325,6 +320,13 @@ class ProductosProvider extends ChangeNotifier {
           cat.clasificacion = "C";
         }
       }
+
+//
+      var existeA = lisCla.where((e) => e.clasificacion == 'A').toList().length;
+      if (existeA == 0) {
+        lisCla[0].clasificacion = "A";
+      }
+
 // stock seguridad
       aprovisionamientos = [];
       for (var item in lisCla) {
@@ -332,26 +334,16 @@ class ProductosProvider extends ChangeNotifier {
         ap.idProducto = item.idProducto;
         ap.detalle = item.detalle;
         ap.cobertura = item.cobertura.round();
-        ap.promedio = formatting(item.promedio / 3);
-        if (item.idProducto == 65) {
-          //  print("*********${ap.promedio} ***********${item.promedio}");
-        }
+        ap.promedio = formatting(item.unidades / 3);
         ap.clasificacion = item.clasificacion;
         ap.stock = item.stock;
-
+        ap.stockMesActual = item.stockInicioMes;
         // calculos
         double ventaXdia = ap.promedio / 30;
-        if (item.idProducto == 65) {
-          print("**venta por dia****$ventaXdia");
-        }
-
         if (ap.clasificacion == "A") {
           var paramTemp = listadoParam.where((e) => e.detalle == "A").first;
           if (paramTemp != null) {
             ap.stockSeguridad = formatting(ventaXdia * paramTemp.holgura);
-            if (item.idProducto == 65) {
-              print("Stock******${ap.stockSeguridad}-ccc ${paramTemp.holgura}");
-            }
           } else {
             ap.stockSeguridad = formatting(ventaXdia * 7);
           }
@@ -371,22 +363,21 @@ class ProductosProvider extends ChangeNotifier {
           }
         }
         ap.stockSeguridad = double.parse(ap.stockSeguridad.round().toString());
-        if (item.pedido == item.stock) {
+        print("Incio de mes ${item.stockInicioMes}");
+        if (item.pedido == item.stockInicioMes) {
           ap.aprovisionar = ap.stockSeguridad;
-        } else if (item.stock > item.pedido) {
-          if (item.stock >= ap.stockSeguridad) {
+        } else if (item.stockInicioMes > item.pedido) {
+          if (item.stockInicioMes >= ap.stockSeguridad) {
             ap.aprovisionar = 0;
           } else {
-            double st = item.stock - item.pedido;
+            double st = item.stockInicioMes - item.pedido;
             ap.aprovisionar = ap.stockSeguridad - st;
           }
         } else {
-          ap.aprovisionar = (item.pedido - item.stock) + ap.stockSeguridad;
+          var asd = item.pedido - item.stockInicioMes;
+          ap.aprovisionar =
+              (item.pedido - item.stockInicioMes) + ap.stockSeguridad;
         }
-        if (item.idProducto == 65) {
-          print("***${item.stock}*********** ap ${ap.aprovisionar}");
-        }
-
         aprovisionamientos.add(ap);
       }
 
@@ -555,8 +546,10 @@ class Clasificacion {
   int idProducto = 0;
   double promedio = 0;
   int pedido = 0;
+  int unidades = 0;
   double cobertura = 0;
   double stock = 0;
+  double stockInicioMes = 0;
   String detalle = "";
   String clasificacion = "";
 }
@@ -566,6 +559,7 @@ class Aprovisionar {
   double promedio = 0;
   int pedido = 0;
   double stock = 0;
+  double stockMesActual = 0;
   double stockSeguridad = 0;
   double aprovisionar = 0;
   int cobertura = 0;
