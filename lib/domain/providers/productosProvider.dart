@@ -324,7 +324,9 @@ class ProductosProvider extends ChangeNotifier {
 //
       var existeA = lisCla.where((e) => e.clasificacion == 'A').toList().length;
       if (existeA == 0) {
-        lisCla[0].clasificacion = "A";
+        if (lisCla.length > 0) {
+          lisCla[0].clasificacion = "A";
+        }
       }
 
 // stock seguridad
