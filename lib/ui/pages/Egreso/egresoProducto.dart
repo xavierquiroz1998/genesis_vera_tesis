@@ -242,22 +242,34 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               ? Text("${e.productos!.cantidad}")
                               : Text("")),
                           DataCell(e.productos != null
-                              ? Text(NumberFormat.currency(
-                                      locale: 'en_US',
-                                      symbol: r'$',
-                                      decimalDigits: 2)
-                                  .format(e.productos!.precio))
+                              ? Container(
+                                  constraints: BoxConstraints(maxWidth: 80),
+                                  child: Text(
+                                    NumberFormat.currency(
+                                            locale: 'en_US',
+                                            symbol: r'$',
+                                            decimalDigits: 2)
+                                        .format(e.productos!.precio),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
                               : Text("")),
                           DataCell(e.idProducto != 0
                               ? FutureBuilder(
                                   future: egreso.cargarPromedio(e.idProducto),
                                   builder: ((context, snapshot) {
                                     if (snapshot.hasData) {
-                                      return Text(NumberFormat.currency(
-                                              locale: 'en_US',
-                                              symbol: r'$',
-                                              decimalDigits: 2)
-                                          .format(snapshot.data));
+                                      return Container(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 80),
+                                        child: Text(
+                                            NumberFormat.currency(
+                                                    locale: 'en_US',
+                                                    symbol: r'$',
+                                                    decimalDigits: 2)
+                                                .format(snapshot.data),
+                                            overflow: TextOverflow.ellipsis),
+                                      );
                                     } else {
                                       return Text("");
                                     }
