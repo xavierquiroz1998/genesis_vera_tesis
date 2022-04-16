@@ -84,7 +84,7 @@ class _DevolucionesViewState extends State<DevolucionesView> {
                               children: [
                                 TextButton.icon(
                                   label: Text(""),
-                                  icon: Icon(Icons.edit),
+                                  icon: Icon(Icons.search),
                                   onPressed: () {
                                     devolucio.cab = e;
                                     devolucio.detalles = [];

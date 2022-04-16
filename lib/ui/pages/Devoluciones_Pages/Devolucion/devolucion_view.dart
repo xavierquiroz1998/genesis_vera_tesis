@@ -306,6 +306,7 @@ class _DevolucionViewState extends State<DevolucionView> {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        devolucio.cab.fecha = selectedDate.toIso8601String();
                         if (tipoDevSelect == "PROVEEDOR") {
                           await devolucio.guardarDevolucion();
                           devolucio.detalles.forEach((element) async {

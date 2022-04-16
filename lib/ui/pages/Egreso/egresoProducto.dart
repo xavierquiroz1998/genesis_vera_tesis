@@ -181,9 +181,12 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               },
                               hint: e.idProducto == 0
                                   ? Text("Seleccione Producto")
-                                  : Text(e.productos!.detalle.length > 15
-                                      ? e.productos!.detalle.substring(0, 15)
-                                      : e.productos!.detalle),
+                                  : Text(e.productos == null
+                                      ? ""
+                                      : e.productos!.detalle.length > 15
+                                          ? e.productos!.detalle
+                                              .substring(0, 15)
+                                          : e.productos!.detalle),
                             ),
                           ),
                           // DataCell(e.productos != null
