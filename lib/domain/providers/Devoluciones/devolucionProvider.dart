@@ -46,7 +46,7 @@ class DevolucionProvider extends ChangeNotifier {
     selectEntity = new EntityRegistro();
     pedidoSelec = new EntityRegistro();
     listTableRegistrosDev = [];
-    notifyListeners();
+    //notifyListeners();
   }
 
   // prueba devoluciones
@@ -180,19 +180,13 @@ class DevolucionProvider extends ChangeNotifier {
 
   Future<void> guardarDevolucion() async {
     try {
-      // cab.estado = "A";
-      // cab.detalleDevolucion = detalleDevolucion;
-      // cab.idDevolucion = Estaticas.listDevoluciones.length + 1;
-      // cab.observacion = ctrObservacion.text;
-      // Estaticas.listDevoluciones.add(cab);
-
       EntityRegistro reg = new EntityRegistro();
       reg.idTipo = 3;
       reg.detalle = ctrObservacion.text;
       reg.estado = true;
       reg.idSecundario = cab.idSecundario;
       reg.cliente = cab.cliente;
-
+      reg.fecha = cab.fecha;
       reg.referencia = int.parse(await generarT(cab.cliente));
       var result = await usesCases.insertRegistros(reg);
       var tem = result.fold((fail) => Extras.failure(fail), (prd) => prd);
@@ -249,7 +243,7 @@ class DevolucionProvider extends ChangeNotifier {
               .first;
         }
       }
-      print("............ ${cab.idSecundario}---------${cab.id}");
+      //print("............ ${cab.idSecundario}---------${cab.id}");
       if (cab.id != 0 && cab.idSecundario != 0) {
         await getRegistrosDev(2);
         try {
