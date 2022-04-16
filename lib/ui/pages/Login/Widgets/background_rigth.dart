@@ -14,30 +14,15 @@ class BackgroundRigth extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: 500,
-                      height: 500,
-                      child: Image.asset(
-                        "Ferreteria.png",
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    Positioned(
-                      top: 40,
-                      left: 150,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Distribuidora",
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+                Container(
+                  width: 500,
+                  height: 500,
+                  child: Image.asset(
+                    "Ferreteria.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+
                 /*   Text(
                   "KIARITA",
                   style: TextStyle(fontStyle: FontStyle.italic),
