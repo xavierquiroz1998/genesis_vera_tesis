@@ -133,7 +133,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                         label: Center(child: Text("Costo Uni.")),
                       ),
                       const DataColumn(
-                        label: Center(child: Text("Promedio")),
+                        label: Center(child: Text("C.P.P.")),
                       ),
                       const DataColumn(
                         label: Center(child: Text("cantidad")),

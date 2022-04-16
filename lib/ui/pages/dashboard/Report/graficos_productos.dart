@@ -147,7 +147,7 @@ class _ReporteAprovicionarState extends State<ReporteAprovicionar> {
                   item.detalle.length > 15
                       ? Text("${item.detalle.substring(0, 15)}")
                       : Text("${item.detalle}"),
-                  Text("${item.stockSeguridad.toString()}"),
+                  Text("${item.aprovisionar.toString()}"),
                 ],
               ),
               SizedBox(

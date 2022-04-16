@@ -33,6 +33,7 @@ class ProductosProvider extends ChangeNotifier {
   int pedid = 0;
   List<Clasificacion> lisCla = [];
   List<Aprovisionar> aprovisionamientos = [];
+  List<Aprovisionar> clasificaciones = [];
   List<Aprovisionar> mostrarItems = [];
   String codRef = "";
 
@@ -381,6 +382,20 @@ class ProductosProvider extends ChangeNotifier {
         }
         aprovisionamientos.add(ap);
       }
+      clasificaciones = [];
+      var asss = aprovisionamientos.groupListsBy((e) => e.clasificacion);
+      for (var item in asss.entries) {
+        Aprovisionar a = new Aprovisionar();
+        a.clasificacion = item.key;
+        if (a.clasificacion == "A") {
+          a.total = 1;
+        } else if (a.clasificacion == "B") {
+          a.total = 2;
+        } else if (a.clasificacion == "C") {
+          a.total = 3;
+        }
+        clasificaciones.add(a);
+      }
 
       notifyListeners();
     } catch (ex) {
@@ -566,6 +581,7 @@ class Aprovisionar {
   double stockSeguridad = 0;
   double aprovisionar = 0;
   int cobertura = 0;
+  double total = 0;
   String detalle = "";
   String clasificacion = "";
 }

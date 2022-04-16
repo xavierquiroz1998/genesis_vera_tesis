@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../../ui/Router/FluroRouter.dart';
 import '../../ui/pages/clasificacion/clasificacionview.dart';
+import '../../ui/pages/dashboard/dashboardClasificacion.dart';
 import '../../ui/pages/dashboard/dashboardXproducto.dart';
 import '../../ui/pages/ingresos/ingresos.dart';
 import '../../ui/pages/ingresos/ingresosView.dart';
@@ -254,6 +255,7 @@ class Handlers {
       return Login();
     }
   });
+
   static Handler clasificacion = Handler(handlerFunc: (context, param) {
     // validacion de sesion
     final logeo = Provider.of<LoginProvider>(context!);
@@ -273,6 +275,18 @@ class Handlers {
         .setCurrentPageUrl(Flurorouter.pedido);
     if (logeo.authStatus == AuthStatus.authenticated) {
       return PedidoMes();
+    } else {
+      return Login();
+    }
+  });
+
+  static Handler dashboarClasificacion = Handler(handlerFunc: (context, param) {
+    // validacion de sesion
+    final logeo = Provider.of<LoginProvider>(context!);
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.dashboarClasificacion);
+    if (logeo.authStatus == AuthStatus.authenticated) {
+      return DashboardClasificacion();
     } else {
       return Login();
     }
