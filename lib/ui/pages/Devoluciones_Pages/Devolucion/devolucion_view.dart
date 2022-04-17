@@ -315,16 +315,16 @@ class _DevolucionViewState extends State<DevolucionView> {
                                 element.cantidad.toDouble();
                             element.productos!.precio =
                                 element.total.toDouble();
-                            await kardex
-                                .devolucionesProveedor(element.productos!);
+                            await kardex.devolucionesProveedor(
+                                element.productos!, selectedDate);
                           });
                         } else if (tipoDevSelect == "CLIENTE") {
                           await devolucio.guardarDevolucion("C");
                           devolucio.detalles.forEach((element) async {
                             element.productos!.cantidad =
                                 element.cantidad.toDouble();
-                            await kardex
-                                .devolucionesCliente(element.productos!);
+                            await kardex.devolucionesCliente(
+                                element.productos!, selectedDate);
                           });
                         } else {
                           devolucio.msgError = "Seleccione Tipo de Devolución";

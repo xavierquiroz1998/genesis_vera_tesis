@@ -45,11 +45,12 @@ class _EgresoProductosViewState extends State<EgresoProductosView> {
                       },
                       child: Text("Nuevo Egreso"),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          EgresoProductosWidgets.openFileEgreso(context);
-                        },
-                        child: Text("Cargar Excel"))
+                    // TextButton(
+                    //   onPressed: () {
+                    //     EgresoProductosWidgets.openFileEgreso(context);
+                    //   },
+                    //   child: Text("Cargar Excel"),
+                    // )
                   ],
                 ),
                 Container(

@@ -218,7 +218,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
     }
   }
 
-  Future devolucionesCliente(Productos producto) async {
+  Future devolucionesCliente(Productos producto, DateTime date) async {
     try {
       var kardexUltimo = await getKardexProductoUltimo("${producto.id}");
 
@@ -239,7 +239,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
                   -1,
           proTtlE:
               (((producto.cantidad * producto.precio)) + kardexUltimo.proTtlE),
-          createdAt: DateTime.now(),
+          createdAt: date,
           stsPro: true); //pendiente
 
       await kardex.inserteKardex(k);
@@ -248,7 +248,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
     }
   }
 
-  Future devolucionesProveedor(Productos producto) async {
+  Future devolucionesProveedor(Productos producto, DateTime date) async {
     try {
       var kardexUltimo = await getKardexProductoUltimo("${producto.id}");
 
@@ -270,7 +270,7 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
           proTtlE:
               ((producto.cantidad * producto.precio) - kardexUltimo.proTtlE) *
                   -1,
-          createdAt: DateTime.now(),
+          createdAt: date,
           stsPro: true); //pendiente
       print(k.toString());
       await kardex.inserteKardex(k);
