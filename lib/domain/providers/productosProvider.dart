@@ -370,7 +370,13 @@ class ProductosProvider extends ChangeNotifier {
           ap.aprovisionar = ap.stockSeguridad;
         } else if (item.stockInicioMes > item.pedido) {
           if (item.stockInicioMes >= ap.stockSeguridad) {
-            ap.aprovisionar = 0;
+            //**************************/
+
+            ap.aprovisionar = ap.stockSeguridad - item.stockInicioMes;
+            if (ap.aprovisionar < 0) {
+              ap.aprovisionar = ap.aprovisionar * -1;
+            }
+            // ap.aprovisionar =  0;
           } else {
             double st = item.stockInicioMes - item.pedido;
             ap.aprovisionar = ap.stockSeguridad - st;

@@ -24,7 +24,7 @@ class DevolucionProvider extends ChangeNotifier {
     _cab = cab;
     ctrObservacion.text = cab.detalle;
 
-    print("-------------${cab.idSecundario}");
+    //print("-------------${cab.idSecundario}");
     notifyListeners();
   }
 
@@ -137,12 +137,14 @@ class DevolucionProvider extends ChangeNotifier {
 
   set ctrObservacion(TextEditingController ctrObservacion) {
     _ctrObservacion = ctrObservacion;
+    notifyListeners();
   }
 
   String get msgError => _msgError;
 
   set msgError(String msgError) {
     _msgError = msgError;
+    notifyListeners();
   }
 
   void agregarDevolucion() {
@@ -157,10 +159,7 @@ class DevolucionProvider extends ChangeNotifier {
 
   void calcularTotal() {
     try {
-      print("erroe n detalles ${detalles.length}");
       for (var item in detalles) {
-        print("valores ${item.cantidad}------${item.total}" +
-            item.productos!.proveedor!.nombre);
         item.to = item.cantidad * item.total;
       }
     } catch (ex) {
@@ -200,14 +199,14 @@ class DevolucionProvider extends ChangeNotifier {
         item.idRegistro = tem.id;
         await usesCases.insertRegistrosDetalles(item);
         if (tipo == "C") {
-          item.productos!.cantidad += item.cantidad;
+          item.productos.cantidad += item.cantidad;
           item.mov!.actual += item.cantidad;
         } else {
-          item.productos!.cantidad -= item.cantidad;
+          item.productos.cantidad -= item.cantidad;
           item.mov!.actual -= item.cantidad;
           print("**${item.mov!.actual}");
         }
-        await generalProducto.update(item.productos!);
+        await generalProducto.update(item.productos);
         await movimientos.updateMov(item.mov!);
       }
 
@@ -240,8 +239,8 @@ class DevolucionProvider extends ChangeNotifier {
 
         det.lote = pedidoSelec.detalle;
 
-        det.productos!.proveedor = listaProveedores
-            .where((e) => e.id == det.productos!.idProveedor)
+        det.productos.proveedor = listaProveedores
+            .where((e) => e.id == det.productos.idProveedor)
             .first;
 
         det.idProducto = pedidoSelec.id;
@@ -263,8 +262,8 @@ class DevolucionProvider extends ChangeNotifier {
         for (var item in detalles) {
           item.productos = listado.where((e) => e.id == item.idProducto).first;
 
-          item.productos!.proveedor = listaProveedores
-              .where((e) => e.id == item.productos!.idProveedor)
+          item.productos.proveedor = listaProveedores
+              .where((e) => e.id == item.productos.idProveedor)
               .first;
 
           var tempMovi = await movimientos.getMovientos();
@@ -283,16 +282,39 @@ class DevolucionProvider extends ChangeNotifier {
               .where((e) => e.id == cab.idSecundario)
               .first;
 
+          selectEntity = temp;
+
           if (temp != null) {
             codRef = "Dev / cl-";
           }
         } catch (ex) {
           codRef = "Dev / pr-";
         }
+
         codRef += await generarT(cab.cliente, cab.referencia);
+
+        print("$codRef");
+        await cargarPrd();
+        var transaction = await usesCases.getADetalle(cab.idSecundario);
+        detalles = transaction.getOrElse(() => []);
+
+        for (var item in detalles) {
+          item.productos = listado.where((e) => e.id == item.idProducto).first;
+
+          item.productos.proveedor = listaProveedores
+              .where((e) => e.id == item.productos.idProveedor)
+              .first;
+
+          var tempMovi = await movimientos.getMovientos();
+          var resultMovi = tempMovi.getOrElse(() => []);
+
+          item.mov = resultMovi.where((e) => e.codigo == item.lote).first;
+
+          //print("**${item.mov!.actual}");
+        }
       }
       calcularTotal();
-      //notifyListeners();
+      notifyListeners();
     } catch (ex) {
       print("Error en cargar detalle devolucion ${ex.toString()}");
       //throw ("This is an Error");

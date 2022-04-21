@@ -8,6 +8,7 @@ class EntityRegistroDetalle extends Equatable {
     this.cantidad = 0,
     this.id = 0,
     this.total = 0,
+    this.secuencia = 0,
     this.idProducto = 0,
     this.idRegistro = 0,
     this.observacion = "",
@@ -23,8 +24,10 @@ class EntityRegistroDetalle extends Equatable {
   String observacion;
   double to;
   String lote;
-  Productos? productos;
+  int secuencia;
+  Productos productos = new Productos();
   ModelMovimiento? mov;
+  List<ModelMovimiento> movimientos = [];
 
   Map<String, dynamic> toMap() => {
         "id": id,

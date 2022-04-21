@@ -138,8 +138,8 @@ class IngresosProvider extends ChangeNotifier {
         var detResultv = await usesCases.insertRegistrosDetalles(item);
 // regista ingreso de producto;
 
-        item.productos!.cantidad += item.cantidad;
-        await prdGeneral.update(item.productos!);
+        item.productos.cantidad += item.cantidad;
+        await prdGeneral.update(item.productos);
 
 // registra movimiento
         ModelMovimiento md = new ModelMovimiento();
@@ -184,8 +184,8 @@ class IngresosProvider extends ChangeNotifier {
       await cargarPrd();
       await cargarDetalle(cab.id);
       for (var item in detalles) {
-        item.productos!.cantidad -= item.cantidad;
-        await prdGeneral.update(item.productos!);
+        item.productos.cantidad -= item.cantidad;
+        await prdGeneral.update(item.productos);
       }
     } catch (ex) {
       print("Erro al Anular ingreso ${ex.toString()}");

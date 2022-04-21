@@ -156,9 +156,9 @@ class _IngresoViewState extends State<IngresoView> {
                               },
                               hint: e.idProducto == 0
                                   ? Text("Seleccione Producto")
-                                  : Text(e.productos!.detalle.length > 15
-                                      ? e.productos!.detalle.substring(0, 15)
-                                      : e.productos!.detalle),
+                                  : Text(e.productos.detalle.length > 15
+                                      ? e.productos.detalle.substring(0, 15)
+                                      : e.productos.detalle),
                             ),
                           ),
                           DataCell(Text(e.lote)),
@@ -223,11 +223,11 @@ class _IngresoViewState extends State<IngresoView> {
                           }
                           try {
                             for (var item in ingreso.detalles) {
-                              item.productos!.cantidad =
+                              item.productos.cantidad =
                                   item.cantidad.toDouble();
-                              item.productos!.precio = item.total;
+                              item.productos.precio = item.total;
                               await kardex.entradas(
-                                  item.productos!, true, true, selectedDate);
+                                  item.productos, true, true, selectedDate);
                             }
                           } catch (ex) {
                             print("Erro en ingresar kardex ${ex.toString()}");

@@ -87,7 +87,7 @@ class EProductoProvider extends ChangeNotifier {
   // }
 
   void agregar() {
-    detalles.add(new EntityRegistroDetalle());
+    detalles.add(new EntityRegistroDetalle(secuencia: detalles.length + 1));
 
     notifyListeners();
   }
@@ -182,8 +182,8 @@ class EProductoProvider extends ChangeNotifier {
       await cargarPrd();
       await cargarDetalle(cab.id);
       for (var item in detalles) {
-        item.productos!.cantidad += item.cantidad;
-        await generalProducto.update(item.productos!);
+        item.productos.cantidad += item.cantidad;
+        await generalProducto.update(item.productos);
       }
     } catch (ex) {}
 
