@@ -27,7 +27,7 @@ class _FormLoginViewState extends State<FormLoginView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Iniciar Session",
+                "INICIAR SESIÓN",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 40),
               ),
