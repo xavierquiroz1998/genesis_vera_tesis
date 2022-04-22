@@ -1,9 +1,6 @@
-import 'package:genesis_vera_tesis/data/models/grupo/grupo_modelo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import '../../../domain/entities/parametros/entityParameter.dart';
-import '../../../domain/entities/tipo/grupo.dart';
 import '../../models/parametros/Modelparameter.dart';
 
 abstract class ParametrosDTS {

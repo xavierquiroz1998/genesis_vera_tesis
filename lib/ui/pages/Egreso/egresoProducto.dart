@@ -174,7 +174,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                               onChanged: (value) async {
                                 e.idProducto = value!.id;
                                 e.productos = value;
-                                e.productos!.cantidad = 0;
+                                e.productos.cantidad = 0;
                                 //e.total = value.precio;
 
                                 setState(() {});
@@ -183,10 +183,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                   ? Text("Seleccione Producto")
                                   : Text(e.productos == null
                                       ? ""
-                                      : e.productos!.detalle.length > 15
-                                          ? e.productos!.detalle
-                                              .substring(0, 15)
-                                          : e.productos!.detalle),
+                                      : e.productos.detalle.length > 15
+                                          ? e.productos.detalle.substring(0, 15)
+                                          : e.productos.detalle),
                             ),
                           ),
                           // DataCell(e.productos != null
@@ -226,9 +225,9 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                               onChanged: (value) {
                                                 e.lote = value!.codigo;
                                                 e.mov = value;
-                                                e.productos!.cantidad =
+                                                e.productos.cantidad =
                                                     value.actual.toDouble();
-                                                e.productos!.precio =
+                                                e.productos.precio =
                                                     value.precio.toDouble();
 
                                                 setState(() {});
@@ -246,7 +245,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                 : Text(""),
                           ),
                           DataCell(e.productos != null
-                              ? Text("${e.productos!.cantidad}")
+                              ? Text("${e.productos.cantidad}")
                               : Text("")),
                           DataCell(e.productos != null
                               ? Container(
@@ -256,7 +255,7 @@ class _EgresoProductoState extends State<EgresoProducto> {
                                             locale: 'en_US',
                                             symbol: r'$',
                                             decimalDigits: 2)
-                                        .format(e.productos!.precio),
+                                        .format(e.productos.precio),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 )
