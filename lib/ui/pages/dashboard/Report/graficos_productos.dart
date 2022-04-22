@@ -1,7 +1,9 @@
+import 'package:darq/darq.dart';
 import 'package:flutter/material.dart';
 import 'package:genesis_vera_tesis/domain/entities/egreso/egresoProducto.dart';
-import 'package:genesis_vera_tesis/domain/entities/estaticas.dart';
+import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:collection/collection.dart';
@@ -32,22 +34,83 @@ class _PieDefaultState extends State<PieDefault> {
             title: "Reporte",
             child: Column(
               children: [
-                SfCircularChart(
-                  title: ChartTitle(text: 'Productos'),
-                  legend: Legend(isVisible: true),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <CircularSeries>[
-                    PieSeries<Productos, String>(
+                Container(
+                  width: 300,
+                  height: 300,
+                  child: SfCircularChart(
+                    title: ChartTitle(text: 'Productos'),
+                    legend: Legend(isVisible: true),
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <CircularSeries>[
+                      PieSeries<Productos, String>(
                         dataSource: producto.listado.length > 5
-                            ? producto.listado.sublist(0, 5)
-                            : producto.listado,
+                            ? producto.listado
+                                .orderByDescending((e) => e.cantidad)
+                                .toList()
+                                .sublist(0, 5)
+                            : producto.listado
+                                .orderByDescending((e) => e.cantidad)
+                                .toList(),
                         xValueMapper: (Productos data, _) =>
                             data.detalle.length > 10
                                 ? data.detalle.substring(0, 9)
                                 : data.detalle,
                         yValueMapper: (Productos data, _) => data.cantidad,
-                        dataLabelSettings: DataLabelSettings(isVisible: true)),
-                  ],
+                        dataLabelSettings: DataLabelSettings(isVisible: true),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        : Container();
+  }
+}
+
+/////////////////costo
+///
+
+class PieCosto extends StatefulWidget {
+  const PieCosto({Key? key}) : super(key: key);
+
+  @override
+  _PieCostotState createState() => _PieCostotState();
+}
+
+class _PieCostotState extends State<PieCosto> {
+  @override
+  void initState() {
+    Provider.of<KardexProvider>(context, listen: false).kardexCosto();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final producto = Provider.of<KardexProvider>(context);
+    return producto.listadoK.length > 0
+        ? WhiteCard(
+            //title: "Costo",
+            child: Column(
+              children: [
+                Container(
+                  width: 400,
+                  height: 400,
+                  child: SfCircularChart(
+                    title: ChartTitle(text: 'Costo'),
+                    legend: Legend(isVisible: true),
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <CircularSeries>[
+                      PieSeries<Kardex, String>(
+                        dataSource: producto.listadoK.length > 5
+                            ? producto.listadoK.sublist(0, 5)
+                            : producto.listadoK,
+                        xValueMapper: (Kardex data, _) => data.codPro,
+                        yValueMapper: (Kardex data, _) => data.proTtlE,
+                        dataLabelSettings: DataLabelSettings(isVisible: true),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -135,19 +198,25 @@ class _ReporteAprovicionarState extends State<ReporteAprovicionar> {
     return WhiteCard(
       title: 'Aprovisionar',
       child: Container(
-        color: Colors.blue,
+        //color: Colors.blue,
         width: 250,
         height: 250,
         child: Column(
           children: [
             for (var item in prd.mostrarItems) ...{
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  item.detalle.length > 15
-                      ? Text("${item.detalle.substring(0, 15)}")
-                      : Text("${item.detalle}"),
-                  Text("${item.aprovisionar.toString()}"),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5, top: 5),
+                    child: Text(item.detalle.length > 15
+                        ? "${item.detalle.substring(0, 15)}"
+                        : "${item.detalle}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, top: 5),
+                    child: Text("${item.aprovisionar.toString()}"),
+                  ),
                 ],
               ),
               SizedBox(

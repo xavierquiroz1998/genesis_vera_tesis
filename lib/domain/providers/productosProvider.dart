@@ -394,11 +394,11 @@ class ProductosProvider extends ChangeNotifier {
         Aprovisionar a = new Aprovisionar();
         a.clasificacion = item.key;
         if (a.clasificacion == "A") {
-          a.total = 1;
+          a.total = item.value.length.toDouble();
         } else if (a.clasificacion == "B") {
-          a.total = 2;
+          a.total = item.value.length.toDouble();
         } else if (a.clasificacion == "C") {
-          a.total = 3;
+          a.total = item.value.length.toDouble();
         }
         clasificaciones.add(a);
       }

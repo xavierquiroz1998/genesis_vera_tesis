@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:genesis_vera_tesis/domain/entities/kardex/kardex.dart';
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
+import 'package:darq/darq.dart';
 
 import '../../services/fail.dart';
 import '../../uses cases/Kardex/kardex_general.dart';
@@ -9,6 +10,7 @@ import '../../uses cases/productos/getproductos.dart';
 class KardexProvider extends ChangeNotifier {
   final KardexGeneral kardex;
   List<Productos> listado = [];
+  List<Kardex> listadoK = [];
   Productos _prdSelect = new Productos();
 
   Productos get prdSelect => _prdSelect;
@@ -43,6 +45,30 @@ class KardexProvider extends ChangeNotifier {
     } catch (ex) {
       print("Error en obtener kardex General ${ex.toString()}");
     }
+  }
+
+  Future kardexCosto() async {
+    try {
+      await cargarPrd();
+
+      listadoK = [];
+
+      for (var item in listado) {
+        var temp = await getKardexProductoUltimo(item.id.toString());
+        if (temp.id > 0) {
+          temp.codPro = item.detalle;
+          listadoK.add(temp);
+        }
+      }
+
+      for (var item in listadoK) {
+        item.proTtlE = formatting(item.proCanE * item.proUntE);
+      }
+
+      listadoK = listadoK.orderByDescending((x) => x.proTtlE).toList();
+
+      notifyListeners();
+    } catch (ex) {}
   }
 
   Future getKardexProducto(int idProducto) async {
@@ -245,6 +271,15 @@ CALCULO VOTA 199.99299928 SE QUE SE PUEDE REDONDEAR  */
       await kardex.inserteKardex(k);
     } catch (ex) {
       print("Erro en devolucion ${ex.toString()}");
+    }
+  }
+
+  double formatting(double valor) {
+    try {
+      var valueSt = valor.toStringAsFixed(2);
+      return double.parse(valueSt);
+    } catch (ex) {
+      return 0;
     }
   }
 
