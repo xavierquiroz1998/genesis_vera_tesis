@@ -4,10 +4,14 @@ import 'package:genesis_vera_tesis/data/services/Navigation/NavigationService.da
 import 'package:genesis_vera_tesis/domain/entities/productos.dart';
 import 'package:genesis_vera_tesis/domain/providers/egreso/e_productoProvider.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
-import 'package:genesis_vera_tesis/domain/services/codRef.dart';
+import 'package:genesis_vera_tesis/ui/pages/Report/createPdf.dart';
+import 'package:genesis_vera_tesis/ui/pages/Report/notaVentaReportView.dart';
+import 'package:genesis_vera_tesis/ui/pages/Report/pdfApi.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 import '../../../data/models/movimiento/modelMovimiento.dart';
 import '../../../domain/providers/productosProvider.dart';
@@ -416,11 +420,25 @@ class _EgresoProductoState extends State<EgresoProducto> {
                       ),
                     },
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.pop(context);
                       },
                       child: Text("Cancelar"),
                     ),
+                    if (egreso.cab.id > 0) ...{
+                      TextButton(
+                        onPressed: () async {
+                          egreso.cab.detalles = egreso.detalles;
+                          await PdfInvoiceApi.generate(
+                              egreso.cab, egreso.codRef);
+
+                          //PdfApi.openFile(documentPdf);
+                          //await saveAndLaunchFile();
+                          //Navigator.pop(context);
+                        },
+                        child: Text("Generar PDF"),
+                      ),
+                    },
                   ],
                 )
               ],

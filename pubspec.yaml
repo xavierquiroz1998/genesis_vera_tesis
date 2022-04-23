@@ -29,12 +29,16 @@ dependencies:
   http: ^0.13.0
   intl: ^0.17.0
   open_file: ^3.2.1
+  path_provider: ^2.0.9
+  pdf: ^3.7.4
   provider: ^6.0.1
   searchfield: ^0.6.4
   shared_preferences: ^2.0.13
   syncfusion_flutter_charts: ^19.4.48
   syncfusion_flutter_core: ^19.4.47
   syncfusion_flutter_datagrid: ^19.4.47
+  syncfusion_flutter_pdf: ^19.4.47-beta
+  universal_html: ^2.0.8
   url_strategy: ^0.2.0
 
 dev_dependencies:

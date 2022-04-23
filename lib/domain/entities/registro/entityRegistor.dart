@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:genesis_vera_tesis/domain/entities/registro/entityRegistroDetaller.dart';
 
 class EntityRegistro extends Equatable {
   EntityRegistro({
@@ -21,6 +22,7 @@ class EntityRegistro extends Equatable {
   String fecha;
   String createdAt;
   int idSecundario;
+  List<EntityRegistroDetalle> detalles = [];
 
   @override
   // TODO: implement props
