@@ -292,7 +292,7 @@ class ProductosProvider extends ChangeNotifier {
             var stockMes = stockVenta + prd.cantidad;
             cat.stockInicioMes = stockMes;
           } catch (ex) {
-            cat.stock = prd.cantidad;
+            cat.stock = cat.stockInicioMes = prd.cantidad;
           }
 
           //cat.stock = prd.cantidad;
@@ -340,6 +340,7 @@ class ProductosProvider extends ChangeNotifier {
         ap.clasificacion = item.clasificacion;
         ap.stock = item.stock;
         ap.stockMesActual = item.stockInicioMes;
+        ap.pedido = item.pedido;
         // calculos
         double ventaXdia = ap.promedio / 30;
         if (ap.clasificacion == "A") {
@@ -371,12 +372,11 @@ class ProductosProvider extends ChangeNotifier {
         } else if (item.stockInicioMes > item.pedido) {
           if (item.stockInicioMes >= ap.stockSeguridad) {
             //**************************/
-
-            ap.aprovisionar = ap.stockSeguridad - item.stockInicioMes;
-            if (ap.aprovisionar < 0) {
-              ap.aprovisionar = ap.aprovisionar * -1;
-            }
-            // ap.aprovisionar =  0;
+            // ap.aprovisionar = ap.stockSeguridad - item.stockInicioMes;
+            // if (ap.aprovisionar < 0) {
+            //   ap.aprovisionar = ap.aprovisionar * -1;
+            // }
+            ap.aprovisionar = 0;
           } else {
             double st = item.stockInicioMes - item.pedido;
             ap.aprovisionar = ap.stockSeguridad - st;
