@@ -73,7 +73,7 @@ class EProductoProvider extends ChangeNotifier {
 
   void calcular() {
     for (var item in detalles) {
-      item.to = item.cantidad * item.total;
+      item.to = item.cantidad * double.parse(item.total.toStringAsFixed(2));
     }
     notifyListeners();
   }

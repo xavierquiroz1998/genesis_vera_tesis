@@ -82,7 +82,7 @@ class PdfInvoiceApi {
         item.productos.detalle,
         '${item.lote}',
         ' ${item.cantidad}',
-        '\$ ${item.total} ',
+        '\$ ${item.total.toStringAsFixed(2)} ',
         '\$ ${item.to.toStringAsFixed(2)}',
       ];
     }).toList();
@@ -106,7 +106,8 @@ class PdfInvoiceApi {
 
   static Widget buildTotal(EntityRegistro invoice) {
     final netTotal = invoice.detalles
-        .map((item) => item.total * item.cantidad)
+        .map((item) =>
+            double.parse(item.total.toStringAsFixed(2)) * item.cantidad)
         .reduce((item1, item2) => item1 + item2);
     // final vatPercent = invoice.items.first.vat;
     // final vat = netTotal * vatPercent;
