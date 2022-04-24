@@ -366,11 +366,14 @@ class ProductosProvider extends ChangeNotifier {
           }
         }
         ap.stockSeguridad = double.parse(ap.stockSeguridad.round().toString());
-        print("Incio de mes ${item.stockInicioMes}");
+
         if (item.pedido == item.stockInicioMes) {
           ap.aprovisionar = ap.stockSeguridad;
         } else if (item.stockInicioMes > item.pedido) {
-          if (item.stockInicioMes >= ap.stockSeguridad) {
+          print("Incio de mes ${item.stockInicioMes}** ${item.pedido}");
+          var excedente = item.stockInicioMes - item.pedido;
+          print("**$excedente");
+          if (excedente >= ap.stockSeguridad) {
             //**************************/
             // ap.aprovisionar = ap.stockSeguridad - item.stockInicioMes;
             // if (ap.aprovisionar < 0) {
@@ -378,8 +381,10 @@ class ProductosProvider extends ChangeNotifier {
             // }
             ap.aprovisionar = 0;
           } else {
-            double st = item.stockInicioMes - item.pedido;
-            ap.aprovisionar = ap.stockSeguridad - st;
+            ap.aprovisionar = ap.stockSeguridad - excedente;
+            print("${ap.aprovisionar}");
+            // double st = item.stockInicioMes - item.pedido;
+            // ap.aprovisionar = ap.stockSeguridad - st;
           }
         } else {
           var asd = item.pedido - item.stockInicioMes;
