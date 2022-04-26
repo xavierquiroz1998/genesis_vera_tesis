@@ -1,13 +1,19 @@
 // ignore_for_file: unused_element
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genesis_vera_tesis/domain/providers/kardex/kardex_provider.dart';
 import 'package:genesis_vera_tesis/ui/pages/items_source.dart';
 import 'package:genesis_vera_tesis/ui/widgets/white_card.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../domain/entities/productos.dart';
+
+import 'package:syncfusion_flutter_datagrid_export/export.dart';
+import 'package:genesis_vera_tesis/util/save_file_web.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class KardexLayout extends StatefulWidget {
   const KardexLayout({Key? key}) : super(key: key);
@@ -212,6 +218,7 @@ class _KardexLayoutState extends State<KardexLayout> {
   @override
   Widget build(BuildContext context) {
     final kardex = Provider.of<KardexProvider>(context);
+    final GlobalKey<SfDataGridState> _key = GlobalKey<SfDataGridState>();
     return Container(
       child: WhiteCard(
         title: "Kardex",
@@ -262,6 +269,7 @@ class _KardexLayoutState extends State<KardexLayout> {
               ),
               Expanded(
                 child: SfDataGrid(
+                  key: _key,
                   gridLinesVisibility: GridLinesVisibility.both,
                   headerGridLinesVisibility: GridLinesVisibility.both,
                   columnWidthMode: ColumnWidthMode.fill,
@@ -270,6 +278,14 @@ class _KardexLayoutState extends State<KardexLayout> {
                   columns: _getColumns(),
                   stackedHeaderRows: _getStackedHeaderRows(),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton.icon(
+                    icon: const Icon(Icons.receipt_sharp),
+                    onPressed: () =>
+                        exportDataGridToPdf(_key, kardex.prdSelect.nombre),
+                    label: const Text("Generar Reporte PDF")),
               )
             ],
           ),
@@ -277,4 +293,48 @@ class _KardexLayoutState extends State<KardexLayout> {
       ),
     );
   }
+}
+
+Future<void> exportDataGridToPdf(
+    GlobalKey<SfDataGridState> key, String nombre) async {
+  final ByteData data = await rootBundle.load('assets/sinfondo.png');
+  final PdfDocument document = key.currentState!.exportToPdfDocument(
+      fitAllColumnsInOnePage: true,
+      autoColumnWidth: true,
+      cellExport: (DataGridCellPdfExportDetails details) {
+        if (details.cellType == DataGridExportCellType.row) {
+          if (details.columnName == 'fecha' || details.columnName == 'codigo') {
+            /*  details.pdfCell.value = DateFormat('MM/dd/yyyy')
+                .format(DateTime.parse(details.pdfCell.value)); */
+          } else {
+            details.pdfCell.value =
+                double.parse(details.pdfCell.value).toStringAsFixed(2);
+          }
+        }
+      },
+      headerFooterExport: (DataGridPdfHeaderFooterExportDetails details) {
+        final double width = details.pdfPage.getClientSize().width;
+        final PdfPageTemplateElement header =
+            PdfPageTemplateElement(Rect.fromLTWH(0, 0, width, 65));
+
+        header.graphics.drawImage(
+            PdfBitmap(data.buffer
+                .asUint8List(data.offsetInBytes, data.lengthInBytes)),
+            Rect.fromLTWH(width - 148, 0, 148, 60));
+
+        header.graphics.drawString(
+          'KARDEX: ' +
+              nombre +
+              " " +
+              DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+          PdfStandardFont(PdfFontFamily.helvetica, 12,
+              style: PdfFontStyle.bold),
+          bounds: const Rect.fromLTWH(0, 25, 200, 60),
+        );
+
+        details.pdfDocumentTemplate.top = header;
+      });
+  final List<int> bytes = document.save();
+  await FileSaveHelper.saveAndLaunchFile(bytes, 'export_kardex.pdf');
+  document.dispose();
 }

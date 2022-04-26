@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:genesis_vera_tesis/ui/widgets/toast_notification.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/providers/parametros/provider_parametros.dart';
@@ -14,6 +15,7 @@ class ParametrosView extends StatefulWidget {
 
 class _ParametrosViewState extends State<ParametrosView> {
   String numeros = r'^(?:\+|-)?\d+$';
+  final keyProducto = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -28,83 +30,96 @@ class _ParametrosViewState extends State<ParametrosView> {
       child: WhiteCard(
           title: "Categorizaciòn en dìas",
           child: Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (var item in provi.listadoParametros) ...{
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Center(
-                                    child: Text("Tipo ${item.detalle}"))),
-                            Expanded(
-                              flex: 3,
-                              child: TextFormField(
-                                initialValue: item.holgura.toString(),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(numeros))
-                                ],
-                                onChanged: (value) {
-                                  item.holgura = int.tryParse(value) ?? 0;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                    hintText: 'Tiempo de clasificaciòn (dìas)'),
+            child: Form(
+              key: keyProducto,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for (var item in provi.listadoParametros) ...{
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Center(
+                                      child: Text("Tipo ${item.detalle}"))),
+                              Expanded(
+                                flex: 3,
+                                child: TextFormField(
+                                  initialValue: item.holgura.toString(),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(numeros))
+                                  ],
+                                  onChanged: (value) {
+                                    item.holgura = int.tryParse(value) ?? 0;
+                                  },
+                                  validator: (value) {
+                                    if (value == "0") {
+                                      return "no puede ser cero";
+                                    }
+                                    return null;
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                      hintText:
+                                          'Tiempo de clasificaciòn (dìas)'),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      },
-                      // Row(
-                      //   children: [
-                      //     Expanded(child: Center(child: Text("Estado B"))),
-                      //     Expanded(
-                      //       flex: 3,
-                      //       child: TextField(
-                      //         inputFormatters: [
-                      //           FilteringTextInputFormatter.allow(RegExp(numeros))
-                      //         ],
-                      //         keyboardType: TextInputType.number,
-                      //         decoration: InputDecoration(
-                      //             hintText: 'Tiempo de clasificacion'),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // Row(
-                      //   children: [
-                      //     Expanded(child: Center(child: Text("Estado C"))),
-                      //     Expanded(
-                      //       flex: 3,
-                      //       child: TextField(
-                      //         inputFormatters: [
-                      //           FilteringTextInputFormatter.allow(RegExp(numeros))
-                      //         ],
-                      //         decoration: InputDecoration(
-                      //             hintText: 'Tiempo de clasificacion'),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
+                            ],
+                          ),
+                        },
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Center(child: Text("Estado B"))),
+                        //     Expanded(
+                        //       flex: 3,
+                        //       child: TextField(
+                        //         inputFormatters: [
+                        //           FilteringTextInputFormatter.allow(RegExp(numeros))
+                        //         ],
+                        //         keyboardType: TextInputType.number,
+                        //         decoration: InputDecoration(
+                        //             hintText: 'Tiempo de clasificacion'),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Center(child: Text("Estado C"))),
+                        //     Expanded(
+                        //       flex: 3,
+                        //       child: TextField(
+                        //         inputFormatters: [
+                        //           FilteringTextInputFormatter.allow(RegExp(numeros))
+                        //         ],
+                        //         decoration: InputDecoration(
+                        //             hintText: 'Tiempo de clasificacion'),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                      ],
+                    ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    await provi.updateParametros();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                  TextButton(
+                    onPressed: () async {
+                      if (keyProducto.currentState!.validate()) {
+                        await provi.updateParametros();
+                        ToastNotificationView.messageAccess('Actualizado...');
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: Text(
+                      "Guardar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  child: Text(
-                    "Guardar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
           //  ListView(

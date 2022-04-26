@@ -34,10 +34,11 @@ dependencies:
   provider: ^6.0.1
   searchfield: ^0.6.4
   shared_preferences: ^2.0.13
-  syncfusion_flutter_charts: ^19.4.48
-  syncfusion_flutter_core: ^19.4.47
-  syncfusion_flutter_datagrid: ^19.4.47
-  syncfusion_flutter_pdf: ^19.4.47-beta
+  syncfusion_flutter_charts: ^20.1.50
+  syncfusion_flutter_core: ^20.1.50
+  syncfusion_flutter_datagrid: ^20.1.50
+  syncfusion_flutter_datagrid_export: ^20.1.50-beta
+  syncfusion_flutter_pdf: ^20.1.50-beta
   universal_html: ^2.0.8
   url_strategy: ^0.2.0
 

@@ -74,51 +74,51 @@ class _ProductoCrudState extends State<ProductoCrud> {
                 title: producto.product.id == 0
                     ? "Nuevo Producto"
                     : "Modificar Producto",
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Text("Codigo Ref"),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text("INP-${producto.codRef}"),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Text("Fecha"),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await _selectDate(context);
-                          },
-                          child: Container(
-                            child: Text("${formatter.format(selectedDate)}"),
+                child: Form(
+                  key: keyProducto,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Text("Codigo Ref"),
+                          SizedBox(
+                            width: 20,
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text("Lote"),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text("${producto.product.lote}"),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Form(
-                      key: keyProducto,
-                      child: Row(
+                          Text("INP-${producto.codRef}"),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("Fecha"),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await _selectDate(context);
+                            },
+                            child: Container(
+                              child: Text("${formatter.format(selectedDate)}"),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Text("Lote"),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text("${producto.product.lote}"),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
                         children: [
                           // Container(
                           //   constraints:
@@ -145,6 +145,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 if (value!.isEmpty) {
                                   return "Ingrese Cantidad";
                                 }
+                                if (value == "0") {
+                                  return "Tiene que ser mayor a 0";
+                                }
+                                return null;
                               },
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -189,6 +193,10 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 if (value!.isEmpty) {
                                   return "Ingrese Precio Unitario";
                                 }
+                                if (value == "0") {
+                                  return "Tiene que ser mayor a 0";
+                                }
+                                return null;
                               },
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -210,6 +218,7 @@ class _ProductoCrudState extends State<ProductoCrud> {
                                 if (value!.isEmpty) {
                                   return "Ingrese Descripción";
                                 }
+                                return null;
                               },
                               decoration: CustomInputs.formInputDecoration(
                                   hint: 'Descripción',
@@ -219,104 +228,122 @@ class _ProductoCrudState extends State<ProductoCrud> {
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, minWidth: 100),
-                          child: DropdownButtonFormField<UnidadMedidaEntity>(
-                            onChanged: (value) {
-                              producto.product.idUnidad = value!.id;
-                            },
-                            items: producto.listUnidades.map((item) {
-                              return DropdownMenuItem(
-                                value: item,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      item.detalle,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400),
-                                    )),
-                              );
-                            }).toList(),
-                            decoration: CustomInputs.formInputDecoration(
-                                hint: producto.product.unidad != null
-                                    ? "${producto.product.unidad!.detalle}"
-                                    : '',
-                                label: producto.product.unidad != null
-                                    ? "${producto.product.unidad!.detalle}"
-                                    : 'Seleccione unidad de Medida',
-                                icon: Icons.assignment),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Container(
+                            constraints:
+                                BoxConstraints(maxWidth: 300, minWidth: 100),
+                            child: DropdownButtonFormField<UnidadMedidaEntity>(
+                              onChanged: (value) {
+                                producto.product.idUnidad = value!.id;
+                              },
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Seleccione uno";
+                                }
+                                return null;
+                              },
+                              items: producto.listUnidades.map((item) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item.detalle,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400),
+                                      )),
+                                );
+                              }).toList(),
+                              decoration: CustomInputs.formInputDecoration(
+                                  hint: producto.product.unidad != null
+                                      ? "${producto.product.unidad!.detalle}"
+                                      : '',
+                                  label: producto.product.unidad != null
+                                      ? "${producto.product.unidad!.detalle}"
+                                      : 'Seleccione unidad de Medida',
+                                  icon: Icons.assignment),
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: DropdownButtonFormField<GrupoEntity>(
-                            onChanged: (value) {
-                              producto.product.idGrupo = value!.id;
-                              producto.product.grupo = value;
-                            },
-                            items: producto.listGrupos.map((item) {
-                              return DropdownMenuItem(
-                                value: item,
-                                child: Align(
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: DropdownButtonFormField<GrupoEntity>(
+                              onChanged: (value) {
+                                producto.product.idGrupo = value!.id;
+                                producto.product.grupo = value;
+                              },
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Seleccione uno";
+                                }
+                                return null;
+                              },
+                              items: producto.listGrupos.map((item) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item.nombre,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400),
+                                      )),
+                                );
+                              }).toList(),
+                              decoration: CustomInputs.formInputDecoration(
+                                  hint: producto.product.grupo != null
+                                      ? "${producto.product.grupo!.nombre}"
+                                      : "",
+                                  label: producto.product.grupo != null
+                                      ? "${producto.product.grupo!.nombre}"
+                                      : 'Seleccione Tipo Producto',
+                                  icon: Icons.assignment),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          // proveedor
+                          Expanded(
+                            child: DropdownButtonFormField<ProveedoresEntity>(
+                              onChanged: (value) {
+                                producto.product.idProveedor = value!.id;
+                              },
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Seleccione uno";
+                                }
+                                return null;
+                              },
+                              items: producto.listaProveedores.map((item) {
+                                return DropdownMenuItem<ProveedoresEntity>(
+                                  value: item,
+                                  child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       item.nombre,
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400),
-                                    )),
-                              );
-                            }).toList(),
-                            decoration: CustomInputs.formInputDecoration(
-                                hint: producto.product.grupo != null
-                                    ? "${producto.product.grupo!.nombre}"
-                                    : "",
-                                label: producto.product.grupo != null
-                                    ? "${producto.product.grupo!.nombre}"
-                                    : 'Seleccione Tipo Producto',
-                                icon: Icons.assignment),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        // proveedor
-                        Expanded(
-                          child: DropdownButtonFormField<ProveedoresEntity>(
-                            onChanged: (value) {
-                              producto.product.idProveedor = value!.id;
-                            },
-                            items: producto.listaProveedores.map((item) {
-                              return DropdownMenuItem<ProveedoresEntity>(
-                                value: item,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    item.nombre,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
+                                    ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                            decoration: CustomInputs.formInputDecoration(
-                                hint: producto.product.proveedor != null
-                                    ? "${producto.product.proveedor!.nombre}"
-                                    : '',
-                                label: producto.product.proveedor != null
-                                    ? "${producto.product.proveedor!.nombre}"
-                                    : 'Seleccione Proveedor',
-                                icon: Icons.assignment),
+                                );
+                              }).toList(),
+                              decoration: CustomInputs.formInputDecoration(
+                                  hint: producto.product.proveedor != null
+                                      ? "${producto.product.proveedor!.nombre}"
+                                      : '',
+                                  label: producto.product.proveedor != null
+                                      ? "${producto.product.proveedor!.nombre}"
+                                      : 'Seleccione Proveedor',
+                                  icon: Icons.assignment),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 )),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -324,26 +351,13 @@ class _ProductoCrudState extends State<ProductoCrud> {
                 if (producto.product.id == 0) ...{
                   TextButton(
                     onPressed: () async {
-                      // final opt = await producto
-                      //     .guardar(otra.isNotEmpty ? otra.first : null);
-
-                      if (int.parse(producto.controllerStock.text == ""
-                                  ? "0"
-                                  : producto.controllerStock.text) >
-                              0 &&
-                          double.parse(producto.controllerPrecio.text == ""
-                                  ? "0"
-                                  : producto.controllerPrecio.text) >
-                              0) {
+                      if (keyProducto.currentState!.validate()) {
                         Productos? opt;
-                        print("...........${producto.product.lote}");
-
                         producto.product.fecha = formatter.format(selectedDate);
-                        print("Fecha ${producto.product.fecha}");
+
                         if (producto.product.id == 0) {
                           opt = await producto.guardar(producto.product);
                         } else {
-                          print("----------ipdate ");
                           opt = await producto.actualizar(producto.product);
                         }
 
@@ -362,17 +376,21 @@ class _ProductoCrudState extends State<ProductoCrud> {
 
                             kardex.impresion();
                           } catch (ex) {
+                            ToastNotificationView.messageDanger(
+                                'Error: ${ex.toString()}');
                             print(
                                 "Erro en guardar entrada kardex ${ex.toString()}");
                           }
-
+                          ToastNotificationView.messageAccess(
+                              "PRODUCTO CREADO");
                           NavigationService.replaceTo("/ingresos");
                         } else {
                           ToastNotificationView.messageDanger('Error');
                         }
-                      } else {
-                        print('Cantidad o costo no pueden ser menor a 1');
                       }
+
+                      // final opt = await producto
+                      //     .guardar(otra.isNotEmpty ? otra.first : null);
                     },
                     child: Text("Guardar"),
                   ),
